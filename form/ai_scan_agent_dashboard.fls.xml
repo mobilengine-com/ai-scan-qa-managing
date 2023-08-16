@@ -1,0 +1,12 @@
+<form id='ai_scan_agent_dashboard' platforms='web' dashboard='true' menuName='Agent' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
+    
+    <header></header>
+
+    <hbox style='{styles.sylTabsAndSaveButtonHbox}'>
+        <submitbutton id='sbtnDashboard' text='Dashboard' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='sbtnDashboard'/>
+        <submitbutton id='sbtnAgent' text='Agent' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabActive}' testId='sbtnAgent'/>
+        <submitbutton id='sbtnSetting' text='Setting' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='sbtnSetting'/>
+        <textview text=''/>
+        <submitbutton id='sbtnSave' text='Save' nextForm='{forms.ai_scan_setting}' style='{styles.sylSbtnSave}' testId='sbtnSave'/>
+    </hbox>
+</form>

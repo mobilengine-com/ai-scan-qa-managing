@@ -1,0 +1,384 @@
+styles{
+
+    style sylFormUserManagement{
+        all{
+            backgroundColor = FFFFFF
+        }
+    }
+
+	style sylTabsAndSaveButtonHbox{
+		hbox {
+			sizes = 200px, 200px, 200px, 1, 160px
+		}
+	}
+
+	style sylTabInActive{
+		submitbutton {
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 15px
+					bottom = 15px
+					left = 0px
+					right = 0px
+				}
+				borderWidth{
+					top = 1px
+					bottom = 1px
+					left = 1px
+					right = 1px
+				}
+				backgroundColor = FFFFFF
+				borderColor = 144184
+				fontColor = 144184
+				bold = true
+				textAlign = center
+				fontSize = 24px
+				width = fill
+			}
+		}
+	}
+
+	style sylTabActive{
+		submitbutton {
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 15px
+					bottom = 15px
+					left = 0px
+					right = 0px
+				}
+				borderWidth{
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 144184
+				fontColor = FFFFFF
+				bold = true
+				textAlign = center
+				fontSize = 24px
+				width = fill
+			}
+		}
+	}
+
+	style sylSbtnSave{
+		submitbutton {
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 20px
+				}
+				padding {
+					top = 8px
+					bottom = 8px
+					left = 0px
+					right = 0px
+				}
+				borderWidth{
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 038a45
+				fontColor = FFFFFF
+				bold = true
+				textAlign = center
+				fontSize = 16px
+				width = 120px				
+			}			
+		}
+	}
+
+    style sylTvTitle{
+		textview{
+			control{
+				margin {
+					top = 40px
+					bottom = 20px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 1B4384
+				fontSize = 24px
+			}
+			textAlign = left			
+		}		
+	}
+
+	style sylAdbtnNewUser{
+		addbutton{
+			button {
+                width = 120px
+                fontColor = FFFFFF
+				fontSize = 16px
+                textAlign = center
+				bold = true
+                backgroundColor = 038a45
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+                padding {
+                    top = 10px
+					bottom = 10px
+					left = 0px
+					right = 0px
+                }
+                borderWidth {
+                    top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+                }
+            }
+		}
+	}
+
+	style sylTblNewUser{
+		table {
+			control {
+                borderWidth {
+                    top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+                }
+            }
+			
+			columnWidth = 200px, 300px, 150px, 50px
+			body = sylTblNewUser
+		}
+
+		row {
+			content = sylTblNewUser
+		}
+
+		cell {
+            borderWidth {
+                top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+            }
+			content = sylTblNewUser
+        }
+
+		textbox{
+			fontSize = 14px
+		}
+
+		dropdown{
+			fontSize = 14px
+		}
+
+		removebutton {
+			control{
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				width = fill
+				iconWidth = 30px
+				iconHeight = 30px
+				iconPosition = left
+			}
+			button {
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FFFFFF00
+				width = fill
+			}
+		}	
+	}
+
+	style sylTblUser{
+		table {
+			control {
+                borderWidth {
+                    top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+                }
+            }
+			
+			columnWidth = 200px, 300px, 150px, 50px, 50px
+			header = sylTblUser
+			body = sylTblUser
+			footer = sylTblUser
+		}
+
+		row {
+			content = sylTblUser
+		}
+
+		cell {
+            borderWidth {
+                top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+            }
+			content = sylTblUser
+        }
+
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 000000
+				fontSize = 18px
+			}
+			textAlign = left			
+		}	
+
+		textbox{
+			fontSize = 18px
+			control{
+				width = 175px
+			}
+		}
+
+		dropdown{
+			fontSize = 18px
+		}
+	}
+
+	style sylTblNormalRow{
+		row {
+			content = sylTblUser
+		}
+	}
+
+	style sylTblDeleteRow{
+		row {
+			content = sylTblDeleteRow
+		}
+
+		cell {
+            borderWidth {
+                top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+            }
+			content = sylTblDeleteRow
+        }
+
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = FF0000
+				fontSize = 18px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylAbtnEdit{
+		actionbutton {
+			control{
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				width = fill
+				iconWidth = 30px
+				iconHeight = 30px
+				iconPosition = left
+			}
+			button {
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FFFFFF00
+				width = fill
+			}
+		}
+	}
+
+	style sylAbtnDelete{
+		actionbutton {
+			control{
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				width = fill
+				iconWidth = 30px
+				iconHeight = 30px
+				iconPosition = left
+			}
+			button {
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FFFFFF00
+				width = fill
+			}
+		}
+	}
+
+}

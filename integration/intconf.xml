@@ -1,0 +1,11 @@
+<integration xmlns="http://schemas.mobilengine.com/integration/v1">
+    <!-- BAUAPP IN -->
+    <iep name="in" direction="in">
+      <dacsem name="UserIntegrationResponseDacs"/>
+    </iep>
+    
+    <!-- BAUAPP OUT -->
+    <iep name="out_usr" direction="out">
+      <dacsem name="UserIntegrationRequestDacs"/>
+    </iep>
+  </integration>

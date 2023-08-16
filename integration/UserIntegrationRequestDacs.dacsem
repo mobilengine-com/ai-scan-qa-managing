@@ -1,0 +1,23 @@
+schema UserIntegrationRequestDacs meta UserIntegrationRequestDacs
+
+MessageRoot: element
+{
+	messageName: attribute of type string values "createuser" "createcompany" "alteruser" "deleteuser" "setpassword" "authenticateuser" "searchuser" "searchcompany" "sendactivationemail" "sendinstallsms" "sendpasswordrenewalemail" "sendpasswordresetemail" "forms" "dashboards" "users";
+	messageGuid: attribute of type string;
+	Request: element {
+		Items: list of element Item
+		{
+			name: attribute of type string;
+			value: attribute of type string;
+			valueType: optional attribute of type string values "string" "int" "bool";
+		}
+		ItemList: list of element ItemList{
+			name: attribute of type string;
+			Items: list of element Item
+			{
+				value: attribute of type string;
+				valueType: optional attribute of type string values "string" "int" "bool";
+			}
+		}
+	}
+}

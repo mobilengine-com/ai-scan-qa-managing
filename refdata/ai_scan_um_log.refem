@@ -1,0 +1,14 @@
+<Reftab Name="ai_scan_um_log" xmlns="http://schemas.mobilengine.com/reftab/v1">
+	<Columns>
+		<Column Name="msg_guid" Type="Text" PrimaryKey="true" NotNull="true"/>
+		<Column Name="requester" Type="Text" NotNull="true"/>
+		<Column Name="munkas_id" Type="Text" NotNull="true"/>
+		<Column Name="created" Type="Date"/>
+		<Column Name="operation" Type="Text"/>
+		<Column Name="state" Type="Text"/>
+		<Column Name="processed" Type="Date"/>
+		<Column Name="result_code" Type="Text" />
+		<Column Name="result_message" Type="Text" />
+		<Column Name="result" Type="Text"/>
+	</Columns>	
+</Reftab>

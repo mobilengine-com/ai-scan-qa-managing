@@ -1,0 +1,24 @@
+schema UserIntegrationResponseDacs meta UserIntegrationResponseDacs
+
+Response: element
+{
+	MessageGuid: element of type string with whitespace;
+	ResultCode: element of type string with whitespace;
+	Message: element of type string with whitespace;
+	Results: optional element 
+	{
+		Result: list of element Result 
+		{
+			Items: list of element Item
+			{
+				name: attribute of type string;
+				value: attribute of type string;
+			}
+			ItemList: optional wrapped list of element Item
+			{
+				name: attribute of type string;
+				value: attribute of type string;
+			}
+		}
+	}
+}

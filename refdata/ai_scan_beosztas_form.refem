@@ -1,0 +1,7 @@
+<Reftab Name="ai_scan_beosztas_form" xmlns="http://schemas.mobilengine.com/reftab/v1">
+    <Columns>
+      <Column Name="beosztas_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+      <Column Name="form_name" Type="Text" PrimaryKey="true" NotNull="true"/>
+      <Column Name="platform" Type="Text" NotNull="true"/>
+    </Columns>
+  </Reftab>

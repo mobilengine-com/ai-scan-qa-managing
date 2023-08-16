@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+	"tasks": [
+		{
+			"label": "BUILD via bat",
+			"type": "shell",
+			"group": {"kind": "build", "isDefault": true},
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows":{
+				"command": "${cwd}\\.vscode\\build.bat"
+			},
+			"presentation": {"echo": true, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+			"problemMatcher": "$mebtProblemMatcher"
+		},
+		{
+			"label": "BUILD via bat with REFTAB",
+			"type": "shell",
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows":{
+				"command": "${cwd}\\.vscode\\buildWRtab.bat"
+			},
+			"presentation": {"echo": true, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+			"problemMatcher": "$mebtProblemMatcher"
+		},
+		{
+			"label": "mebt run",
+			"type": "mebt.run",
+			"problemMatcher": "$mebtProblemMatcher"
+		},
+		{
+			"label": "mebt run with reftab",
+			"type": "mebt.runWRtab",
+			"problemMatcher": "$mebtProblemMatcher"
+		},
+		{
+			"label": "mebt compile watch",
+			"type": "mebt.compileWatch",
+			"problemMatcher": "$mebtProblemMatcher"
+		},
+		{
+			"label": "mebt compile",
+			"type": "mebt.compile",
+			"problemMatcher": "$mebtProblemMatcher"
+		}
+	]
+}
