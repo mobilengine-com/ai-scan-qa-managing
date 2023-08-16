@@ -1,4 +1,4 @@
-<form id='ai_scan_coordinator_dashboard' platforms='web' dashboard='true' menuName='Coordinator' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
+<form id='ai_scan_coordinator_dashboard' platforms='web' dashboard='true' menuName='Dashboard' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
     <header></header>
 
     <hbox style='{styles.sylTabsAndSaveButtonHbox}'>

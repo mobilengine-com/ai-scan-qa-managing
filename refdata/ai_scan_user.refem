@@ -6,5 +6,6 @@
 		<Column Name="name" Type="Text" NotNull="true" />
         <Column Name="email" Type="Text" NotNull="true" />
         <Column Name="role" Type="Text" NotNull="true" />
+		<Column Name="status" Type="Text" NotNull="true" InitialValue='OFFLINE'/>
 	</Columns>
 </Reftab>

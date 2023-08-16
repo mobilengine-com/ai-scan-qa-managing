@@ -1,2 +1,2 @@
-<form id='ai_scan_qa_job' platforms='web' dashboard='false' menuName='QA' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
+<form id='ai_scan_qa_job' platforms='web' dashboard='false' menuName='QA_Job' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
 </form>
