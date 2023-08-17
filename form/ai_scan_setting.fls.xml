@@ -51,7 +51,7 @@
                 />
             </declarations>
             <cell>
-                <textbox id='tbNewUser' text='{tblNU.stNewUserName}' hint='Name' testId='tbNewUser'>
+                <textbox id='tbNewUser' text='{tblNU.stNewUserName}' hint='Name' testId='{"tbNewUser" || "[" || TOSTRING(tblNUIndex) || "]"}'>
                     <validation>
                         <validator cond='{COALESCE(TRIM(text, " "), "") != ""}' message='{"Required!"}' />
                         <validator cond='{LENGTH(text) &lt;= 100}' message='{"Maximum 100 characters!"}'/>
@@ -59,7 +59,7 @@
                 </textbox>
             </cell>
             <cell>
-                <textbox id='tbNewEmail' text='{tblNU.stNewUserEmail}' hint='Email' testId='tbNewEmail'>
+                <textbox id='tbNewEmail' text='{tblNU.stNewUserEmail}' hint='Email' testId='{"tbNewEmail" || "[" || TOSTRING(tblNUIndex) || "]"}'>
                     <validation>
                         <validator cond='{COALESCE(TRIM(text, " "), "") != ""}' message='{"Required!"}' />
                         <validator id='EmailExists' access='private' 
@@ -76,14 +76,14 @@
                 </textbox>
             </cell>
             <cell>
-                <dropdown id='ddUserRole' keyMap='{key}' textMap='{value}' choices='{SELECT 1 key, "Agent" value UNION ALL SELECT 2 key, "Coordinator" value}' noneText='Role' testId='ddUserRole'>
+                <dropdown id='ddUserRole' keyMap='{key}' textMap='{value}' choices='{SELECT 1 key, "Agent" value UNION ALL SELECT 2 key, "Coordinator" value}' noneText='Role' testId='{"ddUserRole" || "[" || TOSTRING(tblNUIndex) || "]"}'>
                     <validation>
                         <validator cond='{SELECT selectedKey IS NOT NULL}' message='{"Please select role!"}' />
                     </validation>
                 </dropdown>
             </cell>
             <cell>
-                <removebutton id='rmbtnDelete' text='{NULL}' linkIcon='{icons.waste}' testId='rmbtnDelete'/>
+                <removebutton id='rmbtnDelete' text='{NULL}' linkIcon='{icons.waste}' testId='{"rmbtnDelete" || "[" || TOSTRING(tblNUIndex) || "]"}'/>
             </cell>
         </row>
     </table>
@@ -129,39 +129,39 @@
             </declarations>
             <cell>
                 <if cond='{bSignForEdit}'>
-                    <textbox id='tbEditUserName' text='{tbU.username}' testId='tbEditUserName'>
+                    <textbox id='tbEditUserName' text='{tbU.username}' testId='{"tbEditUserName" || "[" || TOSTRING(tbUIndex) || "]"}'>
                         <validation>
                             <validator cond='{LENGTH(text) &lt;= 100}' message='{"Maximum 100 characters!"}'/>
                         </validation>
                     </textbox>
                 </if>
                 <if cond='{NOT bSignForEdit}'>
-                    <textview id='tvUserName' text='{tbU.username}' testId='tvUserName'/>
+                    <textview id='tvUserName' text='{tbU.username}' testId='{"tvUserName" || "[" || TOSTRING(tbUIndex) || "]"}'/>
                 </if>
             </cell>
             <cell>
-                <textview id='tvUserEmail' text='{tbU.email}' testId='tvUserEmail'/>
+                <textview id='tvUserEmail' text='{tbU.email}' testId='{"tvUserEmail" || "[" || TOSTRING(tbUIndex) || "]"}'/>
             </cell>
             <cell>
                 <if cond='{bSignForEdit}'>
-                    <dropdown id='ddEditUserRole' keyMap='{key}' textMap='{value}' choices='{SELECT 1 key, "Agent" value UNION ALL SELECT 2 key, "Coordinator" value}' selectedKey='{CASE WHEN tbU.user_role = "Agent" THEN 1 ELSE 2 END}' noneText='Role' testId='ddEditUserRole'>
+                    <dropdown id='ddEditUserRole' keyMap='{key}' textMap='{value}' choices='{SELECT 1 key, "Agent" value UNION ALL SELECT 2 key, "Coordinator" value}' selectedKey='{CASE WHEN tbU.user_role = "Agent" THEN 1 ELSE 2 END}' noneText='Role' testId='{"ddEditUserRole" || "[" || TOSTRING(tbUIndex) || "]"}'>
                         <validation>
                             <validator cond='{SELECT selectedKey IS NOT NULL}' message='{"Please select role!"}' />
                         </validation>
                     </dropdown>
                 </if>
                 <if cond='{NOT bSignForEdit}'>
-                    <textview id='tvUserRole' text='{tbU.user_role}' testId='tvUserRole'/>
+                    <textview id='tvUserRole' text='{tbU.user_role}' testId='{"tvUserRole" || "[" || TOSTRING(tbUIndex) || "]"}'/>
                 </if>
             </cell>
             <cell>
-                <actionbutton id='abtnEdit' text='{NULL}' linkIcon='{CASE WHEN bSignForEdit = true THEN icons.edit_x ELSE icons.edit END}' style='{styles.sylAbtnEdit}' testId='abtnEdit'>
+                <actionbutton id='abtnEdit' text='{NULL}' linkIcon='{CASE WHEN bSignForEdit = true THEN icons.edit_x ELSE icons.edit END}' style='{styles.sylAbtnEdit}' testId='{"abtnEdit" || "[" || TOSTRING(tbUIndex) || "]"}'>
                     <set value='{false}' target='bSignForDelete'/>
                     <set value='{CASE WHEN bSignForEdit = false THEN true ELSE false END}' target='bSignForEdit'/>
                 </actionbutton>
             </cell>
             <cell>
-                <actionbutton id='abtnDelete' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylAbtnDelete}' testId='abtnDelete'>
+                <actionbutton id='abtnDelete' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylAbtnDelete}' testId='{"abtnDelete" || "[" || TOSTRING(tbUIndex) || "]"}'>
                     <set value='{false}' target='bSignForEdit'/>
                     <set value='{CASE WHEN bSignForDelete = false THEN true ELSE false END}' target='bSignForDelete' />
                 </actionbutton>

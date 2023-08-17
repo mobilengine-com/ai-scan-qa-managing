@@ -40,6 +40,7 @@
         let stUserEmail = recNU.tbNewEmail.text.Trim(" ");
         let stUserRoleId = recNU.ddUserRole.selectedKey;
         let stUserRole = recNU.ddUserRole.selectedText;
+        let stUserStatus = "OFFLINE";
 
         let stMsgGuid = guid.Generate().ToStringN();
 
@@ -48,7 +49,8 @@
             id : stId,
             name : stUserName,
             email : stUserEmail,
-            role : stUserRole
+            role : stUserRole,
+            status : stUserStatus
         });
         
         // Create user creation log into ai_scan_um_log table
@@ -130,7 +132,10 @@
                 }
 
                 let stEditedId = recEU.stId;
-                let stEditedUserId = recEU.stUserId;
+
+                let lstUser = db.ai_scan_user.Read({id: stEditedId}).SingleOrDefault();
+                let stEditedUserId = lstUser.user_id;
+
                 let stEditedUserName = recEU.stEditUserName;
                 let stEditUserEmail = recEU.stEditUserEmail;
                 let stEditedUserRoleId = recEU.stEditUserRoleId;
@@ -204,6 +209,8 @@
 
                 addItem(uiMsg, "biAccess", "false", "bool");
 
+                Log(uiMsg);
+
                 uiMsg.Send();
             }
         }
@@ -227,7 +234,9 @@
                 }
 
                 let stEditedId = recDU.stId;
-                let stEditedUserId = recDU.stUserId;
+
+                let lstUser = db.ai_scan_user.Read({id: stEditedId}).SingleOrDefault();
+                let stEditedUserId = lstUser.user_id;
 
                 // Create delete user log in ai_scan_um_log table
                 db.ai_scan_um_log.Insert({
