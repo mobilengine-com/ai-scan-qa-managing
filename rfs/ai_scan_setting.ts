@@ -253,6 +253,7 @@
                 uiMsg.MessageRoot.messageGuid = stMsgGuid;
                 uiMsg.MessageRoot.messageName = "deleteuser";
                 addItem(uiMsg, "userId", stEditedUserId, "string");
+
 				uiMsg.Send();
             }
         }

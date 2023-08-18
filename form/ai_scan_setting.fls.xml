@@ -72,6 +72,7 @@
                                         AND LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(COALESCE(U.email, ""), " "), "Á", "á"), "É", "é"), "Í", "í"), "Ó","ó"), "Ö", "ö"), "Ő", "ő"), "Ú", "ú"), "Ü", "ü"), "Ű", "ű")) = LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(COALESCE(text, ""), " "), "Á", "á"), "É", "é"), "Í", "í"), "Ó","ó"), "Ö", "ö"), "Ő", "ő"), "Ú", "ú"), "Ü", "ü"), "Ű", "ű"))}' 
                             message='{"This email address already exists!"}'/>
                         <validator id='EmailDuplicateInNewUser' access='private' cond='{NOT bDuplicateEamilInNewUser}' message='{"This email address already exists!"}'/>
+                        <validator id='WrongEmail' access='private' cond='{regexp("^[a-z0-9]([a-z0-9_+-]|(\\.[a-z0-9_+-])){0,63}@[a-z0-9]([a-z0-9]{0,62}|([a-z0-9-]{0,61}[a-z0-9]))(\\.[a-z0-9]([a-z0-9]{0,62}|([a-z0-9-]{0,61}[a-z0-9])))*\\.[a-z]{2,63}$",COALESCE(text,""))}' message='{"Invalid email address!"}'/>
                     </validation>
                 </textbox>
             </cell>
@@ -165,6 +166,11 @@
                     <set value='{false}' target='bSignForEdit'/>
                     <set value='{CASE WHEN bSignForDelete = false THEN true ELSE false END}' target='bSignForDelete' />
                 </actionbutton>
+            </cell>
+            <cell>
+                <if cond='{bSignForDelete}'>
+                    <textview id='tvDelete' text='Selected for delition!' testId='{"tvDelete" || "[" || TOSTRING(tbUIndex) || "]"}'/>
+                </if>
             </cell>
         </row>
     </table>

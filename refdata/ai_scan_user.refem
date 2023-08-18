@@ -1,4 +1,3 @@
-<!-- rlevai -->
 <Reftab Name="ai_scan_user" xmlns="http://schemas.mobilengine.com/reftab/v1">
 	<Columns>
 		<Column Name="id" Type="Text" PrimaryKey="true" NotNull="true" Indexed="true" />
