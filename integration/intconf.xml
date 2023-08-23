@@ -1,11 +1,16 @@
 <integration xmlns="http://schemas.mobilengine.com/integration/v1">
-    <!-- BAUAPP IN -->
+    <!-- UMAN GW IN -->
     <iep name="in" direction="in">
       <dacsem name="UserIntegrationResponseDacs"/>
     </iep>
     
-    <!-- BAUAPP OUT -->
+    <!-- UMAN GW OUT -->
     <iep name="out_usr" direction="out">
       <dacsem name="UserIntegrationRequestDacs"/>
+    </iep>
+
+    <!--DML GW IN/OUT-->	
+    <iep name="inDML" direction="in">
+      <dacsem name='DNScanResponse' />
     </iep>
   </integration>

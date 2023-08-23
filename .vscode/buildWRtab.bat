@@ -4,7 +4,7 @@
 set mebtPath=C:\Users\daniel.dauda\Desktop\munkak\Mobilengine\V24\Mebt_49.12.259.59a385d_Debug
 set solutionPath=C:\Users\daniel.dauda\Documents\GitHub\ai-scan-qa-managing
 set mebtExe=%mebtPath%\Mebt.exe
-set reftab=%mebtPath%\.sqlite
+set reftab=%mebtPath%\AI_SCAN_JOB_MANAGEMENT_2023_08_16_1354.xlsx
 set server=https://scanbauapp-outdoor.mobilengine.com/services/comex
 set user=dev_102
 set pwd=-T3gl4f4l-

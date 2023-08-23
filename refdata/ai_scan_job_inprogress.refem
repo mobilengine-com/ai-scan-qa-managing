@@ -1,0 +1,7 @@
+<Reftab Name="ai_scan_job_inprogress" xmlns="http://schemas.mobilengine.com/reftab/v1">
+	<Columns>
+        <Column Name='job_id' Type='Text' PrimaryKey='true' NotNull='true'/>
+        <Column Name='user_id' Type='Text'/>
+		<Column Name='job_start_time' Type='Date'/>
+	</Columns>	
+</Reftab>

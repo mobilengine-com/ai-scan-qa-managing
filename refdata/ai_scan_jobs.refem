@@ -1,0 +1,8 @@
+<Reftab Name="ai_scan_jobs" xmlns="http://schemas.mobilengine.com/reftab/v1">
+	<Columns>
+		<Column Name='id' Type='Text' PrimaryKey='true' NotNull='true'/>
+		<Column Name='type' Type='Text' NotNull='true'/>
+        <Column Name='status' Type='Text' NotNull="true" InitialValue='UNCHECKED'/>
+		<Column Name='job_create_date' Type='Date'/>
+	</Columns>	
+</Reftab>

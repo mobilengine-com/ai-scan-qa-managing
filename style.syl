@@ -456,8 +456,8 @@ styles{
 		}
 	}
 
-	style sylAbtnGetJob{
-		actionbutton{
+	style sylCbtnGetJob{
+		combinedbutton{
 			button{
 				margin {
 					top = 0px
@@ -479,6 +479,252 @@ styles{
 				textAlign = center
 			}
 		}
+	}
+
+	style sylStartLinkviewAndCancelButtonHbox{
+		hbox {
+			sizes = 300px, 120px, 1
+		}
+	}
+
+	style sylLvStartLinkview{
+		linkview{
+			textAlign = center
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 300px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 6px
+				}
+			}
+			button
+			{
+				textAlign = center
+				backgroundColor = FF0000
+				fontColor = FFFFFF
+				fontSize = 16px
+				bold = true
+				underline = false
+				width = 300px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 10px
+					bottom = 10px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylCbtnCancelJob{
+		combinedbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 10px
+					bottom = 10px
+					left = 10px
+					right = 10px
+				}
+				backgroundColor = 1B4384
+				fontColor = FFFFFF
+				fontSize = 16px
+				bold = true
+				width = 100px
+				textAlign = center
+			}
+		}
+	}
+
+	style sylTvInfo{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 2px
+					right = 0px
+				}
+				fontColor = 1B4384
+				fontSize = 16px
+			}
+			textAlign = left
+		}
+	}
+
+	style sylQAMainHeaderAndButtonHbox{
+		hbox {
+            height = 60px
+            sizes = 900px, 1
+        }
+	}
+
+	style sylQAMainHeaderAndButtonHboxVbox{
+		vbox {
+            sizes = 60px
+        }
+	}
+
+	style sylQAMainHeaderHbox{
+		hbox {
+            height = 60px
+            sizes = 300px, 300px, 300px
+        }
+	}
+
+	style sylQAMainButtonHbox{
+		hbox {
+            height = 60px
+            sizes = 100px, 100px, 100px, 100px, 1
+        }
+	}
+
+	style sylQAMainDeliveryNoteQAAndPdfAnnotatorHbox{
+		hbox {
+            height = 100%
+            sizes = 900px, 1
+        }
+	}
+
+	style sylQAMainDeliveryNoteQAAndPdfAnnotatorVbox{
+		vbox {
+            sizes = 800px
+        }
+	}
+
+	style sylQAMainDeliveryNoteQAHbox{
+		hbox {
+            height = 50px
+            sizes = 300px, 300px, 300px
+        }
+	}
+
+	style sylPdfwebAnnotator{
+		annotator{
+			control {
+				fontColor = 007AFFFF
+				iconPosition = left
+				width = 100%
+				height = 100%
+				align = start
+				borderWidth{
+					top = 1px
+					bottom = 1px
+					left = 1px
+					right = 1px
+				}
+				borderColor = 000000
+			}
+		}
+	}
+
+	style sylTvQATitle{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 1B4384
+				fontSize = 24px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}		
+	}
+
+	style sylTvQAErrorsCounter{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 10px
+					left = 6px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 1B4384
+				fontSize = 24px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}		
 	}
 
 }
