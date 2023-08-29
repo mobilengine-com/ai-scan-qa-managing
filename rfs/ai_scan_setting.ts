@@ -110,6 +110,7 @@
         addItem(uiMsg, "biAccess", "false", "bool");
 
         uiMsg.Send();
+        Log("Created dacs with the following uman gateway massage id: " + stMsgGuid);
     }
 
     let stEditedUsers = form.stSelectedUserForEdit;
@@ -212,6 +213,7 @@
                 Log(uiMsg);
 
                 uiMsg.Send();
+                Log("Created dacs with the following uman gateway massage id: " + stMsgGuid);
             }
         }
     }
@@ -253,8 +255,8 @@
                 uiMsg.MessageRoot.messageGuid = stMsgGuid;
                 uiMsg.MessageRoot.messageName = "deleteuser";
                 addItem(uiMsg, "userId", stEditedUserId, "string");
-
-				uiMsg.Send();
+                uiMsg.Send();
+                Log("Created dacs with the following uman gateway massage id: " + stMsgGuid);
             }
         }
     }
