@@ -139,6 +139,13 @@
                 job_create_date: dtl.Now().DtlToDtdb()
             });
 
+            // Create jobs history
+            db.ai_scan_jobs_history.Insert({
+                id: stJobId,
+                current_user: "NULL",
+                users: "NULL"
+            });
+
             // Create delivery_note for job
             db.ai_scan_delivery_note_job.Insert({
                 id: stId,
@@ -192,90 +199,6 @@
                 });
 
                 i=i+1;
-            }
-        }
-
-        // Create jobs history
-        let lstUserOnline = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
-
-        if(lstUserOnline.Count() == 0)
-        {
-            for(let recDNJ of db.ai_scan_delivery_note_job.Read({id: stId, delivery_note_id: stDeliveryNoteId}))
-            {
-                db.ai_scan_jobs_history.Insert({
-                    id: recDNJ.job_id,
-                    current_user: "",
-                    users: ""
-                });
-            }
-        }
-        else if(lstUserOnline.Count() == 1)
-        {
-            let lstRandomUserOnline = "";
-            let stSelectedFirstUser = "";
-
-            for(let recDNJ of db.ai_scan_delivery_note_job.Read({id: stId, delivery_note_id: stDeliveryNoteId}))
-            {
-                let stDeliveryNoteJob = recDNJ.job_id;
-
-                let bstDeliveryNoteJobHistoryFound = db.ai_scan_jobs_history.Read({id: stDeliveryNoteJob});
-
-                if(bstDeliveryNoteJobHistoryFound.Count() == 0)
-                {
-                    let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                    lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-                    if(lstRandomUserOnline.id != stSelectedFirstUser)
-                    {
-                        db.ai_scan_jobs_history.Insert({
-                            id: stDeliveryNoteJob,
-                            current_user: lstRandomUserOnline.id,
-                            users: lstRandomUserOnline.id
-                        });
-                    }
-                    else
-                    {
-                        db.ai_scan_jobs_history.Insert({
-                            id: stDeliveryNoteJob,
-                            current_user: "",
-                            users: ""
-                        });
-                    }
-
-                    stSelectedFirstUser = lstRandomUserOnline.id;
-                }
-            }
-        }
-        else
-        {
-            let lstRandomUserOnline = "";
-            let stSelectedFirstUser = "";
-
-            for(let recDNJ of db.ai_scan_delivery_note_job.Read({id: stId, delivery_note_id: stDeliveryNoteId}))
-            {
-                let stDeliveryNoteJob = recDNJ.job_id;
-
-                let bstDeliveryNoteJobHistoryFound = db.ai_scan_jobs_history.Read({id: stDeliveryNoteJob});
-
-                if(bstDeliveryNoteJobHistoryFound.Count() == 0)
-                {
-                    let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                    lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-                    for(;lstRandomUserOnline.id == stSelectedFirstUser;)
-                    {
-                        let iRandomNumber2 = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                        lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber2);
-                    }
-
-                    db.ai_scan_jobs_history.Insert({
-                        id: stDeliveryNoteJob,
-                        current_user: lstRandomUserOnline.id,
-                        users: lstRandomUserOnline.id
-                    });
-
-                    stSelectedFirstUser = lstRandomUserOnline.id;
-                }
             }
         }
     }
@@ -623,142 +546,11 @@
                 }
 
                 // Create jobs history for QA job
-                let lstUserOnline = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
-
-                if(lstUserOnline.Count() == 0)
-                {
-                    db.ai_scan_jobs_history.Insert({
-                        id: stQAJobId,
-                        current_user: "",
-                        users: ""
-                    });
-                }
-                else if(lstUserOnline.Count() == 1)
-                {
-                    let lstRandomUserOnline = "";
-
-                    let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                    lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-                    if(lstRandomUserOnline.id != stCurrentJobUser && lstRandomUserOnline.id != stDeliveryNoteOtherJobUser)
-                    {
-                        db.ai_scan_jobs_history.Insert({
-                            id: stQAJobId,
-                            current_user: lstRandomUserOnline.id,
-                            users: lstRandomUserOnline.id
-                        });
-                    }
-                    else
-                    {
-                        if(lstRandomUserOnline.id == stCurrentJobUser)
-                        {
-                            db.ai_scan_jobs_history.Insert({
-                                id: stQAJobId,
-                                current_user: stCurrentJobUser,
-                                users: stCurrentJobUser
-                            });
-                        }
-                        else if(lstRandomUserOnline.id == stDeliveryNoteOtherJobUser)
-                        {
-                            db.ai_scan_jobs_history.Insert({
-                                id: stQAJobId,
-                                current_user: stDeliveryNoteOtherJobUser,
-                                users: stDeliveryNoteOtherJobUser
-                            });
-                        }
-                        else
-                        {
-                            db.ai_scan_jobs_history.Insert({
-                                id: stQAJobId,
-                                current_user: "",
-                                users: ""
-                            });
-                        }
-                    }
-                }
-                else if (lstUserOnline.Count() == 2)
-                {
-                    let bNotCurrentDeliveryNoteAnnotUser = false;
-                    
-                    for(let recData of lstUserOnline)
-                    {
-                        if(recData.id != stCurrentJobUser || recData.id != stDeliveryNoteOtherJobUser)
-                        {
-                            bNotCurrentDeliveryNoteAnnotUser = true;
-                        }
-                    }
-
-                    if(bNotCurrentDeliveryNoteAnnotUser == true)
-                    {
-                        let lstRandomUserOnline = "";
-
-                        let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                        lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-                        for(;lstRandomUserOnline.id == stCurrentJobUser || lstRandomUserOnline.id == stDeliveryNoteOtherJobUser;)
-                        {
-                            let iRandomNumber2 = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber2);
-                        }
-
-                        db.ai_scan_jobs_history.Insert({
-                            id: stQAJobId,
-                            current_user: lstRandomUserOnline.id,
-                            users: lstRandomUserOnline.id
-                        });
-                    }
-                    else
-                    {
-                        let lstRandomUserOnline = "";
-
-                        let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                        lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-                        if(lstRandomUserOnline.id == stCurrentJobUser)
-                        {
-                            db.ai_scan_jobs_history.Insert({
-                                id: stQAJobId,
-                                current_user: stCurrentJobUser,
-                                users: stCurrentJobUser
-                            });
-                        }
-                        else if(lstRandomUserOnline.id == stDeliveryNoteOtherJobUser)
-                        {
-                            db.ai_scan_jobs_history.Insert({
-                                id: stQAJobId,
-                                current_user: stDeliveryNoteOtherJobUser,
-                                users: stDeliveryNoteOtherJobUser
-                            });
-                        }
-                        else
-                        {
-                            db.ai_scan_jobs_history.Insert({
-                                id: stQAJobId,
-                                current_user: "",
-                                users: ""
-                            });
-                        }
-                    }
-                }
-                else
-                {
-                    let lstRandomUserOnline = "";
-
-                    let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                    lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-                    for(;lstRandomUserOnline.id == stCurrentJobUser || lstRandomUserOnline.id == stDeliveryNoteOtherJobUser;)
-                    {
-                        let iRandomNumber2 = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                        lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber2);
-                    }
-
-                    db.ai_scan_jobs_history.Insert({
-                        id: stQAJobId,
-                        current_user: lstRandomUserOnline.id,
-                        users: lstRandomUserOnline.id
-                    });
-                }
+                db.ai_scan_jobs_history.Insert({
+                    id: stQAJobId,
+                    current_user: "NULL",
+                    users: "NULL"
+                });
             }
         }
     }

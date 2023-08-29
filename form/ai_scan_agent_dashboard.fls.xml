@@ -24,6 +24,15 @@
             WHERE
                 U.email = sysp.user
         }'/>
+        <let id='iOtherOnlineUsers' shape='scalar' value='{
+            SELECT
+                COUNT(U.id)
+            FROM
+                ai_scan_user U
+            WHERE
+                U.status = "ONLINE"
+                AND U.id != stLoggedUserId
+        }'/>
         <let id='ltblAllUnassignedJobs' shape='table' access='private' 
 			value='{loadNewerFromServer:SELECT
                         J.id,
@@ -48,8 +57,9 @@
                     LEFT JOIN 
                         ai_scan_jobs_history JH ON JH.id = J.id
 					WHERE
-                        J.status = "UNCHECKED"
-                        AND (JH.current_user = "" OR JH.current_user IS NULL)
+                        CASE WHEN iOtherOnlineUsers > 2 AND J.type = "ANOT" THEN JH.users NOT LIKE "%" || stLoggedUserId || "%" WHEN iOtherOnlineUsers > 3 AND J.type = "QA" THEN JH.users NOT LIKE "%" || stLoggedUserId || "%" ELSE JH.current_user = "NULL" END
+                    GROUP BY DNJ.id, DNJ.delivery_note_id
+                    HAVING COUNT(DNJ.id) >1
                     ORDER BY
                         iStatusOrder,
                         iOrder,
@@ -87,7 +97,7 @@
                         create_date ASC
                     LIMIT 1}'
 		/>
-        <let id='iJobCount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM ltblAllUnassignedJobs AUJ}'/>
+        <let id='iJobCount' shape='scalar' access='private' value='{loadNewerFromServer:SELECT COUNT(0) FROM ltblAllUnassignedJobs AUJ}'/>
         <let id='iLoggedUserJobCount' shape='scalar' value='{SELECT COUNT(0) FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobId' shape='scalar' value='{SELECT LUJ.id FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobType' shape='scalar' value='{SELECT LUJ.job_type FROM ltblLoggedUserJobs LUJ}'/>
@@ -97,7 +107,7 @@
         <let id='stInstanceUrl' shape='scalar' access='private' value='{SELECT "https://scanbauapp-outdoor.mobilengine.com/"}'/>
         <let id='bChangeOnline' shape='scalar' value='{false}'/>
         <let id='bChangeOffline' shape='scalar' value='{false}'/>
-        <let id='bGetJob' shape='scalar' value='{false}'/>
+        <let id='bGetJob' shape='scalar' value='{loadNewerFromServer:SELECT false}'/>
         <let id='bCancelCurrentAnotJob' shape='scalar' value='{false}'/>
         <let id='bCancelCurrentQAJob' shape='scalar' value='{false}'/>
     </declarations>
@@ -120,6 +130,10 @@
         <combinedbutton id='cbtnStatusChangeOnline' text='I am offline' style='{styles.sylCbtnStatusChangeOnline}' testId='cbtnStatusChangeOnline'>
             <actionbutton>
                 <set target='bChangeOnline' value='{true}'/>
+                <set target='bChangeOffline' value='{false}'/>
+                <set target='bGetJob' value='{false}'/>
+                <set target='bCancelCurrentAnotJob' value='{false}'/>
+                <set target='bCancelCurrentQAJob' value='{false}'/>
             </actionbutton>
             <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
         </combinedbutton>
@@ -128,7 +142,11 @@
     <if cond='{stLoggedUserStatus = "ONLINE"}'>
         <combinedbutton id='cbtnStatusChangeOffline' text='I am online' style='{styles.sylCbtnStatusChangeOffline}' testId='cbtnStatusChangeOffline'>
             <actionbutton>
+                <set target='bChangeOnline' value='{false}'/>
                 <set target='bChangeOffline' value='{true}'/>
+                <set target='bGetJob' value='{false}'/>
+                <set target='bCancelCurrentAnotJob' value='{false}'/>
+                <set target='bCancelCurrentQAJob' value='{false}'/>
             </actionbutton>
             <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
         </combinedbutton>        
@@ -138,10 +156,14 @@
         <textview id='tvNoJob' text='No pending jobs' style='{styles.sylTvNoJob}' testId='tvNoJob'/>
     </if>
 
-    <if cond='{stLoggedUserStatus != "OFFLINE" AND (iJobCount != 0 OR iLoggedUserJobCount != 0) AND NOT bGetJob}'>
+    <if cond='{stLoggedUserStatus != "OFFLINE" AND iJobCount != 0 AND NOT bGetJob}'>
         <combinedbutton id='cbtnGetJob' text='You have pending jobs' style='{styles.sylCbtnGetJob}' testId='cbtnGetJob'>
             <actionbutton>
+                <set target='bChangeOnline' value='{false}'/>
+                <set target='bChangeOffline' value='{false}'/>
                 <set target='bGetJob' value='{true}'/>
+                <set target='bCancelCurrentAnotJob' value='{false}'/>
+                <set target='bCancelCurrentQAJob' value='{false}'/>
             </actionbutton>
             <submitbutton closeForm='{false}' waitForRfs='{true}'/>
         </combinedbutton>
@@ -152,7 +174,11 @@
             <linkview id='lvStartAnotJob' text='Click here to start annotation' url='https://www.google.com/' linkIcon='{NULL}' style='{styles.sylLvStartLinkview}' testId='lvStartAnotJob'/>
             <combinedbutton id='cbtnCancelAnotJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelAnotJob'>
                 <actionbutton>
+                    <set target='bChangeOnline' value='{false}'/>
+                    <set target='bChangeOffline' value='{false}'/>
+                    <set target='bGetJob' value='{false}'/>
                     <set target='bCancelCurrentAnotJob' value='{true}'/>
+                    <set target='bCancelCurrentQAJob' value='{false}'/>
                 </actionbutton>
                 <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
             </combinedbutton>
@@ -165,6 +191,10 @@
             <linkview id='lvStartQAJob' text='Click here to start QA job' url='{stInstanceUrl || "webforms/Form/ai_scan_qa_job?QAJobId=" || stLoggedUserSelectedJobId}' linkIcon='{NULL}' style='{styles.sylLvStartLinkview}' testId='lvStartQAJob'/>
             <combinedbutton id='cbtnCancelQAJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelQAJob'>
                 <actionbutton>
+                    <set target='bChangeOnline' value='{false}'/>
+                    <set target='bChangeOffline' value='{false}'/>
+                    <set target='bGetJob' value='{false}'/>
+                    <set target='bCancelCurrentAnotJob' value='{false}'/>
                     <set target='bCancelCurrentQAJob' value='{true}'/>
                 </actionbutton>
                 <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>

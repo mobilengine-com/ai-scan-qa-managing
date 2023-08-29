@@ -38,40 +38,251 @@
 
     if(bGetJob)
     {
-        let iLoggedUserJobCount = form.iLoggedUserJobCount;
+        let lstAllUnassignedJobs = db.ai_scan_jobs_history.ReadFields({current_user: "NULL"},["id","current_user","users"]);
 
-        let lstAllUnassignedJobs = db.ai_scan_jobs_history.ReadFields({current_user: {equal : [null,""]}},["id","current_user","users"]);
-
-        if(lstAllUnassignedJobs.Count() == 0 && iLoggedUserJobCount == 0)
+        if(lstAllUnassignedJobs.Count() == 0)
         {
-            Log("Logged user no job and no unassigned job availabel");
+            Log("No unassigned job available");
         }
-        else if(lstAllUnassignedJobs.Count() != 0 && iLoggedUserJobCount == 0)
+        else
         {
-            let lstQAJob = list.New();
-            let lstANOTJob = list.New();
+            let stQAJobId = "";
+
+            let lstOtherOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE", id: {notEqual : stLoggedUserId}},["id"]);
+
+            let bUserGetQAJob = false;
 
             for(let recData of lstAllUnassignedJobs)
             {
+                let lstQAJob = list.New();
+                let lstQAJobHistory = list.New();
+                let lstQAJobHistoryUsers = list.New();
+                let bQAJobUserFoundInUserHistory = false;
+
                 lstQAJob = db.ai_scan_jobs.ReadFields({id: recData.id, type: "QA", status: {equal : "UNCHECKED"}},["id","type","status"]).SingleOrDefault();
 
                 if(lstQAJob != null)
                 {
-                    break;
+                    lstQAJobHistory = db.ai_scan_jobs_history.ReadFields({id: recData.id},["users"]).SingleOrDefault();
+
+                    if(lstQAJobHistory.users != "NULL")
+                    {
+                        Log("nem üres a users");
+
+                        lstQAJobHistoryUsers = lstQAJobHistory.users.Split(",");
+
+                        for(let recDataUser of lstQAJobHistoryUsers)
+                        {
+                            if(stLoggedUserId == recDataUser)
+                            {
+                                bQAJobUserFoundInUserHistory = true;
+                                break;
+                            }
+                        }
+
+                        //Get job's delivery note datas
+                        let lstGetQAJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData.id},["id","delivery_note_id"]);
+
+                        let stGetQAJobDeliveryId = lstGetQAJobDeliveryNote.GetAt(0).id;
+                        let stGetQAJobDeliveryNoteId = lstGetQAJobDeliveryNote.GetAt(0).delivery_note_id;
+
+                        //Get delivery note ANOT jobs
+                        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetQAJobDeliveryId, delivery_note_id: stGetQAJobDeliveryNoteId, job_id: {notEqual : recData.id}},["job_id"]);
+
+                        //Get delivery note ANOT jobs users
+
+                        let lstDeliveryNoteJobsUsers = list.New();
+
+                        let stDeliveryNoteQAANOTJobsUsers = "";
+
+                        for(let recDataUser of lstDeliveryNoteJobs)
+                        {
+                            let lstDeliveryNoteJobsUser = db.ai_scan_jobs_history.ReadFields({id: recDataUser.job_id},["current_user"]);
+                            let stGetANOTJobCurrentUser = lstDeliveryNoteJobsUser.GetAt(0).current_user;
+                            lstDeliveryNoteJobsUsers.Add(stGetANOTJobCurrentUser);
+                            stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers + stGetANOTJobCurrentUser + ",";
+                        }
+
+                        stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers.TrimEnd(",");
+
+                        let bCurrentUserFoundInQAANOTJobs = false;
+
+                        for(let recData of lstDeliveryNoteJobsUsers)
+                        {
+                            if(recData == stLoggedUserId)
+                            {
+                                bCurrentUserFoundInQAANOTJobs = true;
+                            }
+                        }
+
+                        let bAllOnlineUserGetQAJob = false;
+
+                        let lstAllOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
+
+                        for(let recData of lstAllOnlineUsers)
+                        {
+                            if(stDeliveryNoteQAANOTJobsUsers.IndexOf(recData.id) == -1)
+                            {
+                                bAllOnlineUserGetQAJob = true;
+                                break;
+                            }
+                        }
+
+                        //Current user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 0)
+                        {
+                            Log("QA Only you");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //Current user and 1 other user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == true && bAllOnlineUserGetQAJob == false)
+                        {
+                            Log("QA Only you + 1 other user");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //Current user and 1 other user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
+                        {
+                            Log("QA Only you + 1 other user");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //Current user and 2 other user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 2 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
+                        {
+                            Log("QA Only you + 2 other user");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //More than 3 online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() >= 3 && bQAJobUserFoundInUserHistory == false && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
+                        {
+                            Log("More than 3 online user / users not empty");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Log("NULL a users");
+                        //Get job's delivery note datas
+                        let lstGetQAJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData.id},["id","delivery_note_id"]);
+
+                        let stGetQAJobDeliveryId = lstGetQAJobDeliveryNote.GetAt(0).id;
+                        let stGetQAJobDeliveryNoteId = lstGetQAJobDeliveryNote.GetAt(0).delivery_note_id;
+
+                        //Get delivery note ANOT jobs
+                        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetQAJobDeliveryId, delivery_note_id: stGetQAJobDeliveryNoteId, job_id: {notEqual : recData.id}},["job_id"]);
+
+                        //Get delivery note ANOT jobs users
+
+                        let lstDeliveryNoteJobsUsers = list.New();
+
+                        let stDeliveryNoteQAANOTJobsUsers = "";
+
+                        for(let recDataUser of lstDeliveryNoteJobs)
+                        {
+                            let lstDeliveryNoteJobsUser = db.ai_scan_jobs_history.ReadFields({id: recDataUser.job_id},["current_user"]);
+                            let stGetANOTJobCurrentUser = lstDeliveryNoteJobsUser.GetAt(0).current_user;
+                            lstDeliveryNoteJobsUsers.Add(stGetANOTJobCurrentUser);
+                            stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers + stGetANOTJobCurrentUser + ",";
+                        }
+
+                        stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers.TrimEnd(",");
+
+                        let bCurrentUserFoundInQAANOTJobs = false;
+
+                        for(let recData of lstDeliveryNoteJobsUsers)
+                        {
+                            if(recData == stLoggedUserId)
+                            {
+                                bCurrentUserFoundInQAANOTJobs = true;
+                            }
+                        }
+
+                        let bAllOnlineUserGetQAJob = false;
+
+                        let lstAllOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
+                        
+                        for(let recData of lstAllOnlineUsers)
+                        {
+                            if(stDeliveryNoteQAANOTJobsUsers.IndexOf(recData.id) == -1)
+                            {
+                                bAllOnlineUserGetQAJob = true;
+                                break;
+                            }
+                        }
+
+                        //Current user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 0)
+                        {
+                            Log("QA Only you");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //Current user and 1 other user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == true && bAllOnlineUserGetQAJob == false)
+                        {
+                            Log("QA Only you + 1 other user");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //Current user and 1 other user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
+                        {
+                            Log("QA Only you + 1 other user");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //Current user and 2 other user only online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 2 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
+                        {
+                            Log("QA Only you + 2 other user");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+
+                        //More than 3 online user
+                        if(lstQAJob != null && lstOtherOnlineUsers.Count() >= 3 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true && stLoggedUserId != lstDeliveryNoteJobsUsers.GetAt(0) && stLoggedUserId != lstDeliveryNoteJobsUsers.GetAt(1))
+                        {
+                            Log("More than 3 online user / users empty");
+                            stQAJobId = recData.id;
+                            bUserGetQAJob = true;
+                            break;
+                        }
+                    }
                 }
             }
 
-            Log(lstQAJob);
-
-            if(lstQAJob != null)
+            if(bUserGetQAJob == true)
             {
-                let lstCurrentJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: lstQAJob.id},["users"]);
+                Log("QA job found");
 
                 let stCurrentJobUserHistory = "";
 
-                for(let recCJUH of lstCurrentJobUserHistory)
+                let lstQAJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stQAJobId},["users"]);
+
+                for(let recCJUH of lstQAJobJobUserHistory)
                 {
-                    if(recCJUH.users != "" && recCJUH.users != null)
+                    if(recCJUH.users != "NULL")
                     {
                         stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
                     }
@@ -80,7 +291,7 @@
                 stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
 
                 db.ai_scan_jobs_history.UpdateMany({
-                    id: lstQAJob.id
+                    id: stQAJobId
                 },{
                     current_user: stLoggedUserId,
                     users: stCurrentJobUserHistory
@@ -88,14 +299,14 @@
 
                 // Update the job in ai_scan_jobs table
                 db.ai_scan_jobs.UpdateMany({
-                    id : lstQAJob.id
+                    id : stQAJobId
                 },{
                     status : "INPROGRESS"
                 });
 
                 // Insert OR Update the job in ai_scan_job_inprogress table
                 db.ai_scan_job_inprogress.InsertOrUpdate({
-                    job_id : lstQAJob.id
+                    job_id : stQAJobId
                 },{
                     user_id : stLoggedUserId,
                     job_start_time : dtl.Now().DtlToDtdb()
@@ -103,74 +314,229 @@
             }
             else
             {
+                let stANOTJobId = "";
+
+                let bUserGetANOTJob = false;
+
                 for(let recData2 of lstAllUnassignedJobs)
                 {
+                    let lstANOTJob = list.New();
+                    let lstANOTJobHistory = list.New();
+                    let lstANOTJobHistoryUsers = list.New();
+                    let bANOTJOBUserFoundInUserHistory = false;
+                    let lstANOTOtherJobHistory = list.New();
+                    let lstANOTOtherJobHistoryUsers = list.New();
+                    let bANOTOtherJOBUserFoundInUserHistory = false;
+
                     lstANOTJob = db.ai_scan_jobs.ReadFields({id: recData2.id, type: "ANOT", status: {equal : "UNCHECKED"}},["id","type","status"]).SingleOrDefault();
 
                     if(lstANOTJob != null)
                     {
-                        break;
+                        lstANOTJobHistory = db.ai_scan_jobs_history.ReadFields({id: recData2.id},["users"]).SingleOrDefault();
+
+                        if(lstANOTJobHistory.users != "NULL")
+                        {
+                            lstANOTJobHistoryUsers = lstANOTJobHistory.users.Split(",");
+
+                            for(let recDataUser of lstANOTJobHistoryUsers)
+                            {
+                                if(stLoggedUserId == recDataUser)
+                                {
+                                    bANOTJOBUserFoundInUserHistory = true;
+                                    break;
+                                }
+                            }
+
+                            //Get job's delivery note datas
+                            let lstGetANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
+
+                            let stGetANOTJobDeliveryId = lstGetANOTJobDeliveryNote.GetAt(0).id;
+                            let stGetANOTJobDeliveryNoteId = lstGetANOTJobDeliveryNote.GetAt(0).delivery_note_id;
+
+                            //Get delivery note other job
+                            let stDeliveryNoteOtherJob = "";
+
+                            let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetANOTJobDeliveryId, delivery_note_id: stGetANOTJobDeliveryNoteId},["job_id"]);
+
+                            for(let recDNJ of lstDeliveryNoteJobs)
+                            {
+                                if(recDNJ.job_id != recData2.id)
+                                {
+                                    stDeliveryNoteOtherJob = recDNJ.job_id;
+                                }
+                            }
+
+                            //Get delivery note other job user
+                            let stDeliveryNoteOtherJobUser = "";
+
+                            lstANOTOtherJobHistory = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteOtherJob},["current_user","users"]).SingleOrDefault();
+
+                            stDeliveryNoteOtherJobUser = lstANOTOtherJobHistory.current_user;
+
+                            if(lstANOTOtherJobHistory.users != "NULL")
+                            {
+                                lstANOTOtherJobHistoryUsers = lstANOTOtherJobHistory.users.Split(",");
+
+                                for(let recOtherDataUser of lstANOTOtherJobHistoryUsers)
+                                {
+                                    if(stLoggedUserId == recOtherDataUser)
+                                    {
+                                        bANOTOtherJOBUserFoundInUserHistory = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                bANOTOtherJOBUserFoundInUserHistory = false;
+                            }
+
+                            //Current user only online user
+                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 0)
+                            {
+                                Log("Only you");
+                                stANOTJobId = recData2.id;
+                                bUserGetANOTJob = true;
+                                break;
+                            }
+
+                            //Current user and 1 other user only online user
+                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 1)
+                            {
+                                Log("Only you + 1 other user");
+                                stANOTJobId = recData2.id;
+                                bUserGetANOTJob = true;
+                                break;
+                            }
+
+                            //More than 2 online user
+                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() >= 2 && bANOTJOBUserFoundInUserHistory == false && stLoggedUserId != stDeliveryNoteOtherJobUser && bANOTOtherJOBUserFoundInUserHistory == false)
+                            {
+                                Log("More than 2 online user / users not empty");
+                                stANOTJobId = recData2.id;
+                                bUserGetANOTJob = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            //Get job's delivery note datas
+                            let lstGetANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
+
+                            let stGetANOTJobDeliveryId = lstGetANOTJobDeliveryNote.GetAt(0).id;
+                            let stGetANOTJobDeliveryNoteId = lstGetANOTJobDeliveryNote.GetAt(0).delivery_note_id;
+
+                            //Get delivery note other job
+                            let stDeliveryNoteOtherJob = "";
+
+                            let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetANOTJobDeliveryId, delivery_note_id: stGetANOTJobDeliveryNoteId},["job_id"]);
+
+                            for(let recDNJ of lstDeliveryNoteJobs)
+                            {
+                                if(recDNJ.job_id != recData2.id)
+                                {
+                                    stDeliveryNoteOtherJob = recDNJ.job_id;
+                                }
+                            }
+                            //Get delivery note other job user
+                            let stDeliveryNoteOtherJobUser = "";
+
+                            lstANOTOtherJobHistory = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteOtherJob},["current_user","users"]).SingleOrDefault();
+
+                            stDeliveryNoteOtherJobUser = lstANOTOtherJobHistory.current_user;
+
+                            if(lstANOTOtherJobHistory.users != "NULL")
+                            {
+                                lstANOTOtherJobHistoryUsers = lstANOTOtherJobHistory.users.Split(",");
+
+                                for(let recOtherDataUser of lstANOTOtherJobHistoryUsers)
+                                {
+                                    if(stLoggedUserId == recOtherDataUser)
+                                    {
+                                        bANOTOtherJOBUserFoundInUserHistory = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                bANOTOtherJOBUserFoundInUserHistory = false;
+                            }
+
+                            //Current user only online user
+                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 0)
+                            {
+                                Log("Only you");
+                                stANOTJobId = recData2.id;
+                                bUserGetANOTJob = true;
+                                break;
+                            }
+
+                            //Current user and 1 other user only online user
+                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 1)
+                            {
+                                Log("Only you + 1 other user");
+                                stANOTJobId = recData2.id;
+                                bUserGetANOTJob = true;
+                                break;
+                            }
+
+                            //More than 2 online user
+                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() >= 2 && stLoggedUserId != stDeliveryNoteOtherJobUser && bANOTOtherJOBUserFoundInUserHistory == false)
+                            {
+                                Log("More than 2 online user / users empty");
+                                stANOTJobId = recData2.id;
+                                bUserGetANOTJob = true;
+                                break;
+                            }
+                        }
                     }
                 }
 
-                Log(lstANOTJob);
-
-                let lstCurrentJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: lstANOTJob.id},["users"]);
-
-                let stCurrentJobUserHistory = "";
-
-                for(let recCJUH of lstCurrentJobUserHistory)
+                if(bUserGetANOTJob == true)
                 {
-                    if(recCJUH.users != "" && recCJUH.users != null)
+                    Log("ANOT job found");
+                    let stCurrentJobUserHistory = "";
+
+                    let lstANOTJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stANOTJobId},["users"]);
+
+                    for(let recCJUH of lstANOTJobJobUserHistory)
                     {
-                        stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
+                        if(recCJUH.users != "NULL")
+                        {
+                            stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
+                        }
                     }
+
+                    stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
+
+                    db.ai_scan_jobs_history.UpdateMany({
+                        id: stANOTJobId
+                    },{
+                        current_user: stLoggedUserId,
+                        users: stCurrentJobUserHistory
+                    });
+
+                    // Update the job in ai_scan_jobs table
+                    db.ai_scan_jobs.UpdateMany({
+                        id : stANOTJobId
+                    },{
+                        status : "INPROGRESS"
+                    });
+
+                    // Insert OR Update the job in ai_scan_job_inprogress table
+                    db.ai_scan_job_inprogress.InsertOrUpdate({
+                        job_id : stANOTJobId
+                    },{
+                        user_id : stLoggedUserId,
+                        job_start_time : dtl.Now().DtlToDtdb()
+                    });
+                }                
+                else
+                {
+                    Log("No job found current user");
                 }
-
-                stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: lstANOTJob.id
-                },{
-                    current_user: stLoggedUserId,
-                    users: stCurrentJobUserHistory
-                });
-
-                // Update the job in ai_scan_jobs table
-                db.ai_scan_jobs.UpdateMany({
-                    id : lstANOTJob.id
-                },{
-                    status : "INPROGRESS"
-                });
-
-                // Insert OR Update the job in ai_scan_job_inprogress table
-                db.ai_scan_job_inprogress.InsertOrUpdate({
-                    job_id : lstANOTJob.id
-                },{
-                    user_id : stLoggedUserId,
-                    job_start_time : dtl.Now().DtlToDtdb()
-                });
-                
             }
-        }
-        else
-        {
-            let stSelectedJobId = form.stLoggedUserSelectedJobId;
-
-            // Update the job in ai_scan_jobs table
-            db.ai_scan_jobs.UpdateMany({
-                id : stSelectedJobId
-            },{
-                status : "INPROGRESS"
-            });
-
-            // Insert OR Update the job in ai_scan_job_inprogress table
-            db.ai_scan_job_inprogress.InsertOrUpdate({
-                job_id : stSelectedJobId
-            },{
-                user_id : stLoggedUserId,
-                job_start_time : dtl.Now().DtlToDtdb()
-            });
         }
     }
 
@@ -178,118 +544,14 @@
     {
         // Update current job history with new online user
         let stCurrentJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentDeliveryId = form.stLoggedUserSelectedJobDeliveryId;
-        let stCurrentDeliveryNoteId = form.stLoggedUserSelectedJobDeliveryNoteId;
         let stCurrentUser = stLoggedUserId;
-        let stCurrentDeliveryNoteOtherJob = "";
-        let lstRandomUserOnline = "";
-        let lstUserOnline = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
 
-        if(lstUserOnline.Count() <= 1)
-        {
-            db.ai_scan_jobs_history.UpdateMany({
-                id: stCurrentJobId
-            },{
-                current_user: ""
-            });
-        }
-        if(lstUserOnline.Count() == 2)
-        {
-            let lstCurrentJobDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stCurrentDeliveryId, delivery_note_id: stCurrentDeliveryNoteId},["job_id"]);
-
-            for(let recCJDNJ of lstCurrentJobDeliveryNoteJobs)
-            {
-                if(recCJDNJ.job_id != stCurrentJobId)
-                {
-                    stCurrentDeliveryNoteOtherJob = recCJDNJ.job_id;
-                }
-            }
-
-            let stCurrentDeliveryNoteOtherJobUser = "";
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: stCurrentDeliveryNoteOtherJob},["current_user"]))
-            {
-                stCurrentDeliveryNoteOtherJobUser = recCDNOJU.current_user;
-            }
-
-            let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-            if(lstRandomUserOnline.id != stCurrentUser && lstRandomUserOnline.id != stCurrentDeliveryNoteOtherJobUser)
-            {
-                let lstCurrentJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentJobId},["users"]);
-
-                let stCurrentJobUserHistory = "";
-
-                for(let recCJUH of lstCurrentJobUserHistory)
-                {
-                    stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
-                }
-
-                stCurrentJobUserHistory = stCurrentJobUserHistory + lstRandomUserOnline.id;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentJobId
-                },{
-                    current_user: lstRandomUserOnline.id,
-                    users: stCurrentJobUserHistory
-                });
-            }
-            else
-            {
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentJobId
-                },{
-                    current_user: ""
-                });
-            }
-        }
-        else
-        {
-            let lstCurrentJobDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stCurrentDeliveryId, delivery_note_id: stCurrentDeliveryNoteId},["job_id"]);
-
-            for(let recCJDNJ of lstCurrentJobDeliveryNoteJobs)
-            {
-                if(recCJDNJ.job_id != stCurrentJobId)
-                {
-                    stCurrentDeliveryNoteOtherJob = recCJDNJ.job_id;
-                }
-            }
-
-            let stCurrentDeliveryNoteOtherJobUser = "";
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: stCurrentDeliveryNoteOtherJob},["current_user"]))
-            {
-                stCurrentDeliveryNoteOtherJobUser = recCDNOJU.current_user;
-            }
-
-            let lstCurrentJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentJobId},["users"]);
-
-            let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-            for(;lstRandomUserOnline.id == stCurrentUser || lstRandomUserOnline.id == stCurrentDeliveryNoteOtherJobUser;)
-            {
-                let iRandomNumber2 = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber2);
-            }            
-
-            let stCurrentJobUserHistory = "";
-
-            for(let recCJUH of lstCurrentJobUserHistory)
-            {
-                stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
-            }
-
-            stCurrentJobUserHistory = stCurrentJobUserHistory + lstRandomUserOnline.id;
-
-            db.ai_scan_jobs_history.UpdateMany({
-                id: stCurrentJobId
-            },{
-                current_user: lstRandomUserOnline.id,
-                users: stCurrentJobUserHistory
-            });
-        }
+        // Update the job in ai_scan_jobs_history table
+        db.ai_scan_jobs_history.UpdateMany({
+            id: stCurrentJobId
+        },{
+            current_user: "NULL"
+        });
 
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
@@ -306,439 +568,23 @@
     {
         // Update current job history with new online user
         let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentDeliveryId = form.stLoggedUserSelectedJobDeliveryId;
-        let stCurrentDeliveryNoteId = form.stLoggedUserSelectedJobDeliveryNoteId;
         let stCurrentUser = stLoggedUserId;
-        let lstRandomUserOnline = "";
-        let lstUserOnline = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
 
-        if(lstUserOnline.Count() == 0)
-        {
-            db.ai_scan_jobs_history.UpdateMany({
-                id: stCurrentQAJobId
-            },{
-                current_user: ""
-            });
-        }
-        else if(lstUserOnline.Count() == 1)
-        {
-            let stCurrentQAJobDeliveryNoteANOTUserOne = "";
-            let stCurrentQAJobDeliveryNoteANOTUserTwo = "";
-
-            let lstCurrentQAJobDeliveryNoteANOTJobs = db.ai_scan_delivery_note_job.ReadFields({id: stCurrentDeliveryId, delivery_note_id: stCurrentDeliveryNoteId, job_id : {notEqual: stCurrentQAJobId}},["job_id"]);
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(0).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne == "" || stCurrentQAJobDeliveryNoteANOTUserOne == null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserOne = recCDNOJU.current_user;
-                }
-            }
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(1).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne != "" && stCurrentQAJobDeliveryNoteANOTUserOne != null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserTwo = recCDNOJU.current_user;
-                }
-            }
-
-            let lstRandomUserOnline = "";
-
-            let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-            if(lstRandomUserOnline.id != stCurrentUser && lstRandomUserOnline.id != stCurrentQAJobDeliveryNoteANOTUserOne && lstRandomUserOnline.id != stCurrentQAJobDeliveryNoteANOTUserTwo)
-            {
-                let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                let stCurrentQAJobUserHistory = "";
-
-                for(let recCJUH of lstCurrentQAJobUserHistory)
-                {
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                }
-
-                stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + lstRandomUserOnline.id;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentQAJobId
-                },{
-                    current_user: lstRandomUserOnline.id,
-                    users: stCurrentQAJobUserHistory
-                });
-            }
-            else
-            {
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentQAJobId
-                },{
-                    current_user: ""
-                });
-            }
-
-        }
-        else if(lstUserOnline.Count() == 2)
-        {
-            let stCurrentQAJobDeliveryNoteANOTUserOne = "";
-            let stCurrentQAJobDeliveryNoteANOTUserTwo = "";
-
-            let lstCurrentQAJobDeliveryNoteANOTJobs = db.ai_scan_delivery_note_job.ReadFields({id: stCurrentDeliveryId, delivery_note_id: stCurrentDeliveryNoteId, job_id : {notEqual: stCurrentQAJobId}},["job_id"]);
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(0).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne == "" || stCurrentQAJobDeliveryNoteANOTUserOne == null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserOne = recCDNOJU.current_user;
-                }
-            }
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(1).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne != "" && stCurrentQAJobDeliveryNoteANOTUserOne != null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserTwo = recCDNOJU.current_user;
-                }
-            }
-
-            let lstRandomUserOnline = "";
-
-            let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-            if(lstRandomUserOnline.id != stCurrentUser && lstRandomUserOnline.id != stCurrentQAJobDeliveryNoteANOTUserOne && lstRandomUserOnline.id != stCurrentQAJobDeliveryNoteANOTUserTwo)
-            {
-                let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                let stCurrentQAJobUserHistory = "";
-
-                for(let recCJUH of lstCurrentQAJobUserHistory)
-                {
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                }
-
-                stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + lstRandomUserOnline.id;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentQAJobId
-                },{
-                    current_user: lstRandomUserOnline.id,
-                    users: stCurrentQAJobUserHistory
-                });
-            }
-            else
-            {
-                if(lstRandomUserOnline.id == stCurrentUser)
-                {
-                    if(stCurrentQAJobDeliveryNoteANOTUserOne != "")
-                    {
-                        let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                        let stCurrentQAJobUserHistory = "";
-
-                        for(let recCJUH of lstCurrentQAJobUserHistory)
-                        {
-                            stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                        }
-
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserOne;
-
-                        db.ai_scan_jobs_history.UpdateMany({
-                            id: stCurrentQAJobId
-                        },{
-                            current_user: stCurrentQAJobDeliveryNoteANOTUserOne,
-                            users: stCurrentQAJobUserHistory
-                        });
-                    }
-                    else if(stCurrentQAJobDeliveryNoteANOTUserTwo != "")
-                    {
-                        let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                        let stCurrentQAJobUserHistory = "";
-
-                        for(let recCJUH of lstCurrentQAJobUserHistory)
-                        {
-                            stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                        }
-
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserTwo;
-
-                        db.ai_scan_jobs_history.UpdateMany({
-                            id: stCurrentQAJobId
-                        },{
-                            current_user: stCurrentQAJobDeliveryNoteANOTUserTwo,
-                            users: stCurrentQAJobUserHistory
-                        });
-                    }
-                    else
-                    {
-                        db.ai_scan_jobs_history.UpdateMany({
-                            id: stCurrentQAJobId
-                        },{
-                            current_user: ""
-                        });
-                    }
-                }
-                else if(lstRandomUserOnline.id == stCurrentQAJobDeliveryNoteANOTUserOne)
-                {
-                    let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                    let stCurrentQAJobUserHistory = "";
-
-                    for(let recCJUH of lstCurrentQAJobUserHistory)
-                    {
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                    }
-
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserOne;
-
-                    db.ai_scan_jobs_history.UpdateMany({
-                        id: stCurrentQAJobId
-                    },{
-                        current_user: stCurrentQAJobDeliveryNoteANOTUserOne,
-                        users: stCurrentQAJobUserHistory
-                    });
-                }
-                else if(lstRandomUserOnline.id == stCurrentQAJobDeliveryNoteANOTUserTwo)
-                {
-                    let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                    let stCurrentQAJobUserHistory = "";
-
-                    for(let recCJUH of lstCurrentQAJobUserHistory)
-                    {
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                    }
-
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserTwo;
-
-                    db.ai_scan_jobs_history.UpdateMany({
-                        id: stCurrentQAJobId
-                    },{
-                        current_user: stCurrentQAJobDeliveryNoteANOTUserTwo,
-                        users: stCurrentQAJobUserHistory
-                    });
-                }
-                else
-                {
-                    db.ai_scan_jobs_history.UpdateMany({
-                        id: stCurrentQAJobId
-                    },{
-                        current_user: ""
-                    });
-                }
-            }
-        }
-        else if(lstUserOnline.Count() == 3)
-        {
-            let stCurrentQAJobDeliveryNoteANOTUserOne = "";
-            let stCurrentQAJobDeliveryNoteANOTUserTwo = "";
-
-            let lstCurrentQAJobDeliveryNoteANOTJobs = db.ai_scan_delivery_note_job.ReadFields({id: stCurrentDeliveryId, delivery_note_id: stCurrentDeliveryNoteId, job_id : {notEqual: stCurrentQAJobId}},["job_id"]);
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(0).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne == "" || stCurrentQAJobDeliveryNoteANOTUserOne == null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserOne = recCDNOJU.current_user;
-                }
-            }
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(1).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne != "" && stCurrentQAJobDeliveryNoteANOTUserOne != null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserTwo = recCDNOJU.current_user;
-                }
-            }
-
-            let lstRandomUserOnline = "";
-
-            let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-            if(lstRandomUserOnline.id != stCurrentUser && lstRandomUserOnline.id != stCurrentQAJobDeliveryNoteANOTUserOne && lstRandomUserOnline.id != stCurrentQAJobDeliveryNoteANOTUserTwo)
-            {
-                let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                let stCurrentQAJobUserHistory = "";
-
-                for(let recCJUH of lstCurrentQAJobUserHistory)
-                {
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                }
-
-                stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + lstRandomUserOnline.id;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentQAJobId
-                },{
-                    current_user: lstRandomUserOnline.id,
-                    users: stCurrentQAJobUserHistory
-                });
-            }
-            else
-            {
-                if(lstRandomUserOnline.id == stCurrentUser)
-                {
-                    if(stCurrentQAJobDeliveryNoteANOTUserOne != "")
-                    {
-                        let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                        let stCurrentQAJobUserHistory = "";
-
-                        for(let recCJUH of lstCurrentQAJobUserHistory)
-                        {
-                            stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                        }
-
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserOne;
-
-                        db.ai_scan_jobs_history.UpdateMany({
-                            id: stCurrentQAJobId
-                        },{
-                            current_user: stCurrentQAJobDeliveryNoteANOTUserOne,
-                            users: stCurrentQAJobUserHistory
-                        });
-                    }
-                    else if(stCurrentQAJobDeliveryNoteANOTUserTwo != "")
-                    {
-                        let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                        let stCurrentQAJobUserHistory = "";
-
-                        for(let recCJUH of lstCurrentQAJobUserHistory)
-                        {
-                            stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                        }
-
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserTwo;
-
-                        db.ai_scan_jobs_history.UpdateMany({
-                            id: stCurrentQAJobId
-                        },{
-                            current_user: stCurrentQAJobDeliveryNoteANOTUserTwo,
-                            users: stCurrentQAJobUserHistory
-                        });
-                    }
-                    else
-                    {
-                        db.ai_scan_jobs_history.UpdateMany({
-                            id: stCurrentQAJobId
-                        },{
-                            current_user: ""
-                        });
-                    }
-                }
-                else if(lstRandomUserOnline.id == stCurrentQAJobDeliveryNoteANOTUserOne)
-                {
-                    let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                    let stCurrentQAJobUserHistory = "";
-
-                    for(let recCJUH of lstCurrentQAJobUserHistory)
-                    {
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                    }
-
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserOne;
-
-                    db.ai_scan_jobs_history.UpdateMany({
-                        id: stCurrentQAJobId
-                    },{
-                        current_user: stCurrentQAJobDeliveryNoteANOTUserOne,
-                        users: stCurrentQAJobUserHistory
-                    });
-                }
-                else if(lstRandomUserOnline.id == stCurrentQAJobDeliveryNoteANOTUserTwo)
-                {
-                    let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                    let stCurrentQAJobUserHistory = "";
-
-                    for(let recCJUH of lstCurrentQAJobUserHistory)
-                    {
-                        stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-                    }
-
-                    stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + stCurrentQAJobDeliveryNoteANOTUserTwo;
-
-                    db.ai_scan_jobs_history.UpdateMany({
-                        id: stCurrentQAJobId
-                    },{
-                        current_user: stCurrentQAJobDeliveryNoteANOTUserTwo,
-                        users: stCurrentQAJobUserHistory
-                    });
-                }
-                else
-                {
-                    db.ai_scan_jobs_history.UpdateMany({
-                        id: stCurrentQAJobId
-                    },{
-                        current_user: ""
-                    });
-                }
-            }
-        }
-        else
-        {
-            let stCurrentQAJobDeliveryNoteANOTUserOne = "";
-            let stCurrentQAJobDeliveryNoteANOTUserTwo = "";
-
-            let lstCurrentQAJobDeliveryNoteANOTJobs = db.ai_scan_delivery_note_job.ReadFields({id: stCurrentDeliveryId, delivery_note_id: stCurrentDeliveryNoteId, job_id : {notEqual: stCurrentQAJobId}},["job_id"]);
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(0).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne == "" || stCurrentQAJobDeliveryNoteANOTUserOne == null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserOne = recCDNOJU.current_user;
-                }
-            }
-
-            for(let recCDNOJU of db.ai_scan_jobs_history.ReadFields({id: lstCurrentQAJobDeliveryNoteANOTJobs.GetAt(1).job_id},["current_user"]))
-            {
-                if(stCurrentQAJobDeliveryNoteANOTUserOne != "" && stCurrentQAJobDeliveryNoteANOTUserOne != null)
-                {
-                    stCurrentQAJobDeliveryNoteANOTUserTwo = recCDNOJU.current_user;
-                }
-            }
-
-            let lstCurrentQAJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-            let iRandomNumber = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-            lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber);
-
-            for(;lstRandomUserOnline.id == stCurrentUser || lstRandomUserOnline.id == stCurrentQAJobDeliveryNoteANOTUserOne || lstRandomUserOnline.id == stCurrentQAJobDeliveryNoteANOTUserTwo;)
-            {
-                let iRandomNumber2 = (float.Random()*100000000).Floor()%lstUserOnline.Count();
-                lstRandomUserOnline = lstUserOnline.GetAt(iRandomNumber2);
-            }            
-
-            let stCurrentQAJobUserHistory = "";
-
-            for(let recCJUH of lstCurrentQAJobUserHistory)
-            {
-                stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + recCJUH.users + ",";
-            }
-
-            stCurrentQAJobUserHistory = stCurrentQAJobUserHistory + lstRandomUserOnline.id;
-
-            db.ai_scan_jobs_history.UpdateMany({
-                id: stCurrentQAJobId
-            },{
-                current_user: lstRandomUserOnline.id,
-                users: stCurrentQAJobUserHistory
-            });
-        }
-
-        // Update the QA job in ai_scan_jobs table
+        // Update the job in ai_scan_jobs_history table
+        db.ai_scan_jobs_history.UpdateMany({
+            id: stCurrentQAJobId
+        },{
+            current_user: "NULL"
+        });
+
+        // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentQAJobId
         },{
             status : "UNCHECKED"
         });
 
-        // Delete the QA job in ai_scan_job_inprogress table
+        // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId, user_id : stCurrentUser});
     }
 }
