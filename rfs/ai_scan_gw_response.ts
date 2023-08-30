@@ -404,15 +404,22 @@
         }
 
         //get current job's user
-        let stCurrentJobUser = "";
+        let stCurrentJobUserId = "";
+        let stCurrentJobUserEmail = "";
         let dtlCurrentJobStartTime = dtl.Now();
 
         let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
 
         for(let recData of lstCurrentJobUser)
         {
-            stCurrentJobUser = recData.user_id;
-            dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
+            let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["email"]);
+
+            for(let recUser of lstCurrentUser)
+            {
+                stCurrentJobUserId = recData.user_id;
+                stCurrentJobUserEmail = recUser.email;
+                dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
+            }
         }
 
         //get job work time
@@ -424,7 +431,8 @@
         db.ai_scan_job_result.Insert({
             job_id: stDeliveryNoteJobId,
             delivery_note_id: stDeliveryNoteId,
-            user: stCurrentJobUser,
+            user_id: stCurrentJobUserId,
+            user_email: stCurrentJobUserEmail,
             result: stJobResultStatus,
             job_work_time_minutes: iJobWorkTime
         });
@@ -437,7 +445,7 @@
         });
 
         // Delete the job in ai_scan_job_inprogress table
-        db.ai_scan_job_inprogress.DeleteMany({job_id : stDeliveryNoteJobId, user_id : stCurrentJobUser});
+        db.ai_scan_job_inprogress.DeleteMany({job_id : stDeliveryNoteJobId, user_id : stCurrentJobUserId});
 
         //Get delivery note other job
         let stDeliveryNoteOtherJob = "";

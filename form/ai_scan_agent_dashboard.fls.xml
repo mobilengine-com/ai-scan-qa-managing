@@ -156,7 +156,7 @@
         <textview id='tvNoJob' text='No pending jobs' style='{styles.sylTvNoJob}' testId='tvNoJob'/>
     </if>
 
-    <if cond='{stLoggedUserStatus != "OFFLINE" AND iJobCount != 0 AND NOT bGetJob}'>
+    <if cond='{stLoggedUserStatus != "OFFLINE" AND iJobCount != 0 AND iLoggedUserJobCount = 0}'>
         <combinedbutton id='cbtnGetJob' text='You have pending jobs' style='{styles.sylCbtnGetJob}' testId='cbtnGetJob'>
             <actionbutton>
                 <set target='bChangeOnline' value='{false}'/>
@@ -169,7 +169,7 @@
         </combinedbutton>
     </if>
 
-    <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND bGetJob AND stLoggedUserSelectedJobType != "QA"}'>
+    <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType != "QA"}'>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
             <linkview id='lvStartAnotJob' text='Click here to start annotation' url='https://www.google.com/' linkIcon='{NULL}' style='{styles.sylLvStartLinkview}' testId='lvStartAnotJob'/>
             <combinedbutton id='cbtnCancelAnotJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelAnotJob'>
@@ -186,7 +186,7 @@
         <textview id='tvAnotInfo' text='{"You are working on delivery note: " || CASE WHEN stLoggedUserSelectedJobSupplierId = "" OR stLoggedUserSelectedJobSupplierId = null THEN "Delivery note number not available" ELSE stLoggedUserSelectedJobSupplierId END}' style='{styles.sylTvInfo}' testId='tvAnotInfo'/>
     </if>
 
-    <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND bGetJob AND stLoggedUserSelectedJobType = "QA"}'>
+    <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType = "QA"}'>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
             <linkview id='lvStartQAJob' text='Click here to start QA job' url='{stInstanceUrl || "webforms/Form/ai_scan_qa_job?QAJobId=" || stLoggedUserSelectedJobId}' linkIcon='{NULL}' style='{styles.sylLvStartLinkview}' testId='lvStartQAJob'/>
             <combinedbutton id='cbtnCancelQAJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelQAJob'>
