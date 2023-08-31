@@ -1,0 +1,32 @@
+schema 'QATaskDone' meta 'QATaskDone'
+
+dnResponse: element {
+	guid: attribute of type string;
+	jobid: optional attribute of type string;
+	mediaIdPdf: optional attribute of type string;
+	accepted: optional attribute of type int;
+	rejected: optional attribute of type int;
+	stage: optional attribute of type string;
+	avgscoreMustHave: attribute of type float;
+	avgscoreOverall: attribute of type float;
+	customerAddress: optional attribute of type string;
+	customerName: optional attribute of type string;
+	deliveryAddress: optional attribute of type string;
+	deliveryRecipientName: optional attribute of type string;
+	issueDate: optional attribute of type string;
+	orderNumber: optional attribute of type string;
+	supplierAddress: optional attribute of type string;
+	supplierName: optional attribute of type string;
+	supplierTaxNumber: optional attribute of type string;
+	supplierWarehouse: optional attribute of type string;
+	supplierId: optional attribute of type string;
+	weightGross: optional attribute of type string;
+	items: wrapped list of element item {
+		amount: optional attribute of type string;
+		grossWeight: optional attribute of type string;
+		itemName: optional attribute of type string;
+		manufacturerItemNumber: optional attribute of type string;
+		taxNumber: optional attribute of type string;
+		unit: optional attribute of type string;
+	}
+}

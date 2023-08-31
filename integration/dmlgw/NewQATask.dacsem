@@ -1,0 +1,12 @@
+schema 'NewQATask' meta 'NewQATask'
+
+qaTask: element {
+	scanId: attribute of type string;
+	mediaIdPdf: attribute of type string;
+	requestFileId1: attribute of type string;
+	requestFileId2: attribute of type string;
+	aiUrl1: attribute of type string;
+	aiUrl2: attribute of type string;
+	supplierId: attribute of type string;
+	lang: attribute of type string;
+}

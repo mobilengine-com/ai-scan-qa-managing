@@ -1,4 +1,4 @@
-//# server program ai_scan_gw_response for dacs DNScanResponse
+//# server program ai_scan_gw_response for dacs AITaskResult
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_delivery_note_def;
 //# using reftab ai_scan_delivery_note_job;
