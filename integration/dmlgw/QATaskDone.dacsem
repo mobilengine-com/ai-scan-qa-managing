@@ -2,10 +2,11 @@ schema 'QATaskDone' meta 'QATaskDone'
 
 dnResponse: element {
 	guid: attribute of type string;
-	jobid: optional attribute of type string;
+	requestFileId: attribute of type string;
 	mediaIdPdf: optional attribute of type string;
 	accepted: optional attribute of type int;
 	rejected: optional attribute of type int;
+	handwritten: optional attribute of type int;
 	stage: optional attribute of type string;
 	avgscoreMustHave: attribute of type float;
 	avgscoreOverall: attribute of type float;

@@ -2,7 +2,7 @@ schema 'AITaskResult' meta 'AITaskResult'
 
 dnResponse: element {
 	guid: attribute of type string;
-	jobid: optional attribute of type string;
+	requestFileId: attribute of type string;
 	mediaIdPdf: optional attribute of type string;
 	accepted: optional attribute of type int;
 	rejected: optional attribute of type int;
