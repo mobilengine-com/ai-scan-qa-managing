@@ -50,7 +50,7 @@
                 AND U.id != stLoggedUserId
         }'/>
         <let id='ltblCurrentUserJobAvaiableInAllUnassignedJobs' shape='table' access='private' 
-			value='{SELECT 
+			value='{loadNewerFromServer: SELECT 
                         J.id current_job,
                         J.current_user current_job_current_user,
                         J.language_type,
@@ -103,7 +103,7 @@
                         J.id NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)}'
 		/>
         <let id='ltblLoggedUserJobs' shape='table' access='private' 
-			value='{SELECT
+			value='{loadNewerFromServer: SELECT
                         J.id current_job,
                         J.current_user current_job_current_user,
                         J.job_id_2 job1,
@@ -142,7 +142,7 @@
         <let id='stLoggedUserSelectedJobSupplierId' shape='scalar' access='private' value='{SELECT LUJ.supplier_id FROM ltblLoggedUserJobs LUJ}'/>
         <let id='bChangeOnline' shape='scalar' value='{false}'/>
         <let id='bChangeOffline' shape='scalar' value='{false}'/>
-        <let id='bGetJob' shape='scalar' value='{SELECT false}'/>
+        <let id='bGetJob' shape='scalar' value='{loadNewerFromServer: SELECT false}'/>
         <let id='bCancelCurrentAnotJob' shape='scalar' value='{false}'/>
         <let id='bCancelDelayCurrentAnotJob' shape='scalar' value='{false}'/>
         <let id='bCancelCurrentQAJob' shape='scalar' value='{false}'/>

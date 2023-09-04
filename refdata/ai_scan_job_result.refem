@@ -1,4 +1,4 @@
-<Reftab Name="ai_scan_job_result" xmlns="http://schemas.mobilengine.com/reftab/v1">
+<Reftab Name="ai_scan_job_result" Push='true' xmlns="http://schemas.mobilengine.com/reftab/v1">
 	<Columns>
         <Column Name='job_id' Type='Text' PrimaryKey='true' NotNull='true'/>
         <Column Name='delivery_note_id' Type='Text'/>
