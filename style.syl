@@ -487,8 +487,85 @@ styles{
 		}
 	}
 
-	style sylLvStartLinkview{
+	style sylLvStartAnotJob{
 		linkview{
+			textAlign = center
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 300px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 6px
+				}
+			}
+			button
+			{
+				textAlign = center
+				backgroundColor = FF0000
+				fontColor = FFFFFF
+				fontSize = 16px
+				bold = true
+				underline = false
+				width = 300px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 10px
+					bottom = 10px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylSbtnStartQAJob{
+		submitbutton{
 			textAlign = center
 			borderWidth {
 				top = 0px
@@ -589,6 +666,31 @@ styles{
 		}
 	}
 
+	style sylCbtnCancelDelayJob{
+		combinedbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 10px
+					bottom = 10px
+					left = 10px
+					right = 10px
+				}
+				backgroundColor = 1B4384
+				fontColor = FFFFFF
+				fontSize = 16px
+				bold = true
+				width = 200px
+				textAlign = center
+			}
+		}
+	}
+
 	style sylTvInfo{
 		textview{
 			control{
@@ -608,7 +710,7 @@ styles{
 	style sylQAMainHeaderAndButtonHbox{
 		hbox {
             height = 60px
-            sizes = 900px, 1
+            sizes = 800px, 1
         }
 	}
 
@@ -621,21 +723,49 @@ styles{
 	style sylQAMainHeaderHbox{
 		hbox {
             height = 60px
-            sizes = 300px, 300px, 300px
+            sizes = 160px, 310px, 300px
         }
+	}
+
+	style sylTvQAMainHeaderHbox{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 1B4384
+				bold = true
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = center			
+		}
 	}
 
 	style sylQAMainButtonHbox{
 		hbox {
             height = 60px
-            sizes = 100px, 100px, 100px, 100px, 1
+            sizes = 140px, 140px, 140px, 140px, 140px, 1
         }
 	}
 
 	style sylQAMainDeliveryNoteQAAndPdfAnnotatorHbox{
 		hbox {
             height = 100%
-            sizes = 900px, 1
+            sizes = 800px, 1
         }
 	}
 
@@ -645,10 +775,17 @@ styles{
         }
 	}
 
-	style sylQAMainDeliveryNoteQAHbox{
+	style sylQAMainDeliveryNoteQAHboxNormal{
 		hbox {
             height = 50px
-            sizes = 300px, 300px, 300px
+            sizes = 160px, 25px, 275px, 10px, 25px, 275px
+        }
+	}
+
+	style sylQAMainDeliveryNoteQAHboxDifferent{
+		hbox {
+            height = 50px
+            sizes = 160px, 25px, 25px, 250px, 10px, 25px, 25px, 250px
         }
 	}
 
@@ -725,6 +862,476 @@ styles{
 			}
 			textAlign = left			
 		}		
+	}
+
+	style sylTvDifferent{
+		textview{
+			control{
+				margin {
+					top = 18px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FAE7E7
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylTvNormal{
+		textview{
+			control{
+				margin {
+					top = 18px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylTvEmptyText{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylTvNormalBold{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left
+			bold = true			
+		}
+	}
+
+	style sylAbtnQAMainDeliveryNoteActionButtons{
+		actionbutton{
+			control{
+				width = 25px
+				iconHeight = 25px
+				iconWidth = 25px
+				iconPosition = left
+				iconSpacing = 0px
+				iconFit = fit
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			button {
+				width = 25px
+				backgroundColor = FFFFFF
+				borderWidth {
+					top = 0px
+					right = 0px
+					bottom = 0px
+					left = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 13px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylAbtnQAMainDeliveryNoteActionButtonsDifferent{
+		actionbutton{
+			control{
+				width = 25px
+				iconHeight = 25px
+				iconWidth = 25px
+				iconPosition = left
+				iconSpacing = 0px
+				iconFit = fit
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			button {
+				width = 25px
+				backgroundColor = FFFFFF
+				borderWidth {
+					top = 0px
+					right = 0px
+					bottom = 0px
+					left = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 13px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTbEdit{
+		textbox{
+			control{
+				margin {
+					top = 14px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FFF1CC
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left
+		}
+	}
+
+	style sylTvNormalStrikethrough{
+		textview{
+			control{
+				margin {
+					top = 18px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			strikethrough = true
+			textAlign = left			
+		}
+	}
+
+	style sylTvEmptySeparator{
+		textview{
+			margin{
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 6px
+			}
+			padding{
+				top = 10px
+				bottom = 10px
+				left = 0px
+				right = 0px
+			}
+			borderWidth {
+				left = 0px
+				right = 0px
+				top = 1px
+				bottom = 0px
+			}
+			borderColor = 000000
+			control{
+				margin{
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				width = 100%
+			}
+
+		}
+	}
+
+	style sylTvEmptyTablesSeparator{
+		textview{
+			margin{
+				top = 20px
+				bottom = 0px
+				left = 6px
+				right = 6px
+			}
+			padding{
+				top = 10px
+				bottom = 10px
+				left = 0px
+				right = 0px
+			}
+			borderWidth {
+				left = 0px
+				right = 0px
+				top = 1px
+				bottom = 0px
+			}
+			borderColor = 000000
+			control{
+				margin{
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				width = 100%
+			}
+
+		}
+	}
+
+	style sylTvQAItemTableAgentName{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 1B4384
+				bold = true
+			}
+			margin {
+				top = 0px
+				bottom = 30px
+				left = 6px
+				right = 6px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylAgentItemTableHbox{
+		hbox {
+            height = 50px
+            sizes = 220px, 220px, 220px, 220px, 220px, 220px, 100px
+        }
+	}
+
+	style sylTvItemTableDifferent{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				height = 20px
+				backgroundColor = FAE7E7
+			}
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylTvItemTableNormal{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				height = 20px
+			}
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylTvItemTableNormalBold{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				height = 20px
+			}
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left
+			bold = true				
+		}
 	}
 
 }

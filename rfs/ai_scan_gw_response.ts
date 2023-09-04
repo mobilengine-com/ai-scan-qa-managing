@@ -52,10 +52,10 @@
     //Delivery note "waiting" status
     if(dacs.dnResponse.accepted == 0)
     {
-        let stId = guid.Generate().ToStringN();
         let stDeliveryNoteId = dacs.dnResponse.guid;
         let bDeliveryNoteStatus = dacs.dnResponse.accepted == 1;
         let stDeliveryNoteStatus = bDeliveryNoteStatus ? "done" : "waiting";
+        //let stDeliveryNoteLanguage = dacs.dnResponse.lang;
         let stDeliveryNoteAvgscoreOverall = dacs.dnResponse.avgscoreOverall;
         let stDeliveryNoteAvgscoreMustHave = dacs.dnResponse.avgscoreMustHave;
         let stDeliveryNotePdf = dacs.dnResponse.mediaIdPdf == null ? null : fileref.New(dacs.dnResponse.mediaIdPdf, 0);
@@ -75,7 +75,6 @@
 
         // Create default delivery_note
         db.ai_scan_delivery_note_def.Insert({
-            id: stId,
             delivery_note_id: stDeliveryNoteId,
             status: stDeliveryNoteStatus,
             avg_score_must_have: stDeliveryNoteAvgscoreMustHave,
@@ -99,7 +98,6 @@
         // Create default delivery_note's items
         let i = 0;
         for (let item of dacs.dnResponse.items) {
-            let stItemId = stId;
             let stDeliveryNoteItemId = stDeliveryNoteId;
             let iDeliveryNoteItemRowCounter = i;
             let stDeliveryNoteItemItemName = item.itemName;
@@ -111,7 +109,6 @@
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
 
             db.ai_scan_delivery_note_item_def.Insert({
-                id: stItemId,
                 delivery_note_id: stDeliveryNoteItemId,
                 row_counter: iDeliveryNoteItemRowCounter,
                 item_name: stDeliveryNoteItemItemName,
@@ -126,80 +123,150 @@
             i=i+1;
         }
 
-        // Create 2 anot job
-        for(let j = 0; j < 2; j = j+1)
-        {
-            // Create anotation job
-            let stJobId = guid.Generate().ToStringN();
+        // Create 2 anot job guid
+        let stJobId = guid.Generate().ToStringN();
+        let stJobId2 = guid.Generate().ToStringN();
 
-            db.ai_scan_jobs.Insert({
-                id: stJobId,
-                type: "ANOT",
-                status: "UNCHECKED",
-                job_create_date: dtl.Now().DtlToDtdb()
-            });
+        // Creat first job
+        db.ai_scan_jobs.Insert({
+            id: stJobId,
+            type: "ANOT",
+            status: "UNCHECKED",
+            language_type: null,
+            current_user: null,
+            create_date: dtl.Now().DtlToDtdb(),
+            delay_time: null,
+            job_id_2: stJobId2,
+            job_id_3: null
+        });
 
-            // Create jobs history
-            db.ai_scan_jobs_history.Insert({
-                id: stJobId,
-                current_user: "NULL",
-                users: "NULL"
-            });
+        // Creat first job history
+        db.ai_scan_jobs_history.Insert({
+            id: stJobId,
+            users: null
+        });
 
-            // Create delivery_note for job
-            db.ai_scan_delivery_note_job.Insert({
-                id: stId,
-                delivery_note_id: stDeliveryNoteId,
+        // Create delivery_note for first job
+        db.ai_scan_delivery_note_job.Insert({
+            delivery_note_id: stDeliveryNoteId,
+            job_id: stJobId,
+            status: stDeliveryNoteStatus,
+            avg_score_must_have: stDeliveryNoteAvgscoreMustHave,
+            avg_score_overall: stDeliveryNoteAvgscoreOverall,
+            customer_address: stDeliveryNoteCustomerAddress,
+            customer_name: stDeliveryNoteCustomerName,
+            delivery_address: stDeliveryNoteDeliveryAddress,
+            delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
+            issue_date: stDeliveryNoteIssueDate,
+            dtl_issue_date: stDeliveryNoteDtlIssueDate,
+            order_number: stDeliveryNoteOrderNumber,
+            supplier_address: stDeliveryNoteSupplierAddress,
+            supplier_name: stDeliveryNoteSupplierName,
+            supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
+            supplier_warehouse: stDeliveryNoteSupplierWarehouse,
+            supplier_id: stDeliveryNoteSupplierId,
+            weight_gross: stDeliveryNoteWeightGross,
+            fileref_pdf: stDeliveryNotePdf
+        });
+
+        // Create delivery_note's items for first job
+        let i2 = 0;
+        for (let item of dacs.dnResponse.items) {
+            let stDeliveryNoteItemId = stDeliveryNoteId;
+            let iDeliveryNoteItemRowCounter = i2;
+            let stDeliveryNoteItemItemName = item.itemName;
+            let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
+            let stDeliveryNoteItemTaxNumber = item.taxNumber;
+            let stDeliveryNoteItemAmount = item.amount;
+            let iDeliveryNoteItemAmount = NumberFrom(item.amount);
+            let stDeliveryNoteItemUnit = item.unit;
+            let stDeliveryNoteItemGrossWeight = item.grossWeight;
+
+            db.ai_scan_delivery_note_item_job.Insert({
+                delivery_note_id: stDeliveryNoteItemId,
                 job_id: stJobId,
-                status: stDeliveryNoteStatus,
-                avg_score_must_have: stDeliveryNoteAvgscoreMustHave,
-                avg_score_overall: stDeliveryNoteAvgscoreOverall,
-                customer_address: stDeliveryNoteCustomerAddress,
-                customer_name: stDeliveryNoteCustomerName,
-                delivery_address: stDeliveryNoteDeliveryAddress,
-                delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
-                issue_date: stDeliveryNoteIssueDate,
-                dtl_issue_date: stDeliveryNoteDtlIssueDate,
-                order_number: stDeliveryNoteOrderNumber,
-                supplier_address: stDeliveryNoteSupplierAddress,
-                supplier_name: stDeliveryNoteSupplierName,
-                supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
-                supplier_warehouse: stDeliveryNoteSupplierWarehouse,
-                supplier_id: stDeliveryNoteSupplierId,
-                weight_gross: stDeliveryNoteWeightGross,
-                fileref_pdf: stDeliveryNotePdf
+                row_counter: iDeliveryNoteItemRowCounter,
+                item_name: stDeliveryNoteItemItemName,
+                manufacturer_item_number: stDeliveryNoteItemManufacturerItemNumber,
+                tax_number: stDeliveryNoteItemTaxNumber,
+                amount: stDeliveryNoteItemAmount,
+                amount_number: iDeliveryNoteItemAmount,
+                unit: stDeliveryNoteItemUnit,
+                gross_weight: stDeliveryNoteItemGrossWeight
             });
 
-            // Create delivery_note's items for job
-            let i = 0;
-            for (let item of dacs.dnResponse.items) {
-                let stItemId = stId;
-                let stDeliveryNoteItemId = stDeliveryNoteId;
-                let iDeliveryNoteItemRowCounter = i;
-                let stDeliveryNoteItemItemName = item.itemName;
-                let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
-                let stDeliveryNoteItemTaxNumber = item.taxNumber;
-                let stDeliveryNoteItemAmount = item.amount;
-                let iDeliveryNoteItemAmount = NumberFrom(item.amount);
-                let stDeliveryNoteItemUnit = item.unit;
-                let stDeliveryNoteItemGrossWeight = item.grossWeight;
+            i2=i2+1;
+        }
 
-                db.ai_scan_delivery_note_item_job.Insert({
-                    id: stItemId,
-                    delivery_note_id: stDeliveryNoteItemId,
-                    job_id: stJobId,
-                    row_counter: iDeliveryNoteItemRowCounter,
-                    item_name: stDeliveryNoteItemItemName,
-                    manufacturer_item_number: stDeliveryNoteItemManufacturerItemNumber,
-                    tax_number: stDeliveryNoteItemTaxNumber,
-                    amount: stDeliveryNoteItemAmount,
-                    amount_number: iDeliveryNoteItemAmount,
-                    unit: stDeliveryNoteItemUnit,
-                    gross_weight: stDeliveryNoteItemGrossWeight
-                });
+        // Creat second job
+        db.ai_scan_jobs.Insert({
+            id: stJobId2,
+            type: "ANOT",
+            status: "UNCHECKED",
+            language_type: null,
+            current_user: null,
+            create_date: dtl.Now().DtlToDtdb(),
+            delay_time: null,
+            job_id_2: stJobId,
+            job_id_3: null
+        });
 
-                i=i+1;
-            }
+        // Create second job history
+        db.ai_scan_jobs_history.Insert({
+            id: stJobId2,
+            users: null
+        });
+
+        // Create delivery_note for second job
+        db.ai_scan_delivery_note_job.Insert({
+            delivery_note_id: stDeliveryNoteId,
+            job_id: stJobId2,
+            status: stDeliveryNoteStatus,
+            avg_score_must_have: stDeliveryNoteAvgscoreMustHave,
+            avg_score_overall: stDeliveryNoteAvgscoreOverall,
+            customer_address: stDeliveryNoteCustomerAddress,
+            customer_name: stDeliveryNoteCustomerName,
+            delivery_address: stDeliveryNoteDeliveryAddress,
+            delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
+            issue_date: stDeliveryNoteIssueDate,
+            dtl_issue_date: stDeliveryNoteDtlIssueDate,
+            order_number: stDeliveryNoteOrderNumber,
+            supplier_address: stDeliveryNoteSupplierAddress,
+            supplier_name: stDeliveryNoteSupplierName,
+            supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
+            supplier_warehouse: stDeliveryNoteSupplierWarehouse,
+            supplier_id: stDeliveryNoteSupplierId,
+            weight_gross: stDeliveryNoteWeightGross,
+            fileref_pdf: stDeliveryNotePdf
+        });
+
+        // Create delivery_note's items for second job
+        let i3 = 0;
+        for (let item of dacs.dnResponse.items) {
+            let stDeliveryNoteItemId = stDeliveryNoteId;
+            let iDeliveryNoteItemRowCounter = i3;
+            let stDeliveryNoteItemItemName = item.itemName;
+            let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
+            let stDeliveryNoteItemTaxNumber = item.taxNumber;
+            let stDeliveryNoteItemAmount = item.amount;
+            let iDeliveryNoteItemAmount = NumberFrom(item.amount);
+            let stDeliveryNoteItemUnit = item.unit;
+            let stDeliveryNoteItemGrossWeight = item.grossWeight;
+
+            db.ai_scan_delivery_note_item_job.Insert({
+                delivery_note_id: stDeliveryNoteItemId,
+                job_id: stJobId2,
+                row_counter: iDeliveryNoteItemRowCounter,
+                item_name: stDeliveryNoteItemItemName,
+                manufacturer_item_number: stDeliveryNoteItemManufacturerItemNumber,
+                tax_number: stDeliveryNoteItemTaxNumber,
+                amount: stDeliveryNoteItemAmount,
+                amount_number: iDeliveryNoteItemAmount,
+                unit: stDeliveryNoteItemUnit,
+                gross_weight: stDeliveryNoteItemGrossWeight
+            });
+
+            i3=i3+1;
         }
     }
 
@@ -208,7 +275,6 @@
     {
         let bUserModified = true;
 
-        let stDefaultDeliveryNoteGuid = "";
         let stDefaultDeliveryNoteCustomerAddress = "";
         let stDefaultDeliveryNoteCustomerName = "";
         let stDefaultDeliveryNoteDeliveryAddress = "";
@@ -231,7 +297,6 @@
 
         for(let recData of lstDefaultJobDeliveryNote)
         {
-            stDefaultDeliveryNoteGuid = recData.id;
             stDefaultDeliveryNoteCustomerAddress = recData.customer_address;
             stDefaultDeliveryNoteCustomerName = recData.customer_name;
             stDefaultDeliveryNoteDeliveryAddress = recData.delivery_address;
@@ -352,7 +417,7 @@
             lstJobDeliveryNoteItemGrossWeight.Add(stDeliveryNoteItemGrossWeight);
 
             // Update delivery_note job
-            db.ai_scan_delivery_note_item_job.UpdateMany({
+            db.ai_scan_delivery_note_item_job.InsertOrUpdate({
                 job_id: stDeliveryNoteJobId,
                 row_counter: iDeliveryNoteItemRowCounter
             },{
@@ -405,21 +470,31 @@
 
         //get current job's user
         let stCurrentJobUserId = "";
-        let stCurrentJobUserEmail = "";
+        let stCurrentJobUserName = "";
         let dtlCurrentJobStartTime = dtl.Now();
 
         let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
 
         for(let recData of lstCurrentJobUser)
         {
-            let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["email"]);
+            let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["name"]);
 
             for(let recUser of lstCurrentUser)
             {
                 stCurrentJobUserId = recData.user_id;
-                stCurrentJobUserEmail = recUser.email;
+                stCurrentJobUserName = recUser.name;
                 dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
             }
+        }
+
+        //get current job's language
+        let stCurrentJobLanguage = "";
+
+        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({job_id: stDeliveryNoteJobId},["language_type"]);
+
+        for(let recJobLanguage of lstCurrentJobLanguage)
+        {
+            stCurrentJobLanguage = recJobLanguage.language_type;
         }
 
         //get job work time
@@ -432,7 +507,7 @@
             job_id: stDeliveryNoteJobId,
             delivery_note_id: stDeliveryNoteId,
             user_id: stCurrentJobUserId,
-            user_email: stCurrentJobUserEmail,
+            user_name: stCurrentJobUserName,
             result: stJobResultStatus,
             job_work_time_minutes: iJobWorkTime
         });
@@ -450,7 +525,7 @@
         //Get delivery note other job
         let stDeliveryNoteOtherJob = "";
 
-        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stDefaultDeliveryNoteGuid, delivery_note_id: stDeliveryNoteId},["job_id"]);
+        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({delivery_note_id: stDeliveryNoteId},["job_id"]);
 
         for(let recDNJ of lstDeliveryNoteJobs)
         {
@@ -463,7 +538,7 @@
         //Get delivery note other job user
         let stDeliveryNoteOtherJobUser = "";
 
-        let lstDeliveryNoteOtherJob = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteOtherJob},["current_user"]);
+        let lstDeliveryNoteOtherJob = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteOtherJob},["current_user"]);
 
         for(let recJH of lstDeliveryNoteOtherJob)
         {
@@ -496,17 +571,21 @@
                     id: stQAJobId,
                     type: "QA",
                     status: "UNCHECKED",
-                    job_create_date: dtl.Now().DtlToDtdb()
+                    language_type: stCurrentJobLanguage,
+                    current_user: null,
+                    create_date: dtl.Now().DtlToDtdb(),
+                    delay_time: null,
+                    job_id_2: stCurrentJobUserId,
+                    job_id_3: stDeliveryNoteOtherJob                    
                 });
 
                 // Create QA delivery notes data for QA job
-                let lstDefaultDeliveryNoteDatas = db.ai_scan_delivery_note_def.Read({id : stDefaultDeliveryNoteGuid, delivery_note_id : stDeliveryNoteId});
+                let lstDefaultDeliveryNoteDatas = db.ai_scan_delivery_note_def.Read({delivery_note_id : stDeliveryNoteId});
 
                 for(let recData of lstDefaultDeliveryNoteDatas)
                 {
                     // Create delivery_note for QA job
                     db.ai_scan_delivery_note_job.Insert({
-                        id: stDefaultDeliveryNoteGuid,
                         delivery_note_id: stDeliveryNoteId,
                         job_id: stQAJobId,
                         status: recData.status,
@@ -530,14 +609,13 @@
                 }
 
                 // Create QA delivery notes data for QA job
-                let lstDefaultDeliveryNoteItemsDatas = db.ai_scan_delivery_note_item_def.Read({id : stDefaultDeliveryNoteGuid, delivery_note_id : stDeliveryNoteId});
+                let lstDefaultDeliveryNoteItemsDatas = db.ai_scan_delivery_note_item_def.Read({delivery_note_id : stDeliveryNoteId});
 
                 let i = 0;
                 for(let recData of lstDefaultDeliveryNoteItemsDatas)
                 {
                     // Create delivery_note for QA job
                     db.ai_scan_delivery_note_item_job.Insert({
-                        id: stDefaultDeliveryNoteGuid,
                         delivery_note_id: stDeliveryNoteId,
                         job_id: stQAJobId,
                         row_counter: i,
@@ -556,12 +634,272 @@
                 // Create jobs history for QA job
                 db.ai_scan_jobs_history.Insert({
                     id: stQAJobId,
-                    current_user: "NULL",
-                    users: "NULL"
+                    users: null
                 });
             }
         }
     }
 
     //Delivery note job "rejected" status
+    if(dacs.dnResponse.rejected == 1)
+    {
+        let stDeliveryNoteId = dacs.dnResponse.guid;
+        let stDeliveryNoteJobId = dacs.dnResponse.jobid;
+
+        //get Delivery note job datas
+        let bDeliveryNoteStatus = dacs.dnResponse.rejected == 1;
+        let stDeliveryNoteStatus = bDeliveryNoteStatus ? "rejected" : "waiting";
+        let stDeliveryNoteCustomerAddress = dacs.dnResponse.customerAddress;
+        let stDeliveryNoteCustomerName = dacs.dnResponse.customerName;
+        let stDeliveryNoteDeliveryAddress = dacs.dnResponse.deliveryAddress;
+        let stDeliveryNoteDeliveryRecipientName = dacs.dnResponse.deliveryRecipientName;
+        let stDeliveryNoteIssueDate = dacs.dnResponse.issueDate;
+        let stDeliveryNoteDtlIssueDate = DateFrom(stDeliveryNoteIssueDate);
+        let stDeliveryNoteOrderNumber = dacs.dnResponse.orderNumber;
+        let stDeliveryNoteSupplierAddress = dacs.dnResponse.supplierAddress;
+        let stDeliveryNoteSupplierName = dacs.dnResponse.supplierName;
+        let stDeliveryNoteSupplierTaxNumber = dacs.dnResponse.supplierTaxNumber;
+        let stDeliveryNoteSupplierWarehouse = dacs.dnResponse.supplierWarehouse;
+        let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
+        let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
+
+        // Update delivery_note job
+        db.ai_scan_delivery_note_job.UpdateMany({
+            job_id: stDeliveryNoteJobId
+        },{
+            status: stDeliveryNoteStatus,
+            customer_address: stDeliveryNoteCustomerAddress,
+            customer_name: stDeliveryNoteCustomerName,
+            delivery_address: stDeliveryNoteDeliveryAddress,
+            delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
+            issue_date: stDeliveryNoteIssueDate,
+            dtl_issue_date: stDeliveryNoteDtlIssueDate,
+            order_number: stDeliveryNoteOrderNumber,
+            supplier_address: stDeliveryNoteSupplierAddress,
+            supplier_name: stDeliveryNoteSupplierName,
+            supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
+            supplier_warehouse: stDeliveryNoteSupplierWarehouse,
+            supplier_id: stDeliveryNoteSupplierId,
+            weight_gross: stDeliveryNoteWeightGross
+        });
+
+        //get Delivery note job items datas
+        let lstJobDeliveryNoteItemItemName = list.New();
+        let lstJobDeliveryNoteItemManufacturerItemNumber = list.New();
+        let lstJobDeliveryNoteItemTaxNumber = list.New();
+        let lstJobDeliveryNoteItemAmount = list.New();
+        let lstJobDeliveryNoteItemNumberAmount = list.New();
+        let lstJobDeliveryNoteItemUnit = list.New();
+        let lstJobDeliveryNoteItemGrossWeight = list.New();
+
+        // delivery_note's items
+        let i = 0;
+        for (let item of dacs.dnResponse.items) {
+            let iDeliveryNoteItemRowCounter = i;
+            let stDeliveryNoteItemItemName = item.itemName;
+            let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
+            let stDeliveryNoteItemTaxNumber = item.taxNumber;
+            let stDeliveryNoteItemAmount = item.amount;
+            let iDeliveryNoteItemAmount = NumberFrom(item.amount);
+            let stDeliveryNoteItemUnit = item.unit;
+            let stDeliveryNoteItemGrossWeight = item.grossWeight;
+
+            lstJobDeliveryNoteItemItemName.Add(stDeliveryNoteItemItemName);
+            lstJobDeliveryNoteItemManufacturerItemNumber.Add(stDeliveryNoteItemManufacturerItemNumber);
+            lstJobDeliveryNoteItemTaxNumber.Add(stDeliveryNoteItemTaxNumber);
+            lstJobDeliveryNoteItemAmount.Add(stDeliveryNoteItemAmount);
+            lstJobDeliveryNoteItemNumberAmount.Add(iDeliveryNoteItemAmount);
+            lstJobDeliveryNoteItemUnit.Add(stDeliveryNoteItemUnit);
+            lstJobDeliveryNoteItemGrossWeight.Add(stDeliveryNoteItemGrossWeight);
+
+            // Update delivery_note job
+            db.ai_scan_delivery_note_item_job.InsertOrUpdate({
+                job_id: stDeliveryNoteJobId,
+                row_counter: iDeliveryNoteItemRowCounter
+            },{
+                item_name: stDeliveryNoteItemItemName,
+                manufacturer_item_number: stDeliveryNoteItemManufacturerItemNumber,
+                tax_number: stDeliveryNoteItemTaxNumber,
+                amount: stDeliveryNoteItemAmount,
+                amount_number: iDeliveryNoteItemAmount,
+                unit: stDeliveryNoteItemUnit,
+                gross_weight: stDeliveryNoteItemGrossWeight
+            });
+
+            i=i+1;
+        }
+
+        let stJobResultStatus = "REJECTED";
+
+        //get current job's user
+        let stCurrentJobUserId = "";
+        let stCurrentJobUserName = "";
+        let dtlCurrentJobStartTime = dtl.Now();
+
+        let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
+
+        for(let recData of lstCurrentJobUser)
+        {
+            let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["name"]);
+
+            for(let recUser of lstCurrentUser)
+            {
+                stCurrentJobUserId = recData.user_id;
+                stCurrentJobUserName = recUser.name;
+                dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
+            }
+        }
+
+        //get current job's language
+        let stCurrentJobLanguage = "";
+
+        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({job_id: stDeliveryNoteJobId},["language_type"]);
+
+        for(let recJobLanguage of lstCurrentJobLanguage)
+        {
+            stCurrentJobLanguage = recJobLanguage.language_type;
+        }
+
+        //get job work time
+        let tsJobWorkTime = dtl.Now().Diff(dtlCurrentJobStartTime);
+
+        let iJobWorkTime = tsJobWorkTime.TotalMinutes.Round();
+
+        //create result 
+        db.ai_scan_job_result.Insert({
+            job_id: stDeliveryNoteJobId,
+            delivery_note_id: stDeliveryNoteId,
+            user_id: stCurrentJobUserId,
+            user_name: stCurrentJobUserName,
+            result: stJobResultStatus,
+            job_work_time_minutes: iJobWorkTime
+        });
+
+        // Update the job in ai_scan_jobs table
+        db.ai_scan_jobs.UpdateMany({
+            id : stDeliveryNoteJobId
+        },{
+            status : "DONE"
+        });
+
+        // Delete the job in ai_scan_job_inprogress table
+        db.ai_scan_job_inprogress.DeleteMany({job_id : stDeliveryNoteJobId, user_id : stCurrentJobUserId});
+
+        //Get delivery note other job
+        let stDeliveryNoteOtherJob = "";
+
+        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({delivery_note_id: stDeliveryNoteId},["job_id"]);
+
+        for(let recDNJ of lstDeliveryNoteJobs)
+        {
+            if(recDNJ.job_id != stDeliveryNoteJobId)
+            {
+                stDeliveryNoteOtherJob = recDNJ.job_id;
+            }
+        }
+
+        //Get delivery note other job user
+        let stDeliveryNoteOtherJobUser = "";
+
+        let lstDeliveryNoteOtherJob = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteOtherJob},["current_user"]);
+
+        for(let recJH of lstDeliveryNoteOtherJob)
+        {
+            stDeliveryNoteOtherJobUser = recJH.current_user;
+        }
+
+        //If delivery note other job finished
+        let lstDeliveryNoteOtherJobStatus = db.ai_scan_job_result.ReadFields({job_id: stDeliveryNoteOtherJob},["job_id","result"]);
+
+        if(lstDeliveryNoteOtherJobStatus.Count() != 0)
+        {
+            let stOtherJobResultStatus = "";
+            for(let recData of lstDeliveryNoteOtherJobStatus)
+            {
+                stOtherJobResultStatus = recData.result;
+            }
+
+            if(stJobResultStatus == "APPROVED" && stOtherJobResultStatus == "APPROVED")
+            {
+                Log("Perfect Approved Annotations");
+            }            
+            else
+            {
+                Log("Create QA job");
+                
+                // Create QA job
+                let stQAJobId = guid.Generate().ToStringN();
+
+                db.ai_scan_jobs.Insert({
+                    id: stQAJobId,
+                    type: "QA",
+                    status: "UNCHECKED",
+                    language_type: stCurrentJobLanguage,
+                    current_user: null,
+                    create_date: dtl.Now().DtlToDtdb(),
+                    delay_time: null,
+                    job_id_2: stCurrentJobUserId,
+                    job_id_3: stDeliveryNoteOtherJob                    
+                });
+
+                // Create QA delivery notes data for QA job
+                let lstDefaultDeliveryNoteDatas = db.ai_scan_delivery_note_def.Read({delivery_note_id : stDeliveryNoteId});
+
+                for(let recData of lstDefaultDeliveryNoteDatas)
+                {
+                    // Create delivery_note for QA job
+                    db.ai_scan_delivery_note_job.Insert({
+                        delivery_note_id: stDeliveryNoteId,
+                        job_id: stQAJobId,
+                        status: recData.status,
+                        avg_score_must_have: recData.avg_score_must_have,
+                        avg_score_overall: recData.avg_score_overall,
+                        customer_address: recData.customer_address,
+                        customer_name: recData.customer_name,
+                        delivery_address: recData.delivery_address,
+                        delivery_recipient_name: recData.delivery_recipient_name,
+                        issue_date: recData.issue_date,
+                        dtl_issue_date: recData.dtl_issue_date,
+                        order_number: recData.order_number,
+                        supplier_address: recData.supplier_address,
+                        supplier_name: recData.supplier_name,
+                        supplier_tax_number: recData.supplier_tax_number,
+                        supplier_warehouse: recData.supplier_warehouse,
+                        supplier_id: recData.supplier_id,
+                        weight_gross: recData.weight_gross,
+                        fileref_pdf: recData.fileref_pdf
+                    });
+                }
+
+                // Create QA delivery notes data for QA job
+                let lstDefaultDeliveryNoteItemsDatas = db.ai_scan_delivery_note_item_def.Read({delivery_note_id : stDeliveryNoteId});
+
+                let i = 0;
+                for(let recData of lstDefaultDeliveryNoteItemsDatas)
+                {
+                    // Create delivery_note for QA job
+                    db.ai_scan_delivery_note_item_job.Insert({
+                        delivery_note_id: stDeliveryNoteId,
+                        job_id: stQAJobId,
+                        row_counter: i,
+                        item_name: recData.item_name,
+                        manufacturer_item_number: recData.manufacturer_item_number,
+                        tax_number: recData.tax_number,
+                        amount: recData.amount,
+                        amount_number: recData.amount_number,
+                        unit: recData.unit,
+                        gross_weight: recData.gross_weight
+                    });
+
+                    i=i+1;
+                }
+
+                // Create jobs history for QA job
+                db.ai_scan_jobs_history.Insert({
+                    id: stQAJobId,
+                    users: null
+                });
+            }
+        }
+    }
 }

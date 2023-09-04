@@ -1,18 +1,51 @@
 <form id='ai_scan_qa_job' platforms='web' dashboard='false' menuName='QA_Job' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
     <declarations>
         <let id='stSelectedQAJobId' shape='scalar' access='private' value='{SELECT params.QAJobId}'/>
-        <let id='stSelectedQAJobDeliveryId' shape='scalar' access='private' value='{SELECT DNJ.id FROM ai_scan_delivery_note_job DNJ WHERE DNJ.job_id = stSelectedQAJobId}'/>
-        <let id='stSelectedQAJobDeliveryNoteId' shape='scalar' access='private' value='{SELECT DNJ.delivery_note_id FROM ai_scan_delivery_note_job DNJ WHERE DNJ.job_id = stSelectedQAJobId}'/>
-        <let id='stSelectedQAJobSupplierId' shape='scalar' access='private' value='{SELECT DNJ.supplier_id FROM ai_scan_delivery_note_job DNJ WHERE DNJ.job_id = stSelectedQAJobId}'/>
-        <let id='stSelectedQAJobSupplierPdfFileref' shape='scalar' access='private' value='{SELECT DNJ.fileref_pdf FROM ai_scan_delivery_note_job DNJ WHERE DNJ.job_id = stSelectedQAJobId}'/>
+        <let id='ltblSelectedQAJobDeliveryNoteData' shape='table' access='private' 
+            value='{SELECT 
+                        DNJ.delivery_note_id,
+                        DNJ.job_id,
+                        DNJ.customer_address,
+                        DNJ.customer_name,
+                        DNJ.delivery_address,
+                        DNJ.delivery_recipient_name,
+                        DNJ.issue_date,
+                        DNJ.order_number,
+                        DNJ.supplier_address,
+                        DNJ.supplier_name,
+                        DNJ.supplier_tax_number,
+                        DNJ.supplier_warehouse,
+                        DNJ.supplier_id,
+                        DNJ.weight_gross,
+                        DNJ.fileref_pdf
+                    FROM
+                        ai_scan_delivery_note_job DNJ
+                    WHERE
+                        DNJ.job_id = stSelectedQAJobId
+                        }'
+        />
+        <let id='stSelectedQAJobDeliveryNoteId' shape='scalar' access='private' value='{SELECT SQAJDND.delivery_note_id FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobCustomerAddress' shape='scalar' access='private' value='{SELECT SQAJDND.customer_address FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobCustomerName' shape='scalar' access='private' value='{SELECT SQAJDND.customer_name FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobDeliveryAddress' shape='scalar' access='private' value='{SELECT SQAJDND.delivery_address FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobDeliveryRecipientName' shape='scalar' access='private' value='{SELECT SQAJDND.delivery_recipient_name FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobIssueDate' shape='scalar' access='private' value='{SELECT SQAJDND.issue_date FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobOrderNumber' shape='scalar' access='private' value='{SELECT SQAJDND.order_number FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobSupplierAddress' shape='scalar' access='private' value='{SELECT SQAJDND.supplier_address FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobSupplierName' shape='scalar' access='private' value='{SELECT SQAJDND.supplier_name FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobSupplierTaxNumber' shape='scalar' access='private' value='{SELECT SQAJDND.supplier_tax_number FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobSupplierWarehouse' shape='scalar' access='private' value='{SELECT SQAJDND.supplier_warehouse FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobSupplierId' shape='scalar' access='private' value='{SELECT SQAJDND.supplier_id FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobWeightGross' shape='scalar' access='private' value='{SELECT SQAJDND.weight_gross FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+        <let id='stSelectedQAJobSupplierPdfFileref' shape='scalar' access='private' value='{SELECT SQAJDND.fileref_pdf FROM ltblSelectedQAJobDeliveryNoteData SQAJDND}'/>
+
         <let id='ltblSelectedQAJobAnotJobs' shape='table' access='private' 
             value='{SELECT 
                         DNJ.job_id
                     FROM
                         ai_scan_delivery_note_job DNJ
                     WHERE
-                        DNJ.id = stSelectedQAJobDeliveryId
-                        AND DNJ.delivery_note_id = stSelectedQAJobDeliveryNoteId
+                        DNJ.delivery_note_id = stSelectedQAJobDeliveryNoteId
                         AND DNJ.job_id != stSelectedQAJobId
                         }'
         />
@@ -22,6 +55,7 @@
         <let id='ltblSelectedQAJobAgentAResult' shape='table' access='private' 
 			value='{SELECT
                         JR.result,
+                        JR.user_name,
                         DNJ.customer_address,
                         DNJ.customer_name,
                         DNJ.delivery_address,
@@ -36,8 +70,6 @@
                         DNJ.weight_gross
 					FROM
                         ai_scan_job_result JR
-                    LEFT JOIN 
-                        ai_scan_jobs J ON J.id = JR.job_id
                     LEFT JOIN 
                         ai_scan_delivery_note_job DNJ ON DNJ.job_id = JR.job_id
 					WHERE
@@ -45,9 +77,49 @@
                     }'
 		/>
         <let id='stSelectedQAJobAnotJobsAgentAResultStatus' shape='scalar' access='private' value='{SELECT SQAJAAR.result FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAUserName' shape='scalar' access='private' value='{SELECT SQAJAAR.user_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>        
+        <let id='stSelectedQAJobAnotJobsAgentACustomerAddress' shape='scalar' access='private' value='{SELECT SQAJAAR.customer_address FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentACustomerName' shape='scalar' access='private' value='{SELECT SQAJAAR.customer_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentADeliveryAddress' shape='scalar' access='private' value='{SELECT SQAJAAR.delivery_address FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentADeliveryRecipientName' shape='scalar' access='private' value='{SELECT SQAJAAR.delivery_recipient_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAIssueDate' shape='scalar' access='private' value='{SELECT SQAJAAR.issue_date FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAOrderNumber' shape='scalar' access='private' value='{SELECT SQAJAAR.order_number FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierAddress' shape='scalar' access='private' value='{SELECT SQAJAAR.supplier_address FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierName' shape='scalar' access='private' value='{SELECT SQAJAAR.supplier_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierTaxNumber' shape='scalar' access='private' value='{SELECT SQAJAAR.supplier_tax_number FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierWarehouse' shape='scalar' access='private' value='{SELECT SQAJAAR.supplier_warehouse FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierId' shape='scalar' access='private' value='{SELECT SQAJAAR.supplier_id FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAWeightGross' shape='scalar' access='private' value='{SELECT SQAJAAR.weight_gross FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        
+        <let id='ltblSelectedQAJobAgentAResultItemTable' shape='table' access='private' 
+			value='{SELECT 
+                        DNIJA.item_name,
+                        DNIJA.manufacturer_item_number,
+                        DNIJA.tax_number,
+                        DNIJA.amount_number,
+                        DNIJA.unit,
+                        DNIJA.gross_weight,
+                        CASE WHEN DNIJA.item_name = DNIJQA.item_name AND DNIJA.item_name = DNIJB.item_name THEN true ELSE false END item_name_equals,  
+                        CASE WHEN DNIJA.manufacturer_item_number = DNIJQA.manufacturer_item_number AND DNIJA.manufacturer_item_number = DNIJB.manufacturer_item_number THEN true ELSE false END manufacturer_item_number_equals,
+                        CASE WHEN DNIJA.tax_number = DNIJQA.tax_number AND DNIJA.tax_number = DNIJB.tax_number THEN true ELSE false END tax_number_equals,
+                        CASE WHEN DNIJA.amount_number = DNIJQA.amount_number AND DNIJA.amount_number = DNIJB.amount_number THEN true ELSE false END amount_number_equals,
+                        CASE WHEN DNIJA.unit = DNIJQA.unit AND DNIJA.unit = DNIJB.unit THEN true ELSE false END unit_equals,
+                        CASE WHEN DNIJA.gross_weight = DNIJQA.gross_weight AND DNIJA.gross_weight = DNIJB.gross_weight THEN true ELSE false END gross_weight_equals
+                    FROM 
+                        ai_scan_delivery_note_item_job DNIJA
+                    LEFT JOIN
+                        ai_scan_delivery_note_item_job DNIJB ON DNIJB.delivery_note_id = DNIJA.delivery_note_id AND DNIJB.job_id = stSelectedQAJobAnotJobsAgentB AND DNIJB.row_counter = DNIJA.row_counter
+                    LEFT JOIN
+                        ai_scan_delivery_note_item_job DNIJQA ON DNIJQA.delivery_note_id = DNIJA.delivery_note_id AND DNIJQA.job_id = stSelectedQAJobId AND DNIJQA.row_counter = DNIJA.row_counter
+                    WHERE
+                        DNIJA.job_id = stSelectedQAJobAnotJobsAgentA
+                    }'
+		/>
+
         <let id='ltblSelectedQAJobAgentBResult' shape='table' access='private' 
 			value='{SELECT
                         JR.result,
+                        JR.user_name,
                         DNJ.customer_address,
                         DNJ.customer_name,
                         DNJ.delivery_address,
@@ -63,39 +135,171 @@
 					FROM
                         ai_scan_job_result JR
                     LEFT JOIN 
-                        ai_scan_jobs J ON J.id = JR.job_id
-                    LEFT JOIN 
                         ai_scan_delivery_note_job DNJ ON DNJ.job_id = JR.job_id
 					WHERE
                         JR.job_id = stSelectedQAJobAnotJobsAgentB
                     }'
 		/>
         <let id='stSelectedQAJobAnotJobsAgentBResultStatus' shape='scalar' access='private' value='{SELECT SQAJABR.result FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBUserName' shape='scalar' access='private' value='{SELECT SQAJABR.user_name FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>  
+        <let id='stSelectedQAJobAnotJobsAgentBCustomerAddress' shape='scalar' access='private' value='{SELECT SQAJABR.customer_address FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBCustomerName' shape='scalar' access='private' value='{SELECT SQAJABR.customer_name FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBDeliveryAddress' shape='scalar' access='private' value='{SELECT SQAJABR.delivery_address FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBDeliveryRecipientName' shape='scalar' access='private' value='{SELECT SQAJABR.delivery_recipient_name FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBIssueDate' shape='scalar' access='private' value='{SELECT SQAJABR.issue_date FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBOrderNumber' shape='scalar' access='private' value='{SELECT SQAJABR.order_number FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierAddress' shape='scalar' access='private' value='{SELECT SQAJABR.supplier_address FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierName' shape='scalar' access='private' value='{SELECT SQAJABR.supplier_name FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierTaxNumber' shape='scalar' access='private' value='{SELECT SQAJABR.supplier_tax_number FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierWarehouse' shape='scalar' access='private' value='{SELECT SQAJABR.supplier_warehouse FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierId' shape='scalar' access='private' value='{SELECT SQAJABR.supplier_id FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBWeightGross' shape='scalar' access='private' value='{SELECT SQAJABR.weight_gross FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+
+        <let id='ltblSelectedQAJobAgentBResultItemTable' shape='table' access='private' 
+			value='{SELECT 
+                        DNIJB.item_name,
+                        DNIJB.manufacturer_item_number,
+                        DNIJB.tax_number,
+                        DNIJB.amount_number,
+                        DNIJB.unit,
+                        DNIJB.gross_weight,
+                        CASE WHEN DNIJB.item_name = DNIJQA.item_name AND DNIJB.item_name = DNIJA.item_name THEN true ELSE false END item_name_equals,  
+                        CASE WHEN DNIJB.manufacturer_item_number = DNIJQA.manufacturer_item_number AND DNIJB.manufacturer_item_number = DNIJA.manufacturer_item_number THEN true ELSE false END manufacturer_item_number_equals,
+                        CASE WHEN DNIJB.tax_number = DNIJQA.tax_number AND DNIJB.tax_number = DNIJA.tax_number THEN true ELSE false END tax_number_equals,
+                        CASE WHEN DNIJB.amount_number = DNIJQA.amount_number AND DNIJB.amount_number = DNIJA.amount_number THEN true ELSE false END amount_number_equals,
+                        CASE WHEN DNIJB.unit = DNIJQA.unit AND DNIJB.unit = DNIJA.unit THEN true ELSE false END unit_equals,
+                        CASE WHEN DNIJB.gross_weight = DNIJQA.gross_weight AND DNIJB.gross_weight = DNIJA.gross_weight THEN true ELSE false END gross_weight_equals
+                    FROM 
+                        ai_scan_delivery_note_item_job DNIJB
+                    LEFT JOIN
+                        ai_scan_delivery_note_item_job DNIJA ON DNIJA.delivery_note_id = DNIJB.delivery_note_id AND DNIJA.job_id = stSelectedQAJobAnotJobsAgentA AND DNIJA.row_counter = DNIJB.row_counter
+                    LEFT JOIN
+                        ai_scan_delivery_note_item_job DNIJQA ON DNIJQA.delivery_note_id = DNIJB.delivery_note_id AND DNIJQA.job_id = stSelectedQAJobId AND DNIJQA.row_counter = DNIJB.row_counter
+                    WHERE
+                        DNIJB.job_id = stSelectedQAJobAnotJobsAgentB
+                    }'
+		/>
+
+        <let id='iErrorCount' shape='scalar' 
+            value='{
+                    SUM(
+                            iCustomerAddressErrorCount +
+                            iCustomerNameErrorCount +
+                            iDeliveryAddressErrorCount +
+                            iDeliveryRecipientNameErrorCount +
+                            iIssueDateErrorCount +
+                            iOrderNumberErrorCount +
+                            iSupplierAddressErrorCount +
+                            iSupplierNameErrorCount +
+                            iSupplierTaxNumberErrorCount +
+                            iSupplierWarehouseErrorCount +
+                            iSupplierIdErrorCount +
+                            iWeightGrossErrorCount
+                        )
+                    }'
+        />
+
+        <let id='iCustomerAddressErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentACustomerAddress = true OR bSignForEditAgentBCustomerAddress = true THEN 2 WHEN bSignForAcceptAgentACustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentACustomerAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentACustomerAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBCustomerAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBCustomerAddress' shape='scalar' value='{false}'/>
+
+        <let id='iCustomerNameErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentACustomerName = true OR bSignForEditAgentBCustomerName = true THEN 2 WHEN bSignForAcceptAgentACustomerName = true OR bSignForAcceptAgentBCustomerName = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentACustomerName' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentACustomerName' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBCustomerName' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBCustomerName' shape='scalar' value='{false}'/>
+
+        <let id='iDeliveryAddressErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentADeliveryAddress = true OR bSignForEditAgentBDeliveryAddress = true THEN 2 WHEN bSignForAcceptAgentADeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentADeliveryAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentADeliveryAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBDeliveryAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBDeliveryAddress' shape='scalar' value='{false}'/>
+
+        <let id='iDeliveryRecipientNameErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentADeliveryRecipientName = true OR bSignForEditAgentBDeliveryRecipientName = true THEN 2 WHEN bSignForAcceptAgentADeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentADeliveryRecipientName' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentADeliveryRecipientName' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBDeliveryRecipientName' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBDeliveryRecipientName' shape='scalar' value='{false}'/>
+
+        <let id='iIssueDateErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentAIssueDate = true OR bSignForEditAgentBIssueDate = true THEN 2 WHEN bSignForAcceptAgentAIssueDate = true OR bSignForAcceptAgentBIssueDate = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentAIssueDate' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentAIssueDate' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBIssueDate' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBIssueDate' shape='scalar' value='{false}'/>
+
+        <let id='iOrderNumberErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentAOrderNumber = true OR bSignForEditAgentBOrderNumber = true THEN 2 WHEN bSignForAcceptAgentAOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentAOrderNumber' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentAOrderNumber' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBOrderNumber' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBOrderNumber' shape='scalar' value='{false}'/>
+
+        <let id='iSupplierAddressErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentASupplierAddress = true OR bSignForEditAgentBSupplierAddress = true THEN 2 WHEN bSignForAcceptAgentASupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentASupplierAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentASupplierAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBSupplierAddress' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBSupplierAddress' shape='scalar' value='{false}'/>
+
+        <let id='iSupplierNameErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentASupplierName = true OR bSignForEditAgentBSupplierName = true THEN 2 WHEN bSignForAcceptAgentASupplierName = true OR bSignForAcceptAgentBSupplierName = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentASupplierName' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentASupplierName' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBSupplierName' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBSupplierName' shape='scalar' value='{false}'/>
+
+        <let id='iSupplierTaxNumberErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentASupplierTaxNumber = true OR bSignForEditAgentBSupplierTaxNumber = true THEN 2 WHEN bSignForAcceptAgentASupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentASupplierTaxNumber' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentASupplierTaxNumber' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBSupplierTaxNumber' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBSupplierTaxNumber' shape='scalar' value='{false}'/>
+
+        <let id='iSupplierWarehouseErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentASupplierWarehouse = true OR bSignForEditAgentBSupplierWarehouse = true THEN 2 WHEN bSignForAcceptAgentASupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentASupplierWarehouse' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentASupplierWarehouse' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBSupplierWarehouse' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBSupplierWarehouse' shape='scalar' value='{false}'/>
+
+        <let id='iSupplierIdErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentASupplierId = true OR bSignForEditAgentBSupplierId = true THEN 2 WHEN bSignForAcceptAgentASupplierId = true OR bSignForAcceptAgentBSupplierId = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentASupplierId' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentASupplierId' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBSupplierId' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBSupplierId' shape='scalar' value='{false}'/>
+
+        <let id='iWeightGrossErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentAWeightGross = true OR bSignForEditAgentBWeightGross = true THEN 2 WHEN bSignForAcceptAgentAWeightGross = true OR bSignForAcceptAgentBWeightGross = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentAWeightGross' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentAWeightGross' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBWeightGross' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBWeightGross' shape='scalar' value='{false}'/>
+
+        <let id='bAddNewItemAgentA' shape='scalar' value='{false}'/>
+        <let id='bAddNewItemAgentB' shape='scalar' value='{false}'/>
+
+        <let id='stEditAgentAItemName' shape='scalar' value='{SELECT GROUP_CONCAT(TOSTRING(ITAA.abtnEditAgentAItemName.bSignForEditAgentAItemName)) FROM rtpItemTableAgentA.rows ITAA}'/>
     </declarations>
     <header></header>
     <params>
 		<param id='QAJobId'/>	
 	</params>
     <textview id='tvTitle' text='{CASE WHEN stSelectedQAJobSupplierId = "" OR stSelectedQAJobSupplierId = null THEN "Delivery note number not available" ELSE stSelectedQAJobSupplierId END }' style='{styles.sylTvQATitle}' testId='tvTitle'/>
-    <textview id='tvErrorsCounter' text='{"Total corrections: Teszt"}' style='{styles.sylTvQAErrorsCounter}' testId='tvErrorsCounter'/>
+    <textview id='tvErrorsCounter' text='{"Total corrections: " || TOSTRING(iErrorCount)}' style='{styles.sylTvQAErrorsCounter}' testId='tvErrorsCounter'/>
     <hbox style='{styles.sylQAMainHeaderAndButtonHbox}'>
         <vbox style='{styles.sylQAMainHeaderAndButtonHboxVbox}'>
             <block>
                 <hbox style='{styles.sylQAMainHeaderHbox}'>
                     <textview id='tvEmpty' text='{""}' testId='tvEmpty'/>
-                    <textview id='tvAgentA' text='{CASE WHEN stSelectedQAJobAnotJobsAgentAResultStatus = "REJECTED" THEN "REJECTED AGENT A" ELSE "AGENT A" END}' testId='tvAgentA'/>
-                    <textview id='tvAgentB' text='{CASE WHEN stSelectedQAJobAnotJobsAgentBResultStatus = "REJECTED" THEN "REJECTED AGENT B" ELSE "AGENT B" END}' testId='tvAgentB'/>
+                    <textview id='tvAgentA' text='{CASE WHEN stSelectedQAJobAnotJobsAgentAResultStatus = "REJECTED" THEN "Rejected by " || stSelectedQAJobAnotJobsAgentAUserName ELSE stSelectedQAJobAnotJobsAgentAUserName END}' style='{styles.sylTvQAMainHeaderHbox}' testId='tvAgentA'/>
+                    <textview id='tvAgentB' text='{CASE WHEN stSelectedQAJobAnotJobsAgentBResultStatus = "REJECTED" THEN "Rejected by " || stSelectedQAJobAnotJobsAgentBUserName ELSE stSelectedQAJobAnotJobsAgentBUserName END}' style='{styles.sylTvQAMainHeaderHbox}' testId='tvAgentB'/>
                 </hbox>
             </block>
         </vbox>
         <vbox style='{styles.sylQAMainHeaderAndButtonHboxVbox}'>
             <block>
                 <hbox style='{styles.sylQAMainButtonHbox}'>
-                    <textview id='tvErrorsNumber2222' text='{"1"}' testId='tvErrorsNumber'/>
-                    <textview id='tvErrorsNumber3333' text='{"2"}' testId='tvErrorsNumber'/>
-                    <textview id='tvErrorsNumber4444' text='{"3"}' testId='tvErrorsNumber'/>
-                    <textview id='tvErrorsNumber5555' text='{"4"}' testId='tvErrorsNumber'/>
-                    <textview id='tvErrorsNumber6666' text='{""}' testId='tvErrorsNumber'/>
+                    <submitbutton id='sbtnBadPhoto' text='Bad Photo' nextForm='{forms.ai_scan_agent_dashboard}' testId='sbtnBadPhoto'/>
+                    <submitbutton id='sbtnHandwritten' text='Handwritten' nextForm='{forms.ai_scan_agent_dashboard}' testId='sbtnHandwritten'/>
+                    <submitbutton id='sbtnApprove' text='Approve' nextForm='{forms.ai_scan_agent_dashboard}' testId='sbtnApprove'/>
+                    <submitbutton id='sbtnCancel' text='Cancel' nextForm='{forms.ai_scan_agent_dashboard}' testId='sbtnCancel'/>
+                    <submitbutton id='sbtnCancel1Hour' text='Delay with 1 hour' nextForm='{forms.ai_scan_agent_dashboard}' testId='sbtnCancel1Hour'/>
                 </hbox>
             </block>
         </vbox>
@@ -103,65 +307,689 @@
     <hbox style='{styles.sylQAMainDeliveryNoteQAAndPdfAnnotatorHbox}'>
         <vbox style='{styles.sylQAMainDeliveryNoteQAAndPdfAnnotatorVbox}'>
             <block>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvCustomerAddress' text='{"customer_address"}' testId='tvCustomerAddress'/>
-                    <textview id='tvCustomerAddressA' text='{SELECT SQAJAAR.customer_address FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvCustomerAddressA'/>
-                    <textview id='tvCustomerAddressB' text='{SELECT SQAJABR.customer_address FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvCustomerAddressB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvCustomerAddress' text='{"customer_address:"}' style='{styles.sylTvNormalBold}' testId='tvCustomerAddress'/>
+                    
+                    <if cond='{bSignForEditAgentBCustomerAddress != true AND bSignForAcceptAgentBCustomerAddress != true AND bSignForAcceptAgentACustomerAddress = false}'>
+                        <actionbutton id='abtnEditAgentACustomerAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentACustomerAddress = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentACustomerAddress"}'>
+                            <set value='{CASE WHEN bSignForEditAgentACustomerAddress = false THEN true ELSE false END}' target='bSignForEditAgentACustomerAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true}'>
+                        <textview id='tvEditAgentACustomerAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentACustomerAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress)) AND bSignForEditAgentBCustomerAddress != true AND bSignForAcceptAgentBCustomerAddress != true AND bSignForEditAgentACustomerAddress = false}'>
+                        <actionbutton id='abtnAcceptAgentACustomerAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentACustomerAddress = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentACustomerAddress"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentACustomerAddress = false THEN true ELSE false END}' target='bSignForAcceptAgentACustomerAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress)) AND (bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true OR bSignForEditAgentACustomerAddress = true)}'>
+                        <textview id='tvAcceptAgentACustomerAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentACustomerAddressButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentACustomerAddress = true}'>
+                        <textbox id='tbEditCustomerAddressA' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerAddressA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress AND bSignForEditAgentACustomerAddress = false}'>
+                        <textview id='tvCustomerAddressA' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' style='{CASE WHEN bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerAddressA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress)) AND bSignForEditAgentACustomerAddress = false}'>
+                        <textview id='tvCustomerAddressAError' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' style='{CASE WHEN bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerAddressAError'/>
+                    </if>
+                    
+                    <textview id='tvCustomerAddressEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvCustomerAddressEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentACustomerAddress != true AND bSignForAcceptAgentACustomerAddress != true AND bSignForAcceptAgentBCustomerAddress = false}'>
+                        <actionbutton id='abtnEditAgentBCustomerAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBCustomerAddress = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBCustomerAddress"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBCustomerAddress = false THEN true ELSE false END}' target='bSignForEditAgentBCustomerAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true}'>
+                        <textview id='tvEditAgentBCustomerAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBCustomerAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress)) AND bSignForEditAgentACustomerAddress != true AND bSignForAcceptAgentACustomerAddress != true AND bSignForEditAgentBCustomerAddress = false}'>
+                        <actionbutton id='abtnAcceptAgentBCustomerAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBCustomerAddress = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBCustomerAddress"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBCustomerAddress = false THEN true ELSE false END}' target='bSignForAcceptAgentBCustomerAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress)) AND (bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true OR bSignForEditAgentBCustomerAddress = true)}'>
+                        <textview id='tvAcceptAgentBCustomerAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBCustomerAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBCustomerAddress = true}'>
+                        <textbox id='tbEditCustomerAddressB' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerAddressB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress AND bSignForEditAgentBCustomerAddress = false}'>
+                        <textview id='tvCustomerAddressB' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' style='{CASE WHEN bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerAddressB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress = stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress) OR (stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobCustomerAddress AND stSelectedQAJobAnotJobsAgentBCustomerAddress != stSelectedQAJobCustomerAddress)) AND bSignForEditAgentBCustomerAddress = false}'>
+                        <textview id='tvCustomerAddressBError' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' style='{CASE WHEN bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerAddressBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvCustomerName' text='{"customer_name"}' testId='tvCustomerName'/>
-                    <textview id='tvCustomerNameA' text='{SELECT SQAJAAR.customer_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvCustomerNameA'/>
-                    <textview id='tvCustomerNameB' text='{SELECT SQAJABR.customer_name FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvCustomerNameB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvCustomerName' text='{"customer_name:"}' style='{styles.sylTvNormalBold}' testId='tvCustomerName'/>
+                    
+                    <if cond='{bSignForEditAgentBCustomerName != true AND bSignForAcceptAgentBCustomerName != true AND bSignForAcceptAgentACustomerName = false}'>
+                        <actionbutton id='abtnEditAgentACustomerName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentACustomerName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentACustomerName"}'>
+                            <set value='{CASE WHEN bSignForEditAgentACustomerName = false THEN true ELSE false END}' target='bSignForEditAgentACustomerName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true OR bSignForAcceptAgentACustomerName = true}'>
+                        <textview id='tvEditAgentACustomerNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentACustomerNameButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName)) AND bSignForEditAgentBCustomerName != true AND bSignForAcceptAgentBCustomerName != true AND bSignForEditAgentACustomerName = false}'>
+                        <actionbutton id='abtnAcceptAgentACustomerName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentACustomerName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentACustomerName"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentACustomerName = false THEN true ELSE false END}' target='bSignForAcceptAgentACustomerName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName)) AND (bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true OR bSignForEditAgentACustomerName = true)}'>
+                        <textview id='tvAcceptAgentACustomerNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentACustomerNameButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentACustomerName = true}'>
+                        <textbox id='tbEditCustomerNameA' text='{stSelectedQAJobAnotJobsAgentACustomerName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerNameA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName AND bSignForEditAgentACustomerName = false}'>
+                        <textview id='tvCustomerNameA' text='{stSelectedQAJobAnotJobsAgentACustomerName}' style='{CASE WHEN bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerNameA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName)) AND bSignForEditAgentACustomerName = false}'>
+                        <textview id='tvCustomerNameAError' text='{stSelectedQAJobAnotJobsAgentACustomerName}' style='{CASE WHEN bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerNameAError'/>
+                    </if>
+                    
+                    <textview id='tvCustomerNameEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvCustomerNameEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentACustomerName != true AND bSignForAcceptAgentACustomerName != true AND bSignForAcceptAgentBCustomerName = false}'>
+                        <actionbutton id='abtnEditAgentBCustomerName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBCustomerName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBCustomerName"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBCustomerName = false THEN true ELSE false END}' target='bSignForEditAgentBCustomerName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true OR bSignForAcceptAgentBCustomerName = true}'>
+                        <textview id='tvEditAgentBCustomerNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBCustomerNameButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName)) AND bSignForEditAgentACustomerName != true AND bSignForAcceptAgentACustomerName != true AND bSignForEditAgentBCustomerName = false}'>
+                        <actionbutton id='abtnAcceptAgentBCustomerName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBCustomerName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBCustomerName"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBCustomerName = false THEN true ELSE false END}' target='bSignForAcceptAgentBCustomerName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName)) AND (bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true OR bSignForEditAgentBCustomerName = true)}'>
+                        <textview id='tvAcceptAgentBCustomerNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBCustomerNameButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBCustomerName = true}'>
+                        <textbox id='tbEditCustomerNameB' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerNameB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName AND bSignForEditAgentBCustomerName = false}'>
+                        <textview id='tvCustomerNameB' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' style='{CASE WHEN bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerNameB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName = stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName) OR (stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobCustomerName AND stSelectedQAJobAnotJobsAgentBCustomerName != stSelectedQAJobCustomerName)) AND bSignForEditAgentBCustomerName = false}'>
+                        <textview id='tvCustomerNameBError' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' style='{CASE WHEN bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerNameBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvDeliveryAddress' text='{"delivery_address"}' testId='tvDeliveryAddress'/>
-                    <textview id='tvDeliveryAddressA' text='{SELECT SQAJAAR.delivery_address FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvDeliveryAddressA'/>
-                    <textview id='tvDeliveryAddressB' text='{SELECT SQAJABR.delivery_address FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvDeliveryAddressB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvDeliveryAddress' text='{"delivery_address:"}' style='{styles.sylTvNormalBold}' testId='tvDeliveryAddress'/>
+                    
+                    <if cond='{bSignForEditAgentBDeliveryAddress != true AND bSignForAcceptAgentBDeliveryAddress != true AND bSignForAcceptAgentADeliveryAddress = false}'>
+                        <actionbutton id='abtnEditAgentADeliveryAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentADeliveryAddress = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentADeliveryAddress"}'>
+                            <set value='{CASE WHEN bSignForEditAgentADeliveryAddress = false THEN true ELSE false END}' target='bSignForEditAgentADeliveryAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true}'>
+                        <textview id='tvEditAgentADeliveryAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentADeliveryAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress)) AND bSignForEditAgentBDeliveryAddress != true AND bSignForAcceptAgentBDeliveryAddress != true AND bSignForEditAgentADeliveryAddress = false}'>
+                        <actionbutton id='abtnAcceptAgentADeliveryAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentADeliveryAddress = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentADeliveryAddress"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentADeliveryAddress = false THEN true ELSE false END}' target='bSignForAcceptAgentADeliveryAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress)) AND (bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true OR bSignForEditAgentADeliveryAddress = true)}'>
+                        <textview id='tvAcceptAgentADeliveryAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentADeliveryAddressButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentADeliveryAddress = true}'>
+                        <textbox id='tbEditDeliveryAddressA' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryAddressA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress AND bSignForEditAgentADeliveryAddress = false}'>
+                        <textview id='tvDeliveryAddressA' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' style='{CASE WHEN bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryAddressA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress)) AND bSignForEditAgentADeliveryAddress = false}'>
+                        <textview id='tvDeliveryAddressAError' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' style='{CASE WHEN bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryAddressAError'/>
+                    </if>
+                    
+                    <textview id='tvDeliveryAddressEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvDeliveryAddressEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentADeliveryAddress != true AND bSignForAcceptAgentADeliveryAddress != true AND bSignForAcceptAgentBDeliveryAddress = false}'>
+                        <actionbutton id='abtnEditAgentBDeliveryAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBDeliveryAddress = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBDeliveryAddress"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBDeliveryAddress = false THEN true ELSE false END}' target='bSignForEditAgentBDeliveryAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true}'>
+                        <textview id='tvEditAgentBDeliveryAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBDeliveryAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress)) AND bSignForEditAgentADeliveryAddress != true AND bSignForAcceptAgentADeliveryAddress != true AND bSignForEditAgentBDeliveryAddress = false}'>
+                        <actionbutton id='abtnAcceptAgentBDeliveryAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBDeliveryAddress = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBDeliveryAddress"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBDeliveryAddress = false THEN true ELSE false END}' target='bSignForAcceptAgentBDeliveryAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress)) AND (bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true OR bSignForEditAgentBDeliveryAddress = true)}'>
+                        <textview id='tvAcceptAgentBDeliveryAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBDeliveryAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBDeliveryAddress = true}'>
+                        <textbox id='tbEditDeliveryAddressB' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryAddressB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress AND bSignForEditAgentBDeliveryAddress = false}'>
+                        <textview id='tvDeliveryAddressB' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' style='{CASE WHEN bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryAddressB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress = stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress) OR (stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobDeliveryAddress AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != stSelectedQAJobDeliveryAddress)) AND bSignForEditAgentBDeliveryAddress = false}'>
+                        <textview id='tvDeliveryAddressBError' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' style='{CASE WHEN bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryAddressBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvDeliveryRecipientName' text='{"delivery_recipient_name"}' testId='tvDeliveryRecipientName'/>
-                    <textview id='tvDeliveryRecipientNameA' text='{SELECT SQAJAAR.delivery_recipient_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvDeliveryRecipientNameA'/>
-                    <textview id='tvDeliveryRecipientNameB' text='{SELECT SQAJABR.delivery_recipient_name FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvDeliveryRecipientNameB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvDeliveryRecipientName' text='{"delivery_recipientName:"}' style='{styles.sylTvNormalBold}' testId='tvDeliveryRecipientName'/>
+                    
+                    <if cond='{bSignForEditAgentBDeliveryRecipientName != true AND bSignForAcceptAgentBDeliveryRecipientName != true AND bSignForAcceptAgentADeliveryRecipientName = false}'>
+                        <actionbutton id='abtnEditAgentADeliveryRecipientName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentADeliveryRecipientName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentADeliveryRecipientName"}'>
+                            <set value='{CASE WHEN bSignForEditAgentADeliveryRecipientName = false THEN true ELSE false END}' target='bSignForEditAgentADeliveryRecipientName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true}'>
+                        <textview id='tvEditAgentADeliveryRecipientNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentADeliveryRecipientNameButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName)) AND bSignForEditAgentBDeliveryRecipientName != true AND bSignForAcceptAgentBDeliveryRecipientName != true AND bSignForEditAgentADeliveryRecipientName = false}'>
+                        <actionbutton id='abtnAcceptAgentADeliveryRecipientName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentADeliveryRecipientName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentADeliveryRecipientName"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentADeliveryRecipientName = false THEN true ELSE false END}' target='bSignForAcceptAgentADeliveryRecipientName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName)) AND (bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true OR bSignForEditAgentADeliveryRecipientName = true)}'>
+                        <textview id='tvAcceptAgentADeliveryRecipientNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentADeliveryRecipientNameButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentADeliveryRecipientName = true}'>
+                        <textbox id='tbEditDeliveryRecipientNameA' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryRecipientNameA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND bSignForEditAgentADeliveryRecipientName = false}'>
+                        <textview id='tvDeliveryRecipientNameA' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryRecipientNameA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName)) AND bSignForEditAgentADeliveryRecipientName = false}'>
+                        <textview id='tvDeliveryRecipientNameAError' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryRecipientNameAError'/>
+                    </if>
+                    
+                    <textview id='tvDeliveryRecipientNameEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvDeliveryRecipientNameEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentADeliveryRecipientName != true AND bSignForAcceptAgentADeliveryRecipientName != true AND bSignForAcceptAgentBDeliveryRecipientName = false}'>
+                        <actionbutton id='abtnEditAgentBDeliveryRecipientName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBDeliveryRecipientName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBDeliveryRecipientName"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBDeliveryRecipientName = false THEN true ELSE false END}' target='bSignForEditAgentBDeliveryRecipientName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true}'>
+                        <textview id='tvEditAgentBDeliveryRecipientNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBDeliveryRecipientNameButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName)) AND bSignForEditAgentADeliveryRecipientName != true AND bSignForAcceptAgentADeliveryRecipientName != true AND bSignForEditAgentBDeliveryRecipientName = false}'>
+                        <actionbutton id='abtnAcceptAgentBDeliveryRecipientName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBDeliveryRecipientName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBDeliveryRecipientName"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBDeliveryRecipientName = false THEN true ELSE false END}' target='bSignForAcceptAgentBDeliveryRecipientName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName)) AND (bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true OR bSignForEditAgentBDeliveryRecipientName = true)}'>
+                        <textview id='tvAcceptAgentBDeliveryRecipientNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBDeliveryRecipientNameButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBDeliveryRecipientName = true}'>
+                        <textbox id='tbEditDeliveryRecipientNameB' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryRecipientNameB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND bSignForEditAgentBDeliveryRecipientName = false}'>
+                        <textview id='tvDeliveryRecipientNameB' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryRecipientNameB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName = stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName) OR (stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobDeliveryRecipientName AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != stSelectedQAJobDeliveryRecipientName)) AND bSignForEditAgentBDeliveryRecipientName = false}'>
+                        <textview id='tvDeliveryRecipientNameBError' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryRecipientNameBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvIssueDate' text='{"issue_date"}' testId='tvIssueDate'/>
-                    <textview id='tvIssueDateA' text='{SELECT SQAJAAR.issue_date FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvIssueDateA'/>
-                    <textview id='tvIssueDateB' text='{SELECT SQAJABR.issue_date FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvIssueDateB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvIssueDate' text='{"issueDate:"}' style='{styles.sylTvNormalBold}' testId='tvIssueDate'/>
+                    
+                    <if cond='{bSignForEditAgentBIssueDate != true AND bSignForAcceptAgentBIssueDate != true AND bSignForAcceptAgentAIssueDate = false}'>
+                        <actionbutton id='abtnEditAgentAIssueDate' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentAIssueDate = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAIssueDate"}'>
+                            <set value='{CASE WHEN bSignForEditAgentAIssueDate = false THEN true ELSE false END}' target='bSignForEditAgentAIssueDate'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true OR bSignForAcceptAgentAIssueDate = true}'>
+                        <textview id='tvEditAgentAIssueDateButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAIssueDateButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate)) AND bSignForEditAgentBIssueDate != true AND bSignForAcceptAgentBIssueDate != true AND bSignForEditAgentAIssueDate = false}'>
+                        <actionbutton id='abtnAcceptAgentAIssueDate' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentAIssueDate = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAIssueDate"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentAIssueDate = false THEN true ELSE false END}' target='bSignForAcceptAgentAIssueDate'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate)) AND (bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true OR bSignForEditAgentAIssueDate = true)}'>
+                        <textview id='tvAcceptAgentAIssueDateButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentAIssueDateButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentAIssueDate = true}'>
+                        <textbox id='tbEditIssueDateA' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditIssueDateA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate AND bSignForEditAgentAIssueDate = false}'>
+                        <textview id='tvIssueDateA' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' style='{CASE WHEN bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvIssueDateA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate)) AND bSignForEditAgentAIssueDate = false}'>
+                        <textview id='tvIssueDateAError' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' style='{CASE WHEN bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvIssueDateAError'/>
+                    </if>
+                    
+                    <textview id='tvIssueDateEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvIssueDateEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentAIssueDate != true AND bSignForAcceptAgentAIssueDate != true AND bSignForAcceptAgentBIssueDate = false}'>
+                        <actionbutton id='abtnEditAgentBIssueDate' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBIssueDate = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBIssueDate"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBIssueDate = false THEN true ELSE false END}' target='bSignForEditAgentBIssueDate'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true OR bSignForAcceptAgentBIssueDate = true}'>
+                        <textview id='tvEditAgentBIssueDateButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBIssueDateButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate)) AND bSignForEditAgentAIssueDate != true AND bSignForAcceptAgentAIssueDate != true AND bSignForEditAgentBIssueDate = false}'>
+                        <actionbutton id='abtnAcceptAgentBIssueDate' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBIssueDate = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBIssueDate"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBIssueDate = false THEN true ELSE false END}' target='bSignForAcceptAgentBIssueDate'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate)) AND (bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true OR bSignForEditAgentBIssueDate = true)}'>
+                        <textview id='tvAcceptAgentBIssueDateButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBIssueDateButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBIssueDate = true}'>
+                        <textbox id='tbEditIssueDateB' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditIssueDateB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate AND bSignForEditAgentBIssueDate = false}'>
+                        <textview id='tvIssueDateB' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' style='{CASE WHEN bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvIssueDateB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate = stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate) OR (stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobIssueDate AND stSelectedQAJobAnotJobsAgentBIssueDate != stSelectedQAJobIssueDate)) AND bSignForEditAgentBIssueDate = false}'>
+                        <textview id='tvIssueDateBError' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' style='{CASE WHEN bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvIssueDateBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvOrderNumber' text='{"order_number"}' testId='tvOrderNumber'/>
-                    <textview id='tvOrderNumberA' text='{SELECT SQAJAAR.order_number FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvOrderNumberA'/>
-                    <textview id='tvOrderNumberB' text='{SELECT SQAJABR.order_number FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvOrderNumberB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvOrderNumber' text='{"orderNumber:"}' style='{styles.sylTvNormalBold}' testId='tvOrderNumber'/>
+                    
+                    <if cond='{bSignForEditAgentBOrderNumber != true AND bSignForAcceptAgentBOrderNumber != true AND bSignForAcceptAgentAOrderNumber = false}'>
+                        <actionbutton id='abtnEditAgentAOrderNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentAOrderNumber = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAOrderNumber"}'>
+                            <set value='{CASE WHEN bSignForEditAgentAOrderNumber = false THEN true ELSE false END}' target='bSignForEditAgentAOrderNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true}'>
+                        <textview id='tvEditAgentAOrderNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAOrderNumberButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber)) AND bSignForEditAgentBOrderNumber != true AND bSignForAcceptAgentBOrderNumber != true AND bSignForEditAgentAOrderNumber = false}'>
+                        <actionbutton id='abtnAcceptAgentAOrderNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentAOrderNumber = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAOrderNumber"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentAOrderNumber = false THEN true ELSE false END}' target='bSignForAcceptAgentAOrderNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber)) AND (bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true OR bSignForEditAgentAOrderNumber = true)}'>
+                        <textview id='tvAcceptAgentAOrderNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentAOrderNumberButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentAOrderNumber = true}'>
+                        <textbox id='tbEditOrderNumberA' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditOrderNumberA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber AND bSignForEditAgentAOrderNumber = false}'>
+                        <textview id='tvOrderNumberA' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' style='{CASE WHEN bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvOrderNumberA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber)) AND bSignForEditAgentAOrderNumber = false}'>
+                        <textview id='tvOrderNumberAError' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' style='{CASE WHEN bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvOrderNumberAError'/>
+                    </if>
+                    
+                    <textview id='tvOrderNumberEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvOrderNumberEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentAOrderNumber != true AND bSignForAcceptAgentAOrderNumber != true AND bSignForAcceptAgentBOrderNumber = false}'>
+                        <actionbutton id='abtnEditAgentBOrderNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBOrderNumber = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBOrderNumber"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBOrderNumber = false THEN true ELSE false END}' target='bSignForEditAgentBOrderNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true}'>
+                        <textview id='tvEditAgentBOrderNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBOrderNumberButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber)) AND bSignForEditAgentAOrderNumber != true AND bSignForAcceptAgentAOrderNumber != true AND bSignForEditAgentBOrderNumber = false}'>
+                        <actionbutton id='abtnAcceptAgentBOrderNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBOrderNumber = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBOrderNumber"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBOrderNumber = false THEN true ELSE false END}' target='bSignForAcceptAgentBOrderNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber)) AND (bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true OR bSignForEditAgentBOrderNumber = true)}'>
+                        <textview id='tvAcceptAgentBOrderNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBOrderNumberButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBOrderNumber = true}'>
+                        <textbox id='tbEditOrderNumberB' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditOrderNumberB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber AND bSignForEditAgentBOrderNumber = false}'>
+                        <textview id='tvOrderNumberB' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' style='{CASE WHEN bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvOrderNumberB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber = stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber) OR (stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobOrderNumber AND stSelectedQAJobAnotJobsAgentBOrderNumber != stSelectedQAJobOrderNumber)) AND bSignForEditAgentBOrderNumber = false}'>
+                        <textview id='tvOrderNumberBError' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' style='{CASE WHEN bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvOrderNumberBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvSupplierAddress' text='{"supplier_address"}' testId='tvSupplierAddress'/>
-                    <textview id='tvSupplierAddressA' text='{SELECT SQAJAAR.supplier_address FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvSupplierAddressA'/>
-                    <textview id='tvSupplierAddressB' text='{SELECT SQAJABR.supplier_address FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvSupplierAddressB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvSupplierAddress' text='{"supplier_address:"}' style='{styles.sylTvNormalBold}' testId='tvSupplierAddress'/>
+                    
+                    <if cond='{bSignForEditAgentBSupplierAddress != true AND bSignForAcceptAgentBSupplierAddress != true AND bSignForAcceptAgentASupplierAddress = false}'>
+                        <actionbutton id='abtnEditAgentASupplierAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentASupplierAddress = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentASupplierAddress"}'>
+                            <set value='{CASE WHEN bSignForEditAgentASupplierAddress = false THEN true ELSE false END}' target='bSignForEditAgentASupplierAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true}'>
+                        <textview id='tvEditAgentASupplierAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentASupplierAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress)) AND bSignForEditAgentBSupplierAddress != true AND bSignForAcceptAgentBSupplierAddress != true AND bSignForEditAgentASupplierAddress = false}'>
+                        <actionbutton id='abtnAcceptAgentASupplierAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentASupplierAddress = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentASupplierAddress"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentASupplierAddress = false THEN true ELSE false END}' target='bSignForAcceptAgentASupplierAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress)) AND (bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true OR bSignForEditAgentASupplierAddress = true)}'>
+                        <textview id='tvAcceptAgentASupplierAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentASupplierAddressButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentASupplierAddress = true}'>
+                        <textbox id='tbEditSupplierAddressA' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierAddressA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress AND bSignForEditAgentASupplierAddress = false}'>
+                        <textview id='tvSupplierAddressA' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' style='{CASE WHEN bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierAddressA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress)) AND bSignForEditAgentASupplierAddress = false}'>
+                        <textview id='tvSupplierAddressAError' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' style='{CASE WHEN bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierAddressAError'/>
+                    </if>
+                    
+                    <textview id='tvSupplierAddressEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierAddressEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentASupplierAddress != true AND bSignForAcceptAgentASupplierAddress != true AND bSignForAcceptAgentBSupplierAddress = false}'>
+                        <actionbutton id='abtnEditAgentBSupplierAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBSupplierAddress = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBSupplierAddress"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBSupplierAddress = false THEN true ELSE false END}' target='bSignForEditAgentBSupplierAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true}'>
+                        <textview id='tvEditAgentBSupplierAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBSupplierAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress)) AND bSignForEditAgentASupplierAddress != true AND bSignForAcceptAgentASupplierAddress != true AND bSignForEditAgentBSupplierAddress = false}'>
+                        <actionbutton id='abtnAcceptAgentBSupplierAddress' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBSupplierAddress = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBSupplierAddress"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBSupplierAddress = false THEN true ELSE false END}' target='bSignForAcceptAgentBSupplierAddress'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress)) AND (bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true OR bSignForEditAgentBSupplierAddress = true)}'>
+                        <textview id='tvAcceptAgentBSupplierAddressButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBSupplierAddressButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierAddress = true}'>
+                        <textbox id='tbEditSupplierAddressB' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierAddressB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress AND bSignForEditAgentBSupplierAddress = false}'>
+                        <textview id='tvSupplierAddressB' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' style='{CASE WHEN bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierAddressB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress = stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress) OR (stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobSupplierAddress AND stSelectedQAJobAnotJobsAgentBSupplierAddress != stSelectedQAJobSupplierAddress)) AND bSignForEditAgentBSupplierAddress = false}'>
+                        <textview id='tvSupplierAddressBError' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' style='{CASE WHEN bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierAddressBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvSupplierName' text='{"supplier_name"}' testId='tvSupplierName'/>
-                    <textview id='tvSupplierNameA' text='{SELECT SQAJAAR.supplier_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvSupplierNameA'/>
-                    <textview id='tvSupplierNameB' text='{SELECT SQAJABR.supplier_name FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvSupplierNameB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvSupplierName' text='{"supplier_name:"}' style='{styles.sylTvNormalBold}' testId='tvSupplierName'/>
+                    
+                    <if cond='{bSignForEditAgentBSupplierName != true AND bSignForAcceptAgentBSupplierName != true AND bSignForAcceptAgentASupplierName = false}'>
+                        <actionbutton id='abtnEditAgentASupplierName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentASupplierName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentASupplierName"}'>
+                            <set value='{CASE WHEN bSignForEditAgentASupplierName = false THEN true ELSE false END}' target='bSignForEditAgentASupplierName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true OR bSignForAcceptAgentASupplierName = true}'>
+                        <textview id='tvEditAgentASupplierNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentASupplierNameButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName)) AND bSignForEditAgentBSupplierName != true AND bSignForAcceptAgentBSupplierName != true AND bSignForEditAgentASupplierName = false}'>
+                        <actionbutton id='abtnAcceptAgentASupplierName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentASupplierName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentASupplierName"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentASupplierName = false THEN true ELSE false END}' target='bSignForAcceptAgentASupplierName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName)) AND (bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true OR bSignForEditAgentASupplierName = true)}'>
+                        <textview id='tvAcceptAgentASupplierNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentASupplierNameButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentASupplierName = true}'>
+                        <textbox id='tbEditSupplierNameA' text='{stSelectedQAJobAnotJobsAgentASupplierName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierNameA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName AND bSignForEditAgentASupplierName = false}'>
+                        <textview id='tvSupplierNameA' text='{stSelectedQAJobAnotJobsAgentASupplierName}' style='{CASE WHEN bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierNameA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName)) AND bSignForEditAgentASupplierName = false}'>
+                        <textview id='tvSupplierNameAError' text='{stSelectedQAJobAnotJobsAgentASupplierName}' style='{CASE WHEN bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierNameAError'/>
+                    </if>
+                    
+                    <textview id='tvSupplierNameEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierNameEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentASupplierName != true AND bSignForAcceptAgentASupplierName != true AND bSignForAcceptAgentBSupplierName = false}'>
+                        <actionbutton id='abtnEditAgentBSupplierName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBSupplierName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBSupplierName"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBSupplierName = false THEN true ELSE false END}' target='bSignForEditAgentBSupplierName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true OR bSignForAcceptAgentBSupplierName = true}'>
+                        <textview id='tvEditAgentBSupplierNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBSupplierNameButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName)) AND bSignForEditAgentASupplierName != true AND bSignForAcceptAgentASupplierName != true AND bSignForEditAgentBSupplierName = false}'>
+                        <actionbutton id='abtnAcceptAgentBSupplierName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBSupplierName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBSupplierName"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBSupplierName = false THEN true ELSE false END}' target='bSignForAcceptAgentBSupplierName'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName)) AND (bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true OR bSignForEditAgentBSupplierName = true)}'>
+                        <textview id='tvAcceptAgentBSupplierNameButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBSupplierNameButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierName = true}'>
+                        <textbox id='tbEditSupplierNameB' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierNameB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName AND bSignForEditAgentBSupplierName = false}'>
+                        <textview id='tvSupplierNameB' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' style='{CASE WHEN bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierNameB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName = stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName) OR (stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobSupplierName AND stSelectedQAJobAnotJobsAgentBSupplierName != stSelectedQAJobSupplierName)) AND bSignForEditAgentBSupplierName = false}'>
+                        <textview id='tvSupplierNameBError' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' style='{CASE WHEN bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierNameBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvSupplierTaxNumber' text='{"supplier_tax_number"}' testId='tvSupplierTaxNumber'/>
-                    <textview id='tvSupplierTaxNumberA' text='{SELECT SQAJAAR.supplier_tax_number FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvSupplierTaxNumberA'/>
-                    <textview id='tvSupplierTaxNumberB' text='{SELECT SQAJABR.supplier_tax_number FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvSupplierTaxNumberB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvSupplierTaxNumber' text='{"supplier_taxNumber:"}' style='{styles.sylTvNormalBold}' testId='tvSupplierTaxNumber'/>
+                    
+                    <if cond='{bSignForEditAgentBSupplierTaxNumber != true AND bSignForAcceptAgentBSupplierTaxNumber != true AND bSignForAcceptAgentASupplierTaxNumber = false}'>
+                        <actionbutton id='abtnEditAgentASupplierTaxNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentASupplierTaxNumber = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentASupplierTaxNumber"}'>
+                            <set value='{CASE WHEN bSignForEditAgentASupplierTaxNumber = false THEN true ELSE false END}' target='bSignForEditAgentASupplierTaxNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true}'>
+                        <textview id='tvEditAgentASupplierTaxNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentASupplierTaxNumberButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber)) AND bSignForEditAgentBSupplierTaxNumber != true AND bSignForAcceptAgentBSupplierTaxNumber != true AND bSignForEditAgentASupplierTaxNumber = false}'>
+                        <actionbutton id='abtnAcceptAgentASupplierTaxNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentASupplierTaxNumber = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentASupplierTaxNumber"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentASupplierTaxNumber = false THEN true ELSE false END}' target='bSignForAcceptAgentASupplierTaxNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber)) AND (bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true OR bSignForEditAgentASupplierTaxNumber = true)}'>
+                        <textview id='tvAcceptAgentASupplierTaxNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentASupplierTaxNumberButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentASupplierTaxNumber = true}'>
+                        <textbox id='tbEditSupplierTaxNumberA' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierTaxNumberA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND bSignForEditAgentASupplierTaxNumber = false}'>
+                        <textview id='tvSupplierTaxNumberA' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierTaxNumberA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber)) AND bSignForEditAgentASupplierTaxNumber = false}'>
+                        <textview id='tvSupplierTaxNumberAError' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierTaxNumberAError'/>
+                    </if>
+                    
+                    <textview id='tvSupplierTaxNumberEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierTaxNumberEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentASupplierTaxNumber != true AND bSignForAcceptAgentASupplierTaxNumber != true AND bSignForAcceptAgentBSupplierTaxNumber = false}'>
+                        <actionbutton id='abtnEditAgentBSupplierTaxNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBSupplierTaxNumber = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBSupplierTaxNumber"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBSupplierTaxNumber = false THEN true ELSE false END}' target='bSignForEditAgentBSupplierTaxNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true}'>
+                        <textview id='tvEditAgentBSupplierTaxNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBSupplierTaxNumberButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber)) AND bSignForEditAgentASupplierTaxNumber != true AND bSignForAcceptAgentASupplierTaxNumber != true AND bSignForEditAgentBSupplierTaxNumber = false}'>
+                        <actionbutton id='abtnAcceptAgentBSupplierTaxNumber' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBSupplierTaxNumber = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBSupplierTaxNumber"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBSupplierTaxNumber = false THEN true ELSE false END}' target='bSignForAcceptAgentBSupplierTaxNumber'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber)) AND (bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true OR bSignForEditAgentBSupplierTaxNumber = true)}'>
+                        <textview id='tvAcceptAgentBSupplierTaxNumberButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBSupplierTaxNumberButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierTaxNumber = true}'>
+                        <textbox id='tbEditSupplierTaxNumberB' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierTaxNumberB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND bSignForEditAgentBSupplierTaxNumber = false}'>
+                        <textview id='tvSupplierTaxNumberB' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierTaxNumberB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber = stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber) OR (stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobSupplierTaxNumber AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != stSelectedQAJobSupplierTaxNumber)) AND bSignForEditAgentBSupplierTaxNumber = false}'>
+                        <textview id='tvSupplierTaxNumberBError' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierTaxNumberBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvSupplierWarehouse' text='{"supplier_warehouse"}' testId='tvSupplierWarehouse'/>
-                    <textview id='tvSupplierWarehouseA' text='{SELECT SQAJAAR.supplier_warehouse FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvSupplierWarehouseA'/>
-                    <textview id='tvSupplierWarehouseB' text='{SELECT SQAJABR.supplier_warehouse FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvSupplierWarehouseB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvSupplierWarehouse' text='{"supplier_warehouse:"}' style='{styles.sylTvNormalBold}' testId='tvSupplierWarehouse'/>
+                    
+                    <if cond='{bSignForEditAgentBSupplierWarehouse != true AND bSignForAcceptAgentBSupplierWarehouse != true AND bSignForAcceptAgentASupplierWarehouse = false}'>
+                        <actionbutton id='abtnEditAgentASupplierWarehouse' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentASupplierWarehouse = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentASupplierWarehouse"}'>
+                            <set value='{CASE WHEN bSignForEditAgentASupplierWarehouse = false THEN true ELSE false END}' target='bSignForEditAgentASupplierWarehouse'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true}'>
+                        <textview id='tvEditAgentASupplierWarehouseButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentASupplierWarehouseButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse)) AND bSignForEditAgentBSupplierWarehouse != true AND bSignForAcceptAgentBSupplierWarehouse != true AND bSignForEditAgentASupplierWarehouse = false}'>
+                        <actionbutton id='abtnAcceptAgentASupplierWarehouse' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentASupplierWarehouse = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentASupplierWarehouse"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentASupplierWarehouse = false THEN true ELSE false END}' target='bSignForAcceptAgentASupplierWarehouse'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse)) AND (bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true OR bSignForEditAgentASupplierWarehouse = true)}'>
+                        <textview id='tvAcceptAgentASupplierWarehouseButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentASupplierWarehouseButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentASupplierWarehouse = true}'>
+                        <textbox id='tbEditSupplierWarehouseA' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierWarehouseA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse AND bSignForEditAgentASupplierWarehouse = false}'>
+                        <textview id='tvSupplierWarehouseA' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' style='{CASE WHEN bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierWarehouseA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse)) AND bSignForEditAgentASupplierWarehouse = false}'>
+                        <textview id='tvSupplierWarehouseAError' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' style='{CASE WHEN bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierWarehouseAError'/>
+                    </if>
+                    
+                    <textview id='tvSupplierWarehouseEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierWarehouseEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentASupplierWarehouse != true AND bSignForAcceptAgentASupplierWarehouse != true AND bSignForAcceptAgentBSupplierWarehouse = false}'>
+                        <actionbutton id='abtnEditAgentBSupplierWarehouse' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBSupplierWarehouse = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBSupplierWarehouse"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBSupplierWarehouse = false THEN true ELSE false END}' target='bSignForEditAgentBSupplierWarehouse'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true}'>
+                        <textview id='tvEditAgentBSupplierWarehouseButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBSupplierWarehouseButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse)) AND bSignForEditAgentASupplierWarehouse != true AND bSignForAcceptAgentASupplierWarehouse != true AND bSignForEditAgentBSupplierWarehouse = false}'>
+                        <actionbutton id='abtnAcceptAgentBSupplierWarehouse' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBSupplierWarehouse = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBSupplierWarehouse"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBSupplierWarehouse = false THEN true ELSE false END}' target='bSignForAcceptAgentBSupplierWarehouse'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse)) AND (bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true OR bSignForEditAgentBSupplierWarehouse = true)}'>
+                        <textview id='tvAcceptAgentBSupplierWarehouseButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBSupplierWarehouseButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierWarehouse = true}'>
+                        <textbox id='tbEditSupplierWarehouseB' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierWarehouseB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse AND bSignForEditAgentBSupplierWarehouse = false}'>
+                        <textview id='tvSupplierWarehouseB' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' style='{CASE WHEN bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierWarehouseB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse = stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse) OR (stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobSupplierWarehouse AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != stSelectedQAJobSupplierWarehouse)) AND bSignForEditAgentBSupplierWarehouse = false}'>
+                        <textview id='tvSupplierWarehouseBError' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' style='{CASE WHEN bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierWarehouseBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvSupplierId' text='{"supplier_id"}' testId='tvSupplierId'/>
-                    <textview id='tvSupplierIdA' text='{SELECT SQAJAAR.supplier_id FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvSupplierIdA'/>
-                    <textview id='tvSupplierIdB' text='{SELECT SQAJABR.supplier_id FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvSupplierIdB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvSupplierId' text='{"supplierId:"}' style='{styles.sylTvNormalBold}' testId='tvSupplierId'/>
+                    
+                    <if cond='{bSignForEditAgentBSupplierId != true AND bSignForAcceptAgentBSupplierId != true AND bSignForAcceptAgentASupplierId = false}'>
+                        <actionbutton id='abtnEditAgentASupplierId' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentASupplierId = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentASupplierId"}'>
+                            <set value='{CASE WHEN bSignForEditAgentASupplierId = false THEN true ELSE false END}' target='bSignForEditAgentASupplierId'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true OR bSignForAcceptAgentASupplierId = true}'>
+                        <textview id='tvEditAgentASupplierIdButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentASupplierIdButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId)) AND bSignForEditAgentBSupplierId != true AND bSignForAcceptAgentBSupplierId != true AND bSignForEditAgentASupplierId = false}'>
+                        <actionbutton id='abtnAcceptAgentASupplierId' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentASupplierId = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentASupplierId"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentASupplierId = false THEN true ELSE false END}' target='bSignForAcceptAgentASupplierId'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId)) AND (bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true OR bSignForEditAgentASupplierId = true)}'>
+                        <textview id='tvAcceptAgentASupplierIdButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentASupplierIdButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentASupplierId = true}'>
+                        <textbox id='tbEditSupplierIdA' text='{stSelectedQAJobAnotJobsAgentASupplierId}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierIdA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId AND bSignForEditAgentASupplierId = false}'>
+                        <textview id='tvSupplierIdA' text='{stSelectedQAJobAnotJobsAgentASupplierId}' style='{CASE WHEN bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierIdA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId)) AND bSignForEditAgentASupplierId = false}'>
+                        <textview id='tvSupplierIdAError' text='{stSelectedQAJobAnotJobsAgentASupplierId}' style='{CASE WHEN bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierIdAError'/>
+                    </if>
+                    
+                    <textview id='tvSupplierIdEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierIdEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentASupplierId != true AND bSignForAcceptAgentASupplierId != true AND bSignForAcceptAgentBSupplierId = false}'>
+                        <actionbutton id='abtnEditAgentBSupplierId' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBSupplierId = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBSupplierId"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBSupplierId = false THEN true ELSE false END}' target='bSignForEditAgentBSupplierId'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true OR bSignForAcceptAgentBSupplierId = true}'>
+                        <textview id='tvEditAgentBSupplierIdButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBSupplierIdButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId)) AND bSignForEditAgentASupplierId != true AND bSignForAcceptAgentASupplierId != true AND bSignForEditAgentBSupplierId = false}'>
+                        <actionbutton id='abtnAcceptAgentBSupplierId' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBSupplierId = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBSupplierId"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBSupplierId = false THEN true ELSE false END}' target='bSignForAcceptAgentBSupplierId'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId)) AND (bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true OR bSignForEditAgentBSupplierId = true)}'>
+                        <textview id='tvAcceptAgentBSupplierIdButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBSupplierIdButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBSupplierId = true}'>
+                        <textbox id='tbEditSupplierIdB' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierIdB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId AND bSignForEditAgentBSupplierId = false}'>
+                        <textview id='tvSupplierIdB' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' style='{CASE WHEN bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierIdB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId = stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId) OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobSupplierId AND stSelectedQAJobAnotJobsAgentBSupplierId != stSelectedQAJobSupplierId)) AND bSignForEditAgentBSupplierId = false}'>
+                        <textview id='tvSupplierIdBError' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' style='{CASE WHEN bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierIdBError'/>
+                    </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
-                    <textview id='tvWeightGross' text='{"weight_gross"}' testId='tvWeightGross'/>
-                    <textview id='tvWeightGrossA' text='{SELECT SQAJAAR.weight_gross FROM ltblSelectedQAJobAgentAResult SQAJAAR}' testId='tvWeightGrossA'/>
-                    <textview id='tvWeightGrossB' text='{SELECT SQAJABR.weight_gross FROM ltblSelectedQAJobAgentBResult SQAJABR}' testId='tvWeightGrossB'/>
+                <hbox style='{CASE WHEN stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross THEN styles.sylQAMainDeliveryNoteQAHboxNormal ELSE styles.sylQAMainDeliveryNoteQAHboxDifferent END}'>
+                    <textview id='tvWeightGross' text='{"weight_gross:"}' style='{styles.sylTvNormalBold}' testId='tvWeightGross'/>
+                    
+                    <if cond='{bSignForEditAgentBWeightGross != true AND bSignForAcceptAgentBWeightGross != true AND bSignForAcceptAgentAWeightGross = false}'>
+                        <actionbutton id='abtnEditAgentAWeightGross' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentAWeightGross = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAWeightGross"}'>
+                            <set value='{CASE WHEN bSignForEditAgentAWeightGross = false THEN true ELSE false END}' target='bSignForEditAgentAWeightGross'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true OR bSignForAcceptAgentAWeightGross = true}'>
+                        <textview id='tvEditAgentAWeightGrossButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAWeightGrossButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross)) AND bSignForEditAgentBWeightGross != true AND bSignForAcceptAgentBWeightGross != true AND bSignForEditAgentAWeightGross = false}'>
+                        <actionbutton id='abtnAcceptAgentAWeightGross' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentAWeightGross = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAWeightGross"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentAWeightGross = false THEN true ELSE false END}' target='bSignForAcceptAgentAWeightGross'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross)) AND (bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true OR bSignForEditAgentAWeightGross = true)}'>
+                        <textview id='tvAcceptAgentAWeightGrossButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentAWeightGrossButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentAWeightGross = true}'>
+                        <textbox id='tbEditWeightGrossA' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditWeightGrossA"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross AND bSignForEditAgentAWeightGross = false}'>
+                        <textview id='tvWeightGrossA' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' style='{CASE WHEN bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvWeightGrossA'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross)) AND bSignForEditAgentAWeightGross = false}'>
+                        <textview id='tvWeightGrossAError' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' style='{CASE WHEN bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossAError'/>
+                    </if>
+                    
+                    <textview id='tvWeightGrossEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvWeightGrossEmpty'/>
+                    
+                    <if cond='{bSignForEditAgentAWeightGross != true AND bSignForAcceptAgentAWeightGross != true AND bSignForAcceptAgentBWeightGross = false}'>
+                        <actionbutton id='abtnEditAgentBWeightGross' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBWeightGross = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBWeightGross"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBWeightGross = false THEN true ELSE false END}' target='bSignForEditAgentBWeightGross'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true OR bSignForAcceptAgentBWeightGross = true}'>
+                        <textview id='tvEditAgentBWeightGrossButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBWeightGrossButtonEmpty'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross)) AND bSignForEditAgentAWeightGross != true AND bSignForAcceptAgentAWeightGross != true AND bSignForEditAgentBWeightGross = false}'>
+                        <actionbutton id='abtnAcceptAgentBWeightGross' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBWeightGross = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBWeightGross"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBWeightGross = false THEN true ELSE false END}' target='bSignForAcceptAgentBWeightGross'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross)) AND (bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true OR bSignForEditAgentBWeightGross = true)}'>
+                        <textview id='tvAcceptAgentBWeightGrossButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBWeightGrossButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBWeightGross = true}'>
+                        <textbox id='tbEditWeightGrossB' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditWeightGrossB"}'/>
+                    </if>
+                    <if cond='{stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross AND bSignForEditAgentBWeightGross = false}'>
+                        <textview id='tvWeightGrossB' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvWeightGrossB'/>
+                    </if>
+                    <if cond='{((stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross = stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross) OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobWeightGross AND stSelectedQAJobAnotJobsAgentBWeightGross != stSelectedQAJobWeightGross)) AND bSignForEditAgentBWeightGross = false}'>
+                        <textview id='tvWeightGrossBError' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossBError'/>
+                    </if>
                 </hbox>
             </block>
         </vbox>
@@ -177,4 +1005,159 @@
             />
         </vbox>
     </hbox>
+    <!-- Separator -->
+    <textview id='tvEmptySeparator' text='{""}' style='{styles.sylTvEmptySeparator}' testId='tvEmptySeparator'/>
+
+    <textview id='tvItemTableAgentA' text='{CASE WHEN stSelectedQAJobAnotJobsAgentAResultStatus = "REJECTED" THEN "Rejected by " || stSelectedQAJobAnotJobsAgentAUserName ELSE stSelectedQAJobAnotJobsAgentAUserName END}' style='{styles.sylTvQAItemTableAgentName}' testId='tvItemTableAgentA'/>
+
+    <hbox style='{styles.sylAgentItemTableHbox}'>
+        <textview id='tvAgentAItemTableHeaderItemName' text='itemName' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderItemName'/>
+        <textview id='tvAgentAItemTableHeaderManufacturerItemNumber' text='manufacturerItemNumber' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderManufacturerItemNumber'/>
+        <textview id='tvAgentAItemTableHeaderTaxNumber' text='taxNumber' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderTaxNumber'/>
+        <textview id='tvAgentAItemTableHeaderAmount' text='amount' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderAmount'/>
+        <textview id='tvAgentAItemTableHeaderUnit' text='unit' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderUnit'/>
+        <textview id='tvAgentAItemTableHeaderGrossWeight' text='grossWeight' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderGrossWeight'/>
+        <textview id='tvAgentAItemTableHeaderEmpty' text='' testId='tvAgentAItemTableHeaderEmpty'/>
+    </hbox>
+    <repeater id='rtpItemTableAgentA' record='rA' 
+        recordset='{SELECT
+                        SQAJAARIT.item_name,
+                        SQAJAARIT.manufacturer_item_number,
+                        SQAJAARIT.tax_number,
+                        SQAJAARIT.amount_number,
+                        SQAJAARIT.unit,
+                        SQAJAARIT.gross_weight,
+                        SQAJAARIT.item_name_equals,
+                        SQAJAARIT.manufacturer_item_number_equals,
+                        SQAJAARIT.tax_number_equals,
+                        SQAJAARIT.amount_number_equals,
+                        SQAJAARIT.unit_equals,
+                        SQAJAARIT.gross_weight_equals
+                    FROM 
+                        ltblSelectedQAJobAgentAResultItemTable SQAJAARIT}'
+    >
+        <hbox style='{styles.sylAgentItemTableHbox}'>
+            <actionbutton id='abtnEditAgentAItemName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentAItemName = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'>
+                <declarations>
+                    <let id='bSignForEditAgentAItemName' shape='scalar' access='private' value='{false}'/>
+                </declarations>
+                <set value='{CASE WHEN bSignForEditAgentAItemName = false THEN true ELSE false END}' target='bSignForEditAgentAItemName'/>
+            </actionbutton>
+            <actionbutton id='abtnAcceptAgentAItemName' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentAItemName = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'>
+                <declarations>
+                    <let id='bSignForAcceptAgentAItemName' shape='scalar' access='private' value='{false}'/>
+                </declarations>
+                <set value='{CASE WHEN bSignForAcceptAgentAItemName = false THEN true ELSE false END}' target='bSignForAcceptAgentAItemName'/>
+            </actionbutton>
+            <textview id='tvAgentAItemName' text='{rA.item_name}' style='{CASE WHEN rA.item_name_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
+            <textview id='tvAgentAManufacturerItemNumber' text='{rA.manufacturer_item_number}' style='{CASE WHEN rA.manufacturer_item_number_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+            <textview id='tvAgentATaxNumber' text='{rA.tax_number}'  style='{CASE WHEN rA.tax_number_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+            <textview id='tvAgentAAmountNumber' text='{TOSTRING(rA.amount_number)}'  style='{CASE WHEN rA.amount_number_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAAmountNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+            <textview id='tvAgentAUnit' text='{rA.unit}'  style='{CASE WHEN rA.unit_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
+            <textview id='tvAgentAGrossWeight' text='{rA.gross_weight}'  style='{CASE WHEN rA.gross_weight_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
+            <removebutton text='{"Remove"}'/>
+        </hbox>
+    </repeater>
+
+    <repeater id='rtpItemTableAgentANewItem' record='r' 
+        recordset='{SELECT
+                        "" item_name,
+                        "" manufacturer_item_number,
+                        "" tax_number,
+                        "" amount_number,
+                        "" unit,
+                        "" gross_weight
+                    WHERE
+                        false
+                    }'
+    >
+        <hbox style='{styles.sylAgentItemTableHbox}'>
+            <textbox id='tvAgentANewItemName' text='{r.item_name}' />
+            <textbox id='tvAgentANewManufacturerItemNumber' text='{r.manufacturer_item_number}' />
+            <textbox id='tvAgentANewTaxNumber' text='{r.tax_number}' />
+            <textbox id='tvAgentANewAmountNumber' text='{TOSTRING(r.amount_number)}' />
+            <textbox id='tvAgentANewUnit' text='{r.unit}' />
+            <textbox id='tvAgentANewGrossWeight' text='{r.gross_weight}' />
+            <removebutton text='{"Remove"}'/>
+        </hbox>
+    </repeater>
+
+    <combinedbutton id='cmbtnAddNewItemAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' testId='{"cmbtnAddNewItemAgentA"}'>
+        <actionbutton>
+            <set target='bAddNewItemAgentA' value='{true}'/>
+        </actionbutton>
+        <addbutton table='rtpItemTableAgentANewItem' records='{SELECT "" item_name, "" manufacturer_item_number, "" tax_number, "" amount_number, "" unit, "" gross_weight}'/>
+    </combinedbutton>
+
+    <!-- Separator -->
+    <textview id='tvEmptySeparator2' text='{""}' style='{styles.sylTvEmptyTablesSeparator}' testId='tvEmptySeparator2'/>
+
+    <textview id='tvItemTableAgentB' text='{CASE WHEN stSelectedQAJobAnotJobsAgentBResultStatus = "REJECTED" THEN "Rejected by " || stSelectedQAJobAnotJobsAgentBUserName ELSE stSelectedQAJobAnotJobsAgentBUserName END}' style='{styles.sylTvQAItemTableAgentName}' testId='tvItemTableAgentB'/>
+
+    <hbox style='{styles.sylAgentItemTableHbox}'>
+        <textview id='tvAgentBItemTableHeaderItemName' text='itemName' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderItemName'/>
+        <textview id='tvAgentBItemTableHeaderManufacturerItemNumber' text='manufacturerItemNumber' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderManufacturerItemNumber'/>
+        <textview id='tvAgentBItemTableHeaderTaxNumber' text='taxNumber' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderTaxNumber'/>
+        <textview id='tvAgentBItemTableHeaderAmount' text='amount' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderAmount'/>
+        <textview id='tvAgentBItemTableHeaderUnit' text='unit' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderUnit'/>
+        <textview id='tvAgentBItemTableHeaderGrossWeight' text='grossWeight' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderGrossWeight'/>
+        <textview id='tvAgentBItemTableHeaderEmpty' text='' testId='tvAgentBItemTableHeaderEmpty'/>
+    </hbox>
+    <repeater id='rtpItemTableAgentB' record='rB' 
+        recordset='{SELECT
+                        SQAJABRIT.item_name,
+                        SQAJABRIT.manufacturer_item_number,
+                        SQAJABRIT.tax_number,
+                        SQAJABRIT.amount_number,
+                        SQAJABRIT.unit,
+                        SQAJABRIT.gross_weight,
+                        SQAJABRIT.item_name_equals,
+                        SQAJABRIT.manufacturer_item_number_equals,
+                        SQAJABRIT.tax_number_equals,
+                        SQAJABRIT.amount_number_equals,
+                        SQAJABRIT.unit_equals,
+                        SQAJABRIT.gross_weight_equals
+                    FROM 
+                        ltblSelectedQAJobAgentBResultItemTable SQAJABRIT}'
+    >
+        <hbox style='{styles.sylAgentItemTableHbox}'>
+            <textview id='tvAgentBItemName' text='{rB.item_name}' style='{CASE WHEN rB.item_name_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
+            <textview id='tvAgentBManufacturerItemNumber' text='{rB.manufacturer_item_number}' style='{CASE WHEN rB.manufacturer_item_number_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+            <textview id='tvAgentBTaxNumber' text='{rB.tax_number}' style='{CASE WHEN rB.tax_number_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+            <textview id='tvAgentBAmountNumber' text='{TOSTRING(rB.amount_number)}' style='{CASE WHEN rB.amount_number_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBAmountNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+            <textview id='tvAgentBUnit' text='{rB.unit}' style='{CASE WHEN rB.unit_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
+            <textview id='tvAgentBGrossWeight' text='{rB.gross_weight}' style='{CASE WHEN rB.gross_weight_equals = true THEN styles.sylTvItemTableNormal ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
+            <removebutton text='{"Remove"}'/>
+        </hbox>
+    </repeater>
+
+    <repeater id='rtpItemTableAgentBNewItem' record='r' 
+        recordset='{SELECT
+                        "" item_name,
+                        "" manufacturer_item_number,
+                        "" tax_number,
+                        "" amount_number,
+                        "" unit,
+                        "" gross_weight
+                    WHERE
+                        false
+                    }'
+    >
+        <hbox style='{styles.sylAgentItemTableHbox}'>
+            <textbox id='tvAgentBNewItemName' text='{r.item_name}' />
+            <textbox id='tvAgentBNewManufacturerItemNumber' text='{r.manufacturer_item_number}' />
+            <textbox id='tvAgentBNewTaxNumber' text='{r.tax_number}' />
+            <textbox id='tvAgentBNewAmountNumber' text='{TOSTRING(r.amount_number)}' />
+            <textbox id='tvAgentBNewUnit' text='{r.unit}' />
+            <textbox id='tvAgentBNewGrossWeight' text='{r.gross_weight}' />
+            <removebutton text='{"Remove"}'/>
+        </hbox>
+    </repeater>
+
+    <combinedbutton id='cmbtnAddNewItemAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' testId='{"cmbtnAddNewItemAgentB"}'>
+        <actionbutton>
+            <set target='bAddNewItemAgentB' value='{true}'/>
+        </actionbutton>
+        <addbutton table='rtpItemTableAgentBNewItem' records='{SELECT "" item_name, "" manufacturer_item_number, "" tax_number, "" amount_number, "" unit, "" gross_weight}'/>
+    </combinedbutton>
 </form>

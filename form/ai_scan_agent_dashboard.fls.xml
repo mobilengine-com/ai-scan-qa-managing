@@ -8,6 +8,22 @@
             WHERE
                 U.email = sysp.user
         }'/>
+        <let id='stLoggedUserAnotLanguage' shape='scalar' value='{
+            SELECT
+                CASE WHEN UL.anot_job_language IS NULL THEN "" ELSE UL.anot_job_language END
+            FROM
+                ai_scan_user_language UL
+            WHERE
+                UL.user_id = stLoggedUserId
+        }'/>
+        <let id='stLoggedUserQALanguage' shape='scalar' value='{
+            SELECT
+                CASE WHEN UL.qa_job_language IS NULL THEN "" ELSE UL.qa_job_language END
+            FROM
+                ai_scan_user_language UL
+            WHERE
+                UL.user_id = stLoggedUserId
+        }'/>
         <let id='stLoggedUserRole' shape='scalar' value='{
             SELECT
                 U.role
@@ -33,12 +49,15 @@
                 U.status = "ONLINE"
                 AND U.id != stLoggedUserId
         }'/>
-        <let id='ltblAllUnassignedJobs' shape='table' access='private' 
-			value='{loadNewerFromServer:SELECT
-                        J.id,
-                        DNJ.id delivery_id,
+        <let id='ltblCurrentUserJobAvaiableInAllUnassignedJobs' shape='table' access='private' 
+			value='{SELECT 
+                        J.id current_job,
+                        J.current_user current_job_current_user,
+                        J.language_type,
+                        J.job_id_2 job1,
+                        J.job_id_3 job2,
                         DNJ.delivery_note_id,
-						DNJ.supplier_id,
+                        DNJ.supplier_id,
                         J.type job_type,
                         CASE J.status
                             WHEN "INPROGRESS" THEN 1
@@ -49,47 +68,65 @@
                             WHEN "QA" THEN 1
                             ELSE 2 
                         END iOrder,
-                        J.job_create_date create_date
-					FROM
-                        ai_scan_delivery_note_job DNJ
-                    LEFT JOIN 
-                        ai_scan_jobs J ON J.id = DNJ.job_id
-                    LEFT JOIN 
-                        ai_scan_jobs_history JH ON JH.id = J.id
-					WHERE
-                        CASE WHEN iOtherOnlineUsers > 2 AND J.type = "ANOT" THEN JH.users NOT LIKE "%" || stLoggedUserId || "%" WHEN iOtherOnlineUsers > 3 AND J.type = "QA" THEN JH.users NOT LIKE "%" || stLoggedUserId || "%" ELSE JH.current_user = "NULL" END
-                    GROUP BY DNJ.id, DNJ.delivery_note_id
-                    HAVING COUNT(DNJ.id) >1
-                    ORDER BY
-                        iStatusOrder,
-                        iOrder,
-                        create_date ASC}'
+                        J.create_date create_date,
+                        J.delay_time 
+                    FROM 
+                        (
+                        SELECT 
+                            J2.id,
+                            J2.current_user,
+                            J2.language_type,
+                            J2.job_id_2,
+                            J2.job_id_3,
+                            J2.type,
+                            J2.status,
+                            J2.create_date,
+                            J2.delay_time
+                        FROM 
+                            ai_scan_jobs J2 
+                        WHERE 
+                            CASE
+                                WHEN J2.type = "QA" AND 
+                                J2.status = "UNCHECKED" AND 
+                                J2.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId) AND
+                                J2.job_id_3 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId) 
+                                THEN true
+                                WHEN J2.type = "ANOT" 
+                                THEN J2.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
+                            END = true
+                        ) J
+                    LEFT JOIN
+                        ai_scan_delivery_note_job DNJ ON DNJ.job_id = J.id 
+                    WHERE
+                        (J.delay_time IS NULL OR J.delay_time &lt; sysp.dtlFormOpen) AND
+                        ((J.type = "QA" AND stLoggedUserQALanguage LIKE "%" || J.language_type || "%") OR (J.type = "ANOT" AND stLoggedUserAnotLanguage LIKE "%" || J.language_type || "%")) AND 
+                        J.id NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)}'
 		/>
         <let id='ltblLoggedUserJobs' shape='table' access='private' 
-			value='{loadNewerFromServer:SELECT
-                        J.id,
-                        DNJ.id delivery_id,
+			value='{SELECT
+                        J.id current_job,
+                        J.current_user current_job_current_user,
+                        J.job_id_2 job1,
+                        J.job_id_3 job2,
                         DNJ.delivery_note_id,
-						DNJ.supplier_id,
+                        DNJ.supplier_id,
                         J.type job_type,
                         CASE J.status
                             WHEN "INPROGRESS" THEN 1
                             WHEN "UNCHECKED" THEN 2
-                            ELSE 3
+                            ELSE 3 
                         END iStatusOrder,
                         CASE J.type
                             WHEN "QA" THEN 1
                             ELSE 2 
                         END iOrder,
-                        J.job_create_date create_date
+                        J.create_date create_date
 					FROM
                         ai_scan_delivery_note_job DNJ
                     LEFT JOIN 
                         ai_scan_jobs J ON J.id = DNJ.job_id
-                    LEFT JOIN 
-                        ai_scan_jobs_history JH ON JH.id = J.id
 					WHERE
-                        JH.current_user = stLoggedUserId
+                        J.current_user = stLoggedUserId
                         AND J.status != "DONE"
                     ORDER BY
                         iStatusOrder,
@@ -97,19 +134,19 @@
                         create_date ASC
                     LIMIT 1}'
 		/>
-        <let id='iJobCount' shape='scalar' access='private' value='{loadNewerFromServer:SELECT COUNT(0) FROM ltblAllUnassignedJobs AUJ}'/>
+        <let id='iJobCount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
         <let id='iLoggedUserJobCount' shape='scalar' value='{SELECT COUNT(0) FROM ltblLoggedUserJobs LUJ}'/>
-        <let id='stLoggedUserSelectedJobId' shape='scalar' value='{SELECT LUJ.id FROM ltblLoggedUserJobs LUJ}'/>
+        <let id='stLoggedUserSelectedJobId' shape='scalar' value='{SELECT LUJ.current_job FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobType' shape='scalar' value='{SELECT LUJ.job_type FROM ltblLoggedUserJobs LUJ}'/>
-        <let id='stLoggedUserSelectedJobDeliveryId' shape='scalar' value='{SELECT LUJ.delivery_id FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobDeliveryNoteId' shape='scalar' value='{SELECT LUJ.delivery_note_id FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobSupplierId' shape='scalar' access='private' value='{SELECT LUJ.supplier_id FROM ltblLoggedUserJobs LUJ}'/>
-        <let id='stInstanceUrl' shape='scalar' access='private' value='{SELECT "https://scanbauapp-outdoor.mobilengine.com/"}'/>
         <let id='bChangeOnline' shape='scalar' value='{false}'/>
         <let id='bChangeOffline' shape='scalar' value='{false}'/>
-        <let id='bGetJob' shape='scalar' value='{loadNewerFromServer:SELECT false}'/>
+        <let id='bGetJob' shape='scalar' value='{SELECT false}'/>
         <let id='bCancelCurrentAnotJob' shape='scalar' value='{false}'/>
+        <let id='bCancelDelayCurrentAnotJob' shape='scalar' value='{false}'/>
         <let id='bCancelCurrentQAJob' shape='scalar' value='{false}'/>
+        <let id='bCancelDelayCurrentQAJob' shape='scalar' value='{false}'/>
     </declarations>
 
     <header></header>
@@ -133,7 +170,9 @@
                 <set target='bChangeOffline' value='{false}'/>
                 <set target='bGetJob' value='{false}'/>
                 <set target='bCancelCurrentAnotJob' value='{false}'/>
+                <set target='bCancelDelayCurrentAnotJob' value='{false}'/>
                 <set target='bCancelCurrentQAJob' value='{false}'/>
+                <set target='bCancelDelayCurrentQAJob' value='{false}'/>
             </actionbutton>
             <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
         </combinedbutton>
@@ -146,7 +185,9 @@
                 <set target='bChangeOffline' value='{true}'/>
                 <set target='bGetJob' value='{false}'/>
                 <set target='bCancelCurrentAnotJob' value='{false}'/>
+                <set target='bCancelDelayCurrentAnotJob' value='{false}'/>
                 <set target='bCancelCurrentQAJob' value='{false}'/>
+                <set target='bCancelDelayCurrentQAJob' value='{false}'/>
             </actionbutton>
             <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
         </combinedbutton>        
@@ -163,22 +204,38 @@
                 <set target='bChangeOffline' value='{false}'/>
                 <set target='bGetJob' value='{true}'/>
                 <set target='bCancelCurrentAnotJob' value='{false}'/>
+                <set target='bCancelDelayCurrentAnotJob' value='{false}'/>
                 <set target='bCancelCurrentQAJob' value='{false}'/>
+                <set target='bCancelDelayCurrentQAJob' value='{false}'/>
             </actionbutton>
-            <submitbutton closeForm='{false}' waitForRfs='{true}'/>
+            <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
         </combinedbutton>
     </if>
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType != "QA"}'>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
-            <linkview id='lvStartAnotJob' text='Click here to start annotation' url='https://www.google.com/' linkIcon='{NULL}' style='{styles.sylLvStartLinkview}' testId='lvStartAnotJob'/>
+            <linkview id='lvStartAnotJob' text='Click here to start annotation' url='https://www.google.com/' linkIcon='{NULL}' style='{styles.sylLvStartAnotJob}' testId='lvStartAnotJob'/>
             <combinedbutton id='cbtnCancelAnotJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelAnotJob'>
                 <actionbutton>
                     <set target='bChangeOnline' value='{false}'/>
                     <set target='bChangeOffline' value='{false}'/>
                     <set target='bGetJob' value='{false}'/>
                     <set target='bCancelCurrentAnotJob' value='{true}'/>
+                    <set target='bCancelDelayCurrentAnotJob' value='{false}'/>
                     <set target='bCancelCurrentQAJob' value='{false}'/>
+                    <set target='bCancelDelayCurrentQAJob' value='{false}'/>
+                </actionbutton>
+                <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
+            </combinedbutton>
+            <combinedbutton id='cbtnCancelDelayAnotJob' text='Delay with 1 hour' style='{styles.sylCbtnCancelDelayJob}' testId='cbtnCancelDelayAnotJob'>
+                <actionbutton>
+                    <set target='bChangeOnline' value='{false}'/>
+                    <set target='bChangeOffline' value='{false}'/>
+                    <set target='bGetJob' value='{false}'/>
+                    <set target='bCancelCurrentAnotJob' value='{false}'/>
+                    <set target='bCancelDelayCurrentAnotJob' value='{true}'/>
+                    <set target='bCancelCurrentQAJob' value='{false}'/>
+                    <set target='bCancelDelayCurrentQAJob' value='{false}'/>
                 </actionbutton>
                 <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
             </combinedbutton>
@@ -188,14 +245,32 @@
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType = "QA"}'>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
-            <linkview id='lvStartQAJob' text='Click here to start QA job' url='{stInstanceUrl || "webforms/Form/ai_scan_qa_job?QAJobId=" || stLoggedUserSelectedJobId}' linkIcon='{NULL}' style='{styles.sylLvStartLinkview}' testId='lvStartQAJob'/>
+            <submitbutton id='sbtnStartQAJob' text='Click here to start QA job' nextForm='{forms.ai_scan_qa_job}' style='{styles.sylSbtnStartQAJob}' testId='sbtnStartQAJob'>
+                <params>
+                    <param id='QAJobId' value='{stLoggedUserSelectedJobId}'/>
+                </params>
+            </submitbutton>
             <combinedbutton id='cbtnCancelQAJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelQAJob'>
                 <actionbutton>
                     <set target='bChangeOnline' value='{false}'/>
                     <set target='bChangeOffline' value='{false}'/>
                     <set target='bGetJob' value='{false}'/>
                     <set target='bCancelCurrentAnotJob' value='{false}'/>
+                    <set target='bCancelDelayCurrentAnotJob' value='{false}'/>
                     <set target='bCancelCurrentQAJob' value='{true}'/>
+                    <set target='bCancelDelayCurrentQAJob' value='{false}'/>
+                </actionbutton>
+                <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
+            </combinedbutton>
+            <combinedbutton id='cbtnCancelDelayQAJob' text='Delay with 1 hour' style='{styles.sylCbtnCancelDelayJob}' testId='cbtnCancelDelayQAJob'>
+                <actionbutton>
+                    <set target='bChangeOnline' value='{false}'/>
+                    <set target='bChangeOffline' value='{false}'/>
+                    <set target='bGetJob' value='{false}'/>
+                    <set target='bCancelCurrentAnotJob' value='{false}'/>
+                    <set target='bCancelDelayCurrentAnotJob' value='{false}'/>
+                    <set target='bCancelCurrentQAJob' value='{false}'/>
+                    <set target='bCancelDelayCurrentQAJob' value='{true}'/>
                 </actionbutton>
                 <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
             </combinedbutton>

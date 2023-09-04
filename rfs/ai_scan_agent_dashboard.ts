@@ -8,6 +8,9 @@
 {
     let stLoggedUserId = form.stLoggedUserId;
 
+    let stLoggedUserANOTLanguage = form.stLoggedUserAnotLanguage;
+    let stLoggedUserQALanguage = form.stLoggedUserQALanguage;
+
     let bChangeOnline = form.bChangeOnline;
     let bChangeOffline = form.bChangeOffline;
 
@@ -15,6 +18,9 @@
 
     let bCancelCurrentAnotJob = form.bCancelCurrentAnotJob;
     let bCancelCurrentQAJob = form.bCancelCurrentQAJob;
+
+    let bCancelDelayCurrentAnotJob = form.bCancelDelayCurrentAnotJob;
+    let bCancelDelayCurrentQAJob = form.bCancelDelayCurrentQAJob;
 
     if(bChangeOnline)
     {
@@ -38,7 +44,8 @@
 
     if(bGetJob)
     {
-        let lstAllUnassignedJobs = db.ai_scan_jobs_history.ReadFields({current_user: "NULL"},["id","current_user","users"]);
+        //All unassigned jobs
+        let lstAllUnassignedJobs = db.ai_scan_jobs.ReadFields({current_user: null},["id","type","status","language_type","current_user","delay_time"]);
 
         if(lstAllUnassignedJobs.Count() == 0)
         {
@@ -46,243 +53,119 @@
         }
         else
         {
-            let stQAJobId = "";
+            //Find QA jobs in unassigned jobs
+            let dtlTimeNow = dtl.Now();
+
+            let stCurrentQAJobId = "";
 
             let lstOtherOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE", id: {notEqual : stLoggedUserId}},["id"]);
 
-            let bUserGetQAJob = false;
+            let bUserGetCurrentQAJob = false;
+
+            let mapQALanguages = map.New();
+
+            if(stLoggedUserQALanguage != null)
+            {
+                let lstLanguages = stLoggedUserQALanguage.Split(",");
+                for(let recLanguage of lstLanguages)
+                {
+                    mapQALanguages.SetAt(recLanguage,recLanguage);
+                }
+            }
 
             for(let recData of lstAllUnassignedJobs)
             {
-                let lstQAJob = list.New();
-                let lstQAJobHistory = list.New();
-                let lstQAJobHistoryUsers = list.New();
-                let bQAJobUserFoundInUserHistory = false;
-
-                lstQAJob = db.ai_scan_jobs.ReadFields({id: recData.id, type: "QA", status: {equal : "UNCHECKED"}},["id","type","status"]).SingleOrDefault();
-
-                if(lstQAJob != null)
+                if(recData.type == "QA" && recData.status == "UNCHECKED" && (recData.delay_time == null || dtlTimeNow > recData.delay_time.DeclareAsDtl()) && (stLoggedUserQALanguage != null && mapQALanguages.ContainsKey(recData.language_type)))
                 {
-                    lstQAJobHistory = db.ai_scan_jobs_history.ReadFields({id: recData.id},["users"]).SingleOrDefault();
+                    //Find oldest QA job
+                    //Get current job's delivery note datas
+                    let lstGetCurrentQAJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData.id},["delivery_note_id"]);
 
-                    if(lstQAJobHistory.users != "NULL")
+                    let stGetCurrentQAJobDeliveryNoteId = lstGetCurrentQAJobDeliveryNote.GetAt(0).delivery_note_id;
+
+                    //Get current delivery note ANOT jobs
+                    let lstCurrentQAJobDeliveryNoteANOTJobs = db.ai_scan_delivery_note_job.ReadFields({delivery_note_id: stGetCurrentQAJobDeliveryNoteId, job_id: {notEqual : recData.id}},["job_id"]);
+
+                    //Get current delivery note ANOT jobs users
+                    let lstCurrentQAJobDeliveryNoteANOTJobsUsers = list.New();
+
+                    let stCurrentQAJobDeliveryNoteANOTJobsUsers = "";
+
+                    for(let recDataUser of lstCurrentQAJobDeliveryNoteANOTJobs)
                     {
-                        Log("nem üres a users");
+                        let lstCurrentQAJobDeliveryNoteANOTJobsUser = db.ai_scan_jobs.ReadFields({id: recDataUser.job_id},["current_user"]);
+                        let stCurrentQAJobGetANOTJobCurrentUser = lstCurrentQAJobDeliveryNoteANOTJobsUser.GetAt(0).current_user;
+                        lstCurrentQAJobDeliveryNoteANOTJobsUsers.Add(stCurrentQAJobGetANOTJobCurrentUser);
+                        stCurrentQAJobDeliveryNoteANOTJobsUsers = stCurrentQAJobDeliveryNoteANOTJobsUsers + stCurrentQAJobGetANOTJobCurrentUser + ",";
+                    }
 
-                        lstQAJobHistoryUsers = lstQAJobHistory.users.Split(",");
+                    stCurrentQAJobDeliveryNoteANOTJobsUsers = stCurrentQAJobDeliveryNoteANOTJobsUsers.TrimEnd(",");
 
-                        for(let recDataUser of lstQAJobHistoryUsers)
+                    //If current user anotated one of the ANOT jobs
+                    let bCurrentUserFoundInCurrentQAJobANOTJobs = false;
+
+                    for(let recData of lstCurrentQAJobDeliveryNoteANOTJobsUsers)
+                    {
+                        if(recData == stLoggedUserId)
                         {
-                            if(stLoggedUserId == recDataUser)
-                            {
-                                bQAJobUserFoundInUserHistory = true;
-                                break;
-                            }
+                            bCurrentUserFoundInCurrentQAJobANOTJobs = true;
                         }
+                    }
 
-                        //Get job's delivery note datas
-                        let lstGetQAJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData.id},["id","delivery_note_id"]);
+                    //If other online user didn't anotated one of the ANOT jobs
+                    let bOtherOnlineUserGetQAJob = false;
 
-                        let stGetQAJobDeliveryId = lstGetQAJobDeliveryNote.GetAt(0).id;
-                        let stGetQAJobDeliveryNoteId = lstGetQAJobDeliveryNote.GetAt(0).delivery_note_id;
-
-                        //Get delivery note ANOT jobs
-                        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetQAJobDeliveryId, delivery_note_id: stGetQAJobDeliveryNoteId, job_id: {notEqual : recData.id}},["job_id"]);
-
-                        //Get delivery note ANOT jobs users
-
-                        let lstDeliveryNoteJobsUsers = list.New();
-
-                        let stDeliveryNoteQAANOTJobsUsers = "";
-
-                        for(let recDataUser of lstDeliveryNoteJobs)
+                    for(let recData of lstOtherOnlineUsers)
+                    {
+                        if(stCurrentQAJobDeliveryNoteANOTJobsUsers.IndexOf(recData.id) == -1)
                         {
-                            let lstDeliveryNoteJobsUser = db.ai_scan_jobs_history.ReadFields({id: recDataUser.job_id},["current_user"]);
-                            let stGetANOTJobCurrentUser = lstDeliveryNoteJobsUser.GetAt(0).current_user;
-                            lstDeliveryNoteJobsUsers.Add(stGetANOTJobCurrentUser);
-                            stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers + stGetANOTJobCurrentUser + ",";
-                        }
-
-                        stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers.TrimEnd(",");
-
-                        let bCurrentUserFoundInQAANOTJobs = false;
-
-                        for(let recData of lstDeliveryNoteJobsUsers)
-                        {
-                            if(recData == stLoggedUserId)
-                            {
-                                bCurrentUserFoundInQAANOTJobs = true;
-                            }
-                        }
-
-                        let bAllOnlineUserGetQAJob = false;
-
-                        let lstAllOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
-
-                        for(let recData of lstAllOnlineUsers)
-                        {
-                            if(stDeliveryNoteQAANOTJobsUsers.IndexOf(recData.id) == -1)
-                            {
-                                bAllOnlineUserGetQAJob = true;
-                                break;
-                            }
-                        }
-
-                        //Current user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 0)
-                        {
-                            Log("QA Only you");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //Current user and 1 other user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == true && bAllOnlineUserGetQAJob == false)
-                        {
-                            Log("QA Only you + 1 other user");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //Current user and 1 other user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
-                        {
-                            Log("QA Only you + 1 other user");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //Current user and 2 other user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 2 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
-                        {
-                            Log("QA Only you + 2 other user");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //More than 3 online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() >= 3 && bQAJobUserFoundInUserHistory == false && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
-                        {
-                            Log("More than 3 online user / users not empty");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
+                            bOtherOnlineUserGetQAJob = true;
                             break;
                         }
                     }
-                    else
+
+                    //Current user and 1 other user only online user or Current user only user / other user can do this job because didn't do anot jobs
+                    if(lstAllUnassignedJobs != null && lstOtherOnlineUsers.Count() <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
                     {
-                        Log("NULL a users");
-                        //Get job's delivery note datas
-                        let lstGetQAJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData.id},["id","delivery_note_id"]);
+                        Log("QA Only you + 1 other user");
+                        stCurrentQAJobId = recData.id;
+                        bUserGetCurrentQAJob = true;
+                        break;
+                    }
 
-                        let stGetQAJobDeliveryId = lstGetQAJobDeliveryNote.GetAt(0).id;
-                        let stGetQAJobDeliveryNoteId = lstGetQAJobDeliveryNote.GetAt(0).delivery_note_id;
+                    //Current user and 1 other user only online user or Current user only user / you can do this job because didn't do anot jobs
+                    if(lstAllUnassignedJobs != null && lstOtherOnlineUsers.Count() <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
+                    {
+                        Log("QA Only you + 1 other user");
+                        stCurrentQAJobId = recData.id;
+                        bUserGetCurrentQAJob = true;
+                        break;
+                    }
 
-                        //Get delivery note ANOT jobs
-                        let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetQAJobDeliveryId, delivery_note_id: stGetQAJobDeliveryNoteId, job_id: {notEqual : recData.id}},["job_id"]);
-
-                        //Get delivery note ANOT jobs users
-
-                        let lstDeliveryNoteJobsUsers = list.New();
-
-                        let stDeliveryNoteQAANOTJobsUsers = "";
-
-                        for(let recDataUser of lstDeliveryNoteJobs)
-                        {
-                            let lstDeliveryNoteJobsUser = db.ai_scan_jobs_history.ReadFields({id: recDataUser.job_id},["current_user"]);
-                            let stGetANOTJobCurrentUser = lstDeliveryNoteJobsUser.GetAt(0).current_user;
-                            lstDeliveryNoteJobsUsers.Add(stGetANOTJobCurrentUser);
-                            stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers + stGetANOTJobCurrentUser + ",";
-                        }
-
-                        stDeliveryNoteQAANOTJobsUsers = stDeliveryNoteQAANOTJobsUsers.TrimEnd(",");
-
-                        let bCurrentUserFoundInQAANOTJobs = false;
-
-                        for(let recData of lstDeliveryNoteJobsUsers)
-                        {
-                            if(recData == stLoggedUserId)
-                            {
-                                bCurrentUserFoundInQAANOTJobs = true;
-                            }
-                        }
-
-                        let bAllOnlineUserGetQAJob = false;
-
-                        let lstAllOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE"},["id"]);
-                        
-                        for(let recData of lstAllOnlineUsers)
-                        {
-                            if(stDeliveryNoteQAANOTJobsUsers.IndexOf(recData.id) == -1)
-                            {
-                                bAllOnlineUserGetQAJob = true;
-                                break;
-                            }
-                        }
-
-                        //Current user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 0)
-                        {
-                            Log("QA Only you");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //Current user and 1 other user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == true && bAllOnlineUserGetQAJob == false)
-                        {
-                            Log("QA Only you + 1 other user");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //Current user and 1 other user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 1 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
-                        {
-                            Log("QA Only you + 1 other user");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //Current user and 2 other user only online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() == 2 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true)
-                        {
-                            Log("QA Only you + 2 other user");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
-
-                        //More than 3 online user
-                        if(lstQAJob != null && lstOtherOnlineUsers.Count() >= 3 && bCurrentUserFoundInQAANOTJobs == false && bAllOnlineUserGetQAJob == true && stLoggedUserId != lstDeliveryNoteJobsUsers.GetAt(0) && stLoggedUserId != lstDeliveryNoteJobsUsers.GetAt(1))
-                        {
-                            Log("More than 3 online user / users empty");
-                            stQAJobId = recData.id;
-                            bUserGetQAJob = true;
-                            break;
-                        }
+                    //More or equal 3 online user
+                    if(lstAllUnassignedJobs != null && lstOtherOnlineUsers.Count() >= 2 && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
+                    {
+                        Log("More or equal than 3 online user / users not empty");
+                        stCurrentQAJobId = recData.id;
+                        bUserGetCurrentQAJob = true;
+                        break;
                     }
                 }
             }
 
-            if(bUserGetQAJob == true)
+            if(bUserGetCurrentQAJob == true)
             {
-                Log("QA job found");
+                Log("QA job found for current user");
+
+                //Current user save in current job user history
 
                 let stCurrentJobUserHistory = "";
 
-                let lstQAJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stQAJobId},["users"]);
+                let lstQAJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
 
                 for(let recCJUH of lstQAJobJobUserHistory)
                 {
-                    if(recCJUH.users != "NULL")
+                    if(recCJUH.users != null)
                     {
                         stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
                     }
@@ -291,22 +174,22 @@
                 stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
 
                 db.ai_scan_jobs_history.UpdateMany({
-                    id: stQAJobId
+                    id: stCurrentQAJobId
                 },{
-                    current_user: stLoggedUserId,
                     users: stCurrentJobUserHistory
                 });
 
                 // Update the job in ai_scan_jobs table
                 db.ai_scan_jobs.UpdateMany({
-                    id : stQAJobId
+                    id : stCurrentQAJobId
                 },{
-                    status : "INPROGRESS"
+                    status : "INPROGRESS",
+                    current_user: stLoggedUserId
                 });
 
                 // Insert OR Update the job in ai_scan_job_inprogress table
                 db.ai_scan_job_inprogress.InsertOrUpdate({
-                    job_id : stQAJobId
+                    job_id : stCurrentQAJobId
                 },{
                     user_id : stLoggedUserId,
                     job_start_time : dtl.Now().DtlToDtdb()
@@ -314,195 +197,77 @@
             }
             else
             {
-                let stANOTJobId = "";
+                //Find ANOT jobs in unassigned jobs if no QA jobs in unassigned jobs
+                let stCurrentANOTJobId = "";
 
-                let bUserGetANOTJob = false;
+                let bUserGetCurrentANOTJob = false;
+
+                let mapANOTLanguages = map.New();
+
+                if(stLoggedUserANOTLanguage != null)
+                {
+                    let lstLanguages = stLoggedUserANOTLanguage.Split(",");
+                    for(let recLanguage of lstLanguages)
+                    {
+                        mapANOTLanguages.SetAt(recLanguage,recLanguage);
+                    }
+                }
 
                 for(let recData2 of lstAllUnassignedJobs)
                 {
-                    let lstANOTJob = list.New();
-                    let lstANOTJobHistory = list.New();
-                    let lstANOTJobHistoryUsers = list.New();
-                    let bANOTJOBUserFoundInUserHistory = false;
-                    let lstANOTOtherJobHistory = list.New();
-                    let lstANOTOtherJobHistoryUsers = list.New();
-                    let bANOTOtherJOBUserFoundInUserHistory = false;
 
-                    lstANOTJob = db.ai_scan_jobs.ReadFields({id: recData2.id, type: "ANOT", status: {equal : "UNCHECKED"}},["id","type","status"]).SingleOrDefault();
-
-                    if(lstANOTJob != null)
+                    if(recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (stLoggedUserANOTLanguage != null && mapANOTLanguages.ContainsKey(recData2.language_type)))
                     {
-                        lstANOTJobHistory = db.ai_scan_jobs_history.ReadFields({id: recData2.id},["users"]).SingleOrDefault();
+                        let lstCurrentANOTJobOtherANOTJob = list.New();
 
-                        if(lstANOTJobHistory.users != "NULL")
+                        //Get current job's delivery note datas
+                        let lstGetCurrentANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
+
+                        let stGetCurrentANOTJobDeliveryNoteId = lstGetCurrentANOTJobDeliveryNote.GetAt(0).delivery_note_id;
+
+                        //Get current delivery note other job
+                        let stCurrentDeliveryNoteOtherJobId = "";
+
+                        let lstDeliveryNoteOtherJobs = db.ai_scan_delivery_note_job.ReadFields({delivery_note_id: stGetCurrentANOTJobDeliveryNoteId},["job_id"]);
+
+                        for(let recDNJ of lstDeliveryNoteOtherJobs)
                         {
-                            lstANOTJobHistoryUsers = lstANOTJobHistory.users.Split(",");
-
-                            for(let recDataUser of lstANOTJobHistoryUsers)
+                            if(recDNJ.job_id != recData2.id)
                             {
-                                if(stLoggedUserId == recDataUser)
-                                {
-                                    bANOTJOBUserFoundInUserHistory = true;
-                                    break;
-                                }
-                            }
-
-                            //Get job's delivery note datas
-                            let lstGetANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
-
-                            let stGetANOTJobDeliveryId = lstGetANOTJobDeliveryNote.GetAt(0).id;
-                            let stGetANOTJobDeliveryNoteId = lstGetANOTJobDeliveryNote.GetAt(0).delivery_note_id;
-
-                            //Get delivery note other job
-                            let stDeliveryNoteOtherJob = "";
-
-                            let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetANOTJobDeliveryId, delivery_note_id: stGetANOTJobDeliveryNoteId},["job_id"]);
-
-                            for(let recDNJ of lstDeliveryNoteJobs)
-                            {
-                                if(recDNJ.job_id != recData2.id)
-                                {
-                                    stDeliveryNoteOtherJob = recDNJ.job_id;
-                                }
-                            }
-
-                            //Get delivery note other job user
-                            let stDeliveryNoteOtherJobUser = "";
-
-                            lstANOTOtherJobHistory = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteOtherJob},["current_user","users"]).SingleOrDefault();
-
-                            stDeliveryNoteOtherJobUser = lstANOTOtherJobHistory.current_user;
-
-                            if(lstANOTOtherJobHistory.users != "NULL")
-                            {
-                                lstANOTOtherJobHistoryUsers = lstANOTOtherJobHistory.users.Split(",");
-
-                                for(let recOtherDataUser of lstANOTOtherJobHistoryUsers)
-                                {
-                                    if(stLoggedUserId == recOtherDataUser)
-                                    {
-                                        bANOTOtherJOBUserFoundInUserHistory = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                bANOTOtherJOBUserFoundInUserHistory = false;
-                            }
-
-                            //Current user only online user
-                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 0)
-                            {
-                                Log("Only you");
-                                stANOTJobId = recData2.id;
-                                bUserGetANOTJob = true;
-                                break;
-                            }
-
-                            //Current user and 1 other user only online user
-                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 1)
-                            {
-                                Log("Only you + 1 other user");
-                                stANOTJobId = recData2.id;
-                                bUserGetANOTJob = true;
-                                break;
-                            }
-
-                            //More than 2 online user
-                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() >= 2 && bANOTJOBUserFoundInUserHistory == false && stLoggedUserId != stDeliveryNoteOtherJobUser && bANOTOtherJOBUserFoundInUserHistory == false)
-                            {
-                                Log("More than 2 online user / users not empty");
-                                stANOTJobId = recData2.id;
-                                bUserGetANOTJob = true;
-                                break;
+                                stCurrentDeliveryNoteOtherJobId = recDNJ.job_id;
                             }
                         }
-                        else
+
+                        //Get current delivery note other job's current_user variable and users history
+                        let stDeliveryNoteOtherJobCurrentUser = "";
+
+                        lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user"]).SingleOrDefault();
+
+                        stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
+
+                        //If current user current job avaiable for him/her
+                        if(lstAllUnassignedJobs != null && stLoggedUserId != stDeliveryNoteOtherJobCurrentUser)
                         {
-                            //Get job's delivery note datas
-                            let lstGetANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
-
-                            let stGetANOTJobDeliveryId = lstGetANOTJobDeliveryNote.GetAt(0).id;
-                            let stGetANOTJobDeliveryNoteId = lstGetANOTJobDeliveryNote.GetAt(0).delivery_note_id;
-
-                            //Get delivery note other job
-                            let stDeliveryNoteOtherJob = "";
-
-                            let lstDeliveryNoteJobs = db.ai_scan_delivery_note_job.ReadFields({id: stGetANOTJobDeliveryId, delivery_note_id: stGetANOTJobDeliveryNoteId},["job_id"]);
-
-                            for(let recDNJ of lstDeliveryNoteJobs)
-                            {
-                                if(recDNJ.job_id != recData2.id)
-                                {
-                                    stDeliveryNoteOtherJob = recDNJ.job_id;
-                                }
-                            }
-                            //Get delivery note other job user
-                            let stDeliveryNoteOtherJobUser = "";
-
-                            lstANOTOtherJobHistory = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteOtherJob},["current_user","users"]).SingleOrDefault();
-
-                            stDeliveryNoteOtherJobUser = lstANOTOtherJobHistory.current_user;
-
-                            if(lstANOTOtherJobHistory.users != "NULL")
-                            {
-                                lstANOTOtherJobHistoryUsers = lstANOTOtherJobHistory.users.Split(",");
-
-                                for(let recOtherDataUser of lstANOTOtherJobHistoryUsers)
-                                {
-                                    if(stLoggedUserId == recOtherDataUser)
-                                    {
-                                        bANOTOtherJOBUserFoundInUserHistory = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                bANOTOtherJOBUserFoundInUserHistory = false;
-                            }
-
-                            //Current user only online user
-                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 0)
-                            {
-                                Log("Only you");
-                                stANOTJobId = recData2.id;
-                                bUserGetANOTJob = true;
-                                break;
-                            }
-
-                            //Current user and 1 other user only online user
-                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() == 1)
-                            {
-                                Log("Only you + 1 other user");
-                                stANOTJobId = recData2.id;
-                                bUserGetANOTJob = true;
-                                break;
-                            }
-
-                            //More than 2 online user
-                            if(lstANOTJob != null && lstOtherOnlineUsers.Count() >= 2 && stLoggedUserId != stDeliveryNoteOtherJobUser && bANOTOtherJOBUserFoundInUserHistory == false)
-                            {
-                                Log("More than 2 online user / users empty");
-                                stANOTJobId = recData2.id;
-                                bUserGetANOTJob = true;
-                                break;
-                            }
+                            Log("Current user will get ANOT job / users variable empty");
+                            stCurrentANOTJobId = recData2.id;
+                            bUserGetCurrentANOTJob = true;
+                            break;
                         }
                     }
                 }
 
-                if(bUserGetANOTJob == true)
+                if(bUserGetCurrentANOTJob == true)
                 {
-                    Log("ANOT job found");
+                    Log("ANOT job found for current user");
+
+                    //Current user save in current job user history
                     let stCurrentJobUserHistory = "";
 
-                    let lstANOTJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stANOTJobId},["users"]);
+                    let lstCurrentANOTJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentANOTJobId},["users"]);
 
-                    for(let recCJUH of lstANOTJobJobUserHistory)
+                    for(let recCJUH of lstCurrentANOTJobUserHistory)
                     {
-                        if(recCJUH.users != "NULL")
+                        if(recCJUH.users != null)
                         {
                             stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
                         }
@@ -511,22 +276,22 @@
                     stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
 
                     db.ai_scan_jobs_history.UpdateMany({
-                        id: stANOTJobId
+                        id: stCurrentANOTJobId
                     },{
-                        current_user: stLoggedUserId,
                         users: stCurrentJobUserHistory
                     });
 
                     // Update the job in ai_scan_jobs table
                     db.ai_scan_jobs.UpdateMany({
-                        id : stANOTJobId
+                        id : stCurrentANOTJobId
                     },{
-                        status : "INPROGRESS"
+                        status : "INPROGRESS",
+                        current_user: stLoggedUserId
                     });
 
                     // Insert OR Update the job in ai_scan_job_inprogress table
                     db.ai_scan_job_inprogress.InsertOrUpdate({
-                        job_id : stANOTJobId
+                        job_id : stCurrentANOTJobId
                     },{
                         user_id : stLoggedUserId,
                         job_start_time : dtl.Now().DtlToDtdb()
@@ -534,7 +299,7 @@
                 }                
                 else
                 {
-                    Log("No job found current user");
+                    Log("No ANOT/QA job found to current user");
                 }
             }
         }
@@ -546,18 +311,31 @@
         let stCurrentJobId = form.stLoggedUserSelectedJobId;
         let stCurrentUser = stLoggedUserId;
 
-        // Update the job in ai_scan_jobs_history table
-        db.ai_scan_jobs_history.UpdateMany({
-            id: stCurrentJobId
+        // Update the job in ai_scan_jobs table
+        db.ai_scan_jobs.UpdateMany({
+            id : stCurrentJobId
         },{
-            current_user: "NULL"
+            status : "UNCHECKED",
+            current_user: null
         });
+
+        // Delete the job in ai_scan_job_inprogress table
+        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+    }
+
+    if(bCancelDelayCurrentAnotJob)
+    {
+        // Update current job history with new online user
+        let stCurrentJobId = form.stLoggedUserSelectedJobId;
+        let stCurrentUser = stLoggedUserId;
 
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentJobId
         },{
-            status : "UNCHECKED"
+            status : "UNCHECKED",
+            current_user: null,
+            delay_time: dtl.Now().DtlAddHours(1).DtlToDtdb()
         });
 
         // Delete the job in ai_scan_job_inprogress table
@@ -570,18 +348,31 @@
         let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
         let stCurrentUser = stLoggedUserId;
 
-        // Update the job in ai_scan_jobs_history table
-        db.ai_scan_jobs_history.UpdateMany({
-            id: stCurrentQAJobId
+        // Update the job in ai_scan_jobs table
+        db.ai_scan_jobs.UpdateMany({
+            id : stCurrentQAJobId
         },{
-            current_user: "NULL"
+            status : "UNCHECKED",
+            current_user: null
         });
+
+        // Delete the job in ai_scan_job_inprogress table
+        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId, user_id : stCurrentUser});
+    }
+
+    if(bCancelDelayCurrentQAJob)
+    {
+        // Update current job history with new online user
+        let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
+        let stCurrentUser = stLoggedUserId;
 
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentQAJobId
         },{
-            status : "UNCHECKED"
+            status : "UNCHECKED",
+            current_user: null,
+            delay_time: dtl.Now().DtlAddHours(1).DtlToDtdb()
         });
 
         // Delete the job in ai_scan_job_inprogress table
