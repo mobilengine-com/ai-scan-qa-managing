@@ -290,7 +290,7 @@
         let stDefaultDeliveryNoteWeightGross = "";
         
         let stDeliveryNoteId = dacs.dnResponse.guid;
-        let stDeliveryNoteJobId = dacs.dnResponse.jobid;
+        let stDeliveryNoteJobId = dacs.dnResponse.requestFileId;
 
         //get Delivery note job default datas
         let lstDefaultJobDeliveryNote = db.ai_scan_delivery_note_job.Read({job_id : stDeliveryNoteJobId});
@@ -644,7 +644,7 @@
     if(dacs.dnResponse.rejected == 1)
     {
         let stDeliveryNoteId = dacs.dnResponse.guid;
-        let stDeliveryNoteJobId = dacs.dnResponse.jobid;
+        let stDeliveryNoteJobId = dacs.dnResponse.requestFileId;
 
         //get Delivery note job datas
         let bDeliveryNoteStatus = dacs.dnResponse.rejected == 1;
