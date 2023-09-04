@@ -1,7 +1,7 @@
 <Reftab Name="ai_scan_user_language" xmlns="http://schemas.mobilengine.com/reftab/v1">
 	<Columns>
-		<Column Name="user_id" Type="Text" PrimaryKey="true" NotNull="true" Indexed="true" />
-		<Column Name="anot_job_language" Type="Text" />
-		<Column Name="qa_job_language" Type="Text" />
+		<Column Name="user_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+		<Column Name="lang" Type="Text" PrimaryKey="true" NotNull="true"/>
+		<Column Name="job_type" Type="Text" PrimaryKey="true" NotNull="true"/>
 	</Columns>
 </Reftab>

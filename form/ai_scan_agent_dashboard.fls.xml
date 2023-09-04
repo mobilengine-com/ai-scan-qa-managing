@@ -8,22 +8,7 @@
             WHERE
                 U.email = sysp.user
         }'/>
-        <let id='stLoggedUserAnotLanguage' shape='scalar' value='{
-            SELECT
-                CASE WHEN UL.anot_job_language IS NULL THEN "" ELSE UL.anot_job_language END
-            FROM
-                ai_scan_user_language UL
-            WHERE
-                UL.user_id = stLoggedUserId
-        }'/>
-        <let id='stLoggedUserQALanguage' shape='scalar' value='{
-            SELECT
-                CASE WHEN UL.qa_job_language IS NULL THEN "" ELSE UL.qa_job_language END
-            FROM
-                ai_scan_user_language UL
-            WHERE
-                UL.user_id = stLoggedUserId
-        }'/>
+        
         <let id='stLoggedUserRole' shape='scalar' value='{
             SELECT
                 U.role
@@ -40,67 +25,52 @@
             WHERE
                 U.email = sysp.user
         }'/>
-        <let id='iOtherOnlineUsers' shape='scalar' value='{
-            SELECT
-                COUNT(U.id)
-            FROM
-                ai_scan_user U
-            WHERE
-                U.status = "ONLINE"
-                AND U.id != stLoggedUserId
-        }'/>
         <let id='ltblCurrentUserJobAvaiableInAllUnassignedJobs' shape='table' access='private' 
 			value='{loadNewerFromServer: SELECT 
                         J.id current_job,
                         J.current_user current_job_current_user,
-                        J.language_type,
+                        J.lang,
                         J.job_id_2 job1,
                         J.job_id_3 job2,
-                        DNJ.delivery_note_id,
-                        DNJ.supplier_id,
-                        J.type job_type,
-                        CASE J.status
-                            WHEN "INPROGRESS" THEN 1
-                            WHEN "UNCHECKED" THEN 2
-                            ELSE 3 
-                        END iStatusOrder,
-                        CASE J.type
-                            WHEN "QA" THEN 1
-                            ELSE 2 
-                        END iOrder,
+                        J.type job_type,                        
                         J.create_date create_date,
                         J.delay_time 
                     FROM 
-                        (
-                        SELECT 
-                            J2.id,
-                            J2.current_user,
-                            J2.language_type,
-                            J2.job_id_2,
-                            J2.job_id_3,
-                            J2.type,
-                            J2.status,
-                            J2.create_date,
-                            J2.delay_time
-                        FROM 
-                            ai_scan_jobs J2 
-                        WHERE 
-                            CASE
-                                WHEN J2.type = "QA" AND 
-                                J2.status = "UNCHECKED" AND 
-                                J2.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId) AND
-                                J2.job_id_3 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId) 
-                                THEN true
-                                WHEN J2.type = "ANOT" 
-                                THEN J2.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
-                            END = true
-                        ) J
-                    LEFT JOIN
-                        ai_scan_delivery_note_job DNJ ON DNJ.job_id = J.id 
+                        ai_scan_jobs J                        
                     WHERE
-                        (J.delay_time IS NULL OR J.delay_time &lt; sysp.dtlFormOpen) AND
-                        ((J.type = "QA" AND stLoggedUserQALanguage LIKE "%" || J.language_type || "%") OR (J.type = "ANOT" AND stLoggedUserAnotLanguage LIKE "%" || J.language_type || "%")) AND 
-                        J.id NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)}'
+                        J.status = "UNCHECKED"
+                        AND (J.delay_time IS NULL OR J.delay_time &lt;= dtlNow())
+                        AND J.lang IN (SELECT L.lang From ai_scan_user_language L where L.user_id = stLoggedUserId and L.job_type = J.type) 
+                        AND 
+                        (
+                            J.type != "QA" 
+                            OR
+                            (
+                                SELECT 
+                                    COUNT(1) 
+                                FROM 
+                                    ai_scan_user_language L
+                                JOIN 
+                                    ai_scan_user U ON U.id = L.user_id
+                                WHERE L.job_type = "QA" 
+                                AND L.lang = J.lang 
+                                AND U.status = "ONLINE") &lt;= 2 
+                            OR 
+                            (
+                                J.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId) 
+                                AND J.job_id_3 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
+                            )    
+                            ) 
+                            AND 
+                            (
+                                J.type != "ANOT" 
+                                OR 
+                                (
+                                    J.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
+                                )
+                            )
+                    LIMIT 1
+                        }'
 		/>
         <let id='ltblLoggedUserJobs' shape='table' access='private' 
 			value='{loadNewerFromServer: SELECT
@@ -124,7 +94,7 @@
 					FROM
                         ai_scan_delivery_note_job DNJ
                     LEFT JOIN 
-                        ai_scan_jobs J ON J.id = DNJ.job_id
+                        ai_scan_jobs J ON J.job_id_2 = DNJ.job_id
 					WHERE
                         J.current_user = stLoggedUserId
                         AND J.status != "DONE"

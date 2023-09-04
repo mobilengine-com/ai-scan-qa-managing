@@ -1,13 +1,16 @@
-<Reftab Name="ai_scan_jobs" xmlns="http://schemas.mobilengine.com/reftab/v1">
+<Reftab Name="ai_scan_jobs" Push='true' xmlns="http://schemas.mobilengine.com/reftab/v1">
 	<Columns>
 		<Column Name='id' Type='Text' PrimaryKey='true' NotNull='true'/>
+		<!-- ANOT/QA -->
 		<Column Name='type' Type='Text' NotNull='true'/>
-        <Column Name='status' Type='Text' NotNull="true" InitialValue='UNCHECKED'/>
-		<Column Name='language_type' Type='Text'/>
+        <!-- UNCHECKED-nincs még kiosztva a feladat /INPROGRESS: valaki elvitte a feladatot /DONE:Kész a feladattal -->
+		<Column Name='status' Type='Text' NotNull="true" InitialValue='UNCHECKED'/>
+		<Column Name='lang' Type='Text'/>
 		<Column Name='current_user' Type='Text'/>
 		<Column Name='create_date' Type='Date'/>
 		<Column Name='delay_time' Type='Date'/>
 		<Column Name='job_id_2' Type='Text'/>
 		<Column Name='job_id_3' Type='Text'/>
+		<Column Name='url' Type='Text'/>
 	</Columns>	
 </Reftab>

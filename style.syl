@@ -1226,10 +1226,17 @@ styles{
 		}
 	}
 
-	style sylAgentItemTableHbox{
+	style sylAgentItemTableHeaderHbox{
 		hbox {
             height = 50px
             sizes = 220px, 220px, 220px, 220px, 220px, 220px, 100px
+        }
+	}
+
+	style sylAgentItemTableHbox{
+		hbox {
+            height = 50px
+            sizes = 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 100px
         }
 	}
 
@@ -1252,7 +1259,7 @@ styles{
 				backgroundColor = FAE7E7
 			}
 			margin {
-				top = 0px
+				top = 3px
 				bottom = 0px
 				left = 6px
 				right = 0px
@@ -1285,7 +1292,7 @@ styles{
 				height = 20px
 			}
 			margin {
-				top = 0px
+				top = 3px
 				bottom = 0px
 				left = 6px
 				right = 0px
@@ -1331,6 +1338,126 @@ styles{
 			}
 			textAlign = left
 			bold = true				
+		}
+	}
+
+	style sylTvItemEmptyText{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylAbtnQADeliveryNoteItemActionButtons{
+		actionbutton{
+			control{
+				width = 25px
+				iconHeight = 25px
+				iconWidth = 25px
+				iconPosition = left
+				iconSpacing = 0px
+				iconFit = fit
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			button {
+				width = 25px
+				backgroundColor = FFFFFF
+				borderWidth {
+					top = 0px
+					right = 0px
+					bottom = 0px
+					left = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylAbtnQADeliveryNoteItemActionButtonsDifferent{
+		actionbutton{
+			control{
+				width = 25px
+				iconHeight = 25px
+				iconWidth = 25px
+				iconPosition = left
+				iconSpacing = 0px
+				iconFit = fit
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			button {
+				width = 25px
+				backgroundColor = FFFFFF
+				borderWidth {
+					top = 0px
+					right = 0px
+					bottom = 0px
+					left = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
 		}
 	}
 

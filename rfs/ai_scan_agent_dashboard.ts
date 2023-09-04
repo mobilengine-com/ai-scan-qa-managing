@@ -3,13 +3,12 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_jobs;
+//# using reftab ai_scan_job_result;
 //# using reftab ai_scan_job_inprogress;
+//# using reftab ai_scan_user_language;
 
 {
     let stLoggedUserId = form.stLoggedUserId;
-
-    let stLoggedUserANOTLanguage = form.stLoggedUserAnotLanguage;
-    let stLoggedUserQALanguage = form.stLoggedUserQALanguage;
 
     let bChangeOnline = form.bChangeOnline;
     let bChangeOffline = form.bChangeOffline;
@@ -45,7 +44,7 @@
     if(bGetJob)
     {
         //All unassigned jobs
-        let lstAllUnassignedJobs = db.ai_scan_jobs.ReadFields({current_user: null},["id","type","status","language_type","current_user","delay_time"]);
+        let lstAllUnassignedJobs = db.ai_scan_jobs.ReadFields({current_user: null},["id","type","status","lang","current_user","delay_time"]);
 
         if(lstAllUnassignedJobs.Count() == 0)
         {
@@ -60,41 +59,57 @@
 
             let lstOtherOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE", id: {notEqual : stLoggedUserId}},["id"]);
 
-            let bUserGetCurrentQAJob = false;
-
-            let mapQALanguages = map.New();
-
-            if(stLoggedUserQALanguage != null)
-            {
-                let lstLanguages = stLoggedUserQALanguage.Split(",");
-                for(let recLanguage of lstLanguages)
-                {
-                    mapQALanguages.SetAt(recLanguage,recLanguage);
-                }
-            }
+            let bUserGetCurrentQAJob = false;            
 
             for(let recData of lstAllUnassignedJobs)
             {
-                if(recData.type == "QA" && recData.status == "UNCHECKED" && (recData.delay_time == null || dtlTimeNow > recData.delay_time.DeclareAsDtl()) && (stLoggedUserQALanguage != null && mapQALanguages.ContainsKey(recData.language_type)))
+                //Get current user QA language tpye
+                let stCurrentUserQAHUNLanguage = "";
+                let stCurrentUserQAENGLanguage = "";
+                let stCurrentUserQAPLLanguage = "";
+
+                for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "hu_hu", job_type: "QA"},["lang"]))
+                {
+                    stCurrentUserQAHUNLanguage = recUserLang.lang;
+                }
+
+                for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "eng_eng", job_type: "QA"},["lang"]))
+                {
+                    stCurrentUserQAENGLanguage = recUserLang.lang;
+                }
+
+                for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "pl_pl", job_type: "QA"},["lang"]))
+                {
+                    stCurrentUserQAPLLanguage = recUserLang.lang;
+                }
+
+                if(recData.type == "QA" && recData.status == "UNCHECKED" && (recData.delay_time == null || dtlTimeNow > recData.delay_time.DeclareAsDtl()) && (recData.lang == stCurrentUserQAHUNLanguage || recData.lang == stCurrentUserQAENGLanguage || recData.lang == stCurrentUserQAPLLanguage))
                 {
                     //Find oldest QA job
-                    //Get current job's delivery note datas
-                    let lstGetCurrentQAJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData.id},["delivery_note_id"]);
+                    //Get current job's ANOT jobs
+                    let lstGetCurrentQAJobANNOTJobs = db.ai_scan_jobs.ReadFields({id: recData.id},["job_id_2","job_id_3"]);
 
-                    let stGetCurrentQAJobDeliveryNoteId = lstGetCurrentQAJobDeliveryNote.GetAt(0).delivery_note_id;
+                    let stGetCurrentQAJobANNOTJob1 = "";
+                    let stGetCurrentQAJobANNOTJob2 = "";
 
-                    //Get current delivery note ANOT jobs
-                    let lstCurrentQAJobDeliveryNoteANOTJobs = db.ai_scan_delivery_note_job.ReadFields({delivery_note_id: stGetCurrentQAJobDeliveryNoteId, job_id: {notEqual : recData.id}},["job_id"]);
+                    for(let recData of lstGetCurrentQAJobANNOTJobs)
+                    {
+                        stGetCurrentQAJobANNOTJob1 = recData.job_id_2;
+                        stGetCurrentQAJobANNOTJob2 = recData.job_id_3;
+                        break;
+                    }
+
+                    //Get current job's ANOT jobs users
+                    let lstGetCurrentQAJobANNOTJobsUsers = db.ai_scan_job_result.ReadFields({job_id: [stGetCurrentQAJobANNOTJob1,stGetCurrentQAJobANNOTJob2]},["user_id"]);
 
                     //Get current delivery note ANOT jobs users
                     let lstCurrentQAJobDeliveryNoteANOTJobsUsers = list.New();
 
                     let stCurrentQAJobDeliveryNoteANOTJobsUsers = "";
 
-                    for(let recDataUser of lstCurrentQAJobDeliveryNoteANOTJobs)
+                    for(let recDataUser of lstGetCurrentQAJobANNOTJobsUsers)
                     {
-                        let lstCurrentQAJobDeliveryNoteANOTJobsUser = db.ai_scan_jobs.ReadFields({id: recDataUser.job_id},["current_user"]);
-                        let stCurrentQAJobGetANOTJobCurrentUser = lstCurrentQAJobDeliveryNoteANOTJobsUser.GetAt(0).current_user;
+                        let stCurrentQAJobGetANOTJobCurrentUser = recDataUser.user_id;
                         lstCurrentQAJobDeliveryNoteANOTJobsUsers.Add(stCurrentQAJobGetANOTJobCurrentUser);
                         stCurrentQAJobDeliveryNoteANOTJobsUsers = stCurrentQAJobDeliveryNoteANOTJobsUsers + stCurrentQAJobGetANOTJobCurrentUser + ",";
                     }
@@ -202,21 +217,30 @@
 
                 let bUserGetCurrentANOTJob = false;
 
-                let mapANOTLanguages = map.New();
-
-                if(stLoggedUserANOTLanguage != null)
-                {
-                    let lstLanguages = stLoggedUserANOTLanguage.Split(",");
-                    for(let recLanguage of lstLanguages)
-                    {
-                        mapANOTLanguages.SetAt(recLanguage,recLanguage);
-                    }
-                }
-
                 for(let recData2 of lstAllUnassignedJobs)
                 {
 
-                    if(recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (stLoggedUserANOTLanguage != null && mapANOTLanguages.ContainsKey(recData2.language_type)))
+                    //Get current user ANOT language tpye
+                    let stCurrentUserANOTHUNLanguage = "";
+                    let stCurrentUserANOTENGLanguage = "";
+                    let stCurrentUserANOTPLLanguage = "";
+
+                    for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "hu_hu", job_type: "ANOT"},["lang"]))
+                    {
+                        stCurrentUserANOTHUNLanguage = recUserLang.lang;
+                    }
+
+                    for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "eng_eng", job_type: "ANOT"},["lang"]))
+                    {
+                        stCurrentUserANOTENGLanguage = recUserLang.lang;
+                    }
+
+                    for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "pl_pl", job_type: "ANOT"},["lang"]))
+                    {
+                        stCurrentUserANOTPLLanguage = recUserLang.lang;
+                    }
+
+                    if(recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
                     {
                         let lstCurrentANOTJobOtherANOTJob = list.New();
 
