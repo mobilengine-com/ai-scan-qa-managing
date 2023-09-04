@@ -490,7 +490,7 @@
         //get current job's language
         let stCurrentJobLanguage = "";
 
-        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({job_id: stDeliveryNoteJobId},["language_type"]);
+        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["language_type"]);
 
         for(let recJobLanguage of lstCurrentJobLanguage)
         {
@@ -753,7 +753,7 @@
         //get current job's language
         let stCurrentJobLanguage = "";
 
-        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({job_id: stDeliveryNoteJobId},["language_type"]);
+        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["language_type"]);
 
         for(let recJobLanguage of lstCurrentJobLanguage)
         {
