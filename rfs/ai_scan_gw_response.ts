@@ -575,7 +575,7 @@
                     current_user: null,
                     create_date: dtl.Now().DtlToDtdb(),
                     delay_time: null,
-                    job_id_2: stCurrentJobUserId,
+                    job_id_2: stDeliveryNoteJobId,
                     job_id_3: stDeliveryNoteOtherJob                    
                 });
 
@@ -838,7 +838,7 @@
                     current_user: null,
                     create_date: dtl.Now().DtlToDtdb(),
                     delay_time: null,
-                    job_id_2: stCurrentJobUserId,
+                    job_id_2: stDeliveryNoteJobId,
                     job_id_3: stDeliveryNoteOtherJob                    
                 });
 
