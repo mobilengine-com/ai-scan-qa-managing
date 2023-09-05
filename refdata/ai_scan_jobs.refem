@@ -5,12 +5,13 @@
 		<Column Name='type' Type='Text' NotNull='true'/>
         <!-- UNCHECKED-nincs még kiosztva a feladat /INPROGRESS: valaki elvitte a feladatot /DONE:Kész a feladattal -->
 		<Column Name='status' Type='Text' NotNull="true" InitialValue='UNCHECKED'/>
+		<Column Name='supplier_id' Type='Text'/>
 		<Column Name='lang' Type='Text'/>
 		<Column Name='current_user' Type='Text'/>
 		<Column Name='create_date' Type='Date'/>
 		<Column Name='delay_time' Type='Date'/>
 		<Column Name='job_id_2' Type='Text'/>
 		<Column Name='job_id_3' Type='Text'/>
-		<Column Name='url' Type='Text'/>
+		<Column Name='job_url' Type='Text'/>
 	</Columns>	
 </Reftab>

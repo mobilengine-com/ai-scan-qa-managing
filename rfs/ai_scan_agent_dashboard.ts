@@ -242,8 +242,6 @@
 
                     if(recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
                     {
-                        let lstCurrentANOTJobOtherANOTJob = list.New();
-
                         //Get current job's delivery note datas
                         let lstGetCurrentANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
 
@@ -263,6 +261,7 @@
                         }
 
                         //Get current delivery note other job's current_user variable and users history
+                        let lstCurrentANOTJobOtherANOTJob = list.New();
                         let stDeliveryNoteOtherJobCurrentUser = "";
 
                         lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user"]).SingleOrDefault();

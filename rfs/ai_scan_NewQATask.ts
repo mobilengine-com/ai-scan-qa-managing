@@ -15,13 +15,14 @@
         id: stJobId,
         type: "ANOT",
         status: "UNCHECKED",
+        supplier_id: dacs.qaTask.supplierId,
         lang: dacs.qaTask.lang,
         current_user: null,
         create_date: dtl.Now().DtlToDtdb(),
         delay_time: null,
         job_id_2: stJobId2,
         job_id_3: null,
-        url: dacs.qaTask.aiUrl1
+        job_url: dacs.qaTask.aiUrl1
     });
 
     // Creat first job history
@@ -46,13 +47,14 @@
         id: stJobId2,
         type: "ANOT",
         status: "UNCHECKED",
+        supplier_id: dacs.qaTask.supplierId,
         lang: dacs.qaTask.lang,
         current_user: null,
         create_date: dtl.Now().DtlToDtdb(),
         delay_time: null,
         job_id_2: stJobId,
         job_id_3: null,
-        url: dacs.qaTask.aiUrl2
+        job_url: dacs.qaTask.aiUrl2
     });
 
     // Create second job history

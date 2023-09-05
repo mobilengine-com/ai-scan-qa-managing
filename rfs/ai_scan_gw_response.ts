@@ -160,14 +160,16 @@
             }
         }
 
-        //get current job's language
+        //get current job's language and supplier id
         let stCurrentJobLanguage = "";
+        let stCurrentJobSupplierId = "";
 
-        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["lang"]);
+        let lstCurrentJobLanguageAndSupplierId = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang"]);
 
-        for(let recJobLanguage of lstCurrentJobLanguage)
+        for(let recData of lstCurrentJobLanguageAndSupplierId)
         {
-            stCurrentJobLanguage = recJobLanguage.lang;
+            stCurrentJobSupplierId = recData.supplier_id;
+            stCurrentJobLanguage = recData.lang;
         }
 
         //get job work time
@@ -273,9 +275,9 @@
                 stOtherJobDeliveryNoteSupplierWarehouse == stDeliveryNoteSupplierWarehouse &&
                 stOtherJobDeliveryNoteSupplierId == stDeliveryNoteSupplierId &&
                 stOtherJobDeliveryNoteWeightGross == stDeliveryNoteWeightGross)
-                {
-                    bSameANNOTDatas = true;
-                }
+            {
+                bSameANNOTDatas = true;
+            }
 
             //Other ANNOT jobs delivery note's items datas
             let lstOtherJobJobDeliveryNoteItemItemName = list.New();
@@ -320,11 +322,8 @@
 
             if(bMofifiedAnywhere == true)
             {
-                bSameANNOTDatas = true;
+                bSameANNOTDatas = false;
             }
-
-
-
 
             let stOtherJobResultStatus = "";
             for(let recData of lstDeliveryNoteOtherJobStatus)
@@ -332,34 +331,38 @@
                 stOtherJobResultStatus = recData.result;
             }
 
-            if(bSameANNOTDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
+            if(stJobResultStatus != "" && stOtherJobResultStatus != "")
             {
-                Log("Perfect Approved Annotations");
-            }            
-            else
-            {
-                Log("Create QA job");
-                
-                // Create QA job
-                let stQAJobId = guid.Generate().ToStringN();
+                if(bSameANNOTDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
+                {
+                    Log("Perfect Approved Annotations");
+                }            
+                else
+                {
+                    Log("Create QA job");
+                    
+                    // Create QA job
+                    let stQAJobId = guid.Generate().ToStringN();
 
-                db.ai_scan_jobs.Insert({
-                    id: stQAJobId,
-                    type: "QA",
-                    status: "UNCHECKED",
-                    language_type: stCurrentJobLanguage,
-                    current_user: null,
-                    create_date: dtl.Now().DtlToDtdb(),
-                    delay_time: null,
-                    job_id_2: stDeliveryNoteJobId,
-                    job_id_3: stDeliveryNoteOtherJob                    
-                });
+                    db.ai_scan_jobs.Insert({
+                        id: stQAJobId,
+                        type: "QA",
+                        status: "UNCHECKED",
+                        supplier_id: stCurrentJobSupplierId,
+                        lang: stCurrentJobLanguage,
+                        current_user: null,
+                        create_date: dtl.Now().DtlToDtdb(),
+                        delay_time: null,
+                        job_id_2: stDeliveryNoteJobId,
+                        job_id_3: stDeliveryNoteOtherJob                    
+                    });
 
-                // Create jobs history for QA job
-                db.ai_scan_jobs_history.Insert({
-                    id: stQAJobId,
-                    users: null
-                });
+                    // Create jobs history for QA job
+                    db.ai_scan_jobs_history.Insert({
+                        id: stQAJobId,
+                        users: null
+                    });
+                }
             }
         }
     }
@@ -458,14 +461,16 @@
             }
         }
 
-        //get current job's language
+        //get current job's language and supplier id
         let stCurrentJobLanguage = "";
+        let stCurrentJobSupplierId = "";
 
-        let lstCurrentJobLanguage = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["lang"]);
+        let lstCurrentJobLanguageAndSupplierId = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang"]);
 
-        for(let recJobLanguage of lstCurrentJobLanguage)
+        for(let recData of lstCurrentJobLanguageAndSupplierId)
         {
-            stCurrentJobLanguage = recJobLanguage.lang;
+            stCurrentJobSupplierId = recData.supplier_id;
+            stCurrentJobLanguage = recData.lang;
         }
 
         //get job work time
@@ -543,6 +548,7 @@
                     id: stQAJobId,
                     type: "QA",
                     status: "UNCHECKED",
+                    supplier_id: stCurrentJobSupplierId,
                     lang: stCurrentJobLanguage,
                     current_user: null,
                     create_date: dtl.Now().DtlToDtdb(),

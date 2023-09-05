@@ -29,6 +29,7 @@
 			value='{loadNewerFromServer: SELECT 
                         J.id current_job,
                         J.current_user current_job_current_user,
+                        J.supplier_id,
                         J.lang,
                         J.job_id_2 job1,
                         J.job_id_3 job2,
@@ -76,10 +77,9 @@
 			value='{loadNewerFromServer: SELECT
                         J.id current_job,
                         J.current_user current_job_current_user,
+                        J.supplier_id,
                         J.job_id_2 job1,
                         J.job_id_3 job2,
-                        DNJ.delivery_note_id,
-                        DNJ.supplier_id,
                         J.type job_type,
                         CASE J.status
                             WHEN "INPROGRESS" THEN 1
@@ -92,9 +92,7 @@
                         END iOrder,
                         J.create_date create_date
 					FROM
-                        ai_scan_delivery_note_job DNJ
-                    LEFT JOIN 
-                        ai_scan_jobs J ON J.job_id_2 = DNJ.job_id
+                        ai_scan_jobs J
 					WHERE
                         J.current_user = stLoggedUserId
                         AND J.status != "DONE"
@@ -108,7 +106,6 @@
         <let id='iLoggedUserJobCount' shape='scalar' value='{SELECT COUNT(0) FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobId' shape='scalar' value='{SELECT LUJ.current_job FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobType' shape='scalar' value='{SELECT LUJ.job_type FROM ltblLoggedUserJobs LUJ}'/>
-        <let id='stLoggedUserSelectedJobDeliveryNoteId' shape='scalar' value='{SELECT LUJ.delivery_note_id FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobSupplierId' shape='scalar' access='private' value='{SELECT LUJ.supplier_id FROM ltblLoggedUserJobs LUJ}'/>
         <let id='bChangeOnline' shape='scalar' value='{false}'/>
         <let id='bChangeOffline' shape='scalar' value='{false}'/>
