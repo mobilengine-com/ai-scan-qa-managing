@@ -22,7 +22,8 @@
         delay_time: null,
         job_id_2: stJobId2,
         job_id_3: null,
-        job_url: dacs.qaTask.aiUrl1
+        job_url: dacs.qaTask.aiUrl1,
+        assigned: 0
     });
 
     // Creat first job history
@@ -53,7 +54,8 @@
         delay_time: null,
         job_id_2: stJobId,
         job_id_3: null,
-        job_url: dacs.qaTask.aiUrl2
+        job_url: dacs.qaTask.aiUrl2,
+        assigned: 0
     });
 
     // Create second job history

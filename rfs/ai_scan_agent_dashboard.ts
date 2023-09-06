@@ -350,6 +350,8 @@
         },{
             status : "UNCHECKED",
             current_user: null
+            current_user: null,
+            assigned: 0
         });
 
         // Delete the job in ai_scan_job_inprogress table
@@ -384,6 +386,8 @@
             status : "UNCHECKED",
             current_user: null,
             delay_time: dtlDelayTime
+            delay_time: dtlDelayTime,
+            assigned: 0
         });
 
         // Delete the job in ai_scan_job_inprogress table

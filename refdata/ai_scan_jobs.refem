@@ -13,5 +13,6 @@
 		<Column Name='job_id_2' Type='Text'/>
 		<Column Name='job_id_3' Type='Text'/>
 		<Column Name='job_url' Type='Text'/>
+		<Column Name='assigned' Type='Integer' InitialValue = "0"/>
 	</Columns>	
 </Reftab>
