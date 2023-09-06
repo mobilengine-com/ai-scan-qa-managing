@@ -6,6 +6,7 @@
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_user_language;
+//# using dacs AssignAITask;
 
 {
     let stLoggedUserId = form.stLoggedUserId;
@@ -309,6 +310,17 @@
                         current_user: stLoggedUserId,
                         delay_time: null
                     });
+
+                    let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentANOTJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+                    let stUserMail = db.ai_scan_user.ReadFields({id : stLoggedUserId},["email"]).SingleOrDefault().email;
+
+                    Log("AI task assignement sended for user: " + stUserMail +" with the following delivery note id: " + stscanId);
+                    let dacs = messages.AssignAITask.New();
+                    dacs.assignTask.scanId = stscanId;
+                    dacs.assignTask.requestFileId = stCurrentANOTJobId;
+                    dacs.assignTask.agent = stUserMail;
+                    dacs.Send();
+                    
 
                     // Insert OR Update the job in ai_scan_job_inprogress table
                     db.ai_scan_job_inprogress.InsertOrUpdate({
