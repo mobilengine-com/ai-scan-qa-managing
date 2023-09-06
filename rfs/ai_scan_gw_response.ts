@@ -1,8 +1,6 @@
 //# server program ai_scan_gw_response for dacs AITaskResult
 //# using reftab ai_scan_jobs;
-//# using reftab ai_scan_delivery_note_def;
 //# using reftab ai_scan_delivery_note_job;
-//# using reftab ai_scan_delivery_note_item_def;
 //# using reftab ai_scan_delivery_note_item_job;
 //# using reftab ai_scan_user;
 //# using reftab ai_scan_jobs_history;
@@ -376,19 +374,19 @@
         //get Delivery note job datas
         let bDeliveryNoteStatus = dacs.dnResponse.rejected == 1;
         let stDeliveryNoteStatus = bDeliveryNoteStatus ? "rejected" : "waiting";
-        let stDeliveryNoteCustomerAddress = dacs.dnResponse.customerAddress;
-        let stDeliveryNoteCustomerName = dacs.dnResponse.customerName;
-        let stDeliveryNoteDeliveryAddress = dacs.dnResponse.deliveryAddress;
-        let stDeliveryNoteDeliveryRecipientName = dacs.dnResponse.deliveryRecipientName;
-        let stDeliveryNoteIssueDate = dacs.dnResponse.issueDate;
+        let stDeliveryNoteCustomerAddress = "";
+        let stDeliveryNoteCustomerName = "";
+        let stDeliveryNoteDeliveryAddress = "";
+        let stDeliveryNoteDeliveryRecipientName = "";
+        let stDeliveryNoteIssueDate = "";
         let stDeliveryNoteDtlIssueDate = DateFrom(stDeliveryNoteIssueDate);
-        let stDeliveryNoteOrderNumber = dacs.dnResponse.orderNumber;
-        let stDeliveryNoteSupplierAddress = dacs.dnResponse.supplierAddress;
-        let stDeliveryNoteSupplierName = dacs.dnResponse.supplierName;
-        let stDeliveryNoteSupplierTaxNumber = dacs.dnResponse.supplierTaxNumber;
-        let stDeliveryNoteSupplierWarehouse = dacs.dnResponse.supplierWarehouse;
-        let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
-        let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
+        let stDeliveryNoteOrderNumber = "";
+        let stDeliveryNoteSupplierAddress = "";
+        let stDeliveryNoteSupplierName = "";
+        let stDeliveryNoteSupplierTaxNumber = "";
+        let stDeliveryNoteSupplierWarehouse = "";
+        let stDeliveryNoteSupplierId = "";
+        let stDeliveryNoteWeightGross = "";
 
         // Update delivery_note job
         db.ai_scan_delivery_note_job.UpdateMany({
@@ -414,13 +412,13 @@
         let i = 0;
         for (let item of dacs.dnResponse.items) {
             let iDeliveryNoteItemRowCounter = i;
-            let stDeliveryNoteItemItemName = item.itemName;
-            let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
-            let stDeliveryNoteItemTaxNumber = item.taxNumber;
-            let stDeliveryNoteItemAmount = item.amount;
-            let iDeliveryNoteItemAmount = NumberFrom(item.amount);
-            let stDeliveryNoteItemUnit = item.unit;
-            let stDeliveryNoteItemGrossWeight = item.grossWeight;
+            let stDeliveryNoteItemItemName = "";
+            let stDeliveryNoteItemManufacturerItemNumber = "";
+            let stDeliveryNoteItemTaxNumber = "";
+            let stDeliveryNoteItemAmount = "";
+            let iDeliveryNoteItemAmount = NumberFrom(stDeliveryNoteItemAmount);
+            let stDeliveryNoteItemUnit = "";
+            let stDeliveryNoteItemGrossWeight = "";
 
             // Update delivery_note job
             db.ai_scan_delivery_note_item_job.InsertOrUpdate({

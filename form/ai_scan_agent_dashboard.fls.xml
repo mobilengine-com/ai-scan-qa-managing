@@ -55,21 +55,22 @@
                                     ai_scan_user U ON U.id = L.user_id
                                 WHERE L.job_type = "QA" 
                                 AND L.lang = J.lang 
-                                AND U.status = "ONLINE") &lt;= 2 
+                                AND U.status = "ONLINE"
+                            ) &lt;= 2 
                             OR 
                             (
                                 J.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId) 
                                 AND J.job_id_3 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
                             )    
-                            ) 
-                            AND 
+                        ) 
+                        AND 
+                        (
+                            J.type != "ANOT" 
+                            OR 
                             (
-                                J.type != "ANOT" 
-                                OR 
-                                (
-                                    J.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
-                                )
+                                J.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
                             )
+                        )
                     LIMIT 1
                         }'
 		/>

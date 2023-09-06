@@ -38,7 +38,6 @@
         status: "waiting",
         avg_score_must_have: 0.0,
         avg_score_overall: 0.0,
-        supplier_id: dacs.qaTask.supplierId,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 
@@ -70,7 +69,6 @@
         status: "waiting",
         avg_score_must_have: 0.0,
         avg_score_overall: 0.0,
-        supplier_id: dacs.qaTask.supplierId,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 }

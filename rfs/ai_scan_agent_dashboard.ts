@@ -199,7 +199,8 @@
                     id : stCurrentQAJobId
                 },{
                     status : "INPROGRESS",
-                    current_user: stLoggedUserId
+                    current_user: stLoggedUserId,
+                    delay_time: null
                 });
 
                 // Insert OR Update the job in ai_scan_job_inprogress table
@@ -240,42 +241,38 @@
                         stCurrentUserANOTPLLanguage = recUserLang.lang;
                     }
 
-                    if(recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
+                    // Get current job other job id
+                    let lstDeliveryNoteOtherJobs = db.ai_scan_jobs.ReadFields({id: recData2.id},["job_id_2"]);
+
+                    let stCurrentDeliveryNoteOtherJobId = "";
+
+                    for(let recOtherJob of lstDeliveryNoteOtherJobs)
                     {
-                        //Get current job's delivery note datas
-                        let lstGetCurrentANOTJobDeliveryNote = db.ai_scan_delivery_note_job.ReadFields({job_id: recData2.id},["id","delivery_note_id"]);
-
-                        let stGetCurrentANOTJobDeliveryNoteId = lstGetCurrentANOTJobDeliveryNote.GetAt(0).delivery_note_id;
-
-                        //Get current delivery note other job
-                        let stCurrentDeliveryNoteOtherJobId = "";
-
-                        let lstDeliveryNoteOtherJobs = db.ai_scan_delivery_note_job.ReadFields({delivery_note_id: stGetCurrentANOTJobDeliveryNoteId},["job_id"]);
-
-                        for(let recDNJ of lstDeliveryNoteOtherJobs)
+                        if(recOtherJob.job_id_2 != recData2.id)
                         {
-                            if(recDNJ.job_id != recData2.id)
-                            {
-                                stCurrentDeliveryNoteOtherJobId = recDNJ.job_id;
-                            }
+                            stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
                         }
+                    }
 
-                        //Get current delivery note other job's current_user variable and users history
-                        let lstCurrentANOTJobOtherANOTJob = list.New();
-                        let stDeliveryNoteOtherJobCurrentUser = "";
+                    //Get current delivery note other job's current_user variable and delay time
+                    let lstCurrentANOTJobOtherANOTJob = list.New();
+                    let stDeliveryNoteOtherJobCurrentUser = "";
+                    let dtlDeliveryNoteOtherJobDelayTime = null;
 
-                        lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user"]).SingleOrDefault();
+                    lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
 
-                        stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
+                    stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
 
-                        //If current user current job avaiable for him/her
-                        if(lstAllUnassignedJobs != null && stLoggedUserId != stDeliveryNoteOtherJobCurrentUser)
-                        {
-                            Log("Current user will get ANOT job / users variable empty");
-                            stCurrentANOTJobId = recData2.id;
-                            bUserGetCurrentANOTJob = true;
-                            break;
-                        }
+                    if(lstCurrentANOTJobOtherANOTJob.delay_time != null)
+                    {
+                        dtlDeliveryNoteOtherJobDelayTime = lstCurrentANOTJobOtherANOTJob.delay_time.DeclareAsDtl();
+                    }
+
+                    if(stLoggedUserId != stDeliveryNoteOtherJobCurrentUser && dtlDeliveryNoteOtherJobDelayTime == null && recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
+                    {
+                        stCurrentANOTJobId = recData2.id;
+                        bUserGetCurrentANOTJob = true;
+                        break;
                     }
                 }
 
@@ -309,7 +306,8 @@
                         id : stCurrentANOTJobId
                     },{
                         status : "INPROGRESS",
-                        current_user: stLoggedUserId
+                        current_user: stLoggedUserId,
+                        delay_time: null
                     });
 
                     // Insert OR Update the job in ai_scan_job_inprogress table
@@ -348,9 +346,24 @@
 
     if(bCancelDelayCurrentAnotJob)
     {
+        let dtlDelayTime = dtl.Now().DtlAddHours(1).DtlToDtdb();
+
         // Update current job history with new online user
         let stCurrentJobId = form.stLoggedUserSelectedJobId;
         let stCurrentUser = stLoggedUserId;
+
+        // Get current job other job id
+        let lstDeliveryNoteOtherJobs = db.ai_scan_jobs.ReadFields({id: stCurrentJobId},["job_id_2"]);
+
+        let stCurrentDeliveryNoteOtherJobId = "";
+
+        for(let recOtherJob of lstDeliveryNoteOtherJobs)
+        {
+            if(recOtherJob.job_id_2 != stCurrentJobId)
+            {
+                stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
+            }
+        }
 
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
@@ -358,11 +371,19 @@
         },{
             status : "UNCHECKED",
             current_user: null,
-            delay_time: dtl.Now().DtlAddHours(1).DtlToDtdb()
+            delay_time: dtlDelayTime
         });
 
         // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+
+        // Add delay time to other job
+        db.ai_scan_jobs.UpdateMany({
+            id : stCurrentDeliveryNoteOtherJobId
+        },{
+            delay_time: dtlDelayTime
+        });
+
     }
 
     if(bCancelCurrentQAJob)
