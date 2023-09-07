@@ -755,10 +755,38 @@ styles{
 		}
 	}
 
+	style sylTvQAMainHeaderHboxRejected{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = ff0000
+				bold = true
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = center			
+		}
+	}
+
 	style sylQAMainButtonHbox{
 		hbox {
             height = 60px
-            sizes = 140px, 140px, 140px, 140px, 140px, 1
+            sizes = 100px, 120px, 110px, 100px, 140px, 1
         }
 	}
 
@@ -775,14 +803,7 @@ styles{
         }
 	}
 
-	style sylQAMainDeliveryNoteQAHboxNormal{
-		hbox {
-            height = 50px
-            sizes = 160px, 25px, 275px, 10px, 25px, 275px
-        }
-	}
-
-	style sylQAMainDeliveryNoteQAHboxDifferent{
+	style sylQAMainDeliveryNoteQAHbox{
 		hbox {
             height = 50px
             sizes = 160px, 25px, 25px, 250px, 10px, 25px, 25px, 250px
@@ -1226,10 +1247,50 @@ styles{
 		}
 	}
 
+	style sylTvQAItemTableAgentNameRejected{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = ff0000
+				bold = true
+			}
+			margin {
+				top = 0px
+				bottom = 30px
+				left = 6px
+				right = 6px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left			
+		}
+	}
+
 	style sylAgentItemTableHeaderHbox{
 		hbox {
             height = 50px
             sizes = 220px, 220px, 220px, 220px, 220px, 220px, 100px
+			margin{
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
         }
 	}
 
@@ -1237,6 +1298,12 @@ styles{
 		hbox {
             height = 50px
             sizes = 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 100px
+			margin{
+				top = 0px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
         }
 	}
 
@@ -1307,6 +1374,40 @@ styles{
 		}
 	}
 
+	style sylTvItemTableNormalStrikethrough{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				height = 20px
+			}
+			margin {
+				top = 3px
+				bottom = 0px
+				left = 6px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			strikethrough = true
+			textAlign = left			
+		}
+	}
+
 	style sylTvItemTableNormalBold{
 		textview{
 			control{
@@ -1327,7 +1428,7 @@ styles{
 			margin {
 				top = 0px
 				bottom = 0px
-				left = 6px
+				left = 0px
 				right = 0px
 			}
 			padding {
@@ -1457,6 +1558,272 @@ styles{
 				bottom = 0px
 				left = 0px
 				right = 0px
+			}
+		}
+	}
+
+	style sylTbItemTableEdit{
+		textbox{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FFF1CC
+			}
+			margin {
+				top = 2px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left
+		}
+	}
+
+	style sylCbtnItemTableRemoveButton{
+		combinedbutton{
+			control{
+				width = 25px
+				height = 25px
+				iconHeight = 25px
+				iconWidth = 25px
+				iconPosition = left
+				iconSpacing = 0px
+				iconFit = fit
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 0px
+				}
+			}
+			button {
+				width = 25px
+				backgroundColor = FFFFFF
+				borderWidth {
+					top = 0px
+					right = 0px
+					bottom = 0px
+					left = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylCbtnAddNewItemInItemTable{
+		combinedbutton{
+			control{
+				width = 25px
+				height = 25px
+				iconHeight = 25px
+				iconWidth = 25px
+				iconPosition = left
+				iconSpacing = 0px
+				iconFit = fit
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 0px
+				}
+			}
+			button {
+				width = 25px
+				backgroundColor = FFFFFF
+				borderWidth {
+					top = 0px
+					right = 0px
+					bottom = 0px
+					left = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylCbtnBadPhoto{
+		combinedbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FF0000
+				fontColor = FFFFFF
+				fontSize = 14px
+				bold = true
+				width = 100%
+				textAlign = center
+			}
+		}
+	}
+
+	style sylSbtnHandwritten{
+		submitbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FF0000
+				fontColor = FFFFFF
+				fontSize = 14px
+				bold = true
+				width = 100%
+				textAlign = center
+			}
+		}
+	}
+
+	style sylSbtnApprove{
+		submitbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 038a45
+				fontColor = FFFFFF
+				fontSize = 14px
+				bold = true
+				width = 100%
+				textAlign = center
+			}
+		}
+	}
+
+	style sylCbtnCancel{
+		combinedbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 144184
+				fontColor = FFFFFF
+				fontSize = 14px
+				bold = true
+				width = 100%
+				textAlign = center
+			}
+		}
+	}
+
+	style sylCbtnDelayCancel{
+		combinedbutton{
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 144184
+				fontColor = FFFFFF
+				fontSize = 14px
+				bold = true
+				width = 100%
+				textAlign = center
 			}
 		}
 	}
