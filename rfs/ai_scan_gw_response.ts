@@ -6,6 +6,7 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_job_result;
+//# using dacs QATaskDone;
 
 {
     let rgstdtf = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
@@ -334,6 +335,38 @@
                 if(bSameANNOTDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
                 {
                     Log("Perfect Approved Annotations");
+                    //TODO Send QATaskDone with data which is received in this dacs. 
+                    let doneDacs = messages.QATaskDone.New();
+                    Log(stDeliveryNoteId);
+                   doneDacs.dnResponse.avgscoreMustHave = dacs.dnResponse.avgscoreMustHave;
+                   doneDacs.dnResponse.avgscoreOverall = dacs.dnResponse.avgscoreOverall;
+                   doneDacs.dnResponse.guid = stDeliveryNoteId;
+                   doneDacs.dnResponse.requestFileId = stDeliveryNoteJobId;
+                   doneDacs.dnResponse.accepted = 1;
+                   doneDacs.dnResponse.customerAddress = stDeliveryNoteCustomerAddress;
+                   doneDacs.dnResponse.customerName = stDeliveryNoteCustomerName;
+                   doneDacs.dnResponse.deliveryAddress = stDeliveryNoteDeliveryAddress;
+                   doneDacs.dnResponse.deliveryRecipientName = stDeliveryNoteDeliveryRecipientName;
+                   doneDacs.dnResponse.issueDate = stDeliveryNoteIssueDate;
+                   doneDacs.dnResponse.orderNumber = stDeliveryNoteOrderNumber;
+                   doneDacs.dnResponse.supplierAddress = stDeliveryNoteSupplierAddress;
+                   doneDacs.dnResponse.supplierName = stDeliveryNoteSupplierName;
+                   doneDacs.dnResponse.supplierTaxNumber = stDeliveryNoteSupplierTaxNumber;
+                   doneDacs.dnResponse.supplierWarehouse = stDeliveryNoteSupplierWarehouse;
+                   doneDacs.dnResponse.supplierId = stDeliveryNoteSupplierId;
+                   doneDacs.dnResponse.weightGross = stDeliveryNoteWeightGross;
+                   for (let i = 0; i < lstJobDeliveryNoteItemItemName.Count(); i=i+1) {
+                    let item = {
+                    itemName: lstJobDeliveryNoteItemItemName.GetAt(i),
+                    manufacturerItemNumber: lstJobDeliveryNoteItemManufacturerItemNumber.GetAt(i),
+                    taxNumber: lstJobDeliveryNoteItemTaxNumber.GetAt(i),
+                    amount: lstJobDeliveryNoteItemAmount.GetAt(i),
+                    unit: lstJobDeliveryNoteItemUnit.GetAt(i),
+                    grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i)
+                    };
+                    doneDacs.dnResponse.items.Add(item);
+                   }
+                    doneDacs.Send();
                 }            
                 else
                 {

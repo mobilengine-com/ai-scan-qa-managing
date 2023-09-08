@@ -186,7 +186,6 @@
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType != "QA" AND stLoggedUserSelectedJobIsAssigned = 1}'>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
-            <!-- TODO If the job assigned on AI -->
             <linkview id='lvStartAnotJob' text='Click here to start annotation' url='{stLoggedUserSelectedJobLink}' linkIcon='{NULL}' style='{styles.sylLvStartAnotJob}' testId='lvStartAnotJob'/>
             <combinedbutton id='cbtnCancelAnotJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelAnotJob'>
                 <actionbutton>

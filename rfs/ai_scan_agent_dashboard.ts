@@ -314,15 +314,13 @@
                     let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentANOTJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
                     let stUserMail = db.ai_scan_user.ReadFields({id : stLoggedUserId},["email"]).SingleOrDefault().email;
 
-                    Log("AI task assignement sended for user: " + stUserMail +" with the following delivery note id: " + stscanId);
+                    Log("AI task assignement sended for user: " + stUserMail +" with the following annot job id: " + stCurrentANOTJobId);
                     let dacs = messages.AssignAITask.New();
                     dacs.assignTask.scanId = stscanId;
                     dacs.assignTask.requestFileId = stCurrentANOTJobId;
                     dacs.assignTask.agent = stUserMail;
                     dacs.Send();
-                    
 
-                    // Insert OR Update the job in ai_scan_job_inprogress table
                     db.ai_scan_job_inprogress.InsertOrUpdate({
                         job_id : stCurrentANOTJobId
                     },{
@@ -349,11 +347,9 @@
             id : stCurrentJobId
         },{
             status : "UNCHECKED",
-            current_user: null
             current_user: null,
             assigned: 0
         });
-
         // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
     }
@@ -385,7 +381,6 @@
         },{
             status : "UNCHECKED",
             current_user: null,
-            delay_time: dtlDelayTime
             delay_time: dtlDelayTime,
             assigned: 0
         });
