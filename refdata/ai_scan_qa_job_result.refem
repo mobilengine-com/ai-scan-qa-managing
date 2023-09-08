@@ -1,0 +1,10 @@
+<Reftab Name="ai_scan_qa_job_result" Push='true' xmlns="http://schemas.mobilengine.com/reftab/v1">
+	<Columns>
+        <Column Name='job_id' Type='Text' PrimaryKey='true' NotNull='true'/>
+        <Column Name='delivery_note_id' Type='Text'/>
+        <Column Name='user_id' Type='Text'/>
+        <Column Name='user_name' Type='Text'/>
+		<Column Name='result' Type='Text'/>
+        <Column Name='job_work_time_minutes' Type='Integer'/>
+	</Columns>	
+</Reftab>
