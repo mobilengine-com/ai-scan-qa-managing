@@ -59,6 +59,8 @@
             let stCurrentQAJobId = "";
 
             let lstOtherOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE", id: {notEqual : stLoggedUserId}},["id"]);
+            
+
 
             let bUserGetCurrentQAJob = false;            
 
@@ -82,6 +84,19 @@
                 for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "pl_pl", job_type: "QA"},["lang"]))
                 {
                     stCurrentUserQAPLLanguage = recUserLang.lang;
+                }
+                let iOtherUsersWithTheCorrectLang = 0;
+                let lsUsersWithRequiredLang = list.New();
+                for (let userRow of  db.ai_scan_user_language.ReadFields({lang: recData.lang, job_type: "QA"},["user_id"])) {
+                    lsUsersWithRequiredLang.Add(userRow.user_id);
+                }
+                
+                for (let userid of lstOtherOnlineUsers) {
+                    for (let userwl of lsUsersWithRequiredLang) {
+                        if (userid.id == userwl) {
+                            iOtherUsersWithTheCorrectLang=iOtherUsersWithTheCorrectLang+1;
+                        }
+                    }
                 }
 
                 if(recData.type == "QA" && recData.status == "UNCHECKED" && (recData.delay_time == null || dtlTimeNow > recData.delay_time.DeclareAsDtl()) && (recData.lang == stCurrentUserQAHUNLanguage || recData.lang == stCurrentUserQAENGLanguage || recData.lang == stCurrentUserQAPLLanguage))
@@ -139,9 +154,16 @@
                             break;
                         }
                     }
+                    if(lstAllUnassignedJobs != null && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
+                    {
+                        Log("QA job assigned because the user is not assigned in the past to the parent Annot jobs");
+                        stCurrentQAJobId = recData.id;
+                        bUserGetCurrentQAJob = true;
+                        break;
+                    }
 
                     //Current user and 1 other user only online user or Current user only user / other user can do this job because didn't do anot jobs
-                    if(lstAllUnassignedJobs != null && lstOtherOnlineUsers.Count() <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
+                    if(lstAllUnassignedJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
                     {
                         Log("QA Only you + 1 other user");
                         stCurrentQAJobId = recData.id;
@@ -150,7 +172,15 @@
                     }
 
                     //Current user and 1 other user only online user or Current user only user / you can do this job because didn't do anot jobs
-                    if(lstAllUnassignedJobs != null && lstOtherOnlineUsers.Count() <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
+                    if(lstAllUnassignedJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
+                    {
+                        Log("QA Only you + 1 other user");
+                        stCurrentQAJobId = recData.id;
+                        bUserGetCurrentQAJob = true;
+                        break;
+                    }
+
+                    if(lstAllUnassignedJobs != null && iOtherUsersWithTheCorrectLang == 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you + 1 other user");
                         stCurrentQAJobId = recData.id;
@@ -319,6 +349,7 @@
                     dacs.assignTask.scanId = stscanId;
                     dacs.assignTask.requestFileId = stCurrentANOTJobId;
                     dacs.assignTask.agent = stUserMail;
+                    dacs.assignTask.agent = "botond.bakai@mobilengine.com";
                     dacs.Send();
 
                     db.ai_scan_job_inprogress.InsertOrUpdate({

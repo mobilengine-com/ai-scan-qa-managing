@@ -16,11 +16,11 @@
     let stLoggedUserId = form.stLoggedUserId;
     let stSelectedQAJobId = form.stSelectedQAJobId;
     let stSelectedQAJobDeliveryNoteId = form.stSelectedQAJobAnotJobsAgentADeliveryNoteId;
+    let stresult = "";
 
     if(bBadPhoto)
     {
-        Log("Bad photo");
-
+        stresult = "Bad photo";
         //Send DACS
         let dacs = messages.QATaskDone.New();
         dacs.dnResponse.guid = stSelectedQAJobDeliveryNoteId;
@@ -28,9 +28,6 @@
         dacs.dnResponse.avgscoreMustHave = 0.0;
         dacs.dnResponse.avgscoreOverall = 0.0;
         dacs.dnResponse.rejected = 1;
-
-        Log("DACS");
-        Log(dacs);
 
         dacs.Send();
 
@@ -65,7 +62,7 @@
             delivery_note_id: stSelectedQAJobDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
-            result: "Bad photo",
+            result: stresult,
             job_work_time_minutes: iJobWorkTime
         });
 
@@ -82,7 +79,7 @@
 
     if(sbHandwritten.submitter)
     {
-        Log("Handwritten");
+        stresult = "Handwritten";
 
         let stSendAgentCustomerAddress = form.stSendAgentCustomerAddress;
         let stSendAgentCustomerName = form.stSendAgentCustomerName;
@@ -311,9 +308,6 @@
         {
             dacs.dnResponse.items.Add(recDacsData);
         }
-        
-        Log("DACS");
-        Log(dacs);
 
         dacs.Send();
 
@@ -348,7 +342,7 @@
             delivery_note_id: stSelectedQAJobDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
-            result: "Handwritten",
+            result: stresult,
             job_work_time_minutes: iJobWorkTime
         });
 
@@ -365,7 +359,7 @@
 
     if(sbApproved.submitter)
     {
-        Log("Approved");
+        stresult = "Approved";
 
         let stSendAgentCustomerAddress = form.stSendAgentCustomerAddress;
         let stSendAgentCustomerName = form.stSendAgentCustomerName;
@@ -594,9 +588,6 @@
         {
             dacs.dnResponse.items.Add(recDacsData);
         }
-        
-        Log("DACS");
-        Log(dacs);
 
         dacs.Send();
 
@@ -631,7 +622,7 @@
             delivery_note_id: stSelectedQAJobDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
-            result: "Approved",
+            result: stresult,
             job_work_time_minutes: iJobWorkTime
         });
 
@@ -645,6 +636,10 @@
         // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stSelectedQAJobId, user_id : stCurrentJobUserId});
     }
+    if (stresult!="") {
+        Log("QA job with delivery note: "+stSelectedQAJobDeliveryNoteId+" complited with the following result: "+stresult);
+    }
+    
 
     if(bCancel)
     {
