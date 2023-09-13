@@ -17,6 +17,7 @@
     let stSelectedQAJobId = form.stSelectedQAJobId;
     let stSelectedQAJobDeliveryNoteId = form.stSelectedQAJobAnotJobsAgentADeliveryNoteId;
     let stresult = "";
+    let dtlSelectedQAJobDeliveryNoteWorkStartDate = form.dtlSelectedQAJobDeliveryNoteWorkStartDate;
 
     if(bBadPhoto)
     {
@@ -63,6 +64,7 @@
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
             result: stresult,
+            finish_date: dtl.Now().DtlToDtdb(),
             job_work_time_minutes: iJobWorkTime
         });
 
@@ -70,7 +72,9 @@
         db.ai_scan_jobs.UpdateMany({
             id : stSelectedQAJobId
         },{
-            status : "DONE"
+            status : "DONE",
+            delivery_note_work_end_date: dtl.Now().DtlToDtdb(),
+            delivery_note_work_time: dtl.Now().Diff(dtlSelectedQAJobDeliveryNoteWorkStartDate).TotalHours
         });
 
         // Delete the job in ai_scan_job_inprogress table
@@ -343,6 +347,7 @@
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
             result: stresult,
+            finish_date: dtl.Now().DtlToDtdb(),
             job_work_time_minutes: iJobWorkTime
         });
 
@@ -350,7 +355,9 @@
         db.ai_scan_jobs.UpdateMany({
             id : stSelectedQAJobId
         },{
-            status : "DONE"
+            status : "DONE",
+            delivery_note_work_end_date: dtl.Now().DtlToDtdb(),
+            delivery_note_work_time: dtl.Now().Diff(dtlSelectedQAJobDeliveryNoteWorkStartDate).TotalHours
         });
 
         // Delete the job in ai_scan_job_inprogress table
@@ -623,6 +630,7 @@
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
             result: stresult,
+            finish_date: dtl.Now().DtlToDtdb(),
             job_work_time_minutes: iJobWorkTime
         });
 
@@ -630,7 +638,9 @@
         db.ai_scan_jobs.UpdateMany({
             id : stSelectedQAJobId
         },{
-            status : "DONE"
+            status : "DONE",
+            delivery_note_work_end_date: dtl.Now().DtlToDtdb(),
+            delivery_note_work_time: dtl.Now().Diff(dtlSelectedQAJobDeliveryNoteWorkStartDate).TotalHours
         });
 
         // Delete the job in ai_scan_job_inprogress table

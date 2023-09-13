@@ -4,6 +4,7 @@
         <Column Name='delivery_note_id' Type='Text'/>
         <Column Name='user_id' Type='Text'/>
         <Column Name='user_name' Type='Text'/>
+        <Column Name='finish_date' Type='Date'/>
 		<Column Name='result' Type='Text'/>
         <Column Name='job_work_time_minutes' Type='Integer'/>
 	</Columns>	

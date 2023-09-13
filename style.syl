@@ -1828,4 +1828,2628 @@ styles{
 		}
 	}
 
+	style sylHboxQueueText{
+		hbox{
+			height = 30px
+            sizes = 300px, 1
+			margin {
+				top = 30px
+				bottom = 10px
+				left = 12px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvQueueText{
+		textview{
+			textAlign = left
+			fontSize = 18px
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxNowJobsText{
+		hbox{
+			height = 20px
+            sizes = 300px, 1
+			margin {
+				top = 10px
+				bottom = 10px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvNowJobsText{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxNowDeliveryNotes{
+		hbox{
+			height = 110px
+            sizes = 588px,1
+			margin {
+				top = 10px
+				bottom = 0px
+				left = 12px
+				right = 0px
+			}
+		}
+	}
+
+	style sylHboxNowDeliveryNotesInner{
+		hbox{
+			height = 100px
+            sizes = 580px
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			borderWidth {
+                    left = 1px
+                    right = 1px
+                    top = 1px
+                    bottom = 1px
+                }
+			borderColor = 000000
+			backgroundColor = F0F0F0
+		}
+	}
+
+	style sylHboxANOTAndQANowStatsTeamText{
+		hbox{
+			height = 20px
+            sizes = 600px, 50px, 600px, 1
+			margin {
+				top = 10px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvTeamAnotJobNowText{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvTeamQAJobNowText{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxANOTNowStatsInner{
+		hbox{
+			height = 100px
+            sizes = 580px
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			borderWidth {
+                    left = 1px
+                    right = 1px
+                    top = 1px
+                    bottom = 1px
+                }
+			borderColor = 000000
+			backgroundColor = F0F0F0
+		}
+	}
+
+	style sylHboxQANowStatsInner{
+		hbox{
+			height = 100px
+            sizes = 580px
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			borderWidth {
+                    left = 1px
+                    right = 1px
+                    top = 1px
+                    bottom = 1px
+                }
+			borderColor = 000000
+			backgroundColor = F0F0F0
+		}
+	}
+
+	style sylHboxOutputText{
+		hbox{
+			height = 30px
+            sizes = 300px, 1
+			margin {
+				top = 30px
+				bottom = 10px
+				left = 12px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvOutputText{
+		textview{
+			textAlign = left
+			fontSize = 18px
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylDdDateFilter{
+		dropdown{
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 12px
+				right = 0px
+			}
+			padding {
+				top = 6px
+				bottom = 6px
+				left = 0px
+				right = 0px
+			}
+			control{
+				width = 150px
+			}
+			button{
+				width = 150px
+			}
+		}
+	}
+
+	style sylHboxDpDate{
+		hbox{
+			height = 50px
+            sizes = 160px, 16px, 160px, 1
+			margin {
+				top = 10px
+				bottom = 10px
+				left = 6px
+				right = 0px
+			}
+		}
+	}
+
+	style sylDpDate{
+		datepicker{
+			control{
+				width = 150px
+			}
+		}
+	}
+
+	style sylTvDateSep{
+		textview{
+			fontColor = 1B4384
+			control{
+				width = 15px
+			}
+		}
+	}
+
+	style sylHboxOutputJobsText{
+		hbox{
+			height = 20px
+            sizes = 300px, 1
+			margin {
+				top = 10px
+				bottom = 10px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvOutputJobsText{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxOutputDeliveryNotes{
+		hbox{
+			height = 110px
+            sizes = 588px,1
+			margin {
+				top = 10px
+				bottom = 0px
+				left = 12px
+				right = 0px
+			}
+		}
+	}
+
+	style sylHboxOutputDeliveryNotesInner{
+		hbox{
+			height = 100px
+            sizes = 580px
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			borderWidth {
+                    left = 1px
+                    right = 1px
+                    top = 1px
+                    bottom = 1px
+                }
+			borderColor = 000000
+			backgroundColor = F0F0F0
+		}
+	}
+
+	style sylHboxCurrentOnline{
+		hbox{
+			height = 20px
+            sizes = 300px, 1
+			margin {
+				top = 10px
+				bottom = 10px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCurrentOnlineUsers{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxTeamText{
+		hbox{
+			height = 20px
+            sizes = 600px, 50px, 600px, 1
+			margin {
+				top = 10px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvTeamANOTText{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 12px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvTeamQAText{
+		textview{
+			textAlign = left
+			bold = true
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 200px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style syltblStats{
+		table{
+			control {
+                borderWidth {
+                    top = 0px
+                    bottom = 0px
+					left = 0px
+					right = 0px
+                }
+            }
+
+			padding {
+				left = 6px
+				right = 6px
+				top = 0px
+				bottom = 0px
+			}
+
+			columnWidth = 600px, 50px, 600px
+			body = syltblStats
+		}
+		row {
+			content = syltblStats
+			borderWidth {
+                top = 0px
+                bottom = 0px
+				left = 0px
+				right = 0px
+            }
+		}
+		cell {
+            borderWidth {
+                top = 0px
+                bottom = 0px
+				left = 0px
+				right = 0px
+            }
+        }
+	}
+
+	style syltblTeamANOT{
+		table{
+			control {
+                borderWidth {
+                    top = 1px
+                    bottom = 1px
+					left = 1px
+					right = 1px
+                }
+				backgroundColor = F0F0F0
+				borderColor = 000000
+            }
+
+			columnWidth = 600px
+			header = syltblTeamANOT
+			body = syltblTeamANOT
+		}
+		row {
+			content = syltblTeamANOT
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+		cell {
+            borderWidth {
+                top = 0px
+                bottom = 0px
+				left = 0px
+				right = 0px
+            }
+        }
+	}
+
+	style syltblTeamQA{
+		table{
+			control {
+                borderWidth {
+                    top = 1px
+                    bottom = 1px
+					left = 1px
+					right = 1px
+                }
+				backgroundColor = F0F0F0
+				borderColor = 000000
+            }
+
+			columnWidth = 600px
+			header = syltblTeamQA
+			body = syltblTeamQA
+		}
+		row {
+			content = syltblTeamQA
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+		}
+		cell {
+            borderWidth {
+                top = 0px
+                bottom = 0px
+				left = 0px
+				right = 0px
+            }
+        }
+	}
+
+	style sylHboxCordinatorStatsAnotJobs{
+		hbox{
+			height = 100%
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 10px
+				bottom = 10px
+				left = 20px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotJobsHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotJobsText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 60px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotJobs{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxCordinatorStatsQAJobs{
+		hbox{
+			height = 100%
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 10px
+				bottom = 10px
+				left = 20px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAJobsHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAJobsText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 60px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAJobs{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxCordinatorStatsAnotUsers{
+		hbox{
+			height = 100%
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 20px
+				bottom = 10px
+				left = 20px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotUsersLangHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotUsersName{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 100px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotUsersOnline{
+		textview{
+			textAlign = center
+			backgroundColor = 038a45
+			fontColor = FFFFFF
+			bold = true
+			underline = false
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 6px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotUsersOffline{
+		textview{
+			textAlign = center
+			backgroundColor = 6B6B6B
+			fontColor = FFFFFF
+			bold = true
+			underline = false
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 6px
+				}
+			}
+		}
+	}
+
+	style sylAbtnCordinatorStatsAnotUsersLanguageYes{
+		actionbutton{
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 5px
+					bottom = 5px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 1B4384
+				fontColor = FFFFFF
+				bold = true
+				width = 80px
+				textAlign = center
+			}
+		}
+	}
+
+	style sylAbtnCordinatorStatsAnotUsersLanguageNo{
+		actionbutton{
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 5px
+					bottom = 5px
+					left = 0px
+					right = 0px
+				}
+				borderWidth { 
+					top = 1px
+					bottom = 1px
+					left = 1px 
+					right = 1px
+				}
+				backgroundColor = FFFFFF
+				borderColor = 1B4384
+				fontColor = 1B4384
+				bold = true
+				width = 80px
+				textAlign = center
+			}
+		}
+	}
+
+	style sylHboxCordinatorStatsQAUsers{
+		hbox{
+			height = 100%
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 20px
+				bottom = 10px
+				left = 20px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAUsersLangHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAUsersName{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 100px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAUsersOnline{
+		textview{
+			textAlign = center
+			backgroundColor = 038a45
+			fontColor = FFFFFF
+			bold = true
+			underline = false
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 6px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAUsersOffline{
+		textview{
+			textAlign = center
+			backgroundColor = 6B6B6B
+			fontColor = FFFFFF
+			bold = true
+			underline = false
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 6px
+					right = 6px
+				}
+			}
+		}
+	}
+
+	style sylAbtnCordinatorStatsQAUsersLanguageYes{
+		actionbutton{
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 5px
+					bottom = 5px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = 1B4384
+				fontColor = FFFFFF
+				bold = true
+				width = 80px
+				textAlign = center
+			}
+		}
+	}
+
+	style sylAbtnCordinatorStatsQAUsersLanguageNo{
+		actionbutton{
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			button{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 5px
+					bottom = 5px
+					left = 0px
+					right = 0px
+				}
+				borderWidth { 
+					top = 1px
+					bottom = 1px
+					left = 1px 
+					right = 1px
+				}
+				backgroundColor = FFFFFF
+				borderColor = 1B4384
+				fontColor = 1B4384
+				bold = true
+				width = 80px
+				textAlign = center
+			}
+		}
+	}
+
+	style sylHboxCordinatorStatsAnotUsersStats{
+		hbox{
+			height = 100%
+            sizes = 110px, 80px, 1
+			margin {
+				top = 20px
+				bottom = 20px
+				left = 20px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotUsersCurrentJobTimeText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 100px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsAnotUsersCurrentJobTime{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 100px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxCordinatorStatsQAUsersStats{
+		hbox{
+			height = 100%
+            sizes = 110px, 80px, 1
+			margin {
+				top = 20px
+				bottom = 20px
+				left = 20px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAUsersCurrentJobTimeText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 100px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvCordinatorStatsQAUsersCurrentJobTime{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 100px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxCordinatorOutputDeliveryNotesStats{
+		hbox{
+			height = 22px
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 30px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorOutputDeliveryNotesStatsHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvOutputDeliveryNotesStatsText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvOutputDeliveryNotesStats{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxANOTAndQANowStats{
+		hbox{
+			height = 110px
+            sizes = 588px, 62px, 588px, 1
+			margin {
+				top = 10px
+				bottom = 0px
+				left = 12px
+				right = 0px
+			}
+		}
+	}
+
+	style sylHboxCordinatorANOTNowStats{
+		hbox{
+			height = 22px
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 30px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorANOTNowStatsHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvANOTNowStatsText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvANOTNowStats{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxCordinatorQANowStats{
+		hbox{
+			height = 22px
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 30px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorQANowStatsHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvQANowStatsText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvQANowStats{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylHboxCordinatorNowDeliveryNotesStats{
+		hbox{
+			height = 22px
+            sizes = 110px, 80px, 10px, 80px, 10px, 80px, 10px, 80px, 1
+			margin {
+				top = 00px
+				bottom = 0px
+				left = 30px
+				right = 0px
+			}
+		}
+	}
+
+	style sylTvCordinatorNowDeliveryNotesStatsHeader{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvNowDeliveryNotesStatsText{
+		textview{
+			textAlign = left
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = left
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style sylTvNowDeliveryNotesStats{
+		textview{
+			textAlign = center
+			fontColor = 1B4384
+			borderWidth {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			control{
+				textAlign = center
+				width = 80px
+				borderWidth {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+		}
+	}
+
+	style chapterTopBorder {
+		chapter {
+			title{
+				borderWidth {
+					top = 1px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+			}
+			control{
+				margin{
+					top = 0px
+					bottom = 0px
+					left = 20px
+					right = 0px
+				}
+				width = 500px
+				height = 1px
+			}
+		}	
+	}
+
 }

@@ -8,6 +8,10 @@
 		<Column Name='supplier_id' Type='Text'/>
 		<Column Name='lang' Type='Text'/>
 		<Column Name='current_user' Type='Text'/>
+		<Column Name='delivery_note_id' Type='Text'/>
+		<Column Name='delivery_note_work_start_date' Type='Date'/>
+		<Column Name='delivery_note_work_end_date' Type='Date'/>
+		<Column Name='delivery_note_work_time' Type='Float'/>
 		<Column Name='create_date' Type='Date'/>
 		<Column Name='delay_time' Type='Date'/>
 		<Column Name='job_id_2' Type='Text'/>

@@ -1,4 +1,170 @@
 <form id='ai_scan_coordinator_dashboard' platforms='web' dashboard='true' menuName='Dashboard' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
+    <declarations>
+        <let id='dtlNow' shape='scalar' access='private' value='{dtlNow()}'/>
+
+        <let id='fNowHours' shape='scalar' value='{TOFLOAT(GETHOUR(dtlNow))}'/>
+        <let id='fNowMinutes' shape='scalar' value='{TOFLOAT(GETMINUTE(dtlNow))}'/>
+        <let id='fNowSeconds' shape='scalar' value='{TOFLOAT(GETSECOND(dtlNow))}'/>
+
+        <let id='dtlMinDate' shape='scalar' access='private' value='{TODATE(1000,1,1,0,0,0)}'/>
+		<let id='dtlMaxDate' shape='scalar' access='private' value='{TODATE(2999,12,31,0,0,0)}'/>
+        <let id='ltblUsers' shape='table' access='private' 
+            value='{loadNewerFromServer: SELECT
+                        U.id,
+                        U.name,
+                        U.status,
+                        CASE U.status
+                            WHEN "ONLINE" THEN 1
+                            ELSE 2 
+                        END iStatusOrder
+                    FROM
+                        ai_scan_user U
+                    ORDER BY
+                        iStatusOrder
+            }'
+        />
+
+        <let id='iCurrentOnlineUsers' shape='scalar' value='{SELECT COUNT(0) FROM ltblUsers U WHERE U.status = "ONLINE"}'/>
+
+        <let id='ltblNowDeliveryNote' shape='table' 
+            value='{SELECT
+                        J.delivery_note_id delivery_note_id,
+                        J.delivery_note_work_start_date delivery_note_work_start_date,
+                        J.lang lang,
+                        CASE WHEN ((fNowHours*60)+fNowMinutes+(fNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))
+                        THEN
+                            ((((dtlNow-J.delivery_note_work_start_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))/60)-24)
+                        ELSE
+                            ((((dtlNow-J.delivery_note_work_start_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))/60)
+                        END
+                         hours_time_calculator
+                    FROM
+                        ai_scan_jobs J
+                    WHERE
+                        J.type = "ANOT"
+                        AND J.status = "UNCHECKED"
+                        AND J.job_id_2 IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.type = "ANOT" AND J3.status = "UNCHECKED")
+                    GROUP BY
+                        J.delivery_note_id
+            }'
+        />
+
+        <let id='iNowDeliveryNoteTotal' shape='scalar' value='{SELECT COUNT(NDN.delivery_note_id) FROM ltblNowDeliveryNote NDN}'/>
+        <let id='iNowDeliveryNoteHUN' shape='scalar' value='{SELECT COUNT(NDN.delivery_note_id) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "hu_hu"}'/>
+        <let id='iNowDeliveryNoteENG' shape='scalar' value='{SELECT COUNT(NDN.delivery_note_id) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "eng_eng"}'/>
+        <let id='iNowDeliveryNotePL' shape='scalar' value='{SELECT COUNT(NDN.delivery_note_id) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "pl_pl"}'/>
+
+        <let id='fNowDeliveryNoteAVGTotal' shape='scalar' value='{SELECT AVG(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN}'/>
+        <let id='fNowDeliveryNoteAVGHUN' shape='scalar' value='{SELECT AVG(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "hu_hu"}'/>
+        <let id='fNowDeliveryNoteAVGENG' shape='scalar' value='{SELECT AVG(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "eng_eng"}'/>
+        <let id='fNowDeliveryNoteAVGPL' shape='scalar' value='{SELECT AVG(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "pl_pl"}'/>
+
+        <let id='fNowDeliveryNoteOldestTotal' shape='scalar' value='{SELECT MAX(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN}'/>
+        <let id='fNowDeliveryNoteOldestHUN' shape='scalar' value='{SELECT MAX(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "hu_hu"}'/>
+        <let id='fNowDeliveryNoteOldestENG' shape='scalar' value='{SELECT MAX(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "eng_eng"}'/>
+        <let id='fNowDeliveryNoteOldestPL' shape='scalar' value='{SELECT MAX(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "pl_pl"}'/>
+
+        <let id='ltblNowANOTAndQA' shape='table' 
+            value='{SELECT
+                        J.delivery_note_id delivery_note_id,
+                        J.delivery_note_work_start_date delivery_note_work_start_date,
+                        J.lang lang,
+                        J.type job_type,
+                        CASE WHEN ((fNowHours*60)+fNowMinutes+(fNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))
+                        THEN
+                            ((((dtlNow-J.delivery_note_work_start_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))/60)-24)
+                        ELSE
+                            ((((dtlNow-J.delivery_note_work_start_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))/60)
+                        END
+                         hours_time_calculator
+                    FROM
+                        ai_scan_jobs J
+                    WHERE
+                        J.status = "UNCHECKED"
+                    AND
+                    (
+                        J.id NOT IN (SELECT J3.job_id_2 FROM ai_scan_jobs J3 WHERE J3.type = "QA") 
+                        AND J.id NOT IN (SELECT J3.job_id_3 FROM ai_scan_jobs J3 WHERE J3.type = "QA")
+                    )
+                    AND
+                    (
+                        J.job_id_2 IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.type = "ANOT")
+                    )                   
+            }'
+        />
+
+        <let id='iNowANOTTotal' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT"}'/>
+        <let id='iNowANOTHUN' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "hu_hu"}'/>
+        <let id='iNowANOTENG' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "eng_eng"}'/>
+        <let id='iNowANOTPL' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "pl_pl"}'/>
+
+        <let id='fNowANOTAVGTotal' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT"}'/>
+        <let id='fNowANOTAVGHUN' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "hu_hu"}'/>
+        <let id='fNowANOTAVGENG' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "eng_eng"}'/>
+        <let id='fNowANOTAVGPL' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "pl_pl"}'/>
+
+        <let id='fNowANOTOldestTotal' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT"}'/>
+        <let id='fNowANOTOldestHUN' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "hu_hu"}'/>
+        <let id='fNowANOTOldestENG' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "eng_eng"}'/>
+        <let id='fNowANOTOldestPL' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "ANOT" AND NANOTAQA.lang = "pl_pl"}'/>
+
+        <let id='iNowQATotal' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA"}'/>
+        <let id='iNowQAHUN' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "hu_hu"}'/>
+        <let id='iNowQAENG' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "eng_eng"}'/>
+        <let id='iNowQAPL' shape='scalar' value='{SELECT COUNT(NANOTAQA.delivery_note_id) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "pl_pl"}'/>
+
+        <let id='fNowQAAVGTotal' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA"}'/>
+        <let id='fNowQAAVGHUN' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "hu_hu"}'/>
+        <let id='fNowQAAVGENG' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "eng_eng"}'/>
+        <let id='fNowQAAVGPL' shape='scalar' value='{SELECT AVG(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "pl_pl"}'/>
+
+        <let id='fNowQAOldestTotal' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA"}'/>
+        <let id='fNowQAOldestHUN' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "hu_hu"}'/>
+        <let id='fNowQAOldestENG' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "eng_eng"}'/>
+        <let id='fNowQAOldestPL' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "pl_pl"}'/>
+
+        <let id='ltblOutputDeliveryNotes' shape='table' 
+            value='{SELECT
+                        J.delivery_note_id delivery_note_id,
+                        J.delivery_note_work_time delivery_note_work_time,
+                        J.lang lang
+                    FROM
+                        ai_scan_jobs J
+                    WHERE
+                        J.status = "DONE"
+                        AND
+                        (
+                            J.id NOT IN (SELECT J3.job_id_2 FROM ai_scan_jobs J3 WHERE J3.type = "QA") 
+                            AND J.id NOT IN (SELECT J3.job_id_3 FROM ai_scan_jobs J3 WHERE J3.type = "QA")
+                        )
+                        AND
+                        (
+                            J.job_id_2 IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.type = "ANOT" AND J3.status = "DONE")
+                        )
+                        AND
+                        CASE 
+                            WHEN ddDateFilter.selectedKey = 1 THEN STARTOFDAY(J.delivery_note_work_end_date) = STARTOFDAY(sysp.dtlFormOpen)
+                            WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(dpToDate.date)
+                            ELSE STARTOFDAY(J.delivery_note_work_end_date) = STARTOFDAY(sysp.dtlFormOpen)
+                        END
+                    GROUP BY J.delivery_note_id                    
+            }'
+        />
+        <let id='iOutputDeliveryNoteTotal' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN}'/>
+        <let id='iOutputDeliveryNoteHUN' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "hu_hu"}'/>
+        <let id='iOutputDeliveryNoteENG' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "eng_eng"}'/>
+        <let id='iOutputDeliveryNotePL' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "pl_pl"}'/>
+
+        <let id='fOutputDeliveryNoteAVGTotal' shape='scalar' value='{SELECT AVG(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN}'/>
+        <let id='fOutputDeliveryNoteAVGHUN' shape='scalar' value='{SELECT AVG(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "hu_hu"}'/>
+        <let id='fOutputDeliveryNoteAVGENG' shape='scalar' value='{SELECT AVG(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "eng_eng"}'/>
+        <let id='fOutputDeliveryNoteAVGPL' shape='scalar' value='{SELECT AVG(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "pl_pl"}'/>
+
+        <let id='fOutputDeliveryNoteOldestTotal' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN}'/>
+        <let id='fOutputDeliveryNoteOldestHUN' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "hu_hu"}'/>
+        <let id='fOutputDeliveryNoteOldestENG' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "eng_eng"}'/>
+        <let id='fOutputDeliveryNoteOldestPL' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "pl_pl"}'/>
+    </declarations>
     <header></header>
 
     <hbox style='{styles.sylTabsAndSaveButtonHbox}'>
@@ -6,6 +172,613 @@
         <submitbutton id='sbtnAgent' text='Agent' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabInActive}' testId='sbtnAgent'/>
         <submitbutton id='sbtnSetting' text='Setting' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='sbtnSetting'/>
         <textview text=''/>
-        <submitbutton id='sbtnSave' text='Save' nextForm='{forms.ai_scan_setting}' style='{styles.sylSbtnSave}' testId='sbtnSave'/>
+        <if cond='{changed}'>
+            <submitbutton id='sbtnSave' text='Save' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylSbtnSave}' testId='sbtnSave'/>
+        </if>
+        <if cond='{NOT changed}'>
+            <textview text=''/>
+        </if>
     </hbox>
+
+    <hbox style='{styles.sylHboxQueueText}'>
+        <textview id='tvQueueText' text='{"Queue"}' style='{styles.sylTvQueueText}' testId='tvQueueText'/>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxNowJobsText}'>
+        <textview id='tvNowJobsText' text='{"JOBS: ALL DELIVERY NOTES"}' style='{styles.sylTvNowJobsText}' testId='tvNowJobsText'/>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxNowDeliveryNotes}'>
+        <block>
+            <hbox style='{styles.sylHboxNowDeliveryNotesInner}'>
+                <block>
+                    <hbox style='{styles.sylHboxCordinatorNowDeliveryNotesStats}'>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsSUMHeader' text='SUM' style='{styles.sylTvCordinatorNowDeliveryNotesStatsHeader}' testId='{"tvCordinatorNowDeliveryNotesStatsSUMHeader"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorNowDeliveryNotesStatsENGHeader' text='ENG' style='{styles.sylTvCordinatorNowDeliveryNotesStatsHeader}' testId='{"tvCordinatorNowDeliveryNotesStatsENGHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsHUNHeader' text='HUN' style='{styles.sylTvCordinatorNowDeliveryNotesStatsHeader}' testId='{"tvCordinatorNowDeliveryNotesStatsHUNHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsPLHeader' text='PL' style='{styles.sylTvCordinatorNowDeliveryNotesStatsHeader}' testId='{"tvCordinatorNowDeliveryNotesStatsPLHeader"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorNowDeliveryNotesStats}'>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsTotalText' text='{"TOTAL"}' style='{styles.sylTvNowDeliveryNotesStatsText}' testId='{"tvCordinatorNowDeliveryNotesStatsTotalText"}'/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsTotalSum' text='{TOSTRING(iNowDeliveryNoteTotal)}' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsTotalSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsTotalENG' text='{TOSTRING(iNowDeliveryNoteENG)}' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsTotalENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsTotalHUN' text='{TOSTRING(iNowDeliveryNoteHUN)}' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsTotalHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsTotalPL' text='{TOSTRING(iNowDeliveryNotePL)}' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsTotalPL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorNowDeliveryNotesStats}'>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsAVGTimeText' text='{"AVG TIME h"}' style='{styles.sylTvNowDeliveryNotesStatsText}' testId='{"tvCordinatorNowDeliveryNotesStatsAVGTimeText"}'/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsAVGTimeSum' text='{CASE WHEN fNowDeliveryNoteAVGTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteAVGTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsAVGTimeSum"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorNowDeliveryNotesStatsAVGTimeENG' text='{CASE WHEN fNowDeliveryNoteAVGENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteAVGENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsAVGTimeENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsAVGTimeHUN' text='{CASE WHEN fNowDeliveryNoteAVGHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteAVGHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsAVGTimeHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsAVGTimePL' text='{CASE WHEN fNowDeliveryNoteAVGPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteAVGPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsAVGTimePL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorNowDeliveryNotesStats}'>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsOldestTimeText' text='{"OLDEST h"}' style='{styles.sylTvNowDeliveryNotesStatsText}' testId='{"tvCordinatorNowDeliveryNotesStatsOldestTimeText"}'/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsOldestTimeSum' text='{CASE WHEN fNowDeliveryNoteOldestTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteOldestTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsOldestTimeSum"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorNowDeliveryNotesStatsOldestTimeENG' text='{CASE WHEN fNowDeliveryNoteOldestENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteOldestENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsOldestTimeENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsOldestTimeHUN' text='{CASE WHEN fNowDeliveryNoteOldestHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteOldestHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsOldestTimeHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorNowDeliveryNotesStatsOldestTimePL' text='{CASE WHEN fNowDeliveryNoteOldestPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowDeliveryNoteOldestPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvNowDeliveryNotesStats}' testId='{"tvCordinatorNowDeliveryNotesStatsOldestTimePL"}'/>
+                    </hbox>
+                </block>
+            </hbox>            
+        </block>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxANOTAndQANowStatsTeamText}'>
+        <textview id='tvTeamAnotJobNowText' text='{"JOBS: ANNOTATIONS"}' style='{styles.sylTvTeamAnotJobNowText}' testId='tvTeamAnotJobNowText'/>
+        <textview text=''/>
+        <textview id='tvTeamQAJobNowText' text='{"JOBS: QA"}' style='{styles.sylTvTeamQAJobNowText}' testId='tvTeamQAJobNowText'/>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxANOTAndQANowStats}'>
+        <block>
+            <hbox style='{styles.sylHboxANOTNowStatsInner}'>
+                <block>
+                    <hbox style='{styles.sylHboxCordinatorANOTNowStats}'>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsSUMHeader' text='SUM' style='{styles.sylTvCordinatorANOTNowStatsHeader}' testId='{"tvCordinatorANOTNowStatsSUMHeader"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorANOTNowStatsENGHeader' text='ENG' style='{styles.sylTvCordinatorANOTNowStatsHeader}' testId='{"tvCordinatorANOTNowStatsENGHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsHUNHeader' text='HUN' style='{styles.sylTvCordinatorANOTNowStatsHeader}' testId='{"tvCordinatorANOTNowStatsHUNHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsPLHeader' text='PL' style='{styles.sylTvCordinatorANOTNowStatsHeader}' testId='{"tvCordinatorANOTNowStatsPLHeader"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorANOTNowStats}'>
+                        <textview id='tvCordinatorANOTNowStatsTotalText' text='{"TOTAL"}' style='{styles.sylTvANOTNowStatsText}' testId='{"tvCordinatorANOTNowStatsTotalText"}'/>
+                        <textview id='tvCordinatorANOTNowStatsTotalSum' text='{TOSTRING(iNowANOTTotal)}' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsTotalSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsTotalENG' text='{TOSTRING(iNowANOTENG)}' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsTotalENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsTotalHUN' text='{TOSTRING(iNowANOTHUN)}' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsTotalHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsTotalPL' text='{TOSTRING(iNowANOTPL)}' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsTotalPL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorANOTNowStats}'>
+                        <textview id='tvCordinatorANOTNowStatsAVGText' text='{"AVG TIME h"}' style='{styles.sylTvANOTNowStatsText}' testId='{"tvCordinatorANOTNowStatsAVGText"}'/>
+                        <textview id='tvCordinatorANOTNowStatsAVGSum' text='{CASE WHEN fNowANOTAVGTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTAVGTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsAVGSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsAVGENG' text='{CASE WHEN fNowANOTAVGENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTAVGENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsAVGENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsAVGHUN' text='{CASE WHEN fNowANOTAVGHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTAVGHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsAVGHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsAVGPL' text='{CASE WHEN fNowANOTAVGPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTAVGPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsAVGPL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorANOTNowStats}'>
+                        <textview id='tvCordinatorANOTNowStatsOldestText' text='{"OLDEST h"}' style='{styles.sylTvANOTNowStatsText}' testId='{"tvCordinatorANOTNowStatsOldestText"}'/>
+                        <textview id='tvCordinatorANOTNowStatsOldestSum' text='{CASE WHEN fNowANOTOldestTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTOldestTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsOldestSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsOldestENG' text='{CASE WHEN fNowANOTOldestENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTOldestENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsOldestENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsOldestHUN' text='{CASE WHEN fNowANOTOldestHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTOldestHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsOldestHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorANOTNowStatsOldestPL' text='{CASE WHEN fNowANOTOldestPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowANOTOldestPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvANOTNowStats}' testId='{"tvCordinatorANOTNowStatsOldestPL"}'/>
+                    </hbox>
+                </block>
+            </hbox>            
+        </block>
+        <textview text=''/>
+        <block>
+            <hbox style='{styles.sylHboxQANowStatsInner}'>
+                <block>
+                    <hbox style='{styles.sylHboxCordinatorQANowStats}'>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsSUMHeader' text='SUM' style='{styles.sylTvCordinatorQANowStatsHeader}' testId='{"tvCordinatorQANowStatsSUMHeader"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorQANowStatsENGHeader' text='ENG' style='{styles.sylTvCordinatorQANowStatsHeader}' testId='{"tvCordinatorQANowStatsENGHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsHUNHeader' text='HUN' style='{styles.sylTvCordinatorQANowStatsHeader}' testId='{"tvCordinatorQANowStatsHUNHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsPLHeader' text='PL' style='{styles.sylTvCordinatorQANowStatsHeader}' testId='{"tvCordinatorQANowStatsPLHeader"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorQANowStats}'>
+                        <textview id='tvCordinatorQANowStatsTotalText' text='{"TOTAL"}' style='{styles.sylTvQANowStatsText}' testId='{"tvCordinatorQANowStatsTotalText"}'/>
+                        <textview id='tvCordinatorQANowStatsTotalSum' text='{TOSTRING(iNowQATotal)}' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsTotalSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsTotalENG' text='{TOSTRING(iNowQAENG)}' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsTotalENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsTotalHUN' text='{TOSTRING(iNowQAHUN)}' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsTotalHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsTotalPL' text='{TOSTRING(iNowQAPL)}' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsTotalPL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorQANowStats}'>
+                        <textview id='tvCordinatorQANowStatsAVGText' text='{"AVG TIME h"}' style='{styles.sylTvQANowStatsText}' testId='{"tvCordinatorQANowStatsAVGText"}'/>
+                        <textview id='tvCordinatorQANowStatsAVGSum' text='{CASE WHEN fNowQAAVGTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAAVGTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsAVGSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsAVGENG' text='{CASE WHEN fNowQAAVGENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAAVGENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsAVGENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsAVGHUN' text='{CASE WHEN fNowQAAVGHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAAVGHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsAVGHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsAVGPL' text='{CASE WHEN fNowQAAVGPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAAVGPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsAVGPL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorQANowStats}'>
+                        <textview id='tvCordinatorQANowStatsOldestText' text='{"OLDEST h"}' style='{styles.sylTvQANowStatsText}' testId='{"tvCordinatorQANowStatsOldestText"}'/>
+                        <textview id='tvCordinatorQANowStatsOldestSum' text='{CASE WHEN fNowQAOldestTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAOldestTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsOldestSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsOldestENG' text='{CASE WHEN fNowQAOldestENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAOldestENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsOldestENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsOldestHUN' text='{CASE WHEN fNowQAOldestHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAOldestHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsOldestHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorQANowStatsOldestPL' text='{CASE WHEN fNowQAOldestPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fNowQAOldestPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvQANowStats}' testId='{"tvCordinatorQANowStatsOldestPL"}'/>
+                    </hbox>
+                </block>
+            </hbox>            
+        </block>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxOutputText}'>
+        <textview id='tvOutputText' text='{"Output"}' style='{styles.sylTvOutputText}' testId='tvOutputText'/>
+        <textview text=''/>
+    </hbox>
+
+    <dropdown id='ddDateFilter'
+        choices='{TABLE key, value 
+                    (1, "Today"; 
+                    2, "Custom")}' 
+        keyMap='{key}' textMap='{value}' noneText='{"SELECT TODAY OR CUSTOM DATE"}' selectedKey='{SELECT 1}' style='{styles.sylDdDateFilter}' testId='{"ddDateFilter"}'
+    />
+
+    <if cond='{ddDateFilter.selectedKey == 2}' deferred='true'>
+        <hbox style='{styles.sylHboxDpDate}'>
+            <datepicker id='dpFromDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"ERROR"}' style='{styles.sylDpDate}' access='private' testId='{"dpFromDate"}'>
+                <validation>
+                    <validator cond='{date BETWEEN dtlMinDate AND dtlMaxDate}' message='{"FROM DATE ERROR"}'/> 
+                </validation>
+            </datepicker>
+            <textview text = '-' access='private' style='{styles.sylTvDateSep}'/>
+            <datepicker id='dpToDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"ERROR"}' style='{styles.sylDpDate}' access='private' testId='{"dpToDate"}'>
+                <validation>
+                    <validator cond='{date BETWEEN dtlMinDate AND dtlMaxDate}' message='{"TO DATE ERROR"}'/> 
+                </validation>
+            </datepicker>
+        </hbox>      
+    </if>
+
+    <hbox style='{styles.sylHboxOutputJobsText}'>
+        <textview id='tvOutputJobsText' text='{"JOBS: ALL DELIVERY NOTES"}' style='{styles.sylTvOutputJobsText}' testId='tvOutputJobsText'/>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxOutputDeliveryNotes}'>
+        <block>
+            <hbox style='{styles.sylHboxOutputDeliveryNotesInner}'>
+                <block>
+                    <hbox style='{styles.sylHboxCordinatorOutputDeliveryNotesStats}'>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsSUMHeader' text='SUM' style='{styles.sylTvCordinatorOutputDeliveryNotesStatsHeader}' testId='{"tvCordinatorOutputDeliveryNotesStatsSUMHeader"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsENGHeader' text='ENG' style='{styles.sylTvCordinatorOutputDeliveryNotesStatsHeader}' testId='{"tvCordinatorOutputDeliveryNotesStatsENGHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsHUNHeader' text='HUN' style='{styles.sylTvCordinatorOutputDeliveryNotesStatsHeader}' testId='{"tvCordinatorOutputDeliveryNotesStatsHUNHeader"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsPLHeader' text='PL' style='{styles.sylTvCordinatorOutputDeliveryNotesStatsHeader}' testId='{"tvCordinatorOutputDeliveryNotesStatsPLHeader"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorOutputDeliveryNotesStats}'>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsTotalText' text='{"TOTAL"}' style='{styles.sylTvOutputDeliveryNotesStatsText}' testId='{"tvCordinatorOutputDeliveryNotesStatsTotalText"}'/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsTotalSum' text='{TOSTRING(iOutputDeliveryNoteTotal)}' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsTotalSum"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsTotalENG' text='{TOSTRING(iOutputDeliveryNoteENG)}' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsTotalENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsTotalHUN' text='{TOSTRING(iOutputDeliveryNoteHUN)}' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsTotalHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsTotalPL' text='{TOSTRING(iOutputDeliveryNotePL)}' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsTotalPL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorOutputDeliveryNotesStats}'>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsAVGTimeText' text='{"AVG TIME h"}' style='{styles.sylTvOutputDeliveryNotesStatsText}' testId='{"tvCordinatorOutputDeliveryNotesStatsAVGTimeText"}'/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsAVGTimeSum' text='{CASE WHEN fOutputDeliveryNoteAVGTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteAVGTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsAVGTimeSum"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsAVGTimeENG' text='{CASE WHEN fOutputDeliveryNoteAVGENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteAVGENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsAVGTimeENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsAVGTimeHUN' text='{CASE WHEN fOutputDeliveryNoteAVGHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteAVGHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsAVGTimeHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsAVGTimePL' text='{CASE WHEN fOutputDeliveryNoteAVGPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteAVGPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsAVGTimePL"}'/>
+                    </hbox>
+                    <hbox style='{styles.sylHboxCordinatorOutputDeliveryNotesStats}'>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsOldestTimeText' text='{"OLDEST h"}' style='{styles.sylTvOutputDeliveryNotesStatsText}' testId='{"tvCordinatorOutputDeliveryNotesStatsOldestTimeText"}'/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsOldestTimeSum' text='{CASE WHEN fOutputDeliveryNoteOldestTotal IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteOldestTotal, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsOldestTimeSum"}'/>
+                        <textview text=''/>        
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsOldestTimeENG' text='{CASE WHEN fOutputDeliveryNoteOldestENG IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteOldestENG, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsOldestTimeENG"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsOldestTimeHUN' text='{CASE WHEN fOutputDeliveryNoteOldestHUN IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteOldestHUN, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsOldestTimeHUN"}'/>
+                        <textview text=''/>
+                        <textview id='tvCordinatorOutputDeliveryNotesStatsOldestTimePL' text='{CASE WHEN fOutputDeliveryNoteOldestPL IS NOT NULL THEN TOSTRING(FORMATNUMBER(fOutputDeliveryNoteOldestPL, {decimalSeparator:",", maxFraction: 2})) ELSE "0" END }' style='{styles.sylTvOutputDeliveryNotesStats}' testId='{"tvCordinatorOutputDeliveryNotesStatsOldestTimePL"}'/>
+                    </hbox>
+                </block>
+            </hbox>            
+        </block>
+        <textview text=''/>
+    </hbox>    
+
+    <hbox style='{styles.sylHboxCurrentOnline}'>
+        <textview id='tvCurrentOnlineUsers' text='{"CURRENT TEAM ONLINE: " || TOSTRING(iCurrentOnlineUsers)}' style='{styles.sylTvCurrentOnlineUsers}' testId='tvCurrentOnlineUsers'/>
+        <textview text=''/>
+    </hbox>
+
+    <hbox style='{styles.sylHboxTeamText}'>
+        <textview id='tvTeamAnotText' text='{"TEAM: ANNOTATION"}' style='{styles.sylTvTeamANOTText}' testId='tvTeamAnotText'/>
+        <textview text=''/>
+        <textview id='tvTeamQAText' text='{"TEAM: QA"}' style='{styles.sylTvTeamQAText}' testId='tvTeamQAText'/>
+        <textview text=''/>
+    </hbox>
+
+    <table id='tblStats' record='tblS' recordset='{SELECT 1}' style='{styles.syltblStats}' testId='tblStats'>
+        <row>
+            <cell>
+                <table id='tblTeamANOT' record='tblTA' style='{styles.syltblTeamANOT}' testId='tblTeamANOT' 
+                    recordset='{SELECT
+                                    U.id,
+                                    U.name,
+                                    U.status
+                                FROM 
+                                    ltblUsers U
+                                }'
+                >
+                    <header>
+                        <row>
+                            <declarations>
+                                <let id='iANOTJobsSum' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "ANOT"
+                                                AND J.status = "INPROGRESS"
+
+                                    }'
+                                />
+                                <let id='iANOTJobsSumHUN' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "ANOT"
+                                                AND J.status = "INPROGRESS"
+                                                AND J.lang = "hu_hu"
+
+                                    }'
+                                />
+                                <let id='iANOTJobsSumENG' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "ANOT"
+                                                AND J.status = "INPROGRESS"
+                                                AND J.lang = "eng_eng"
+
+                                    }'
+                                />
+                                <let id='iANOTJobsSumPL' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "ANOT"
+                                                AND J.status = "INPROGRESS"
+                                                AND J.lang = "pl_pl"
+
+                                    }'
+                                />
+                            </declarations>
+                            <cell>
+                                <hbox style='{styles.sylHboxCordinatorStatsAnotJobs}'>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsSUMHeader' text='SUM' style='{styles.sylTvCordinatorStatsAnotJobsHeader}' testId='{"tvCordinatorStatsAnotJobsSUMHeader"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsAnotJobsENGHeader' text='ENG' style='{styles.sylTvCordinatorStatsAnotJobsHeader}' testId='{"tvCordinatorStatsAnotJobsENGHeader"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsHUNHeader' text='HUN' style='{styles.sylTvCordinatorStatsAnotJobsHeader}' testId='{"tvCordinatorStatsAnotJobsHUNHeader"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsPLHeader' text='PL' style='{styles.sylTvCordinatorStatsAnotJobsHeader}' testId='{"tvCordinatorStatsAnotJobsPLHeader"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsAnotJobs}'>
+                                    <textview id='tvCordinatorStatsAnotJobsText' text='{"CURRENT WORKING"}' style='{styles.sylTvCordinatorStatsAnotJobsText}' testId='{"tvCordinatorStatsAnotJobsText"}'/>
+                                    <textview id='tvCordinatorStatsAnotJobsSum' text='{TOSTRING(iANOTJobsSum)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsAnotJobsENG' text='{TOSTRING(iANOTJobsSumENG)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsHUN' text='{TOSTRING(iANOTJobsSumHUN)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsPL' text='{TOSTRING(iANOTJobsSumPL)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsPL"}'/>
+                                </hbox>
+                            </cell>
+                        </row>
+                    </header>
+                    <row>
+                        <declarations>
+                            <let id='fDtlNowHours' shape='scalar' value='{TOFLOAT(GETHOUR(dtlNow))}'/>
+                            <let id='fDtlNowMinutes' shape='scalar' value='{TOFLOAT(GETMINUTE(dtlNow))}'/>
+                            <let id='fDtlNowSeconds' shape='scalar' value='{TOFLOAT(GETSECOND(dtlNow))}'/>
+                            
+                            <let id='dtlUserCurrentJobTime' shape='scalar' value='{SELECT CASE WHEN COUNT(0) != 0 THEN JI.job_start_time ELSE NULL END FROM ai_scan_job_inprogress JI LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id WHERE JI.user_id = stUserId AND J.type = "ANOT"}'/>
+                            <let id='fDtlDifference' shape='scalar' 
+                                value='{CASE 
+                                        WHEN ((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))
+                                        THEN
+                                            (((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60)-24))*60
+                                        ELSE
+                                            (((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60))*60
+                                        END}'
+                            />
+
+                            <let id='stUserId' shape='scalar' value='{tblTA.id}'/>
+                            <let id='bHUNANOTJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTA.id AND UL.job_type = "ANOT" AND UL.lang = "hu_hu"}'/>
+                            <let id='bENGANOTJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTA.id AND UL.job_type = "ANOT" AND UL.lang = "eng_eng"}'/>
+                            <let id='bPLANOTJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTA.id AND UL.job_type = "ANOT" AND UL.lang = "pl_pl"}'/>
+                        </declarations>
+                        <cell>
+                            <chapter title='' style='{styles.chapterTopBorder}'/>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsers}'>
+                                <textview text=''/>
+                                <textview text=''/>
+                                <textview text=''/>                                
+                                <textview id='tvCordinatorStatsAnotUsersENGHeader' text='ENG' style='{styles.sylTvCordinatorStatsAnotUsersLangHeader}' testId='{"tvCordinatorStatsAnotUsersENGHeader" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview text=''/>
+                                <textview id='tvCordinatorStatsAnotUsersHUNHeader' text='HUN' style='{styles.sylTvCordinatorStatsAnotUsersLangHeader}' testId='{"tvCordinatorStatsAnotUsersHUNHeader" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview text=''/>
+                                <textview id='tvCordinatorStatsAnotUsersPLHeader' text='PL' style='{styles.sylTvCordinatorStatsAnotUsersLangHeader}' testId='{"tvCordinatorStatsAnotUsersPLHeader" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsers}'>
+                                <textview id='tvCordinatorStatsAnotUsersName' text='{tblTA.name}' style='{styles.sylTvCordinatorStatsAnotUsersName}' testId='{"tvCordinatorStatsAnotUsersName" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvCordinatorStatsAnotUsersStatus' text='{tblTA.status}' style='{CASE WHEN tblTA.status = "ONLINE" THEN styles.sylTvCordinatorStatsAnotUsersOnline ELSE styles.sylTvCordinatorStatsAnotUsersOffline END}' testId='{"tvCordinatorStatsAnotUsersStatus" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview text=''/>
+                                <if cond='{bENGANOTJobAccess}'>
+                                    <actionbutton id='abtnENGLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnENGLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                        <set target='bENGANOTJobAccess' value='{CASE WHEN bENGANOTJobAccess = true THEN false ELSE true END}'/>
+                                    </actionbutton>
+                                </if>
+                                <if cond='{NOT bENGANOTJobAccess}'>
+                                    <actionbutton id='abtnENGLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnENGLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                        <set target='bENGANOTJobAccess' value='{CASE WHEN bENGANOTJobAccess = false THEN true ELSE false END}'/>
+                                    </actionbutton>
+                                </if>
+                                <textview text=''/>
+                                <if cond='{bHUNANOTJobAccess}'>
+                                    <actionbutton id='abtnHUNLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnHUNLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                        <set target='bHUNANOTJobAccess' value='{CASE WHEN bHUNANOTJobAccess = true THEN false ELSE true END}'/>
+                                    </actionbutton>
+                                </if>
+                                <if cond='{NOT bHUNANOTJobAccess}'>
+                                    <actionbutton id='abtnHUNLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnHUNLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                        <set target='bHUNANOTJobAccess' value='{CASE WHEN bHUNANOTJobAccess = false THEN true ELSE false END}'/>
+                                    </actionbutton>
+                                </if>
+                                <textview text=''/>
+                                <if cond='{bPLANOTJobAccess}'>
+                                    <actionbutton id='abtnPLLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnPLLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                        <set target='bPLANOTJobAccess' value='{CASE WHEN bPLANOTJobAccess = true THEN false ELSE true END}'/>
+                                    </actionbutton>
+                                </if>
+                                <if cond='{NOT bPLANOTJobAccess}'>
+                                    <actionbutton id='abtnPLLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnPLLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                        <set target='bPLANOTJobAccess' value='{CASE WHEN bPLANOTJobAccess = false THEN true ELSE false END}'/>
+                                    </actionbutton>
+                                </if>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
+                                <textview id='tvCurrentJobTimeText' text='{"Current job min"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvCurrentJobTimeText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvCurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvCurrentJobTime" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                            </hbox>
+                        </cell>
+                    </row>
+                </table>
+            </cell>
+            <cell>
+                <textview text=''/>
+            </cell>
+            <cell>
+                <table id='tblTeamQA' record='tblTQ' style='{styles.syltblTeamQA}' testId='tblTeamQA' 
+                    recordset='{SELECT
+                                    U.id,
+                                    U.name,
+                                    U.status
+                                FROM 
+                                    ltblUsers U
+                                }'
+                >
+                    <header>
+                        <row>
+                            <declarations>
+                                <let id='iQAJobsSum' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "QA"
+                                                AND J.status = "INPROGRESS"
+
+                                    }'
+                                />
+                                <let id='iQAJobsSumHUN' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "QA"
+                                                AND J.status = "INPROGRESS"
+                                                AND J.lang = "hu_hu"
+
+                                    }'
+                                />
+                                <let id='iQAJobsSumENG' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "QA"
+                                                AND J.status = "INPROGRESS"
+                                                AND J.lang = "eng_eng"
+
+                                    }'
+                                />
+                                <let id='iQAJobsSumPL' shape='scalar' 
+                                    value='{SELECT
+                                                COUNT(0)
+                                            FROM
+                                                ai_scan_job_inprogress JI
+                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
+                                            WHERE
+                                                J.type = "QA"
+                                                AND J.status = "INPROGRESS"
+                                                AND J.lang = "pl_pl"
+
+                                    }'
+                                />
+                            </declarations>
+                            <cell>
+                                <hbox style='{styles.sylHboxCordinatorStatsQAJobs}'>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsSUMHeader' text='SUM' style='{styles.sylTvCordinatorStatsQAJobsHeader}' testId='{"tvCordinatorStatsQAJobsSUMHeader"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsQAJobsENGHeader' text='ENG' style='{styles.sylTvCordinatorStatsQAJobsHeader}' testId='{"tvCordinatorStatsQAJobsENGHeader"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsHUNHeader' text='HUN' style='{styles.sylTvCordinatorStatsQAJobsHeader}' testId='{"tvCordinatorStatsQAJobsHUNHeader"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsPLHeader' text='PL' style='{styles.sylTvCordinatorStatsQAJobsHeader}' testId='{"tvCordinatorStatsQAJobsPLHeader"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsQAJobs}'>
+                                    <textview id='tvCordinatorStatsQAJobsText' text='{"CURRENT WORKING"}' style='{styles.sylTvCordinatorStatsQAJobsText}' testId='{"tvCordinatorStatsQAJobsText"}'/>
+                                    <textview id='tvCordinatorStatsQAJobsSum' text='{TOSTRING(iQAJobsSum)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsQAJobsENG' text='{TOSTRING(iQAJobsSumENG)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsHUN' text='{TOSTRING(iQAJobsSumHUN)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsPL' text='{TOSTRING(iQAJobsSumPL)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsPL"}'/>
+                                </hbox>
+                            </cell>
+                        </row>
+                    </header>
+                    <row>
+                        <declarations>
+                            <let id='fDtlNowHours' shape='scalar' value='{TOFLOAT(GETHOUR(dtlNow))}'/>
+                            <let id='fDtlNowMinutes' shape='scalar' value='{TOFLOAT(GETMINUTE(dtlNow))}'/>
+                            <let id='fDtlNowSeconds' shape='scalar' value='{TOFLOAT(GETSECOND(dtlNow))}'/>
+                            
+                            <let id='dtlUserCurrentJobTime' shape='scalar' value='{SELECT CASE WHEN COUNT(0) != 0 THEN JI.job_start_time ELSE NULL END FROM ai_scan_job_inprogress JI LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id WHERE JI.user_id = stUserId AND J.type = "QA"}'/>
+                            <let id='fDtlDifference' shape='scalar' 
+                                value='{CASE 
+                                        WHEN ((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))
+                                        THEN
+                                            ((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60)-24)
+                                        ELSE
+                                            ((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60)
+                                        END}'
+                            />
+                            <let id='stUserId' shape='scalar' value='{tblTQ.id}'/>
+                            <let id='bHUNQAJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTQ.id AND UL.job_type = "QA" AND UL.lang = "hu_hu"}'/>
+                            <let id='bENGQAJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTQ.id AND UL.job_type = "QA" AND UL.lang = "eng_eng"}'/>
+                            <let id='bPLQAJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTQ.id AND UL.job_type = "QA" AND UL.lang = "pl_pl"}'/>
+                        </declarations>
+                        <cell>
+                            <chapter title='' style='{styles.chapterTopBorder}'/>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsers}'>
+                                <textview text=''/>
+                                <textview text=''/>
+                                <textview text=''/>                                
+                                <textview id='tvCordinatorStatsQAUsersENGHeader' text='ENG' style='{styles.sylTvCordinatorStatsQAUsersLangHeader}' testId='{"tvCordinatorStatsQAUsersENGHeader" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview text=''/>
+                                <textview id='tvCordinatorStatsQAUsersHUNHeader' text='HUN' style='{styles.sylTvCordinatorStatsQAUsersLangHeader}' testId='{"tvCordinatorStatsQAUsersHUNHeader" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview text=''/>
+                                <textview id='tvCordinatorStatsQAUsersPLHeader' text='PL' style='{styles.sylTvCordinatorStatsQAUsersLangHeader}' testId='{"tvCordinatorStatsQAUsersPLHeader" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsers}'>
+                                <textview id='tvCordinatorStatsQAUsersName' text='{tblTQ.name}' style='{styles.sylTvCordinatorStatsQAUsersName}' testId='{"tvCordinatorStatsQAUsersName" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvCordinatorStatsQAUsersStatus' text='{tblTQ.status}' style='{CASE WHEN tblTQ.status = "ONLINE" THEN styles.sylTvCordinatorStatsQAUsersOnline ELSE styles.sylTvCordinatorStatsQAUsersOffline END}' testId='{"tvCordinatorStatsQAUsersStatus" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview text=''/>
+                                <if cond='{bENGQAJobAccess}'>
+                                    <actionbutton id='abtnENGLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnENGLanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                        <set target='bENGQAJobAccess' value='{CASE WHEN bENGQAJobAccess = true THEN false ELSE true END}'/>
+                                    </actionbutton>
+                                </if>
+                                <if cond='{NOT bENGQAJobAccess}'>
+                                    <actionbutton id='abtnENGLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnENGLanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                        <set target='bENGQAJobAccess' value='{CASE WHEN bENGQAJobAccess = false THEN true ELSE false END}'/>
+                                    </actionbutton>
+                                </if>
+                                <textview text=''/>
+                                <if cond='{bHUNQAJobAccess}'>
+                                    <actionbutton id='abtnHUNLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnHUNLanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                        <set target='bHUNQAJobAccess' value='{CASE WHEN bHUNQAJobAccess = true THEN false ELSE true END}'/>
+                                    </actionbutton>
+                                </if>
+                                <if cond='{NOT bHUNQAJobAccess}'>
+                                    <actionbutton id='abtnHUNLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnHUNLanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                        <set target='bHUNQAJobAccess' value='{CASE WHEN bHUNQAJobAccess = false THEN true ELSE false END}'/>
+                                    </actionbutton>
+                                </if>
+                                <textview text=''/>
+                                <if cond='{bPLQAJobAccess}'>
+                                    <actionbutton id='abtnPLLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnPLLanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                        <set target='bPLQAJobAccess' value='{CASE WHEN bPLQAJobAccess = true THEN false ELSE true END}'/>
+                                    </actionbutton>
+                                </if>
+                                <if cond='{NOT bPLQAJobAccess}'>
+                                    <actionbutton id='abtnPLLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnPLLanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                        <set target='bPLQAJobAccess' value='{CASE WHEN bPLQAJobAccess = false THEN true ELSE false END}'/>
+                                    </actionbutton>
+                                </if>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
+                                <textview id='tvCurrentJobTimeText' text='{"Current job min"}' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvCurrentJobTimeText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvCurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvCurrentJobTime" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                            </hbox>
+                        </cell>
+                    </row>
+                </table>
+            </cell>
+        </row>
+    </table>
 </form>
