@@ -162,13 +162,15 @@
         //get current job's language and supplier id
         let stCurrentJobLanguage = "";
         let stCurrentJobSupplierId = "";
+        let dtlCurrentDeliveryNoteStartWorkingTime = dtl.Now();
 
-        let lstCurrentJobLanguageAndSupplierId = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang"]);
+        let lstCurrentJobLanguageAndSupplierIdAndStartDate = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang","delivery_note_work_start_date"]);
 
-        for(let recData of lstCurrentJobLanguageAndSupplierId)
+        for(let recData of lstCurrentJobLanguageAndSupplierIdAndStartDate)
         {
             stCurrentJobSupplierId = recData.supplier_id;
             stCurrentJobLanguage = recData.lang;
+            dtlCurrentDeliveryNoteStartWorkingTime = recData.delivery_note_work_start_date.DeclareAsDtl();
         }
 
         //get job work time
@@ -182,6 +184,7 @@
             delivery_note_id: stDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
+            finish_date: dtl.Now().DtlToDtdb(),
             result: stJobResultStatus,
             job_work_time_minutes: iJobWorkTime
         });
@@ -335,6 +338,18 @@
                 if(bSameANNOTDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
                 {
                     Log("Perfect Approved Annotations");
+                    Log(dtlCurrentDeliveryNoteStartWorkingTime);
+                    Log(dtl.Now());
+                    Log(dtl.Now().Diff(dtlCurrentDeliveryNoteStartWorkingTime));
+                    db.ai_scan_jobs.UpdateMany({
+                        type: "ANOT",
+                        status: "DONE",
+                        delivery_note_id: stDeliveryNoteId
+                    },{
+                        delivery_note_work_end_date: dtl.Now().DtlToDtdb(),
+                        delivery_note_work_time: dtl.Now().Diff(dtlCurrentDeliveryNoteStartWorkingTime).TotalHours
+                    });
+
                     //TODO Send QATaskDone with data which is received in this dacs. 
                     let doneDacs = messages.QATaskDone.New();
                     Log(stDeliveryNoteId);
@@ -382,6 +397,8 @@
                         supplier_id: stCurrentJobSupplierId,
                         lang: stCurrentJobLanguage,
                         current_user: null,
+                        delivery_note_id: stDeliveryNoteId,
+                        delivery_note_work_start_date : dtlCurrentDeliveryNoteStartWorkingTime.DtlToDtdb(),
                         create_date: dtl.Now().DtlToDtdb(),
                         delay_time: null,
                         job_id_2: stDeliveryNoteJobId,
@@ -495,13 +512,15 @@
         //get current job's language and supplier id
         let stCurrentJobLanguage = "";
         let stCurrentJobSupplierId = "";
+        let dtlCurrentDeliveryNoteStartWorkingTime = dtl.Now();
 
-        let lstCurrentJobLanguageAndSupplierId = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang"]);
+        let lstCurrentJobLanguageAndSupplierIdAndStartDate = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang","delivery_note_work_start_date"]);
 
-        for(let recData of lstCurrentJobLanguageAndSupplierId)
+        for(let recData of lstCurrentJobLanguageAndSupplierIdAndStartDate)
         {
             stCurrentJobSupplierId = recData.supplier_id;
             stCurrentJobLanguage = recData.lang;
+            dtlCurrentDeliveryNoteStartWorkingTime = recData.delivery_note_work_start_date.DeclareAsDtl();
         }
 
         //get job work time
@@ -515,6 +534,7 @@
             delivery_note_id: stDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
+            finish_date: dtl.Now().DtlToDtdb(),
             result: stJobResultStatus,
             job_work_time_minutes: iJobWorkTime
         });
@@ -582,6 +602,8 @@
                     supplier_id: stCurrentJobSupplierId,
                     lang: stCurrentJobLanguage,
                     current_user: null,
+                    delivery_note_id: stDeliveryNoteId,
+                    delivery_note_work_start_date : dtlCurrentDeliveryNoteStartWorkingTime.DtlToDtdb(),
                     create_date: dtl.Now().DtlToDtdb(),
                     delay_time: null,
                     job_id_2: stDeliveryNoteJobId,
