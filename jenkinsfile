@@ -39,7 +39,6 @@ pipeline {
 	post {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-upgrade-*.zip')
 		}
 
 		unstable {
