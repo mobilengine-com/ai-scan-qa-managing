@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             steps {
 				script {
-                    currentBuild.description = "Bauapp $VER"
+                    currentBuild.description = "AIScan-DM: $VER"
                 }
 				powershell """.\\writeVersion.ps1 -Version:${VER}"""
 				bat """
