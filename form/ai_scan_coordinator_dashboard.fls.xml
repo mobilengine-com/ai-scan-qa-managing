@@ -712,9 +712,9 @@
                                 value='{CASE 
                                         WHEN ((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))
                                         THEN
-                                            ((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60)-24)
+                                            (((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60)-24))*60
                                         ELSE
-                                            ((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60)
+                                            (((((dtlNow-dtlUserCurrentJobTime)*24*60)+((fDtlNowHours*60)+fDtlNowMinutes+(fDtlNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(dtlUserCurrentJobTime))*60)+TOFLOAT(GETMINUTE(dtlUserCurrentJobTime))+(TOFLOAT(GETSECOND(dtlUserCurrentJobTime))/60))/60))*60
                                         END}'
                             />
                             <let id='stUserId' shape='scalar' value='{tblTQ.id}'/>
