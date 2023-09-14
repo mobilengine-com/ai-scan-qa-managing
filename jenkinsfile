@@ -2,8 +2,7 @@ pipeline {
     agent any
 
 	environment {
-		VER0 = "2.0.${env.BUILD_NUMBER}.0"
-		VER = ""
+		VER = "2.0.${env.BUILD_NUMBER}.${env.GIT_COMMIT.take(7)}"
 	}
     stages {
         stage('Copy and unzip artifacts') {
