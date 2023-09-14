@@ -349,7 +349,7 @@
                     dacs.assignTask.scanId = stscanId;
                     dacs.assignTask.requestFileId = stCurrentANOTJobId;
                     dacs.assignTask.agent = stUserMail;
-                    dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+                    //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
                     dacs.Send();
 
                     db.ai_scan_job_inprogress.InsertOrUpdate({

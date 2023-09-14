@@ -1,0 +1,11 @@
+﻿{
+            "compilerOptions": {
+                "inlineSourceMap": true,
+                "downlevelIteration": true,
+                "module": "amd",
+                "target": "es5",    
+                "lib": [
+                    "es2022"
+                ]
+            },
+        }

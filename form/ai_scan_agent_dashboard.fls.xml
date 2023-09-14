@@ -168,7 +168,9 @@
     <if cond='{stLoggedUserStatus = "OFFLINE" OR (stLoggedUserStatus != "OFFLINE" AND iJobCount = 0 AND iLoggedUserJobCount = 0)}'>
         <textview id='tvNoJob' text='No pending jobs' style='{styles.sylTvNoJob}' testId='tvNoJob'/>
     </if>
-
+    <textview label='stLoggedUserStatus' id='d1' text='{stLoggedUserStatus}'/>
+    <numberbox label="iJobCount" number='{iJobCount}'/>
+    <numberbox label="iLoggedUserJobCount" number='{iLoggedUserJobCount}'/>
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iJobCount != 0 AND iLoggedUserJobCount = 0}'>
         <combinedbutton id='cbtnGetJob' text='You have pending jobs' style='{styles.sylCbtnGetJob}' testId='cbtnGetJob'>
             <actionbutton>
