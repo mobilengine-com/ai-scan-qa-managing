@@ -586,41 +586,41 @@
                                 <textview id='tvCordinatorStatsAnotUsersStatus' text='{tblTA.status}' style='{CASE WHEN tblTA.status = "ONLINE" THEN styles.sylTvCordinatorStatsAnotUsersOnline ELSE styles.sylTvCordinatorStatsAnotUsersOffline END}' testId='{"tvCordinatorStatsAnotUsersStatus" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
                                 <textview text=''/>
                                 <if cond='{bENGANOTJobAccess}'>
-                                    <actionbutton id='abtnENGLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnENGLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                    <actionbutton id='abtnENGAnotLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnENGAnotLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
                                         <set target='bENGANOTJobAccess' value='{CASE WHEN bENGANOTJobAccess = true THEN false ELSE true END}'/>
                                     </actionbutton>
                                 </if>
                                 <if cond='{NOT bENGANOTJobAccess}'>
-                                    <actionbutton id='abtnENGLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnENGLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                    <actionbutton id='abtnENGAnotLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnENGAnotLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
                                         <set target='bENGANOTJobAccess' value='{CASE WHEN bENGANOTJobAccess = false THEN true ELSE false END}'/>
                                     </actionbutton>
                                 </if>
                                 <textview text=''/>
                                 <if cond='{bHUNANOTJobAccess}'>
-                                    <actionbutton id='abtnHUNLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnHUNLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                    <actionbutton id='abtnHUNAnotLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnHUNAnotLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
                                         <set target='bHUNANOTJobAccess' value='{CASE WHEN bHUNANOTJobAccess = true THEN false ELSE true END}'/>
                                     </actionbutton>
                                 </if>
                                 <if cond='{NOT bHUNANOTJobAccess}'>
-                                    <actionbutton id='abtnHUNLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnHUNLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                    <actionbutton id='abtnHUNAnotLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnHUNAnotLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
                                         <set target='bHUNANOTJobAccess' value='{CASE WHEN bHUNANOTJobAccess = false THEN true ELSE false END}'/>
                                     </actionbutton>
                                 </if>
                                 <textview text=''/>
                                 <if cond='{bPLANOTJobAccess}'>
-                                    <actionbutton id='abtnPLLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnPLLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                    <actionbutton id='abtnPLAnotLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageYes}' testId='{"abtnPLAnotLanguageChangeToNo" || "[" || TOSTRING(tblTAIndex) || "]"}'>
                                         <set target='bPLANOTJobAccess' value='{CASE WHEN bPLANOTJobAccess = true THEN false ELSE true END}'/>
                                     </actionbutton>
                                 </if>
                                 <if cond='{NOT bPLANOTJobAccess}'>
-                                    <actionbutton id='abtnPLLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnPLLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
+                                    <actionbutton id='abtnPLAnotLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsAnotUsersLanguageNo}' testId='{"abtnPLAnotLanguageChangeToYes" || "[" || TOSTRING(tblTAIndex) || "]"}'>
                                         <set target='bPLANOTJobAccess' value='{CASE WHEN bPLANOTJobAccess = false THEN true ELSE false END}'/>
                                     </actionbutton>
                                 </if>
                             </hbox>
                             <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
                                 <textview id='tvCurrentJobTimeText' text='{"Current job min"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvCurrentJobTimeText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
-                                <textview id='tvCurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvCurrentJobTime" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvAnotCurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvAnotCurrentJobTime" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
                             </hbox>
                         </cell>
                     </row>
@@ -756,41 +756,41 @@
                                 <textview id='tvCordinatorStatsQAUsersStatus' text='{tblTQ.status}' style='{CASE WHEN tblTQ.status = "ONLINE" THEN styles.sylTvCordinatorStatsQAUsersOnline ELSE styles.sylTvCordinatorStatsQAUsersOffline END}' testId='{"tvCordinatorStatsQAUsersStatus" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
                                 <textview text=''/>
                                 <if cond='{bENGQAJobAccess}'>
-                                    <actionbutton id='abtnENGLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnENGLanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                    <actionbutton id='abtnENGQALanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnENGQALanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
                                         <set target='bENGQAJobAccess' value='{CASE WHEN bENGQAJobAccess = true THEN false ELSE true END}'/>
                                     </actionbutton>
                                 </if>
                                 <if cond='{NOT bENGQAJobAccess}'>
-                                    <actionbutton id='abtnENGLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnENGLanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                    <actionbutton id='abtnENGQALanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnENGQALanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
                                         <set target='bENGQAJobAccess' value='{CASE WHEN bENGQAJobAccess = false THEN true ELSE false END}'/>
                                     </actionbutton>
                                 </if>
                                 <textview text=''/>
                                 <if cond='{bHUNQAJobAccess}'>
-                                    <actionbutton id='abtnHUNLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnHUNLanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                    <actionbutton id='abtnHUNQALanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnHUNQALanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
                                         <set target='bHUNQAJobAccess' value='{CASE WHEN bHUNQAJobAccess = true THEN false ELSE true END}'/>
                                     </actionbutton>
                                 </if>
                                 <if cond='{NOT bHUNQAJobAccess}'>
-                                    <actionbutton id='abtnHUNLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnHUNLanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                    <actionbutton id='abtnHUNQALanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnHUNQALanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
                                         <set target='bHUNQAJobAccess' value='{CASE WHEN bHUNQAJobAccess = false THEN true ELSE false END}'/>
                                     </actionbutton>
                                 </if>
                                 <textview text=''/>
                                 <if cond='{bPLQAJobAccess}'>
-                                    <actionbutton id='abtnPLLanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnPLLanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                    <actionbutton id='abtnPLQALanguageChangeToNo' text='Yes' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageYes}' testId='{"abtnPLQALanguageChangeToNo" || "[" || TOSTRING(tblTQIndex) || "]"}'>
                                         <set target='bPLQAJobAccess' value='{CASE WHEN bPLQAJobAccess = true THEN false ELSE true END}'/>
                                     </actionbutton>
                                 </if>
                                 <if cond='{NOT bPLQAJobAccess}'>
-                                    <actionbutton id='abtnPLLanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnPLLanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
+                                    <actionbutton id='abtnPLQALanguageChangeToYes' text='No' style='{styles.sylAbtnCordinatorStatsQAUsersLanguageNo}' testId='{"abtnPLQALanguageChangeToYes" || "[" || TOSTRING(tblTQIndex) || "]"}'>
                                         <set target='bPLQAJobAccess' value='{CASE WHEN bPLQAJobAccess = false THEN true ELSE false END}'/>
                                     </actionbutton>
                                 </if>
                             </hbox>
                             <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
                                 <textview id='tvCurrentJobTimeText' text='{"Current job min"}' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvCurrentJobTimeText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
-                                <textview id='tvCurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvCurrentJobTime" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvQACurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvQACurrentJobTime" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
                             </hbox>
                         </cell>
                     </row>
