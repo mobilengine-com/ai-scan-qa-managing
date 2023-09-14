@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+	environment {
+		VER0 = "2.0.${env.BUILD_NUMBER}.0"
+		VER = ""
+	}
+    stages {
+        stage('Copy and unzip artifacts') {
+            steps {
+                copyArtifacts filter: 'MobileServer\\artifacts\\Mebt_*_Debug.zip', fingerprintArtifacts: true, flatten: true, 
+                    projectName: 'MobileEngine Server S49', selector: latestSavedBuild()
+                powershell '''# hide progress bar, makes extract run faster
+                                $ProgressPreference="SilentlyContinue"
+                                Expand-Archive Mebt_*_Debug.zip Mebt'''
+            }
+        }
+        stage('Build') {
+            steps {
+				script {
+                    currentBuild.description = "Bauapp $VER"
+                }
+				powershell """.\\writeVersion.ps1 -Version:${VER}"""
+				bat """
+					rem -- compile --
+					mebt\\mebt compile . AIScan-DM-${VER}.mes
+					if %errorlevel% neq 0 exit /b %errorlevel%
+					rem -- copy --
+					rem copy AIScan-DM-${VER}.mes AIScan-DM-${VER}.mes
+					rem -- package --
+					mebt\\mebt package AIScan-DM-${VER}.mes
+					if %errorlevel% neq 0 exit /b %errorlevel%
+					mebt\\mebt package AIScan-DM-${VER}.mes 
+					rem .\\refdata\\sqlite\\minimal_data_existing.sqlite
+					rem if %errorlevel% neq 0 exit /b %errorlevel%
+					"""
+			}
+		}
+	}
+	post {
+		success {
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-upgrade-*.zip')
+		}
+
+		unstable {
+			mail(to: "zoltan.gaspar@mobilengine.com, app@mobilengine.com", subject: "${env.JOB_NAME} unstable", body: "${env.JOB_NAME} is unstable: ${env.BUILD_URL}")
+		}
+		failure {
+			mail to: "zoltan.gaspar@mobilengine.com, app@mobilengine.com", subject: "${env.JOB_NAME} failed", body: "${env.JOB_NAME} is failed: ${env.BUILD_URL}";
+		}
+	}
+	options {
+		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
+	}
+}
