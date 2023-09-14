@@ -1644,8 +1644,10 @@
         <combinedbutton id='cbtnAddNewItemAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentA"}'>
             <actionbutton>
                 <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
+                <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
             </actionbutton>
-            <addbutton records='{SELECT iItemTableAgentARowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, 0.0 amount_number, "" unit, "" gross_weight, false item_name_equals, false manufacturer_item_number_equals, false tax_number_equals, false amount_number_equals, false unit_equals, false gross_weight_equals}' table='rtpItemTableAgentA'/>
+            <addbutton records='{SELECT iItemTableAgentARowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentA'/>
+            <addbutton records='{SELECT iItemTableAgentARowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentB'/>
         </combinedbutton>
 
         <!-- Separator -->
@@ -1916,8 +1918,10 @@
         <combinedbutton id='cbtnAddNewItemAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentB"}'>
             <actionbutton>
                 <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
+                <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
             </actionbutton>
-            <addbutton records='{SELECT iItemTableAgentBRowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, 0.0 amount_number, "" unit, "" gross_weight, false item_name_equals, false manufacturer_item_number_equals, false tax_number_equals, false amount_number_equals, false unit_equals, false gross_weight_equals}' table='rtpItemTableAgentB'/>
+            <addbutton records='{SELECT iItemTableAgentBRowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentB'/>
+            <addbutton records='{SELECT iItemTableAgentBRowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentA'/>
         </combinedbutton>
 
     </repeater>
