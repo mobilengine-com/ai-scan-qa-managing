@@ -147,7 +147,19 @@
                         AND
                         CASE 
                             WHEN ddDateFilter.selectedKey = 1 THEN STARTOFDAY(J.delivery_note_work_end_date) = STARTOFDAY(sysp.dtlFormOpen)
-                            WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(dpToDate.date)
+                            WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(J.delivery_note_work_end_date) = STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1))
+                            WHEN ddDateFilter.selectedKey = 3 THEN 
+                                CASE 
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 0 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-6)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 1 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,6))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 2 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,5))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 3 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-2)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,4))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 4 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-3)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,3))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 5 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-4)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,2))
+                                    ELSE STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-5)) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,1))
+                                END                            
+                            WHEN ddDateFilter.selectedKey = 4 THEN STARTOFMONTH(J.delivery_note_work_end_date) = STARTOFMONTH(sysp.dtlFormOpen)
+                            WHEN ddDateFilter.selectedKey = 5 THEN STARTOFDAY(J.delivery_note_work_end_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(J.delivery_note_work_end_date) &lt;= STARTOFDAY(dpToDate.date)
                             ELSE STARTOFDAY(J.delivery_note_work_end_date) = STARTOFDAY(sysp.dtlFormOpen)
                         END
                     GROUP BY J.delivery_note_id                    
@@ -355,11 +367,14 @@
     <dropdown id='ddDateFilter'
         choices='{TABLE key, value 
                     (1, "Today"; 
-                    2, "Custom")}' 
+                    2, "Yesterday";
+                    3, "This week";
+                    4, "This month";
+                    5, "Custom")}' 
         keyMap='{key}' textMap='{value}' noneText='{"SELECT TODAY OR CUSTOM DATE"}' selectedKey='{SELECT 1}' style='{styles.sylDdDateFilter}' testId='{"ddDateFilter"}'
     />
 
-    <if cond='{ddDateFilter.selectedKey == 2}' deferred='true'>
+    <if cond='{ddDateFilter.selectedKey == 5}' deferred='true'>
         <hbox style='{styles.sylHboxDpDate}'>
             <datepicker id='dpFromDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"ERROR"}' style='{styles.sylDpDate}' access='private' testId='{"dpFromDate"}'>
                 <validation>

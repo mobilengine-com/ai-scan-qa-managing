@@ -1,5 +1,7 @@
 <form id='ai_scan_qa_job' platforms='web' dashboard='false' menuName='QA_Job' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
     <declarations>
+        <let id='stDelayTime' shape='scalar' value='{SELECT CASE WHEN S.value IS NULL OR S.value = "" THEN "1" ELSE S.value END FROM ai_scan_settings S WHERE S.name = "delay_time_hour"}'/>
+
         <let id='bBadPhoto' shape='scalar' value='{false}'/>
         <let id='bCancel' shape='scalar' value='{false}'/>
         <let id='bDelayCancel' shape='scalar' value='{false}'/>
@@ -563,7 +565,7 @@
                         </actionbutton>
                         <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
                     </combinedbutton>
-                    <combinedbutton id='cbtnDelayCancel' text='Delay with 1 hour' style='{styles.sylCbtnDelayCancel}' testId='cbtnDelayCancel'>
+                    <combinedbutton id='cbtnDelayCancel' text='{"Delay with " || stDelayTime || " hour"}' style='{styles.sylCbtnDelayCancel}' testId='cbtnDelayCancel'>
                         <actionbutton>
                             <set target='bDelayCancel' value='{true}'/>
                         </actionbutton>

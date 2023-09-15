@@ -9,6 +9,13 @@
 //# using dacs AssignAITask;
 
 {
+    let stDelayTime = form.stDelayTime;
+
+    if(stDelayTime == null || stDelayTime == "")
+    {
+        stDelayTime = "1";
+    }
+
     let stLoggedUserId = form.stLoggedUserId;
 
     let bChangeOnline = form.bChangeOnline;
@@ -387,7 +394,7 @@
 
     if(bCancelDelayCurrentAnotJob)
     {
-        let dtlDelayTime = dtl.Now().DtlAddHours(1).DtlToDtdb();
+        let dtlDelayTime = dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb();
 
         // Update current job history with new online user
         let stCurrentJobId = form.stLoggedUserSelectedJobId;
@@ -458,7 +465,7 @@
         },{
             status : "UNCHECKED",
             current_user: null,
-            delay_time: dtl.Now().DtlAddHours(1).DtlToDtdb()
+            delay_time: dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb()
         });
 
         // Delete the job in ai_scan_job_inprogress table

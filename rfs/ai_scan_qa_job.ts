@@ -6,6 +6,13 @@
 //# using dacs QATaskDone;
 
 {
+    let stDelayTime = form.stDelayTime;
+
+    if(stDelayTime == null || stDelayTime == "")
+    {
+        stDelayTime = "1";
+    }
+
     let bBadPhoto = form.bBadPhoto;
     let bCancel = form.bCancel;
     let bDelayCancel = form.bDelayCancel;
@@ -685,7 +692,7 @@
         },{
             status : "UNCHECKED",
             current_user: null,
-            delay_time: dtl.Now().DtlAddHours(1).DtlToDtdb()
+            delay_time: dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb()
         });
 
         // Delete the job in ai_scan_job_inprogress table

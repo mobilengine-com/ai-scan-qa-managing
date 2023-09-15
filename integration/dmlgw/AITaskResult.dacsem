@@ -6,6 +6,7 @@ dnResponse: element {
 	mediaIdPdf: optional attribute of type string;
 	accepted: optional attribute of type int;
 	rejected: optional attribute of type int;
+	handwritten: optional attribute of type int;
 	stage: optional attribute of type string;
 	avgscoreMustHave: attribute of type float;
 	avgscoreOverall: attribute of type float;
