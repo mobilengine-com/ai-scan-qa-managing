@@ -44,71 +44,8 @@ styles{
 		}
 	}
 
-	style sylCordinatorFormTabInActive{
-		combinedbutton {
-			button{
-				margin {
-					top = 0px
-					bottom = 0px
-					left = 0px
-					right = 0px
-				}
-				padding {
-					top = 15px
-					bottom = 15px
-					left = 0px
-					right = 0px
-				}
-				borderWidth{
-					top = 1px
-					bottom = 1px
-					left = 1px
-					right = 1px
-				}
-				backgroundColor = FFFFFF
-				borderColor = 144184
-				fontColor = 144184
-				bold = true
-				textAlign = center
-				fontSize = 24px
-				width = fill
-			}
-		}
-	}
-
 	style sylTabActive{
 		submitbutton {
-			button{
-				margin {
-					top = 0px
-					bottom = 0px
-					left = 0px
-					right = 0px
-				}
-				padding {
-					top = 15px
-					bottom = 15px
-					left = 0px
-					right = 0px
-				}
-				borderWidth{
-					top = 0px
-					bottom = 0px
-					left = 0px
-					right = 0px
-				}
-				backgroundColor = 144184
-				fontColor = FFFFFF
-				bold = true
-				textAlign = center
-				fontSize = 24px
-				width = fill
-			}
-		}
-	}
-
-	style sylCordinatorFormTabActive{
-		combinedbutton {
 			button{
 				margin {
 					top = 0px

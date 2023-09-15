@@ -129,7 +129,6 @@
             <submitbutton id='sbtnAgent' text='Agent' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabActive}' testId='sbtnAgent'/>
             <submitbutton id='sbtnSetting' text='Setting' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='sbtnSetting'/>
             <textview text=''/>
-            <submitbutton id='sbtnSave' text='Save' nextForm='{forms.ai_scan_setting}' style='{styles.sylSbtnSave}' testId='sbtnSave'/>
         </hbox>
     </if>
 
