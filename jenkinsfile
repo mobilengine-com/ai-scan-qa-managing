@@ -38,7 +38,7 @@ pipeline {
 	post {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: '*.sqlite')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'refdata/sqlite/*.sqlite')
 		}
 
 		unstable {
