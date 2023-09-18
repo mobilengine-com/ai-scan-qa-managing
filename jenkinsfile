@@ -25,11 +25,11 @@ pipeline {
 					mebt\\mebt compile . AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
 					rem -- copy --
-					copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-minimaldata.mes
+					copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-w-minimaldata.mes
 					rem -- package --
 					mebt\\mebt package AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
-					mebt\\mebt package AIScan-DM-${VER}-minimaldata.mes .\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
+					mebt\\mebt package AIScan-DM-${VER}-w-minimaldata.mes .\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
 					rem if %errorlevel% neq 0 exit /b %errorlevel%
 					"""
 			}
