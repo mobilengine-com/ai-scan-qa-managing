@@ -1,4 +1,4 @@
-<Reftab Name="ai_scan_user_language" xmlns="http://schemas.mobilengine.com/reftab/v1">
+<Reftab Name="ai_scan_user_language" Push='true' xmlns="http://schemas.mobilengine.com/reftab/v1">
 	<Columns>
 		<Column Name="user_id" Type="Text" PrimaryKey="true" NotNull="true"/>
 		<Column Name="lang" Type="Text" PrimaryKey="true" NotNull="true"/>

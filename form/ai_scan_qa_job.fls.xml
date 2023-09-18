@@ -86,15 +86,15 @@
                         DNIJA.item_name,
                         DNIJA.manufacturer_item_number,
                         DNIJA.tax_number,
-                        DNIJA.amount_number,
+                        DNIJA.amount,
                         DNIJA.unit,
                         DNIJA.gross_weight,
-                        CASE WHEN DNIJA.item_name = DNIJB.item_name THEN true ELSE false END item_name_equals,  
-                        CASE WHEN DNIJA.manufacturer_item_number = DNIJB.manufacturer_item_number THEN true ELSE false END manufacturer_item_number_equals,
-                        CASE WHEN DNIJA.tax_number = DNIJB.tax_number THEN true ELSE false END tax_number_equals,
-                        CASE WHEN DNIJA.amount_number = DNIJB.amount_number THEN true ELSE false END amount_number_equals,
-                        CASE WHEN DNIJA.unit = DNIJB.unit THEN true ELSE false END unit_equals,
-                        CASE WHEN DNIJA.gross_weight = DNIJB.gross_weight THEN true ELSE false END gross_weight_equals
+                        CASE WHEN COALESCE(DNIJA.item_name,"") = COALESCE(DNIJB.item_name,"") THEN true ELSE false END item_name_equals,  
+                        CASE WHEN COALESCE(DNIJA.manufacturer_item_number,"") = COALESCE(DNIJB.manufacturer_item_number,"") THEN true ELSE false END manufacturer_item_number_equals,
+                        CASE WHEN COALESCE(DNIJA.tax_number,"") = COALESCE(DNIJB.tax_number,"") THEN true ELSE false END tax_number_equals,
+                        CASE WHEN COALESCE(DNIJA.amount,"") = COALESCE(DNIJB.amount,"") THEN true ELSE false END amount_number_equals,
+                        CASE WHEN COALESCE(DNIJA.unit,"") = COALESCE(DNIJB.unit,"") THEN true ELSE false END unit_equals,
+                        CASE WHEN COALESCE(DNIJA.gross_weight,"") = COALESCE(DNIJB.gross_weight,"") THEN true ELSE false END gross_weight_equals
                     FROM 
                         ai_scan_delivery_note_item_job DNIJA
                     LEFT JOIN
@@ -154,15 +154,15 @@
                         DNIJB.item_name,
                         DNIJB.manufacturer_item_number,
                         DNIJB.tax_number,
-                        DNIJB.amount_number,
+                        DNIJB.amount,
                         DNIJB.unit,
                         DNIJB.gross_weight,
-                        CASE WHEN DNIJB.item_name = DNIJA.item_name THEN true ELSE false END item_name_equals,  
-                        CASE WHEN DNIJB.manufacturer_item_number = DNIJA.manufacturer_item_number THEN true ELSE false END manufacturer_item_number_equals,
-                        CASE WHEN DNIJB.tax_number = DNIJA.tax_number THEN true ELSE false END tax_number_equals,
-                        CASE WHEN DNIJB.amount_number = DNIJA.amount_number THEN true ELSE false END amount_number_equals,
-                        CASE WHEN DNIJB.unit = DNIJA.unit THEN true ELSE false END unit_equals,
-                        CASE WHEN DNIJB.gross_weight = DNIJA.gross_weight THEN true ELSE false END gross_weight_equals
+                        CASE WHEN COALESCE(DNIJB.item_name,"") = COALESCE(DNIJA.item_name,"") THEN true ELSE false END item_name_equals,  
+                        CASE WHEN COALESCE(DNIJB.manufacturer_item_number,"") = COALESCE(DNIJA.manufacturer_item_number,"") THEN true ELSE false END manufacturer_item_number_equals,
+                        CASE WHEN COALESCE(DNIJB.tax_number,"") = COALESCE(DNIJA.tax_number,"") THEN true ELSE false END tax_number_equals,
+                        CASE WHEN COALESCE(DNIJB.amount,"") = COALESCE(DNIJA.amount,"") THEN true ELSE false END amount_number_equals,
+                        CASE WHEN COALESCE(DNIJB.unit,"") = COALESCE(DNIJA.unit,"") THEN true ELSE false END unit_equals,
+                        CASE WHEN COALESCE(DNIJB.gross_weight,"") = COALESCE(DNIJA.gross_weight,"") THEN true ELSE false END gross_weight_equals
                     FROM 
                         ai_scan_delivery_note_item_job DNIJB
                     LEFT JOIN
@@ -192,7 +192,7 @@
                             iItemTableItemNameErrorCount +
                             iItemTableManufacturerItemNumberErrorCount +
                             iItemTableTaxNumberErrorCount +
-                            iItemTableAmountNumberErrorCount +
+                            iItemTableAmountErrorCount +
                             iItemTableUnitErrorCount +
                             iItemTableGrossWeightErrorCount +
                             ABS(((iCountItemTableAAddbutton * 6) + (iCountItemTableBAddbutton * 6)) - ((iCountItemTableARemovebutton * 6) + (iCountItemTableBRemovebutton * 6)))
@@ -397,7 +397,7 @@
         <let id='iItemTableItemNameErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableItemNameErrorCount FROM rptItemTable.rows RPTIT}'/>
         <let id='iItemTableManufacturerItemNumberErrorCount' access='private' shape='scalar' value='{SELECT RPTIT.iItemTableManufacturerItemNumberErrorCount FROM rptItemTable.rows RPTIT}'/>
         <let id='iItemTableTaxNumberErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableTaxNumberErrorCount FROM rptItemTable.rows RPTIT}'/>
-        <let id='iItemTableAmountNumberErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableAmountNumberErrorCount FROM rptItemTable.rows RPTIT}'/>
+        <let id='iItemTableAmountErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableAmountErrorCount FROM rptItemTable.rows RPTIT}'/>
         <let id='iItemTableUnitErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableUnitErrorCount FROM rptItemTable.rows RPTIT}'/>
         <let id='iItemTableGrossWeightErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableGrossWeightErrorCount FROM rptItemTable.rows RPTIT}'/>
 
@@ -407,8 +407,8 @@
         <let id='stItemTableBManufacturerItemNumberValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBManufacturerItemNumberValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableATaxNumberValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableATaxNumberValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableBTaxNumberValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBTaxNumberValidated FROM rptItemTable.rows RPTIT}'/>
-        <let id='stItemTableAAmountNumberValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAAmountNumberValidated FROM rptItemTable.rows RPTIT}'/>
-        <let id='stItemTableBAmountNumberValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBAmountNumberValidated FROM rptItemTable.rows RPTIT}'/>
+        <let id='stItemTableAAmountValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAAmountValidated FROM rptItemTable.rows RPTIT}'/>
+        <let id='stItemTableBAmountValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBAmountValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableAUnitValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAUnitValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableBUnitValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBUnitValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableAGrossWeightValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAGrossWeightValidated FROM rptItemTable.rows RPTIT}'/>
@@ -424,8 +424,8 @@
                     AND stItemTableBManufacturerItemNumberValidated NOT LIKE "%false%"
                     AND stItemTableATaxNumberValidated NOT LIKE "%false%"
                     AND stItemTableBTaxNumberValidated NOT LIKE "%false%"
-                    AND stItemTableAAmountNumberValidated NOT LIKE "%false%"
-                    AND stItemTableBAmountNumberValidated NOT LIKE "%false%"
+                    AND stItemTableAAmountValidated NOT LIKE "%false%"
+                    AND stItemTableBAmountValidated NOT LIKE "%false%"
                     AND stItemTableAUnitValidated NOT LIKE "%false%"
                     AND stItemTableBUnitValidated NOT LIKE "%false%"
                     AND stItemTableAGrossWeightValidated NOT LIKE "%false%"
@@ -1297,10 +1297,10 @@
                 <let id='stAcceptItemAgentATaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.abtnAcceptAgentATaxNumber.stSignForAcceptAgentATaxNumber) FROM rtpItemTableAgentA.rows ITAA}'/>
                 <let id='stAcceptItemAgentBTaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.abtnAcceptAgentBTaxNumber.stSignForAcceptAgentBTaxNumber) FROM rtpItemTableAgentB.rows ITAB}'/>
 
-                <let id='stEditItemAgentAAmountNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.abtnEditAgentAAmountNumber.stSignForEditAgentAAmountNumber) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBAmountNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.abtnEditAgentBAmountNumber.stSignForEditAgentBAmountNumber) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentAAmountNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.abtnAcceptAgentAAmountNumber.stSignForAcceptAgentAAmountNumber) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBAmountNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.abtnAcceptAgentBAmountNumber.stSignForAcceptAgentBAmountNumber) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentAAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.abtnEditAgentAAmount.stSignForEditAgentAAmount) FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.abtnEditAgentBAmount.stSignForEditAgentBAmount) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.abtnAcceptAgentAAmount.stSignForAcceptAgentAAmount) FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.abtnAcceptAgentBAmount.stSignForAcceptAgentBAmount) FROM rtpItemTableAgentB.rows ITAB}'/>
 
                 <let id='stEditItemAgentAUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.abtnEditAgentAUnit.stSignForEditAgentAUnit) FROM rtpItemTableAgentA.rows ITAA}'/>
                 <let id='stEditItemAgentBUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.abtnEditAgentBUnit.stSignForEditAgentBUnit) FROM rtpItemTableAgentB.rows ITAB}'/>
@@ -1330,11 +1330,11 @@
                 <let id='iAcceptItemAgentATaxNumber' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.abtnAcceptAgentATaxNumber.bSignForAcceptAgentATaxNumber}'/>
                 <let id='iAcceptItemAgentBTaxNumber' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.abtnAcceptAgentBTaxNumber.bSignForAcceptAgentBTaxNumber}'/>
 
-                <let id='iItemTableAmountNumberErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAAmountNumber+iEditItemAgentBAmountNumber)) + (1*(iAcceptItemAgentAAmountNumber+iAcceptItemAgentBAmountNumber))}'/>
-                <let id='iEditItemAgentAAmountNumber' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.abtnEditAgentAAmountNumber.bSignForEditAgentAAmountNumber}'/>
-                <let id='iEditItemAgentBAmountNumber' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.abtnEditAgentBAmountNumber.bSignForEditAgentBAmountNumber}'/>
-                <let id='iAcceptItemAgentAAmountNumber' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.abtnAcceptAgentAAmountNumber.bSignForAcceptAgentAAmountNumber}'/>
-                <let id='iAcceptItemAgentBAmountNumber' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.abtnAcceptAgentBAmountNumber.bSignForAcceptAgentBAmountNumber}'/>
+                <let id='iItemTableAmountErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAAmount+iEditItemAgentBAmount)) + (1*(iAcceptItemAgentAAmount+iAcceptItemAgentBAmount))}'/>
+                <let id='iEditItemAgentAAmount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.abtnEditAgentAAmount.bSignForEditAgentAAmount}'/>
+                <let id='iEditItemAgentBAmount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.abtnEditAgentBAmount.bSignForEditAgentBAmount}'/>
+                <let id='iAcceptItemAgentAAmount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.abtnAcceptAgentAAmount.bSignForAcceptAgentAAmount}'/>
+                <let id='iAcceptItemAgentBAmount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.abtnAcceptAgentBAmount.bSignForAcceptAgentBAmount}'/>
 
                 <let id='iItemTableUnitErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAUnit+iEditItemAgentBUnit)) + (1*(iAcceptItemAgentAUnit+iAcceptItemAgentBUnit))}'/>
                 <let id='iEditItemAgentAUnit' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.abtnEditAgentAUnit.bSignForEditAgentAUnit}'/>
@@ -1354,8 +1354,8 @@
                 <let id='stItemTableBManufacturerItemNumberValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBManufacturerItemNumberValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableATaxNumberValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentATaxNumberValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBTaxNumberValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBTaxNumberValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableAAmountNumberValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAAmountNumberValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBAmountNumberValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBAmountNumberValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAAmountValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAAmountValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBAmountValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBAmountValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableAUnitValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnitValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBUnitValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnitValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableAGrossWeightValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeightValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
@@ -1367,8 +1367,8 @@
                 <let id='stItemTableBManufacturerItemNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBManufacturerItemNumber) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableATaxNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentATaxNumber) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBTaxNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBTaxNumber) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableAAmountNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAAmountNumber) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBAmountNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBAmountNumber) FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAAmount' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAAmount) FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBAmount' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBAmount) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableAUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnit) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnit) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableAGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeight) FROM rtpItemTableAgentA.rows RPTITAA}'/>
@@ -1397,7 +1397,7 @@
                             SQAJAARIT.item_name,
                             SQAJAARIT.manufacturer_item_number,
                             SQAJAARIT.tax_number,
-                            SQAJAARIT.amount_number,
+                            SQAJAARIT.amount,
                             SQAJAARIT.unit,
                             SQAJAARIT.gross_weight,
                             SQAJAARIT.item_name_equals,
@@ -1414,14 +1414,14 @@
                     <let id='stAgentAItemNameValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.item_name_equals = true OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentAManufacturerItemNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.manufacturer_item_number_equals = true OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentATaxNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.tax_number_equals = true OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
-                    <let id='stAgentAAmountNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.amount_number_equals = true OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
+                    <let id='stAgentAAmountValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.amount_number_equals = true OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentAUnitValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.unit_equals = true OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentAGrossWeightValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rA.gross_weight_equals = true OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN "true" ELSE "false" END}'/>
 
                     <let id='stAgentAItemName' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentAItemName.text WHEN stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentAItemName.text ELSE " " END}'/>
                     <let id='stAgentAManufacturerItemNumber' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentAManufacturerItemNumber.text WHEN stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentAManufacturerItemNumber.text ELSE " " END}'/>
                     <let id='stAgentATaxNumber' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentATaxNumber.text WHEN stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentATaxNumber.text ELSE " " END}'/>
-                    <let id='stAgentAAmountNumber' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentAAmountNumber.text WHEN stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentAAmountNumber.text ELSE " " END}'/>
+                    <let id='stAgentAAmount' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentAAmount.text WHEN stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentAAmount.text ELSE " " END}'/>
                     <let id='stAgentAUnit' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentAUnit.text WHEN stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentAUnit.text ELSE " " END}'/>
                     <let id='stAgentAGrossWeight' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tbAgentAGrossWeight.text WHEN stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN tvAgentAGrossWeight.text ELSE " " END}'/>
                 </declarations>
@@ -1529,38 +1529,38 @@
                     <textview id='tvAgentATaxNumber' text='{rA.tax_number}'  style='{CASE WHEN rA.tax_number_equals = true OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                 </if>
                 
-                <!--AmountNumber-->            
-                <if cond='{rA.amount_number_equals = true OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                    <textview id='tvAcceptAgentAAmountNumberButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentAAmountNumberButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                <!--Amount-->            
+                <if cond='{rA.amount_number_equals = true OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
+                    <textview id='tvAcceptAgentAAmountButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentAAmountButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
                 </if>  
-                <if cond='{rA.amount_number_equals = false AND stAcceptItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stEditItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stEditItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                    <actionbutton id='abtnAcceptAgentAAmountNumber' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentAAmountNumber = TOSTRING(rA.row_counter) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAAmountNumber" || "[" || TOSTRING(rAIndex) || "]"}'>
+                <if cond='{rA.amount_number_equals = false AND stAcceptItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
+                    <actionbutton id='abtnAcceptAgentAAmount' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentAAmount = TOSTRING(rA.row_counter) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'>
                         <declarations>
-                            <let id='stSignForAcceptAgentAAmountNumber' shape='scalar' access='private' value='{""}'/>
-                            <let id='bSignForAcceptAgentAAmountNumber' shape='scalar' access='private' value='{false}'/>
+                            <let id='stSignForAcceptAgentAAmount' shape='scalar' access='private' value='{""}'/>
+                            <let id='bSignForAcceptAgentAAmount' shape='scalar' access='private' value='{false}'/>
                         </declarations>
-                        <set value='{CASE WHEN stSignForAcceptAgentAAmountNumber = "" THEN TOSTRING(rA.row_counter) ELSE "" END}' target='stSignForAcceptAgentAAmountNumber'/>
-                        <set value='{CASE WHEN bSignForAcceptAgentAAmountNumber = false THEN true ELSE false END}' target='bSignForAcceptAgentAAmountNumber'/>
+                        <set value='{CASE WHEN stSignForAcceptAgentAAmount = "" THEN TOSTRING(rA.row_counter) ELSE "" END}' target='stSignForAcceptAgentAAmount'/>
+                        <set value='{CASE WHEN bSignForAcceptAgentAAmount = false THEN true ELSE false END}' target='bSignForAcceptAgentAAmount'/>
                     </actionbutton>
                 </if>
-                <if cond='{stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                    <textview id='tvEditAgentAAmountNumberButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentAAmountNumberButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                <if cond='{stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
+                    <textview id='tvEditAgentAAmountButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentAAmountButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
                 </if>
-                <if cond='{stEditItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                    <actionbutton id='abtnEditAgentAAmountNumber' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentAAmountNumber = TOSTRING(rA.row_counter) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAAmountNumber" || "[" || TOSTRING(rAIndex) || "]"}'>
+                <if cond='{stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
+                    <actionbutton id='abtnEditAgentAAmount' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentAAmount = TOSTRING(rA.row_counter) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'>
                         <declarations>
-                            <let id='stSignForEditAgentAAmountNumber' shape='scalar' access='private' value='{""}'/>
-                            <let id='bSignForEditAgentAAmountNumber' shape='scalar' access='private' value='{false}'/>
+                            <let id='stSignForEditAgentAAmount' shape='scalar' access='private' value='{""}'/>
+                            <let id='bSignForEditAgentAAmount' shape='scalar' access='private' value='{false}'/>
                         </declarations>
-                        <set value='{CASE WHEN stSignForEditAgentAAmountNumber = "" THEN TOSTRING(rA.row_counter) ELSE "" END}' target='stSignForEditAgentAAmountNumber'/>
-                        <set value='{CASE WHEN bSignForEditAgentAAmountNumber = false THEN true ELSE false END}' target='bSignForEditAgentAAmountNumber'/>
+                        <set value='{CASE WHEN stSignForEditAgentAAmount = "" THEN TOSTRING(rA.row_counter) ELSE "" END}' target='stSignForEditAgentAAmount'/>
+                        <set value='{CASE WHEN bSignForEditAgentAAmount = false THEN true ELSE false END}' target='bSignForEditAgentAAmount'/>
                     </actionbutton>
                 </if> 
-                <if cond='{stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                    <textbox id='tbAgentAAmountNumber' text='{TOSTRING(rA.amount_number)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAAmountNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                <if cond='{stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
+                    <textbox id='tbAgentAAmount' text='{TOSTRING(rA.amount)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
                 </if>
-                <if cond='{stEditItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                    <textview id='tvAgentAAmountNumber' text='{TOSTRING(rA.amount_number)}'  style='{CASE WHEN rA.amount_number_equals = true OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAAmountNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                <if cond='{stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
+                    <textview id='tvAgentAAmount' text='{TOSTRING(rA.amount)}'  style='{CASE WHEN rA.amount_number_equals = true OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
                 </if>            
                 
                 <!--Unit-->            
@@ -1648,8 +1648,8 @@
                 <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
                 <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
             </actionbutton>
-            <addbutton records='{SELECT iItemTableAgentARowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentA'/>
-            <addbutton records='{SELECT iItemTableAgentARowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentB'/>
+            <addbutton records='{SELECT iItemTableAgentARowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentA'/>
+            <addbutton records='{SELECT iItemTableAgentARowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentB'/>
         </combinedbutton>
 
         <!-- Separator -->
@@ -1673,7 +1673,7 @@
                             SQAJABRIT.item_name,
                             SQAJABRIT.manufacturer_item_number,
                             SQAJABRIT.tax_number,
-                            SQAJABRIT.amount_number,
+                            SQAJABRIT.amount,
                             SQAJABRIT.unit,
                             SQAJABRIT.gross_weight,
                             SQAJABRIT.item_name_equals,
@@ -1690,14 +1690,14 @@
                     <let id='stAgentBItemNameValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.item_name_equals = true OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentBManufacturerItemNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.manufacturer_item_number_equals = true OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentBTaxNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.tax_number_equals = true OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
-                    <let id='stAgentBAmountNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.amount_number_equals = true OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
+                    <let id='stAgentBAmountValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.amount_number_equals = true OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentBUnitValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.unit_equals = true OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentBGrossWeightValidation' shape='scalar' access='private' value='{SELECT CASE WHEN rB.gross_weight_equals = true OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN "true" ELSE "false" END}'/>
 
                     <let id='stAgentBItemName' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBItemName.text WHEN stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBItemName.text ELSE " " END}'/>
                     <let id='stAgentBManufacturerItemNumber' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBManufacturerItemNumber.text WHEN stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBManufacturerItemNumber.text ELSE " " END}'/>
                     <let id='stAgentBTaxNumber' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBTaxNumber.text WHEN stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBTaxNumber.text ELSE " " END}'/>
-                    <let id='stAgentBAmountNumber' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBAmountNumber.text WHEN stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBAmountNumber.text ELSE " " END}'/>
+                    <let id='stAgentBAmount' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBAmount.text WHEN stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBAmount.text ELSE " " END}'/>
                     <let id='stAgentBUnit' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBUnit.text WHEN stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBUnit.text ELSE " " END}'/>
                     <let id='stAgentBGrossWeight' shape='scalar' access='private' value='{SELECT CASE WHEN stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tbAgentBGrossWeight.text WHEN stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN tvAgentBGrossWeight.text ELSE " " END}'/>
                 </declarations>
@@ -1805,38 +1805,38 @@
                     <textview id='tvAgentBTaxNumber' text='{rB.tax_number}'  style='{CASE WHEN rB.tax_number_equals = true OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                 </if>
                 
-                <!--AmountNumber-->            
-                <if cond='{rB.amount_number_equals = true OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                    <textview id='tvAcceptAgentBAmountNumberButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentBAmountNumberButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                <!--Amount-->            
+                <if cond='{rB.amount_number_equals = true OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
+                    <textview id='tvAcceptAgentBAmountButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentBAmountButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
                 </if>  
-                <if cond='{rB.amount_number_equals = false AND stAcceptItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stEditItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stEditItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                    <actionbutton id='abtnAcceptAgentBAmountNumber' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentBAmountNumber = TOSTRING(rB.row_counter) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBAmountNumber" || "[" || TOSTRING(rBIndex) || "]"}'>
+                <if cond='{rB.amount_number_equals = false AND stAcceptItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
+                    <actionbutton id='abtnAcceptAgentBAmount' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentBAmount = TOSTRING(rB.row_counter) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'>
                         <declarations>
-                            <let id='stSignForAcceptAgentBAmountNumber' shape='scalar' access='private' value='{""}'/>
-                            <let id='bSignForAcceptAgentBAmountNumber' shape='scalar' access='private' value='{false}'/>
+                            <let id='stSignForAcceptAgentBAmount' shape='scalar' access='private' value='{""}'/>
+                            <let id='bSignForAcceptAgentBAmount' shape='scalar' access='private' value='{false}'/>
                         </declarations>
-                        <set value='{CASE WHEN stSignForAcceptAgentBAmountNumber = "" THEN TOSTRING(rB.row_counter) ELSE "" END}' target='stSignForAcceptAgentBAmountNumber'/>
-                        <set value='{CASE WHEN bSignForAcceptAgentBAmountNumber = false THEN true ELSE false END}' target='bSignForAcceptAgentBAmountNumber'/>
+                        <set value='{CASE WHEN stSignForAcceptAgentBAmount = "" THEN TOSTRING(rB.row_counter) ELSE "" END}' target='stSignForAcceptAgentBAmount'/>
+                        <set value='{CASE WHEN bSignForAcceptAgentBAmount = false THEN true ELSE false END}' target='bSignForAcceptAgentBAmount'/>
                     </actionbutton>
                 </if>
-                <if cond='{stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                    <textview id='tvEditAgentBAmountNumberButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentBAmountNumberButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                <if cond='{stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
+                    <textview id='tvEditAgentBAmountButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentBAmountButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
                 </if>
-                <if cond='{stEditItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                    <actionbutton id='abtnEditAgentBAmountNumber' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentBAmountNumber = TOSTRING(rB.row_counter) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBAmountNumber" || "[" || TOSTRING(rBIndex) || "]"}'>
+                <if cond='{stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
+                    <actionbutton id='abtnEditAgentBAmount' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentBAmount = TOSTRING(rB.row_counter) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'>
                         <declarations>
-                            <let id='stSignForEditAgentBAmountNumber' shape='scalar' access='private' value='{""}'/>
-                            <let id='bSignForEditAgentBAmountNumber' shape='scalar' access='private' value='{false}'/>
+                            <let id='stSignForEditAgentBAmount' shape='scalar' access='private' value='{""}'/>
+                            <let id='bSignForEditAgentBAmount' shape='scalar' access='private' value='{false}'/>
                         </declarations>
-                        <set value='{CASE WHEN stSignForEditAgentBAmountNumber = "" THEN TOSTRING(rB.row_counter) ELSE "" END}' target='stSignForEditAgentBAmountNumber'/>
-                        <set value='{CASE WHEN bSignForEditAgentBAmountNumber = false THEN true ELSE false END}' target='bSignForEditAgentBAmountNumber'/>
+                        <set value='{CASE WHEN stSignForEditAgentBAmount = "" THEN TOSTRING(rB.row_counter) ELSE "" END}' target='stSignForEditAgentBAmount'/>
+                        <set value='{CASE WHEN bSignForEditAgentBAmount = false THEN true ELSE false END}' target='bSignForEditAgentBAmount'/>
                     </actionbutton>
                 </if> 
-                <if cond='{stEditItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                    <textbox id='tbAgentBAmountNumber' text='{TOSTRING(rB.amount_number)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBAmountNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                <if cond='{stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
+                    <textbox id='tbAgentBAmount' text='{TOSTRING(rB.amount)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
                 </if>
-                <if cond='{stEditItemAgentBAmountNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                    <textview id='tvAgentBAmountNumber' text='{TOSTRING(rB.amount_number)}'  style='{CASE WHEN rB.amount_number_equals = true OR stAcceptItemAgentBAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBAmountNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                <if cond='{stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
+                    <textview id='tvAgentBAmount' text='{TOSTRING(rB.amount)}'  style='{CASE WHEN rB.amount_number_equals = true OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
                 </if>
                         
                 <!--Unit-->            
@@ -1922,8 +1922,8 @@
                 <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
                 <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
             </actionbutton>
-            <addbutton records='{SELECT iItemTableAgentBRowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentB'/>
-            <addbutton records='{SELECT iItemTableAgentBRowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount_number, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentA'/>
+            <addbutton records='{SELECT iItemTableAgentBRowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentB'/>
+            <addbutton records='{SELECT iItemTableAgentBRowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true item_name_equals, true manufacturer_item_number_equals, true tax_number_equals, true amount_number_equals, true unit_equals, true gross_weight_equals}' table='rtpItemTableAgentA'/>
         </combinedbutton>
 
     </repeater>
