@@ -25,7 +25,7 @@ pipeline {
 					mebt\\mebt compile . AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
 					rem -- copy --
-					rem copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-minimaldata.mes
+					copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-minimaldata.mes
 					rem -- package --
 					mebt\\mebt package AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
