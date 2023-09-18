@@ -25,12 +25,11 @@ pipeline {
 					mebt\\mebt compile . AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
 					rem -- copy --
-					rem copy AIScan-DM-${VER}.mes AIScan-DM-${VER}.mes
+					rem copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-minimaldata.mes
 					rem -- package --
 					mebt\\mebt package AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
-					mebt\\mebt package AIScan-DM-${VER}.mes 
-					rem .\\refdata\\sqlite\\minimal_data_existing.sqlite
+					mebt\\mebt package AIScan-DM-${VER}-minimaldata.mes .\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
 					rem if %errorlevel% neq 0 exit /b %errorlevel%
 					"""
 			}
@@ -39,6 +38,7 @@ pipeline {
 	post {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: '*.sqlite')
 		}
 
 		unstable {
