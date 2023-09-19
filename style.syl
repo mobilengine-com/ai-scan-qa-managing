@@ -900,7 +900,14 @@ styles{
 					left = 0px
 					right = 0px
 				}
+				borderWidth {
+					top = 1px
+					bottom = 1px
+					left = 1px
+					right = 1px
+				}
 				backgroundColor = FAE7E7
+				borderColor = CCCCCC
 			}
 			padding {
 				top = 0px
@@ -1322,8 +1329,14 @@ styles{
 					left = 0px
 					right = 0px
 				}
-				height = 20px
+				borderWidth {
+					top = 1px
+					bottom = 1px
+					left = 1px
+					right = 1px
+				}
 				backgroundColor = FAE7E7
+				borderColor = CCCCCC
 			}
 			margin {
 				top = 3px
@@ -1414,7 +1427,7 @@ styles{
 				margin {
 					top = 0px
 					bottom = 0px
-					left = 0px
+					left = 30px
 					right = 0px
 				}
 				padding {

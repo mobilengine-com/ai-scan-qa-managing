@@ -143,8 +143,6 @@
         let lstAgentAItemTableGrossWeight = list.New();
         let lstAgentBItemTableGrossWeight = list.New();
 
-        let lstDefaultItemTableItemName = form.ltblSelectedQAJobAgentAResultItemTable;
-
         for(let recData of form.rptItemTable.rows)
         {
             lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
@@ -221,7 +219,7 @@
             }
             if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).item_name);
+                lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
             }
 
             //manufacturer item number
@@ -235,7 +233,7 @@
             }
             if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).manufacturer_item_number);
+                lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
             }
 
             //tax number
@@ -249,7 +247,7 @@
             }
             if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).tax_number);
+                lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
             }
 
             //amount number
@@ -263,7 +261,7 @@
             }
             if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).amount);
+                lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
             }
 
             //unit
@@ -277,7 +275,7 @@
             }
             if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).unit);
+                lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
             }
 
             //gross weight
@@ -291,7 +289,7 @@
             }
             if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).gross_weight);
+                lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
             }
         }
 
@@ -329,7 +327,6 @@
             dacs.dnResponse.items.Add(item);
         }
         Log(dacs);
-
         dacs.Send();
 
         //QA job status update to handwritten
@@ -436,8 +433,6 @@
         let lstAgentAItemTableGrossWeight = list.New();
         let lstAgentBItemTableGrossWeight = list.New();
 
-        let lstDefaultItemTableItemName = form.ltblSelectedQAJobAgentAResultItemTable;
-
         for(let recData of form.rptItemTable.rows)
         {
             lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
@@ -514,7 +509,7 @@
             }
             if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).item_name);
+                lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
             }
 
             //manufacturer item number
@@ -528,7 +523,7 @@
             }
             if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).manufacturer_item_number);
+                lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
             }
 
             //tax number
@@ -542,7 +537,7 @@
             }
             if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).tax_number);
+                lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
             }
 
             //amount number
@@ -556,7 +551,7 @@
             }
             if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).amount);
+                lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
             }
 
             //unit
@@ -570,7 +565,7 @@
             }
             if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).unit);
+                lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
             }
 
             //gross weight
@@ -584,7 +579,7 @@
             }
             if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
             {
-                lstFinalItemTable.Add(lstDefaultItemTableItemName.GetAt(i).gross_weight);
+                lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
             }
         }
 
