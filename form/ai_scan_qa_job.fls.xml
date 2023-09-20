@@ -65,18 +65,18 @@
 
         <let id='stSelectedQAJobAnotJobsAgentAResultStatus' shape='scalar' access='private' value='{SELECT SQAJAAR.result FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentAUserName' shape='scalar' access='private' value='{SELECT SQAJAAR.user_name FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>        
-        <let id='stSelectedQAJobAnotJobsAgentACustomerAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.customer_address,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentACustomerName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.customer_name,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentADeliveryAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.delivery_address,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentADeliveryRecipientName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.delivery_recipient_name,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentAIssueDate' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.issue_date,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentAOrderNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.order_number,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentASupplierAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_address,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentASupplierName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_name,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentASupplierTaxNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_tax_number,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentASupplierWarehouse' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_warehouse,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentASupplierId' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_id,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentAWeightGross' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.weight_gross,"") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentACustomerAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.customer_address," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentACustomerName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.customer_name," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentADeliveryAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.delivery_address," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentADeliveryRecipientName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.delivery_recipient_name," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAIssueDate' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.issue_date," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAOrderNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.order_number," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_address," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_name," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierTaxNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_tax_number," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierWarehouse' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_warehouse," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentASupplierId' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_id," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAWeightGross' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.weight_gross," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
 
         <let id='stSelectedQAJobAnotJobsAgentAPDFFile' shape='scalar' access='private' value='{SELECT SQAJAAR.fileref_pdf FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         
@@ -137,18 +137,18 @@
 
         <let id='stSelectedQAJobAnotJobsAgentBResultStatus' shape='scalar' access='private' value='{SELECT SQAJABR.result FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBUserName' shape='scalar' access='private' value='{SELECT SQAJABR.user_name FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>  
-        <let id='stSelectedQAJobAnotJobsAgentBCustomerAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.customer_address,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBCustomerName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.customer_name,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBDeliveryAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.delivery_address,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBDeliveryRecipientName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.delivery_recipient_name,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBIssueDate' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.issue_date,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBOrderNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.order_number,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBSupplierAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_address,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBSupplierName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_name,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBSupplierTaxNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_tax_number,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBSupplierWarehouse' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_warehouse,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBSupplierId' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_id,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
-        <let id='stSelectedQAJobAnotJobsAgentBWeightGross' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.weight_gross,"") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBCustomerAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.customer_address," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBCustomerName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.customer_name," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBDeliveryAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.delivery_address," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBDeliveryRecipientName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.delivery_recipient_name," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBIssueDate' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.issue_date," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBOrderNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.order_number," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierAddress' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_address," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierName' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_name," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierTaxNumber' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_tax_number," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierWarehouse' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_warehouse," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBSupplierId' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_id," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBWeightGross' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.weight_gross," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
 
         <let id='ltblSelectedQAJobAgentBResultItemTable' shape='table' access='private' 
 			value='{SELECT 
