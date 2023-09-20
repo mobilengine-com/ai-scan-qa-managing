@@ -710,7 +710,7 @@ styles{
 	style sylQAMainHeaderAndButtonHbox{
 		hbox {
             height = 60px
-            sizes = 800px, 1
+            sizes = 800px, 1 > 570px
         }
 	}
 
