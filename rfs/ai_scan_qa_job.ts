@@ -65,8 +65,9 @@
         let iJobWorkTime = tsJobWorkTime.TotalMinutes.Round();
 
         //create result 
-        db.ai_scan_qa_job_result.Insert({
-            job_id: stSelectedQAJobId,
+        db.ai_scan_qa_job_result.InsertOrUpdate({
+            job_id: stSelectedQAJobId
+        },{
             delivery_note_id: stSelectedQAJobDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
@@ -489,8 +490,9 @@
         let iJobWorkTime = tsJobWorkTime.TotalMinutes.Round();
 
         //create result 
-        db.ai_scan_qa_job_result.Insert({
-            job_id: stSelectedQAJobId,
+        db.ai_scan_qa_job_result.InsertOrUpdate({
+            job_id: stSelectedQAJobId
+        },{
             delivery_note_id: stSelectedQAJobDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
@@ -913,8 +915,9 @@
         let iJobWorkTime = tsJobWorkTime.TotalMinutes.Round();
 
         //create result 
-        db.ai_scan_qa_job_result.Insert({
-            job_id: stSelectedQAJobId,
+        db.ai_scan_qa_job_result.InsertOrUpdate({
+            job_id: stSelectedQAJobId
+        },{
             delivery_note_id: stSelectedQAJobDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,

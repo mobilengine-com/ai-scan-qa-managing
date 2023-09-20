@@ -179,8 +179,9 @@
         let iJobWorkTime = tsJobWorkTime.TotalMinutes.Round();
 
         //create result 
-        db.ai_scan_job_result.Insert({
-            job_id: stDeliveryNoteJobId,
+        db.ai_scan_job_result.InsertOrUpdate({
+            job_id: stDeliveryNoteJobId
+        },{
             delivery_note_id: stDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
@@ -529,8 +530,9 @@
         let iJobWorkTime = tsJobWorkTime.TotalMinutes.Round();
 
         //create result 
-        db.ai_scan_job_result.Insert({
-            job_id: stDeliveryNoteJobId,
+        db.ai_scan_job_result.InsertOrUpdate({
+            job_id: stDeliveryNoteJobId
+        },{
             delivery_note_id: stDeliveryNoteId,
             user_id: stCurrentJobUserId,
             user_name: stCurrentJobUserName,
