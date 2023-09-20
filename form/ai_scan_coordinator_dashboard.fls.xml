@@ -474,56 +474,48 @@
                     <header>
                         <row>
                             <declarations>
-                                <let id='iANOTJobsSum' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "ANOT"
-                                                AND J.status = "INPROGRESS"
-
-                                    }'
-                                />
+                                <let id='iANOTJobsSum' shape='scalar' value='{iANOTJobsSumHUN+iANOTJobsSumENG+iANOTJobsSumPL}'/>
                                 <let id='iANOTJobsSumHUN' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "ANOT"
-                                                AND J.status = "INPROGRESS"
-                                                AND J.lang = "hu_hu"
-
-                                    }'
+                                    value='{SELECT 
+                                                COUNT(0) 
+                                            FROM 
+                                                ai_scan_user_language UL
+                                            LEFT JOIN
+                                                ai_scan_user U
+                                            ON
+                                                U.id = UL.user_id
+                                            WHERE                                                 
+                                                U.status = "ONLINE"
+                                                AND UL.job_type = "ANOT"
+                                                AND UL.lang = "hu_hu"}'
                                 />
                                 <let id='iANOTJobsSumENG' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "ANOT"
-                                                AND J.status = "INPROGRESS"
-                                                AND J.lang = "eng_eng"
-
-                                    }'
+                                    value='{SELECT 
+                                                COUNT(0) 
+                                            FROM 
+                                                ai_scan_user_language UL
+                                            LEFT JOIN
+                                                ai_scan_user U
+                                            ON
+                                                U.id = UL.user_id
+                                            WHERE                                                 
+                                                U.status = "ONLINE"
+                                                AND UL.job_type = "ANOT"
+                                                AND UL.lang = "eng_eng"}'
                                 />
                                 <let id='iANOTJobsSumPL' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "ANOT"
-                                                AND J.status = "INPROGRESS"
-                                                AND J.lang = "pl_pl"
-
-                                    }'
+                                    value='{SELECT 
+                                                COUNT(0) 
+                                            FROM 
+                                                ai_scan_user_language UL
+                                            LEFT JOIN
+                                                ai_scan_user U
+                                            ON
+                                                U.id = UL.user_id
+                                            WHERE                                                 
+                                                U.status = "ONLINE"
+                                                AND UL.job_type = "ANOT"
+                                                AND UL.lang = "pl_pl"}'
                                 />
                             </declarations>
                             <cell>
@@ -651,56 +643,48 @@
                     <header>
                         <row>
                             <declarations>
-                                <let id='iQAJobsSum' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "QA"
-                                                AND J.status = "INPROGRESS"
-
-                                    }'
-                                />
+                                <let id='iQAJobsSum' shape='scalar' value='{iQAJobsSumHUN+iQAJobsSumENG+iQAJobsSumPL}'/>
                                 <let id='iQAJobsSumHUN' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "QA"
-                                                AND J.status = "INPROGRESS"
-                                                AND J.lang = "hu_hu"
-
-                                    }'
+                                    value='{SELECT 
+                                                COUNT(0) 
+                                            FROM 
+                                                ai_scan_user_language UL
+                                            LEFT JOIN
+                                                ai_scan_user U
+                                            ON
+                                                U.id = UL.user_id
+                                            WHERE                                                 
+                                                U.status = "ONLINE"
+                                                AND UL.job_type = "QA"
+                                                AND UL.lang = "hu_hu"}'
                                 />
                                 <let id='iQAJobsSumENG' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "QA"
-                                                AND J.status = "INPROGRESS"
-                                                AND J.lang = "eng_eng"
-
-                                    }'
+                                    value='{SELECT 
+                                                COUNT(0) 
+                                            FROM 
+                                                ai_scan_user_language UL
+                                            LEFT JOIN
+                                                ai_scan_user U
+                                            ON
+                                                U.id = UL.user_id
+                                            WHERE                                                 
+                                                U.status = "ONLINE"
+                                                AND UL.job_type = "QA"
+                                                AND UL.lang = "eng_eng"}'
                                 />
                                 <let id='iQAJobsSumPL' shape='scalar' 
-                                    value='{SELECT
-                                                COUNT(0)
-                                            FROM
-                                                ai_scan_job_inprogress JI
-                                            LEFT JOIN ai_scan_jobs J ON J.id = JI.job_id
-                                            WHERE
-                                                J.type = "QA"
-                                                AND J.status = "INPROGRESS"
-                                                AND J.lang = "pl_pl"
-
-                                    }'
+                                    value='{SELECT 
+                                                COUNT(0) 
+                                            FROM 
+                                                ai_scan_user_language UL
+                                            LEFT JOIN
+                                                ai_scan_user U
+                                            ON
+                                                U.id = UL.user_id
+                                            WHERE                                                 
+                                                U.status = "ONLINE"
+                                                AND UL.job_type = "QA"
+                                                AND UL.lang = "pl_pl"}'
                                 />
                             </declarations>
                             <cell>
