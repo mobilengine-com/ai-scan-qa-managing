@@ -605,10 +605,10 @@
                         <textbox id='tbEditCustomerAddressA' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerAddressA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobAnotJobsAgentBCustomerAddress) AND bSignForEditAgentACustomerAddress = false}'>
-                        <textview id='tvCustomerAddressA' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' style='{CASE WHEN bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerAddressA'/>
+                        <textview id='tvCustomerAddressA' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' style='{CASE WHEN (bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true) AND stSelectedQAJobAnotJobsAgentACustomerAddress != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerAddressA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobAnotJobsAgentBCustomerAddress) AND bSignForEditAgentACustomerAddress = false}'>
-                        <textview id='tvCustomerAddressAError' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' style='{CASE WHEN bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerAddressAError'/>
+                        <textview id='tvCustomerAddressAError' text='{stSelectedQAJobAnotJobsAgentACustomerAddress}' style='{CASE WHEN (bSignForEditAgentBCustomerAddress = true OR bSignForAcceptAgentBCustomerAddress = true) AND stSelectedQAJobAnotJobsAgentACustomerAddress != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerAddressAError'/>
                     </if>
                     
                     <textview id='tvCustomerAddressEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvCustomerAddressEmpty'/>
@@ -633,10 +633,10 @@
                         <textbox id='tbEditCustomerAddressB' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerAddressB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerAddress = stSelectedQAJobAnotJobsAgentBCustomerAddress) AND bSignForEditAgentBCustomerAddress = false}'>
-                        <textview id='tvCustomerAddressB' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' style='{CASE WHEN bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerAddressB'/>
+                        <textview id='tvCustomerAddressB' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' style='{CASE WHEN (bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true) AND stSelectedQAJobAnotJobsAgentBCustomerAddress != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerAddressB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerAddress != stSelectedQAJobAnotJobsAgentBCustomerAddress) AND bSignForEditAgentBCustomerAddress = false}'>
-                        <textview id='tvCustomerAddressBError' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' style='{CASE WHEN bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerAddressBError'/>
+                        <textview id='tvCustomerAddressBError' text='{stSelectedQAJobAnotJobsAgentBCustomerAddress}' style='{CASE WHEN (bSignForEditAgentACustomerAddress = true OR bSignForAcceptAgentACustomerAddress = true) AND stSelectedQAJobAnotJobsAgentBCustomerAddress != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBCustomerAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerAddressBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -662,10 +662,10 @@
                         <textbox id='tbEditCustomerNameA' text='{stSelectedQAJobAnotJobsAgentACustomerName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerNameA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobAnotJobsAgentBCustomerName) AND bSignForEditAgentACustomerName = false}'>
-                        <textview id='tvCustomerNameA' text='{stSelectedQAJobAnotJobsAgentACustomerName}' style='{CASE WHEN bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerNameA'/>
+                        <textview id='tvCustomerNameA' text='{stSelectedQAJobAnotJobsAgentACustomerName}' style='{CASE WHEN (bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true) AND stSelectedQAJobAnotJobsAgentACustomerName != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerNameA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobAnotJobsAgentBCustomerName) AND bSignForEditAgentACustomerName = false}'>
-                        <textview id='tvCustomerNameAError' text='{stSelectedQAJobAnotJobsAgentACustomerName}' style='{CASE WHEN bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerNameAError'/>
+                        <textview id='tvCustomerNameAError' text='{stSelectedQAJobAnotJobsAgentACustomerName}' style='{CASE WHEN (bSignForEditAgentBCustomerName = true OR bSignForAcceptAgentBCustomerName = true) AND stSelectedQAJobAnotJobsAgentACustomerName != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerNameAError'/>
                     </if>
                     
                     <textview id='tvCustomerNameEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvCustomerNameEmpty'/>
@@ -690,10 +690,10 @@
                         <textbox id='tbEditCustomerNameB' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditCustomerNameB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerName = stSelectedQAJobAnotJobsAgentBCustomerName) AND bSignForEditAgentBCustomerName = false}'>
-                        <textview id='tvCustomerNameB' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' style='{CASE WHEN bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerNameB'/>
+                        <textview id='tvCustomerNameB' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' style='{CASE WHEN (bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true) AND stSelectedQAJobAnotJobsAgentBCustomerName != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvCustomerNameB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentACustomerName != stSelectedQAJobAnotJobsAgentBCustomerName) AND bSignForEditAgentBCustomerName = false}'>
-                        <textview id='tvCustomerNameBError' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' style='{CASE WHEN bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerNameBError'/>
+                        <textview id='tvCustomerNameBError' text='{stSelectedQAJobAnotJobsAgentBCustomerName}' style='{CASE WHEN (bSignForEditAgentACustomerName = true OR bSignForAcceptAgentACustomerName = true) AND stSelectedQAJobAnotJobsAgentBCustomerName != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBCustomerName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvCustomerNameBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -719,10 +719,10 @@
                         <textbox id='tbEditDeliveryAddressA' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryAddressA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobAnotJobsAgentBDeliveryAddress) AND bSignForEditAgentADeliveryAddress = false}'>
-                        <textview id='tvDeliveryAddressA' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' style='{CASE WHEN bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryAddressA'/>
+                        <textview id='tvDeliveryAddressA' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' style='{CASE WHEN (bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true) AND stSelectedQAJobAnotJobsAgentADeliveryAddress != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryAddressA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobAnotJobsAgentBDeliveryAddress) AND bSignForEditAgentADeliveryAddress = false}'>
-                        <textview id='tvDeliveryAddressAError' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' style='{CASE WHEN bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryAddressAError'/>
+                        <textview id='tvDeliveryAddressAError' text='{stSelectedQAJobAnotJobsAgentADeliveryAddress}' style='{CASE WHEN (bSignForEditAgentBDeliveryAddress = true OR bSignForAcceptAgentBDeliveryAddress = true) AND stSelectedQAJobAnotJobsAgentADeliveryAddress != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryAddressAError'/>
                     </if>
                     
                     <textview id='tvDeliveryAddressEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvDeliveryAddressEmpty'/>
@@ -747,10 +747,10 @@
                         <textbox id='tbEditDeliveryAddressB' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryAddressB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryAddress = stSelectedQAJobAnotJobsAgentBDeliveryAddress) AND bSignForEditAgentBDeliveryAddress = false}'>
-                        <textview id='tvDeliveryAddressB' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' style='{CASE WHEN bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryAddressB'/>
+                        <textview id='tvDeliveryAddressB' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' style='{CASE WHEN (bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true) AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryAddressB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryAddress != stSelectedQAJobAnotJobsAgentBDeliveryAddress) AND bSignForEditAgentBDeliveryAddress = false}'>
-                        <textview id='tvDeliveryAddressBError' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' style='{CASE WHEN bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryAddressBError'/>
+                        <textview id='tvDeliveryAddressBError' text='{stSelectedQAJobAnotJobsAgentBDeliveryAddress}' style='{CASE WHEN (bSignForEditAgentADeliveryAddress = true OR bSignForAcceptAgentADeliveryAddress = true) AND stSelectedQAJobAnotJobsAgentBDeliveryAddress != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBDeliveryAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryAddressBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -776,10 +776,10 @@
                         <textbox id='tbEditDeliveryRecipientNameA' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryRecipientNameA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobAnotJobsAgentBDeliveryRecipientName) AND bSignForEditAgentADeliveryRecipientName = false}'>
-                        <textview id='tvDeliveryRecipientNameA' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryRecipientNameA'/>
+                        <textview id='tvDeliveryRecipientNameA' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' style='{CASE WHEN (bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true) AND stSelectedQAJobAnotJobsAgentADeliveryRecipientName != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryRecipientNameA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobAnotJobsAgentBDeliveryRecipientName) AND bSignForEditAgentADeliveryRecipientName = false}'>
-                        <textview id='tvDeliveryRecipientNameAError' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryRecipientNameAError'/>
+                        <textview id='tvDeliveryRecipientNameAError' text='{stSelectedQAJobAnotJobsAgentADeliveryRecipientName}' style='{CASE WHEN (bSignForEditAgentBDeliveryRecipientName = true OR bSignForAcceptAgentBDeliveryRecipientName = true) AND stSelectedQAJobAnotJobsAgentADeliveryRecipientName != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryRecipientNameAError'/>
                     </if>
                     
                     <textview id='tvDeliveryRecipientNameEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvDeliveryRecipientNameEmpty'/>
@@ -804,10 +804,10 @@
                         <textbox id='tbEditDeliveryRecipientNameB' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditDeliveryRecipientNameB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryRecipientName = stSelectedQAJobAnotJobsAgentBDeliveryRecipientName) AND bSignForEditAgentBDeliveryRecipientName = false}'>
-                        <textview id='tvDeliveryRecipientNameB' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryRecipientNameB'/>
+                        <textview id='tvDeliveryRecipientNameB' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' style='{CASE WHEN (bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true) AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvDeliveryRecipientNameB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentADeliveryRecipientName != stSelectedQAJobAnotJobsAgentBDeliveryRecipientName) AND bSignForEditAgentBDeliveryRecipientName = false}'>
-                        <textview id='tvDeliveryRecipientNameBError' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' style='{CASE WHEN bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryRecipientNameBError'/>
+                        <textview id='tvDeliveryRecipientNameBError' text='{stSelectedQAJobAnotJobsAgentBDeliveryRecipientName}' style='{CASE WHEN (bSignForEditAgentADeliveryRecipientName = true OR bSignForAcceptAgentADeliveryRecipientName = true) AND stSelectedQAJobAnotJobsAgentBDeliveryRecipientName != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBDeliveryRecipientName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvDeliveryRecipientNameBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -833,10 +833,10 @@
                         <textbox id='tbEditIssueDateA' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditIssueDateA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobAnotJobsAgentBIssueDate) AND bSignForEditAgentAIssueDate = false}'>
-                        <textview id='tvIssueDateA' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' style='{CASE WHEN bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvIssueDateA'/>
+                        <textview id='tvIssueDateA' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' style='{CASE WHEN (bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true) AND stSelectedQAJobAnotJobsAgentAIssueDate != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvIssueDateA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobAnotJobsAgentBIssueDate) AND bSignForEditAgentAIssueDate = false}'>
-                        <textview id='tvIssueDateAError' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' style='{CASE WHEN bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvIssueDateAError'/>
+                        <textview id='tvIssueDateAError' text='{stSelectedQAJobAnotJobsAgentAIssueDate}' style='{CASE WHEN (bSignForEditAgentBIssueDate = true OR bSignForAcceptAgentBIssueDate = true) AND stSelectedQAJobAnotJobsAgentAIssueDate != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvIssueDateAError'/>
                     </if>
                     
                     <textview id='tvIssueDateEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvIssueDateEmpty'/>
@@ -861,10 +861,10 @@
                         <textbox id='tbEditIssueDateB' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditIssueDateB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAIssueDate = stSelectedQAJobAnotJobsAgentBIssueDate) AND bSignForEditAgentBIssueDate = false}'>
-                        <textview id='tvIssueDateB' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' style='{CASE WHEN bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvIssueDateB'/>
+                        <textview id='tvIssueDateB' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' style='{CASE WHEN (bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true) AND stSelectedQAJobAnotJobsAgentBIssueDate != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvIssueDateB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAIssueDate != stSelectedQAJobAnotJobsAgentBIssueDate) AND bSignForEditAgentBIssueDate = false}'>
-                        <textview id='tvIssueDateBError' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' style='{CASE WHEN bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvIssueDateBError'/>
+                        <textview id='tvIssueDateBError' text='{stSelectedQAJobAnotJobsAgentBIssueDate}' style='{CASE WHEN (bSignForEditAgentAIssueDate = true OR bSignForAcceptAgentAIssueDate = true) AND stSelectedQAJobAnotJobsAgentBIssueDate != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBIssueDate = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvIssueDateBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -890,10 +890,10 @@
                         <textbox id='tbEditOrderNumberA' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditOrderNumberA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobAnotJobsAgentBOrderNumber) AND bSignForEditAgentAOrderNumber = false}'>
-                        <textview id='tvOrderNumberA' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' style='{CASE WHEN bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvOrderNumberA'/>
+                        <textview id='tvOrderNumberA' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' style='{CASE WHEN (bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true) AND stSelectedQAJobAnotJobsAgentAOrderNumber != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvOrderNumberA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobAnotJobsAgentBOrderNumber) AND bSignForEditAgentAOrderNumber = false}'>
-                        <textview id='tvOrderNumberAError' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' style='{CASE WHEN bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvOrderNumberAError'/>
+                        <textview id='tvOrderNumberAError' text='{stSelectedQAJobAnotJobsAgentAOrderNumber}' style='{CASE WHEN (bSignForEditAgentBOrderNumber = true OR bSignForAcceptAgentBOrderNumber = true) AND stSelectedQAJobAnotJobsAgentAOrderNumber != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvOrderNumberAError'/>
                     </if>
                     
                     <textview id='tvOrderNumberEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvOrderNumberEmpty'/>
@@ -918,10 +918,10 @@
                         <textbox id='tbEditOrderNumberB' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditOrderNumberB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAOrderNumber = stSelectedQAJobAnotJobsAgentBOrderNumber) AND bSignForEditAgentBOrderNumber = false}'>
-                        <textview id='tvOrderNumberB' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' style='{CASE WHEN bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvOrderNumberB'/>
+                        <textview id='tvOrderNumberB' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' style='{CASE WHEN (bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true) AND stSelectedQAJobAnotJobsAgentBOrderNumber != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvOrderNumberB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAOrderNumber != stSelectedQAJobAnotJobsAgentBOrderNumber) AND bSignForEditAgentBOrderNumber = false}'>
-                        <textview id='tvOrderNumberBError' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' style='{CASE WHEN bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvOrderNumberBError'/>
+                        <textview id='tvOrderNumberBError' text='{stSelectedQAJobAnotJobsAgentBOrderNumber}' style='{CASE WHEN (bSignForEditAgentAOrderNumber = true OR bSignForAcceptAgentAOrderNumber = true) AND stSelectedQAJobAnotJobsAgentBOrderNumber != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBOrderNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvOrderNumberBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -947,10 +947,10 @@
                         <textbox id='tbEditSupplierAddressA' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierAddressA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobAnotJobsAgentBSupplierAddress) AND bSignForEditAgentASupplierAddress = false}'>
-                        <textview id='tvSupplierAddressA' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' style='{CASE WHEN bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierAddressA'/>
+                        <textview id='tvSupplierAddressA' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' style='{CASE WHEN (bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true) AND stSelectedQAJobAnotJobsAgentASupplierAddress != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierAddressA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobAnotJobsAgentBSupplierAddress) AND bSignForEditAgentASupplierAddress = false}'>
-                        <textview id='tvSupplierAddressAError' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' style='{CASE WHEN bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierAddressAError'/>
+                        <textview id='tvSupplierAddressAError' text='{stSelectedQAJobAnotJobsAgentASupplierAddress}' style='{CASE WHEN (bSignForEditAgentBSupplierAddress = true OR bSignForAcceptAgentBSupplierAddress = true) AND stSelectedQAJobAnotJobsAgentASupplierAddress != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierAddressAError'/>
                     </if>
                     
                     <textview id='tvSupplierAddressEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierAddressEmpty'/>
@@ -975,10 +975,10 @@
                         <textbox id='tbEditSupplierAddressB' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierAddressB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierAddress = stSelectedQAJobAnotJobsAgentBSupplierAddress) AND bSignForEditAgentBSupplierAddress = false}'>
-                        <textview id='tvSupplierAddressB' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' style='{CASE WHEN bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierAddressB'/>
+                        <textview id='tvSupplierAddressB' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' style='{CASE WHEN (bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true) AND stSelectedQAJobAnotJobsAgentBSupplierAddress != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierAddressB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierAddress != stSelectedQAJobAnotJobsAgentBSupplierAddress) AND bSignForEditAgentBSupplierAddress = false}'>
-                        <textview id='tvSupplierAddressBError' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' style='{CASE WHEN bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierAddressBError'/>
+                        <textview id='tvSupplierAddressBError' text='{stSelectedQAJobAnotJobsAgentBSupplierAddress}' style='{CASE WHEN (bSignForEditAgentASupplierAddress = true OR bSignForAcceptAgentASupplierAddress = true) AND stSelectedQAJobAnotJobsAgentBSupplierAddress != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierAddress = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierAddressBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -1004,10 +1004,10 @@
                         <textbox id='tbEditSupplierNameA' text='{stSelectedQAJobAnotJobsAgentASupplierName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierNameA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobAnotJobsAgentBSupplierName) AND bSignForEditAgentASupplierName = false}'>
-                        <textview id='tvSupplierNameA' text='{stSelectedQAJobAnotJobsAgentASupplierName}' style='{CASE WHEN bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierNameA'/>
+                        <textview id='tvSupplierNameA' text='{stSelectedQAJobAnotJobsAgentASupplierName}' style='{CASE WHEN (bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true) AND stSelectedQAJobAnotJobsAgentASupplierName != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierNameA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobAnotJobsAgentBSupplierName) AND bSignForEditAgentASupplierName = false}'>
-                        <textview id='tvSupplierNameAError' text='{stSelectedQAJobAnotJobsAgentASupplierName}' style='{CASE WHEN bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierNameAError'/>
+                        <textview id='tvSupplierNameAError' text='{stSelectedQAJobAnotJobsAgentASupplierName}' style='{CASE WHEN (bSignForEditAgentBSupplierName = true OR bSignForAcceptAgentBSupplierName = true) AND stSelectedQAJobAnotJobsAgentASupplierName != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierNameAError'/>
                     </if>
                     
                     <textview id='tvSupplierNameEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierNameEmpty'/>
@@ -1032,10 +1032,10 @@
                         <textbox id='tbEditSupplierNameB' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierNameB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierName = stSelectedQAJobAnotJobsAgentBSupplierName) AND bSignForEditAgentBSupplierName = false}'>
-                        <textview id='tvSupplierNameB' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' style='{CASE WHEN bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierNameB'/>
+                        <textview id='tvSupplierNameB' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' style='{CASE WHEN (bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true) AND stSelectedQAJobAnotJobsAgentBSupplierName != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierNameB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierName != stSelectedQAJobAnotJobsAgentBSupplierName) AND bSignForEditAgentBSupplierName = false}'>
-                        <textview id='tvSupplierNameBError' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' style='{CASE WHEN bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierNameBError'/>
+                        <textview id='tvSupplierNameBError' text='{stSelectedQAJobAnotJobsAgentBSupplierName}' style='{CASE WHEN (bSignForEditAgentASupplierName = true OR bSignForAcceptAgentASupplierName = true) AND stSelectedQAJobAnotJobsAgentBSupplierName != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierName = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierNameBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -1061,10 +1061,10 @@
                         <textbox id='tbEditSupplierTaxNumberA' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierTaxNumberA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobAnotJobsAgentBSupplierTaxNumber) AND bSignForEditAgentASupplierTaxNumber = false}'>
-                        <textview id='tvSupplierTaxNumberA' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierTaxNumberA'/>
+                        <textview id='tvSupplierTaxNumberA' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' style='{CASE WHEN (bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true) AND stSelectedQAJobAnotJobsAgentASupplierTaxNumber != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierTaxNumberA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobAnotJobsAgentBSupplierTaxNumber) AND bSignForEditAgentASupplierTaxNumber = false}'>
-                        <textview id='tvSupplierTaxNumberAError' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierTaxNumberAError'/>
+                        <textview id='tvSupplierTaxNumberAError' text='{stSelectedQAJobAnotJobsAgentASupplierTaxNumber}' style='{CASE WHEN (bSignForEditAgentBSupplierTaxNumber = true OR bSignForAcceptAgentBSupplierTaxNumber = true) AND stSelectedQAJobAnotJobsAgentASupplierTaxNumber != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierTaxNumberAError'/>
                     </if>
                     
                     <textview id='tvSupplierTaxNumberEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierTaxNumberEmpty'/>
@@ -1089,10 +1089,10 @@
                         <textbox id='tbEditSupplierTaxNumberB' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierTaxNumberB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierTaxNumber = stSelectedQAJobAnotJobsAgentBSupplierTaxNumber) AND bSignForEditAgentBSupplierTaxNumber = false}'>
-                        <textview id='tvSupplierTaxNumberB' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierTaxNumberB'/>
+                        <textview id='tvSupplierTaxNumberB' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' style='{CASE WHEN (bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true) AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierTaxNumberB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierTaxNumber != stSelectedQAJobAnotJobsAgentBSupplierTaxNumber) AND bSignForEditAgentBSupplierTaxNumber = false}'>
-                        <textview id='tvSupplierTaxNumberBError' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' style='{CASE WHEN bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierTaxNumberBError'/>
+                        <textview id='tvSupplierTaxNumberBError' text='{stSelectedQAJobAnotJobsAgentBSupplierTaxNumber}' style='{CASE WHEN (bSignForEditAgentASupplierTaxNumber = true OR bSignForAcceptAgentASupplierTaxNumber = true) AND stSelectedQAJobAnotJobsAgentBSupplierTaxNumber != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierTaxNumber = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierTaxNumberBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -1118,10 +1118,10 @@
                         <textbox id='tbEditSupplierWarehouseA' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierWarehouseA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobAnotJobsAgentBSupplierWarehouse) AND bSignForEditAgentASupplierWarehouse = false}'>
-                        <textview id='tvSupplierWarehouseA' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' style='{CASE WHEN bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierWarehouseA'/>
+                        <textview id='tvSupplierWarehouseA' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' style='{CASE WHEN (bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true) AND stSelectedQAJobAnotJobsAgentASupplierWarehouse != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierWarehouseA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobAnotJobsAgentBSupplierWarehouse) AND bSignForEditAgentASupplierWarehouse = false}'>
-                        <textview id='tvSupplierWarehouseAError' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' style='{CASE WHEN bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierWarehouseAError'/>
+                        <textview id='tvSupplierWarehouseAError' text='{stSelectedQAJobAnotJobsAgentASupplierWarehouse}' style='{CASE WHEN (bSignForEditAgentBSupplierWarehouse = true OR bSignForAcceptAgentBSupplierWarehouse = true) AND stSelectedQAJobAnotJobsAgentASupplierWarehouse != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierWarehouseAError'/>
                     </if>
                     
                     <textview id='tvSupplierWarehouseEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierWarehouseEmpty'/>
@@ -1146,10 +1146,10 @@
                         <textbox id='tbEditSupplierWarehouseB' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierWarehouseB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierWarehouse = stSelectedQAJobAnotJobsAgentBSupplierWarehouse) AND bSignForEditAgentBSupplierWarehouse = false}'>
-                        <textview id='tvSupplierWarehouseB' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' style='{CASE WHEN bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierWarehouseB'/>
+                        <textview id='tvSupplierWarehouseB' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' style='{CASE WHEN (bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true) AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierWarehouseB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierWarehouse != stSelectedQAJobAnotJobsAgentBSupplierWarehouse) AND bSignForEditAgentBSupplierWarehouse = false}'>
-                        <textview id='tvSupplierWarehouseBError' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' style='{CASE WHEN bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierWarehouseBError'/>
+                        <textview id='tvSupplierWarehouseBError' text='{stSelectedQAJobAnotJobsAgentBSupplierWarehouse}' style='{CASE WHEN (bSignForEditAgentASupplierWarehouse = true OR bSignForAcceptAgentASupplierWarehouse = true) AND stSelectedQAJobAnotJobsAgentBSupplierWarehouse != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierWarehouse = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierWarehouseBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -1175,10 +1175,10 @@
                         <textbox id='tbEditSupplierIdA' text='{stSelectedQAJobAnotJobsAgentASupplierId}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierIdA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobAnotJobsAgentBSupplierId) AND bSignForEditAgentASupplierId = false}'>
-                        <textview id='tvSupplierIdA' text='{stSelectedQAJobAnotJobsAgentASupplierId}' style='{CASE WHEN bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierIdA'/>
+                        <textview id='tvSupplierIdA' text='{stSelectedQAJobAnotJobsAgentASupplierId}' style='{CASE WHEN (bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true) AND stSelectedQAJobAnotJobsAgentASupplierId != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierIdA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobAnotJobsAgentBSupplierId) AND bSignForEditAgentASupplierId = false}'>
-                        <textview id='tvSupplierIdAError' text='{stSelectedQAJobAnotJobsAgentASupplierId}' style='{CASE WHEN bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierIdAError'/>
+                        <textview id='tvSupplierIdAError' text='{stSelectedQAJobAnotJobsAgentASupplierId}' style='{CASE WHEN (bSignForEditAgentBSupplierId = true OR bSignForAcceptAgentBSupplierId = true) AND stSelectedQAJobAnotJobsAgentASupplierId != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierIdAError'/>
                     </if>
                     
                     <textview id='tvSupplierIdEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvSupplierIdEmpty'/>
@@ -1203,10 +1203,10 @@
                         <textbox id='tbEditSupplierIdB' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditSupplierIdB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobAnotJobsAgentBSupplierId) AND bSignForEditAgentBSupplierId = false}'>
-                        <textview id='tvSupplierIdB' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' style='{CASE WHEN bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierIdB'/>
+                        <textview id='tvSupplierIdB' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' style='{CASE WHEN (bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true) AND stSelectedQAJobAnotJobsAgentBSupplierId != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvSupplierIdB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobAnotJobsAgentBSupplierId) AND bSignForEditAgentBSupplierId = false}'>
-                        <textview id='tvSupplierIdBError' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' style='{CASE WHEN bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierIdBError'/>
+                        <textview id='tvSupplierIdBError' text='{stSelectedQAJobAnotJobsAgentBSupplierId}' style='{CASE WHEN (bSignForEditAgentASupplierId = true OR bSignForAcceptAgentASupplierId = true) AND stSelectedQAJobAnotJobsAgentBSupplierId != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBSupplierId = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvSupplierIdBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
@@ -1232,10 +1232,10 @@
                         <textbox id='tbEditWeightGrossA' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditWeightGrossA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobAnotJobsAgentBWeightGross) AND bSignForEditAgentAWeightGross = false}'>
-                        <textview id='tvWeightGrossA' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' style='{CASE WHEN bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvWeightGrossA'/>
+                        <textview id='tvWeightGrossA' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' style='{CASE WHEN (bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true) AND stSelectedQAJobAnotJobsAgentAWeightGross != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvWeightGrossA'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobAnotJobsAgentBWeightGross) AND bSignForEditAgentAWeightGross = false}'>
-                        <textview id='tvWeightGrossAError' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' style='{CASE WHEN bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossAError'/>
+                        <textview id='tvWeightGrossAError' text='{stSelectedQAJobAnotJobsAgentAWeightGross}' style='{CASE WHEN (bSignForEditAgentBWeightGross = true OR bSignForAcceptAgentBWeightGross = true) AND stSelectedQAJobAnotJobsAgentAWeightGross != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossAError'/>
                     </if>
                     
                     <textview id='tvWeightGrossEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvWeightGrossEmpty'/>
@@ -1260,10 +1260,10 @@
                         <textbox id='tbEditWeightGrossB' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditWeightGrossB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobAnotJobsAgentBWeightGross) AND bSignForEditAgentBWeightGross = false}'>
-                        <textview id='tvWeightGrossB' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvWeightGrossB'/>
+                        <textview id='tvWeightGrossB' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN (bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true) AND stSelectedQAJobAnotJobsAgentBWeightGross != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvWeightGrossB'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobAnotJobsAgentBWeightGross) AND bSignForEditAgentBWeightGross = false}'>
-                        <textview id='tvWeightGrossBError' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossBError'/>
+                        <textview id='tvWeightGrossBError' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN (bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true) AND stSelectedQAJobAnotJobsAgentBWeightGross != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossBError'/>
                     </if>
                 </hbox>
             </block>
@@ -1526,7 +1526,7 @@
                         <textbox id='tbAgentAItemName' text='{rA.item_name}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAItemName' text='{COALESCE(rA.item_name," ")}' style='{CASE WHEN rA.item_name_equals = false AND (stEditItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAItemName' text='{COALESCE(rA.item_name," ")}' style='{CASE WHEN rA.item_name_equals = false AND (stEditItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") AND COALESCE(rA.item_name," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     
                     <!--ManufacturerItemNumber-->            
@@ -1560,7 +1560,7 @@
                         <textbox id='tbAgentAManufacturerItemNumber' text='{rA.manufacturer_item_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAManufacturerItemNumber' text='{COALESCE(rA.manufacturer_item_number," ")}' style='{CASE WHEN rA.manufacturer_item_number_equals = false AND (stEditItemAgentBManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAManufacturerItemNumber' text='{COALESCE(rA.manufacturer_item_number," ")}' style='{CASE WHEN rA.manufacturer_item_number_equals = false AND (stEditItemAgentBManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") AND COALESCE(rA.manufacturer_item_number," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--TaxNumber-->            
@@ -1594,7 +1594,7 @@
                         <textbox id='tbAgentATaxNumber' text='{rA.tax_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentATaxNumber' text='{COALESCE(rA.tax_number," ")}' style='{CASE WHEN rA.tax_number_equals = false AND (stEditItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentATaxNumber' text='{COALESCE(rA.tax_number," ")}' style='{CASE WHEN rA.tax_number_equals = false AND (stEditItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") AND COALESCE(rA.tax_number," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     
                     <!--Amount-->            
@@ -1628,7 +1628,7 @@
                         <textbox id='tbAgentAAmount' text='{TOSTRING(rA.amount)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAAmount' text='{COALESCE(TOSTRING(rA.amount)," ")}' style='{CASE WHEN rA.amount_number_equals = false AND (stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAAmount' text='{COALESCE(TOSTRING(rA.amount)," ")}' style='{CASE WHEN rA.amount_number_equals = false AND (stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") AND COALESCE(TOSTRING(rA.amount)," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--Unit-->            
@@ -1662,7 +1662,7 @@
                         <textbox id='tbAgentAUnit' text='{rA.unit}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if> 
                     <if cond='{stEditItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAUnit' text='{COALESCE(rA.unit," ")}' style='{CASE WHEN rA.unit_equals = false AND (stEditItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAUnit' text='{COALESCE(rA.unit," ")}' style='{CASE WHEN rA.unit_equals = false AND (stEditItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") AND COALESCE(rA.unit," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--GrossWeight-->            
@@ -1696,7 +1696,7 @@
                         <textbox id='tbAgentAGrossWeight' text='{rA.gross_weight}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAGrossWeightRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAGrossWeight' text='{COALESCE(rA.gross_weight," ")}' style='{CASE WHEN rA.gross_weight_equals = false AND (stEditItemAgentBGrossWeightRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAGrossWeight' text='{COALESCE(rA.gross_weight," ")}' style='{CASE WHEN rA.gross_weight_equals = false AND (stEditItemAgentBGrossWeightRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") AND COALESCE(rA.gross_weight," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--Remove Button-->    
@@ -1880,7 +1880,7 @@
                         <textbox id='tbAgentBItemName' text='{rB.item_name}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBItemName' text='{COALESCE(rB.item_name," ")}' style='{CASE WHEN rB.item_name_equals = false AND (stEditItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBItemName' text='{COALESCE(rB.item_name," ")}' style='{CASE WHEN rB.item_name_equals = false AND (stEditItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") AND COALESCE(rB.item_name," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--ManufacturerItemNumber-->            
@@ -1914,7 +1914,7 @@
                         <textbox id='tbAgentBManufacturerItemNumber' text='{rB.manufacturer_item_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if> 
                     <if cond='{stEditItemAgentBManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBManufacturerItemNumber' text='{COALESCE(rB.manufacturer_item_number," ")}' style='{CASE WHEN rB.manufacturer_item_number_equals = false AND (stEditItemAgentAManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBManufacturerItemNumber' text='{COALESCE(rB.manufacturer_item_number," ")}' style='{CASE WHEN rB.manufacturer_item_number_equals = false AND (stEditItemAgentAManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") AND COALESCE(rB.manufacturer_item_number," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--TaxNumber-->            
@@ -1948,7 +1948,7 @@
                         <textbox id='tbAgentBTaxNumber' text='{rB.tax_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBTaxNumber' text='{COALESCE(rB.tax_number," ")}' style='{CASE WHEN rB.tax_number_equals = false AND (stEditItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBTaxNumber' text='{COALESCE(rB.tax_number," ")}' style='{CASE WHEN rB.tax_number_equals = false AND (stEditItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") AND COALESCE(rB.tax_number," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--Amount-->            
@@ -1982,7 +1982,7 @@
                         <textbox id='tbAgentBAmount' text='{TOSTRING(rB.amount)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBAmount' text='{COALESCE(TOSTRING(rB.amount)," ")}' style='{CASE WHEN rB.amount_number_equals = false AND (stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBAmount' text='{COALESCE(TOSTRING(rB.amount)," ")}' style='{CASE WHEN rB.amount_number_equals = false AND (stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") AND COALESCE(TOSTRING(rB.amount)," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                             
                     <!--Unit-->            
@@ -2016,7 +2016,7 @@
                         <textbox id='tbAgentBUnit' text='{rB.unit}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBUnit' text='{COALESCE(rB.unit," ")}' style='{CASE WHEN rB.unit_equals = false AND (stEditItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBUnit' text='{COALESCE(rB.unit," ")}' style='{CASE WHEN rB.unit_equals = false AND (stEditItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") AND COALESCE(rB.unit," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--GrossWeight-->            
@@ -2050,7 +2050,7 @@
                         <textbox id='tbAgentBGrossWeight' text='{rB.gross_weight}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBGrossWeightRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBGrossWeight' text='{COALESCE(rB.gross_weight," ")}' style='{CASE WHEN rB.gross_weight_equals = false AND (stEditItemAgentAGrossWeightRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBGrossWeight' text='{COALESCE(rB.gross_weight," ")}' style='{CASE WHEN rB.gross_weight_equals = false AND (stEditItemAgentAGrossWeightRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN (stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") AND COALESCE(rB.gross_weight," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--Remove Button-->
