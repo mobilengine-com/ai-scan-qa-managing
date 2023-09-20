@@ -197,18 +197,41 @@
             lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
             lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
 
-            lstAgentAItemTableItemNameNewRow = recData.stItemTableAItemNameNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableItemNameNewRow = recData.stItemTableBItemNameNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableManufacturerItemNumberNewRow = recData.stItemTableAManufacturerItemNumberNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableManufacturerItemNumberNewRow = recData.stItemTableBManufacturerItemNumberNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableTaxNumberNewRow = recData.stItemTableATaxNumberNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableTaxNumberNewRow = recData.stItemTableBTaxNumberNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableAmountNewRow = recData.stItemTableAAmountNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableAmountNewRow = recData.stItemTableBAmountNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableUnitNewRow = recData.stItemTableAUnitNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableUnitNewRow = recData.stItemTableBUnitNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableGrossWeightNewRow = recData.stItemTableAGrossWeightNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableGrossWeightNewRow = recData.stItemTableBGrossWeightNewRow.SplitOnMany([","],false);
+            if(recData.stItemTableAItemNameNewRow != null && recData.stItemTableBItemNameNewRow != null)
+            {
+                lstAgentAItemTableItemNameNewRow = recData.stItemTableAItemNameNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableItemNameNewRow = recData.stItemTableBItemNameNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAManufacturerItemNumberNewRow != null && recData.stItemTableBManufacturerItemNumberNewRow != null)
+            {
+                lstAgentAItemTableManufacturerItemNumberNewRow = recData.stItemTableAManufacturerItemNumberNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableManufacturerItemNumberNewRow = recData.stItemTableBManufacturerItemNumberNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableATaxNumberNewRow != null && recData.stItemTableBTaxNumberNewRow != null)
+            {
+                lstAgentAItemTableTaxNumberNewRow = recData.stItemTableATaxNumberNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableTaxNumberNewRow = recData.stItemTableBTaxNumberNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAAmountNewRow != null && recData.stItemTableBAmountNewRow != null)
+            {
+                lstAgentAItemTableAmountNewRow = recData.stItemTableAAmountNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableAmountNewRow = recData.stItemTableBAmountNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAUnitNewRow != null && recData.stItemTableBUnitNewRow != null)
+            {
+                lstAgentAItemTableUnitNewRow = recData.stItemTableAUnitNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableUnitNewRow = recData.stItemTableBUnitNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAGrossWeightNewRow != null && recData.stItemTableBGrossWeightNewRow != null)
+            {
+                lstAgentAItemTableGrossWeightNewRow = recData.stItemTableAGrossWeightNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableGrossWeightNewRow = recData.stItemTableBGrossWeightNewRow.SplitOnMany([","],false);
+            }
         }
         
         let iCount = 0;
@@ -622,18 +645,41 @@
             lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
             lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
 
-            lstAgentAItemTableItemNameNewRow = recData.stItemTableAItemNameNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableItemNameNewRow = recData.stItemTableBItemNameNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableManufacturerItemNumberNewRow = recData.stItemTableAManufacturerItemNumberNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableManufacturerItemNumberNewRow = recData.stItemTableBManufacturerItemNumberNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableTaxNumberNewRow = recData.stItemTableATaxNumberNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableTaxNumberNewRow = recData.stItemTableBTaxNumberNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableAmountNewRow = recData.stItemTableAAmountNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableAmountNewRow = recData.stItemTableBAmountNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableUnitNewRow = recData.stItemTableAUnitNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableUnitNewRow = recData.stItemTableBUnitNewRow.SplitOnMany([","],false);
-            lstAgentAItemTableGrossWeightNewRow = recData.stItemTableAGrossWeightNewRow.SplitOnMany([","],false);
-            lstAgentBItemTableGrossWeightNewRow = recData.stItemTableBGrossWeightNewRow.SplitOnMany([","],false);
+            if(recData.stItemTableAItemNameNewRow != null && recData.stItemTableBItemNameNewRow != null)
+            {
+                lstAgentAItemTableItemNameNewRow = recData.stItemTableAItemNameNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableItemNameNewRow = recData.stItemTableBItemNameNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAManufacturerItemNumberNewRow != null && recData.stItemTableBManufacturerItemNumberNewRow != null)
+            {
+                lstAgentAItemTableManufacturerItemNumberNewRow = recData.stItemTableAManufacturerItemNumberNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableManufacturerItemNumberNewRow = recData.stItemTableBManufacturerItemNumberNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableATaxNumberNewRow != null && recData.stItemTableBTaxNumberNewRow != null)
+            {
+                lstAgentAItemTableTaxNumberNewRow = recData.stItemTableATaxNumberNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableTaxNumberNewRow = recData.stItemTableBTaxNumberNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAAmountNewRow != null && recData.stItemTableBAmountNewRow != null)
+            {
+                lstAgentAItemTableAmountNewRow = recData.stItemTableAAmountNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableAmountNewRow = recData.stItemTableBAmountNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAUnitNewRow != null && recData.stItemTableBUnitNewRow != null)
+            {
+                lstAgentAItemTableUnitNewRow = recData.stItemTableAUnitNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableUnitNewRow = recData.stItemTableBUnitNewRow.SplitOnMany([","],false);
+            }
+
+            if(recData.stItemTableAGrossWeightNewRow != null && recData.stItemTableBGrossWeightNewRow != null)
+            {
+                lstAgentAItemTableGrossWeightNewRow = recData.stItemTableAGrossWeightNewRow.SplitOnMany([","],false);
+                lstAgentBItemTableGrossWeightNewRow = recData.stItemTableBGrossWeightNewRow.SplitOnMany([","],false);
+            }
         }
         
         let iCount = 0;
