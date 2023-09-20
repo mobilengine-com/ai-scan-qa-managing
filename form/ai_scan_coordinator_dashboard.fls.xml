@@ -44,11 +44,13 @@
                     FROM
                         ai_scan_jobs J
                     WHERE
-                        J.type = "ANOT"
-                        AND J.status = "UNCHECKED"
-                        AND J.job_id_2 IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.type = "ANOT" AND J3.status = "UNCHECKED")
-                    GROUP BY
-                        J.delivery_note_id
+                        J.status != "DONE"
+                        AND
+                        (
+                            J.id NOT IN (SELECT J2.job_id_2 FROM ai_scan_jobs J2 WHERE J2.type = "QA") 
+                            AND J.id NOT IN (SELECT J2.job_id_3 FROM ai_scan_jobs J2 WHERE J2.type = "QA")
+                        )
+                    GROUP BY J.delivery_note_id
             }'
         />
 
@@ -86,12 +88,12 @@
                         J.status = "UNCHECKED"
                     AND
                     (
-                        J.id NOT IN (SELECT J3.job_id_2 FROM ai_scan_jobs J3 WHERE J3.type = "QA") 
-                        AND J.id NOT IN (SELECT J3.job_id_3 FROM ai_scan_jobs J3 WHERE J3.type = "QA")
+                        J.id NOT IN (SELECT J2.job_id_2 FROM ai_scan_jobs J2 WHERE J2.type = "QA") 
+                        AND J.id NOT IN (SELECT J2.job_id_3 FROM ai_scan_jobs J2 WHERE J2.type = "QA")
                     )
                     AND
                     (
-                        J.job_id_2 IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.type = "ANOT")
+                        J.job_id_2 IN (SELECT J2.id FROM ai_scan_jobs J2 WHERE J2.type = "ANOT")
                     )                   
             }'
         />
@@ -137,12 +139,12 @@
                         J.status = "DONE"
                         AND
                         (
-                            J.id NOT IN (SELECT J3.job_id_2 FROM ai_scan_jobs J3 WHERE J3.type = "QA") 
-                            AND J.id NOT IN (SELECT J3.job_id_3 FROM ai_scan_jobs J3 WHERE J3.type = "QA")
+                            J.id NOT IN (SELECT J2.job_id_2 FROM ai_scan_jobs J2 WHERE J2.type = "QA") 
+                            AND J.id NOT IN (SELECT J2.job_id_3 FROM ai_scan_jobs J2 WHERE J2.type = "QA")
                         )
                         AND
                         (
-                            J.job_id_2 IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.type = "ANOT" AND J3.status = "DONE")
+                            J.job_id_2 IN (SELECT J2.id FROM ai_scan_jobs J2 WHERE J2.type = "ANOT" AND J2.status = "DONE")
                         )
                         AND
                         CASE 
