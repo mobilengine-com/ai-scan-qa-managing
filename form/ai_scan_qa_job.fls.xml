@@ -1526,7 +1526,7 @@
                         <textbox id='tbAgentAItemName' text='{rA.item_name}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAItemName' text='{COALESCE(rA.item_name," ")}' style='{CASE WHEN rA.item_name_equals = true OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAItemName' text='{COALESCE(rA.item_name," ")}' style='{CASE WHEN rA.item_name_equals = false AND (stEditItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAItemName" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     
                     <!--ManufacturerItemNumber-->            
@@ -1560,7 +1560,7 @@
                         <textbox id='tbAgentAManufacturerItemNumber' text='{rA.manufacturer_item_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAManufacturerItemNumber' text='{COALESCE(rA.manufacturer_item_number," ")}' style='{CASE WHEN rA.manufacturer_item_number_equals = true OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAManufacturerItemNumber' text='{COALESCE(rA.manufacturer_item_number," ")}' style='{CASE WHEN rA.manufacturer_item_number_equals = false AND (stEditItemAgentBManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAManufacturerItemNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--TaxNumber-->            
@@ -1594,7 +1594,7 @@
                         <textbox id='tbAgentATaxNumber' text='{rA.tax_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentATaxNumber' text='{COALESCE(rA.tax_number," ")}'  style='{CASE WHEN rA.tax_number_equals = true OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentATaxNumber' text='{COALESCE(rA.tax_number," ")}' style='{CASE WHEN rA.tax_number_equals = false AND (stEditItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentATaxNumber" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     
                     <!--Amount-->            
@@ -1628,7 +1628,7 @@
                         <textbox id='tbAgentAAmount' text='{TOSTRING(rA.amount)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAAmount' text='{COALESCE(TOSTRING(rA.amount)," ")}'  style='{CASE WHEN rA.amount_number_equals = true OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAAmount' text='{COALESCE(TOSTRING(rA.amount)," ")}' style='{CASE WHEN rA.amount_number_equals = false AND (stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAAmount" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--Unit-->            
@@ -1662,7 +1662,7 @@
                         <textbox id='tbAgentAUnit' text='{rA.unit}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if> 
                     <if cond='{stEditItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAUnit' text='{COALESCE(rA.unit," ")}'  style='{CASE WHEN rA.unit_equals = true OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAUnit' text='{COALESCE(rA.unit," ")}' style='{CASE WHEN rA.unit_equals = false AND (stEditItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAUnit" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--GrossWeight-->            
@@ -1696,7 +1696,7 @@
                         <textbox id='tbAgentAGrossWeight' text='{rA.gross_weight}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentAGrossWeightRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%"}'>
-                        <textview id='tvAgentAGrossWeight' text='{COALESCE(rA.gross_weight," ")}'  style='{CASE WHEN rA.gross_weight_equals = true OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview id='tvAgentAGrossWeight' text='{COALESCE(rA.gross_weight," ")}' style='{CASE WHEN rA.gross_weight_equals = false AND (stEditItemAgentBGrossWeightRowId NOT LIKE "%" || TOSTRING(rA.row_counter) || "%" AND stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rA.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
                     </if>            
                     
                     <!--Remove Button-->    
@@ -1880,7 +1880,7 @@
                         <textbox id='tbAgentBItemName' text='{rB.item_name}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBItemName' text='{COALESCE(rB.item_name," ")}' style='{CASE WHEN rB.item_name_equals = true OR stAcceptItemAgentBItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBItemName' text='{COALESCE(rB.item_name," ")}' style='{CASE WHEN rB.item_name_equals = false AND (stEditItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAItemNameRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAItemNameRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBItemName" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--ManufacturerItemNumber-->            
@@ -1914,7 +1914,7 @@
                         <textbox id='tbAgentBManufacturerItemNumber' text='{rB.manufacturer_item_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if> 
                     <if cond='{stEditItemAgentBManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBManufacturerItemNumber' text='{COALESCE(rB.manufacturer_item_number," ")}' style='{CASE WHEN rB.manufacturer_item_number_equals = true OR stAcceptItemAgentBManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBManufacturerItemNumber' text='{COALESCE(rB.manufacturer_item_number," ")}' style='{CASE WHEN rB.manufacturer_item_number_equals = false AND (stEditItemAgentAManufacturerItemNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAManufacturerItemNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBManufacturerItemNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--TaxNumber-->            
@@ -1948,7 +1948,7 @@
                         <textbox id='tbAgentBTaxNumber' text='{rB.tax_number}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBTaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBTaxNumber' text='{COALESCE(rB.tax_number," ")}'  style='{CASE WHEN rB.tax_number_equals = true OR stAcceptItemAgentBTaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBTaxNumber' text='{COALESCE(rB.tax_number," ")}' style='{CASE WHEN rB.tax_number_equals = false AND (stEditItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentATaxNumberRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentATaxNumberRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBTaxNumber" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--Amount-->            
@@ -1982,7 +1982,7 @@
                         <textbox id='tbAgentBAmount' text='{TOSTRING(rB.amount)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBAmount' text='{COALESCE(TOSTRING(rB.amount)," ")}'  style='{CASE WHEN rB.amount_number_equals = true OR stAcceptItemAgentBAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBAmount' text='{COALESCE(TOSTRING(rB.amount)," ")}' style='{CASE WHEN rB.amount_number_equals = false AND (stEditItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAAmountRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAAmountRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBAmount" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                             
                     <!--Unit-->            
@@ -2016,7 +2016,7 @@
                         <textbox id='tbAgentBUnit' text='{rB.unit}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBUnit' text='{COALESCE(rB.unit," ")}' style='{CASE WHEN rB.unit_equals = true OR stAcceptItemAgentBUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBUnit' text='{COALESCE(rB.unit," ")}' style='{CASE WHEN rB.unit_equals = false AND (stEditItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAUnitRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAUnitRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBUnit" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--GrossWeight-->            
@@ -2050,7 +2050,7 @@
                         <textbox id='tbAgentBGrossWeight' text='{rB.gross_weight}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     <if cond='{stEditItemAgentBGrossWeightRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%"}'>
-                        <textview id='tvAgentBGrossWeight' text='{COALESCE(rB.gross_weight," ")}'  style='{CASE WHEN rB.gross_weight_equals = true OR stAcceptItemAgentBGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormal WHEN stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableDifferent END}' testId='{"tvAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview id='tvAgentBGrossWeight' text='{COALESCE(rB.gross_weight," ")}' style='{CASE WHEN rB.gross_weight_equals = false AND (stEditItemAgentAGrossWeightRowId NOT LIKE "%" || TOSTRING(rB.row_counter) || "%" AND stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%") THEN styles.sylTvItemTableDifferent WHEN stEditItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" OR stAcceptItemAgentAGrossWeightRowId LIKE "%" || TOSTRING(rB.row_counter) || "%" THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
                     
                     <!--Remove Button-->
