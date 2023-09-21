@@ -72,14 +72,14 @@
         <let id='ltblNowANOTAndQA' shape='table' 
             value='{SELECT
                         J.delivery_note_id delivery_note_id,
-                        J.delivery_note_work_start_date delivery_note_work_start_date,
+                        J.create_date create_date,
                         J.lang lang,
                         J.type job_type,
-                        CASE WHEN ((fNowHours*60)+fNowMinutes+(fNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))
+                        CASE WHEN ((fNowHours*60)+fNowMinutes+(fNowSeconds/60)) &lt; ((TOFLOAT(GETHOUR(J.create_date))*60)+TOFLOAT(GETMINUTE(J.create_date))+(TOFLOAT(GETSECOND(J.create_date))/60))
                         THEN
-                            ((((dtlNow-J.delivery_note_work_start_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))/60)-24)
+                            ((((dtlNow-J.create_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)+ABS((((TOFLOAT(GETHOUR(J.create_date))*60)+TOFLOAT(GETMINUTE(J.create_date))+(TOFLOAT(GETSECOND(J.create_date))/60))/60)-24)
                         ELSE
-                            ((((dtlNow-J.delivery_note_work_start_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(J.delivery_note_work_start_date))*60)+TOFLOAT(GETMINUTE(J.delivery_note_work_start_date))+(TOFLOAT(GETSECOND(J.delivery_note_work_start_date))/60))/60)
+                            ((((dtlNow-J.create_date)*24*60)+((fNowHours*60)+fNowMinutes+(fNowSeconds/60)))/60)-(((TOFLOAT(GETHOUR(J.create_date))*60)+TOFLOAT(GETMINUTE(J.create_date))+(TOFLOAT(GETSECOND(J.create_date))/60))/60)
                         END
                          hours_time_calculator
                     FROM
