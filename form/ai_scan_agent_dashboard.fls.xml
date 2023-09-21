@@ -212,7 +212,7 @@
                 <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
             </combinedbutton>
         </hbox>
-        <textview id='tvAnotInfo' text='{"You are working on delivery note: " || CASE WHEN stLoggedUserSelectedJobSupplierId = "" OR stLoggedUserSelectedJobSupplierId = null THEN "Delivery note number not available" ELSE stLoggedUserSelectedJobSupplierId END}' style='{styles.sylTvInfo}' testId='tvAnotInfo'/>
+        <textview id='tvAnotInfo' text='{"You are working on delivery note: " || CASE WHEN COALESCE(stLoggedUserSelectedJobSupplierId,"") = "" THEN "Delivery note number not available" ELSE stLoggedUserSelectedJobSupplierId END}' style='{styles.sylTvInfo}' testId='tvAnotInfo'/>
     </if>
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType = "QA"}'>
@@ -247,7 +247,7 @@
                 <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
             </combinedbutton>
         </hbox>
-        <textview id='tvQAInfo' text='{"You are working on delivery note: " || CASE WHEN stLoggedUserSelectedJobSupplierId = "" OR stLoggedUserSelectedJobSupplierId = null THEN "Delivery note number not available" ELSE stLoggedUserSelectedJobSupplierId END}' style='{styles.sylTvInfo}' testId='tvQAInfo'/>
+        <textview id='tvQAInfo' text='{"You are working on delivery note: " || CASE WHEN COALESCE(stLoggedUserSelectedJobSupplierId,"") = "" THEN "Delivery note number not available" ELSE stLoggedUserSelectedJobSupplierId END}' style='{styles.sylTvInfo}' testId='tvQAInfo'/>
     </if>
     
 </form>

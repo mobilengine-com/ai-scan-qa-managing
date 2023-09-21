@@ -7,7 +7,7 @@ qaTask: element {
 	requestFileId2: attribute of type string;
 	aiUrl1: attribute of type string;
 	aiUrl2: attribute of type string;
-	supplierId: attribute of type string;
+	supplierId: optional attribute of type string;
 	lang: attribute of type string;
 	dtlCreated: attribute of type dtl(dtf yyyy "-" MM "-" dd "T" HH ":" mm ":" ss);
 	}

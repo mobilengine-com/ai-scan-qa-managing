@@ -456,7 +456,7 @@
     <params>
 		<param id='QAJobId'/>	
 	</params>
-    <textview id='tvTitle' text='{CASE WHEN stSelectedQAJobSupplierId = "" OR stSelectedQAJobSupplierId = null THEN "Delivery note number not available" ELSE stSelectedQAJobSupplierId END }' style='{styles.sylTvQATitle}' testId='tvTitle'/>
+    <textview id='tvTitle' text='{CASE WHEN COALESCE(stSelectedQAJobSupplierId,"") = "" THEN "Delivery note number not available" ELSE stSelectedQAJobSupplierId END }' style='{styles.sylTvQATitle}' testId='tvTitle'/>
     <textview id='tvErrorsCounter' text='{"Total corrections: " || TOSTRING(iErrorCount)}' style='{styles.sylTvQAErrorsCounter}' testId='tvErrorsCounter'/>
     <hbox style='{styles.sylQAMainHeaderAndButtonHbox}'>
         <vbox style='{styles.sylQAMainHeaderAndButtonHboxVbox}'>
@@ -1270,7 +1270,7 @@
         </vbox>
         <vbox style='{styles.sylQAMainDeliveryNoteQAAndPdfAnnotatorVbox}'>
             <annotator id='annotator' text='' 
-                exportFileName='{stSelectedQAJobSupplierId}' 
+                exportFileName='{CASE WHEN COALESCE(stSelectedQAJobSupplierId,"") = "" THEN "qa_job_pdf" ELSE stSelectedQAJobSupplierId END}' 
                 style='{styles.sylPdfwebAnnotator}'
                 fileref='{SELECT stSelectedQAJobAnotJobsAgentAPDFFile}'
                 allowNewPoint='{false}'

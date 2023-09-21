@@ -10,12 +10,19 @@
     let stJobId = dacs.qaTask.requestFileId1;
     let stJobId2 = dacs.qaTask.requestFileId2;
 
+    // Get supplier id if exist
+    let stSupplierID = null;
+    if(dacs.qaTask.supplierId != null || dacs.qaTask.supplierId != "")
+    {
+        stSupplierID = dacs.qaTask.supplierId;
+    }
+
     // Creat first job
     db.ai_scan_jobs.Insert({
         id: stJobId,
         type: "ANOT",
         status: "UNCHECKED",
-        supplier_id: dacs.qaTask.supplierId,
+        supplier_id: stSupplierID,
         lang: dacs.qaTask.lang,
         current_user: null,
         delivery_note_id: dacs.qaTask.scanId,
@@ -49,7 +56,7 @@
         id: stJobId2,
         type: "ANOT",
         status: "UNCHECKED",
-        supplier_id: dacs.qaTask.supplierId,
+        supplier_id: stSupplierID,
         lang: dacs.qaTask.lang,
         current_user: null,
         delivery_note_id: dacs.qaTask.scanId,
