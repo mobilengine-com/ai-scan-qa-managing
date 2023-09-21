@@ -95,7 +95,7 @@
                             WHEN "QA" THEN 1
                             ELSE 2 
                         END iOrder,
-                        J.create_date create_date
+                        J.delivery_note_work_start_date create_date
 					FROM
                         ai_scan_jobs J
 					WHERE
