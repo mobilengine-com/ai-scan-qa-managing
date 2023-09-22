@@ -1809,6 +1809,7 @@
         <combinedbutton id='cbtnAddNewItemAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentA"}'>
             <actionbutton>
                 <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
+                <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
             </actionbutton>
             <addbutton records='{SELECT iItemTableAgentARowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
             <addbutton records='{SELECT iItemTableAgentARowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
@@ -2173,6 +2174,7 @@
         <combinedbutton id='cbtnAddNewItemAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentB"}'>
             <actionbutton>
                 <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
+                <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
             </actionbutton>
             <addbutton records='{SELECT iItemTableAgentBRowCount row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
             <addbutton records='{SELECT iItemTableAgentBRowCount-1 row_counter, "" item_name, "" manufacturer_item_number, "" tax_number, null amount, "" unit, "" gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
