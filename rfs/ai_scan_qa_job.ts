@@ -167,19 +167,6 @@
             let lstAgentAItemTableGrossWeight = list.New();
             let lstAgentBItemTableGrossWeight = list.New();
 
-            let lstAgentAItemTableItemNameNewRow = list.New();
-            let lstAgentBItemTableItemNameNewRow = list.New();
-            let lstAgentAItemTableManufacturerItemNumberNewRow = list.New();
-            let lstAgentBItemTableManufacturerItemNumberNewRow = list.New();
-            let lstAgentAItemTableTaxNumberNewRow = list.New();
-            let lstAgentBItemTableTaxNumberNewRow = list.New();
-            let lstAgentAItemTableAmountNewRow = list.New();
-            let lstAgentBItemTableAmountNewRow = list.New();
-            let lstAgentAItemTableUnitNewRow = list.New();
-            let lstAgentBItemTableUnitNewRow = list.New();
-            let lstAgentAItemTableGrossWeightNewRow = list.New();
-            let lstAgentBItemTableGrossWeightNewRow = list.New();
-
             for(let recData of form.rptItemTable.rows)
             {
                 lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
@@ -219,42 +206,6 @@
                 lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany([","],false);
                 lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
                 lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
-
-                if(recData.stItemTableAItemNameNewRow != null && recData.stItemTableBItemNameNewRow != null)
-                {
-                    lstAgentAItemTableItemNameNewRow = recData.stItemTableAItemNameNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableItemNameNewRow = recData.stItemTableBItemNameNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAManufacturerItemNumberNewRow != null && recData.stItemTableBManufacturerItemNumberNewRow != null)
-                {
-                    lstAgentAItemTableManufacturerItemNumberNewRow = recData.stItemTableAManufacturerItemNumberNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableManufacturerItemNumberNewRow = recData.stItemTableBManufacturerItemNumberNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableATaxNumberNewRow != null && recData.stItemTableBTaxNumberNewRow != null)
-                {
-                    lstAgentAItemTableTaxNumberNewRow = recData.stItemTableATaxNumberNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableTaxNumberNewRow = recData.stItemTableBTaxNumberNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAAmountNewRow != null && recData.stItemTableBAmountNewRow != null)
-                {
-                    lstAgentAItemTableAmountNewRow = recData.stItemTableAAmountNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableAmountNewRow = recData.stItemTableBAmountNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAUnitNewRow != null && recData.stItemTableBUnitNewRow != null)
-                {
-                    lstAgentAItemTableUnitNewRow = recData.stItemTableAUnitNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableUnitNewRow = recData.stItemTableBUnitNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAGrossWeightNewRow != null && recData.stItemTableBGrossWeightNewRow != null)
-                {
-                    lstAgentAItemTableGrossWeightNewRow = recData.stItemTableAGrossWeightNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableGrossWeightNewRow = recData.stItemTableBGrossWeightNewRow.SplitOnMany([","],false);
-                }
             }
             
             let iCount = 0;
@@ -282,192 +233,126 @@
                 lstFinalItemTable.Add(i);
 
                 //item name
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
+                }
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
-                    }
-                    if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
-                    }
-                    if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableItemName.GetAt(i) != null && lstAgentAItemTableItemName.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
                     }
                 }
 
                 //manufacturer item number
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
+                }
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
-                    }
-                    if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
-                    }
-                    if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableManufacturerItemNumber.GetAt(i) != null && lstAgentAItemTableManufacturerItemNumber.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
                     }
                 }
 
                 //tax number
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
+                }
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
-                    }
-                    if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
-                    }
-                    if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableTaxNumber.GetAt(i) != null && lstAgentAItemTableTaxNumber.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
                     }
                 }            
 
                 //amount number
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
+                }
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
-                    }
-                    if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
-                    }
-                    if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableAmount.GetAt(i) != null && lstAgentAItemTableAmount.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
                     }
                 }
 
                 //unit
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
+                }
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
-                    }
-                    if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
-                    }
-                    if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableUnit.GetAt(i) != null && lstAgentAItemTableUnit.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
                     }
                 }            
 
                 //gross weight
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
+                }
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
-                    {                
+                    if(lstAgentAItemTableGrossWeight.GetAt(i) != null && lstAgentAItemTableGrossWeight.GetAt(i) != " ")
+                    {
                         lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                     }
-                    if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
-                    }
-                    if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
+                    else
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
                     }
@@ -615,19 +500,6 @@
             let lstAgentAItemTableGrossWeight = list.New();
             let lstAgentBItemTableGrossWeight = list.New();
 
-            let lstAgentAItemTableItemNameNewRow = list.New();
-            let lstAgentBItemTableItemNameNewRow = list.New();
-            let lstAgentAItemTableManufacturerItemNumberNewRow = list.New();
-            let lstAgentBItemTableManufacturerItemNumberNewRow = list.New();
-            let lstAgentAItemTableTaxNumberNewRow = list.New();
-            let lstAgentBItemTableTaxNumberNewRow = list.New();
-            let lstAgentAItemTableAmountNewRow = list.New();
-            let lstAgentBItemTableAmountNewRow = list.New();
-            let lstAgentAItemTableUnitNewRow = list.New();
-            let lstAgentBItemTableUnitNewRow = list.New();
-            let lstAgentAItemTableGrossWeightNewRow = list.New();
-            let lstAgentBItemTableGrossWeightNewRow = list.New();
-
             for(let recData of form.rptItemTable.rows)
             {
                 lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
@@ -667,42 +539,6 @@
                 lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany([","],false);
                 lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
                 lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
-
-                if(recData.stItemTableAItemNameNewRow != null && recData.stItemTableBItemNameNewRow != null)
-                {
-                    lstAgentAItemTableItemNameNewRow = recData.stItemTableAItemNameNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableItemNameNewRow = recData.stItemTableBItemNameNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAManufacturerItemNumberNewRow != null && recData.stItemTableBManufacturerItemNumberNewRow != null)
-                {
-                    lstAgentAItemTableManufacturerItemNumberNewRow = recData.stItemTableAManufacturerItemNumberNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableManufacturerItemNumberNewRow = recData.stItemTableBManufacturerItemNumberNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableATaxNumberNewRow != null && recData.stItemTableBTaxNumberNewRow != null)
-                {
-                    lstAgentAItemTableTaxNumberNewRow = recData.stItemTableATaxNumberNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableTaxNumberNewRow = recData.stItemTableBTaxNumberNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAAmountNewRow != null && recData.stItemTableBAmountNewRow != null)
-                {
-                    lstAgentAItemTableAmountNewRow = recData.stItemTableAAmountNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableAmountNewRow = recData.stItemTableBAmountNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAUnitNewRow != null && recData.stItemTableBUnitNewRow != null)
-                {
-                    lstAgentAItemTableUnitNewRow = recData.stItemTableAUnitNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableUnitNewRow = recData.stItemTableBUnitNewRow.SplitOnMany([","],false);
-                }
-
-                if(recData.stItemTableAGrossWeightNewRow != null && recData.stItemTableBGrossWeightNewRow != null)
-                {
-                    lstAgentAItemTableGrossWeightNewRow = recData.stItemTableAGrossWeightNewRow.SplitOnMany([","],false);
-                    lstAgentBItemTableGrossWeightNewRow = recData.stItemTableBGrossWeightNewRow.SplitOnMany([","],false);
-                }
             }
             
             let iCount = 0;
@@ -730,192 +566,126 @@
                 lstFinalItemTable.Add(i);
 
                 //item name
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableItemNameNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
+                }
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
-                    }
-                    if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
-                    }
-                    if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableItemName.GetAt(i) != null && lstAgentAItemTableItemName.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
                     }
                 }
 
                 //manufacturer item number
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
+                }
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
-                    }
-                    if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
-                    }
-                    if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableManufacturerItemNumber.GetAt(i) != null && lstAgentAItemTableManufacturerItemNumber.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
                     }
                 }
 
                 //tax number
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableTaxNumberNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
+                }
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
-                    }
-                    if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
-                    }
-                    if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableTaxNumber.GetAt(i) != null && lstAgentAItemTableTaxNumber.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
                     }
                 }            
 
                 //amount number
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableAmountNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
+                }
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
-                    }
-                    if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
-                    }
-                    if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableAmount.GetAt(i) != null && lstAgentAItemTableAmount.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
                     }
                 }
 
                 //unit
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableUnitNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
+                }
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
-                    }
-                    if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
-                    }
-                    if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
+                    if(lstAgentAItemTableUnit.GetAt(i) != null && lstAgentAItemTableUnit.GetAt(i) != " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
                     }
                 }            
 
                 //gross weight
-                if(i>=iSelectedQAJobAgentAResultItemTable || i>=iSelectedQAJobAgentBResultItemTable)
-                {
-                    if(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentBItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) != " ")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
-                    if(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " " && lstAgentBItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable) == " ")
-                    {
-                        lstFinalItemTable.Add(lstAgentAItemTableGrossWeightNewRow.GetAt(i-iSelectedQAJobAgentAResultItemTable));
-                    }
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                 }
-                else
+                if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
+                }
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
                 {
-                    if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
-                    {                
+                    if(lstAgentAItemTableGrossWeight.GetAt(i) != null && lstAgentAItemTableGrossWeight.GetAt(i) != " ")
+                    {
                         lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                     }
-                    if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
-                    {                
-                        lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
-                    }
-                    if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
+                    else
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
                     }
