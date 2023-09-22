@@ -20,6 +20,8 @@
                 U.role user_role
             FROM
                 ai_scan_user U
+            ORDER BY
+                email ASC
         }'/>
     </declarations>
     
