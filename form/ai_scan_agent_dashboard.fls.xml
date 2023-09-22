@@ -146,9 +146,9 @@
 
     <if cond='{stLoggedUserRole = "Coordinator"}'>
         <hbox style='{styles.sylTabsAndSaveButtonHbox}'>
-            <submitbutton id='sbtnDashboard' text='Dashboard' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='sbtnDashboard'/>
-            <submitbutton id='sbtnAgent' text='Agent' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabActive}' testId='sbtnAgent'/>
-            <submitbutton id='sbtnSetting' text='Setting' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='sbtnSetting'/>
+            <discardbutton id='dabtnDashboard' text='Dashboard' confirm='{false}' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='dabtnDashboard'/>
+            <discardbutton id='dabtnAgent' text='Agent' confirm='{false}' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabActive}' testId='dabtnAgent'/>
+            <discardbutton id='dabtnSetting' text='Setting' confirm='{false}' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='dabtnSetting'/>
             <textview text=''/>
         </hbox>
     </if>

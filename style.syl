@@ -13,7 +13,7 @@ styles{
 	}
 
 	style sylTabInActive{
-		submitbutton {
+		discardbutton {
 			button{
 				margin {
 					top = 0px
@@ -45,7 +45,7 @@ styles{
 	}
 
 	style sylTabActive{
-		submitbutton {
+		discardbutton {
 			button{
 				margin {
 					top = 0px

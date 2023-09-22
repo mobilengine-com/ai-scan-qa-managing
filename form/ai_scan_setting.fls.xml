@@ -28,9 +28,9 @@
     <header></header>
 
     <hbox style='{styles.sylTabsAndSaveButtonHbox}'>
-        <submitbutton id='sbtnDashboard' text='Dashboard' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='sbtnDashboard'/>
-        <submitbutton id='sbtnAgent' text='Agent' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabInActive}' testId='sbtnAgent'/>
-        <submitbutton id='sbtnSetting' text='Setting' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabActive}' testId='sbtnSetting'/>
+        <discardbutton id='dabtnDashboard' text='Dashboard' confirm='{false}' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='dabtnDashboard'/>
+        <discardbutton id='dabtnAgent' text='Agent' confirm='{false}' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabInActive}' testId='dabtnAgent'/>
+        <discardbutton id='dabtnSetting' text='Setting' confirm='{false}' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabActive}' testId='dabtnSetting'/>
         <textview text=''/>
         <if cond='{iCountNewUser != 0 OR (stSelectedUserForEdit != NULL OR stSelectedUserForEdit != "") OR (stSelectedUserForDelete != NULL OR stSelectedUserForDelete != "")}'>
             <submitbutton id='sbtnSave' text='Save' nextForm='{forms.ai_scan_setting}' style='{styles.sylSbtnSave}' testId='sbtnSave'/>
