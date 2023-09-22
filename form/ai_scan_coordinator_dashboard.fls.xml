@@ -29,7 +29,7 @@
 
         <let id='iCurrentOnlineUsers' shape='scalar' value='{SELECT COUNT(0) FROM ltblUsers U WHERE U.status = "ONLINE"}'/>
 
-        <let id='ltblNowDeliveryNote' shape='table' 
+        <let id='ltblNowDeliveryNote' access="private"  shape='table' 
             value='{SELECT
                         J.delivery_note_id delivery_note_id,
                         J.delivery_note_work_start_date delivery_note_work_start_date,
@@ -69,7 +69,7 @@
         <let id='fNowDeliveryNoteOldestENG' shape='scalar' value='{SELECT MAX(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "eng_eng"}'/>
         <let id='fNowDeliveryNoteOldestPL' shape='scalar' value='{SELECT MAX(NDN.hours_time_calculator) FROM ltblNowDeliveryNote NDN WHERE NDN.lang = "pl_pl"}'/>
 
-        <let id='ltblNowANOTAndQA' shape='table' 
+        <let id='ltblNowANOTAndQA' shape='table' access="private"
             value='{SELECT
                         J.delivery_note_id delivery_note_id,
                         J.create_date create_date,
@@ -128,7 +128,7 @@
         <let id='fNowQAOldestENG' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "eng_eng"}'/>
         <let id='fNowQAOldestPL' shape='scalar' value='{SELECT MAX(NANOTAQA.hours_time_calculator) FROM ltblNowANOTAndQA NANOTAQA WHERE NANOTAQA.job_type = "QA" AND NANOTAQA.lang = "pl_pl"}'/>
 
-        <let id='ltblOutputDeliveryNotes' shape='table' 
+        <let id='ltblOutputDeliveryNotes' shape='table' access="private"
             value='{SELECT
                         J.delivery_note_id delivery_note_id,
                         J.delivery_note_work_time delivery_note_work_time,
