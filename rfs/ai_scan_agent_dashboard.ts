@@ -394,7 +394,7 @@
         db.ai_scan_jobs_history.UpdateMany({
             id: stCurrentJobId
         },{
-            job_assigned_status: ''
+            job_assigned_status: ""
         });
     }
 
@@ -442,7 +442,7 @@
         db.ai_scan_jobs_history.UpdateMany({
             id: stCurrentJobId
         },{
-            job_assigned_status: ''
+            job_assigned_status: ""
         });
 
     }
