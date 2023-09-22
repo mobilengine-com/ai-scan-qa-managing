@@ -2,5 +2,6 @@
 	<Columns>
 		<Column Name='id' Type='Text' PrimaryKey='true' NotNull='true'/>
         <Column Name='users' Type='Text'/>
+		<Column Name='job_assigned_status' Type='Text' InitialValue=''/>
 	</Columns>	
 </Reftab>

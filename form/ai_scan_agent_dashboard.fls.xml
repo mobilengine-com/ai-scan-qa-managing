@@ -35,8 +35,17 @@
                         J.lang,
                         J.job_id_2 job1,
                         J.job_id_3 job2,
-                        J.type job_type,                        
-                        J.create_date create_date,
+                        J.type job_type, 
+                        CASE J.status
+                            WHEN "INPROGRESS" THEN 1
+                            WHEN "UNCHECKED" THEN 2
+                            ELSE 3 
+                        END iStatusOrder,
+                        CASE J.type
+                            WHEN "QA" THEN 1
+                            ELSE 2 
+                        END iOrder,                       
+                        J.delivery_note_work_start_date create_date,
                         J.delay_time 
                     FROM 
                         ai_scan_jobs J                        
@@ -73,6 +82,10 @@
                                 J.job_id_2 NOT IN (SELECT J3.id FROM ai_scan_jobs J3 WHERE J3.current_user = stLoggedUserId)
                             )
                         )
+                    ORDER BY
+                        iStatusOrder,
+                        iOrder,
+                        create_date ASC    
                     LIMIT 1
                         }'
 		/>
@@ -108,6 +121,12 @@
                     LIMIT 1}'
 		/>
         <let id='iJobCount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
+        
+        <let id='stSelectedJobId' shape='scalar' value='{SELECT AUJ.current_job FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
+        <let id='stSelectedJobLastUser' shape='scalar' value='{SELECT LOWER(REPLACE(JH.users, RTRIM(JH.users, REPLACE(JH.users, ",", "")), "")) FROM ai_scan_jobs_history JH WHERE JH.id = stSelectedJobId}'/>
+        <let id='stSelectedJobAssignedStatus' shape='scalar' value='{SELECT COALESCE(JH.job_assigned_status,"") FROM ai_scan_jobs_history JH WHERE JH.id = stSelectedJobId}'/>
+        <let id='bSelectedJobIdAssignFailed' shape='scalar' value='{CASE WHEN stSelectedJobAssignedStatus = "failed" AND stSelectedJobLastUser = stLoggedUserId THEN true ELSE false END}'/>
+
         <let id='iLoggedUserJobCount' shape='scalar' value='{SELECT COUNT(0) FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobId' shape='scalar' value='{SELECT LUJ.current_job FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobType' shape='scalar' value='{SELECT LUJ.job_type FROM ltblLoggedUserJobs LUJ}'/>
@@ -182,6 +201,11 @@
             </actionbutton>
             <submitbutton nextForm='{forms.ai_scan_agent_dashboard}'/>
         </combinedbutton>
+    </if>
+
+    <!-- Ha a belogolt usernél az AssignAITaskResponse failedet dob a feladatra -->
+    <if cond='{stLoggedUserStatus != "OFFLINE" AND iJobCount != 0 AND iLoggedUserJobCount = 0 AND bSelectedJobIdAssignFailed = true}'>
+        <textview id='tvAssignedTaskErrorMessage' text='Failed task assignment!' style='{styles.sylTvError}' testId='tvAssignedTaskErrorMessage'/>
     </if>
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType != "QA" AND stLoggedUserSelectedJobIsAssigned = 1}'>

@@ -390,6 +390,12 @@
         });
         // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+
+        db.ai_scan_jobs_history.UpdateMany({
+            id: stCurrentJobId
+        },{
+            job_assigned_status: ''
+        });
     }
 
     if(bCancelDelayCurrentAnotJob)
@@ -431,6 +437,12 @@
             id : stCurrentDeliveryNoteOtherJobId
         },{
             delay_time: dtlDelayTime
+        });
+
+        db.ai_scan_jobs_history.UpdateMany({
+            id: stCurrentJobId
+        },{
+            job_assigned_status: ''
         });
 
     }
