@@ -50,25 +50,31 @@
 
         // If switch back to offline and current user has inprogress job then cancel the inprogress job
         // Update current job history with new online user
-        let stCurrentJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentUser = stLoggedUserId;
+        let stCurrentJobId = null;
+        
+        stCurrentJobId = form.stLoggedUserSelectedJobId;
 
-        // Update the job in ai_scan_jobs table
-        db.ai_scan_jobs.UpdateMany({
-            id : stCurrentJobId
-        },{
-            status : "UNCHECKED",
-            current_user: null,
-            assigned: 0
-        });
-        // Delete the job in ai_scan_job_inprogress table
-        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+        if(stCurrentJobId != null)
+        {
+            let stCurrentUser = stLoggedUserId;
 
-        db.ai_scan_jobs_history.UpdateMany({
-            id: stCurrentJobId
-        },{
-            job_assigned_status: ""
-        });
+            // Update the job in ai_scan_jobs table
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentJobId
+            },{
+                status : "UNCHECKED",
+                current_user: null,
+                assigned: 0
+            });
+            // Delete the job in ai_scan_job_inprogress table
+            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+
+            db.ai_scan_jobs_history.UpdateMany({
+                id: stCurrentJobId
+            },{
+                job_assigned_status: ""
+            });
+        }
     }
 
     if(bGetJob)
