@@ -82,7 +82,7 @@
         let bUserGetCurrentQAJob = false;
         let bUserGetCurrentANOTJob = false;
         //All unassigned QA jobs
-        let lstAllUnassignedQAJobs = db.ai_scan_jobs.ReadFields({current_user: null, type: "QA"},["id","type","status","lang","current_user","delay_time"]);
+        let lstAllUnassignedQAJobs = db.ai_scan_jobs.ReadFields({current_user: null, type: "QA"},["id","type","status","lang","current_user","delivery_note_work_start_date","delay_time"]);
 
         if(lstAllUnassignedQAJobs.Count() == 0)
         {
@@ -90,7 +90,27 @@
         }
         else
         {
-            //Find QA jobs in unassigned jobs
+            //Find oldest QA jobs in unassigned jobs and ASC order
+            if(lstAllUnassignedQAJobs.Count() >= 2)
+            {
+                let bWasChanged = true;
+
+                for (let i = (lstAllUnassignedQAJobs.Count())-1; i > 0 && bWasChanged; i = i-1)
+                {
+                    bWasChanged = false;
+                    for (let j = 0; j < i; j = j+1)
+                    {
+                        if(lstAllUnassignedQAJobs[j].delivery_note_work_start_date.DeclareAsDtl() > lstAllUnassignedQAJobs[j+1].delivery_note_work_start_date.DeclareAsDtl())
+                        {
+                            let lstTmp = lstAllUnassignedQAJobs[j];
+                            lstAllUnassignedQAJobs[j] = lstAllUnassignedQAJobs[j+1];
+                            lstAllUnassignedQAJobs[j+1] = lstTmp;
+                            bWasChanged = true;
+                        }
+                    }
+                }
+            }
+
             let dtlTimeNow = dtl.Now();
 
             let stCurrentQAJobId = "";
@@ -134,7 +154,6 @@
 
                 if(recData.type == "QA" && recData.status == "UNCHECKED" && (recData.delay_time == null || dtlTimeNow > recData.delay_time.DeclareAsDtl()) && (recData.lang == stCurrentUserQAHUNLanguage || recData.lang == stCurrentUserQAENGLanguage || recData.lang == stCurrentUserQAPLLanguage))
                 {
-                    //Find oldest QA job
                     //Get current job's ANOT jobs
                     let lstGetCurrentQAJobANNOTJobs = db.ai_scan_jobs.ReadFields({id: recData.id},["job_id_2","job_id_3"]);
 
@@ -282,7 +301,7 @@
         }
 
         //All unassigned ANOT jobs
-        let lstAllUnassignedANOTJobs = db.ai_scan_jobs.ReadFields({current_user: null, type: "ANOT"},["id","type","status","lang","current_user","delay_time"]);
+        let lstAllUnassignedANOTJobs = db.ai_scan_jobs.ReadFields({current_user: null, type: "ANOT"},["id","type","status","lang","current_user","delivery_note_work_start_date","delay_time"]);
 
         if(lstAllUnassignedANOTJobs.Count() == 0 || bUserGetCurrentQAJob == true)
         {
@@ -290,8 +309,28 @@
         }
         else
         {
-            //Find ANOT jobs in unassigned jobs if no QA jobs in unassigned jobs
+            //Find oldest ANOT jobs in unassigned jobs and ASC order if no QA jobs in unassigned jobs
             let stCurrentANOTJobId = "";
+            
+            if(lstAllUnassignedANOTJobs.Count() >= 2)
+            {
+                let bWasChanged = true;
+
+                for (let i = (lstAllUnassignedANOTJobs.Count())-1; i > 0 && bWasChanged; i = i-1)
+                {
+                    bWasChanged = false;
+                    for (let j = 0; j < i; j = j+1)
+                    {
+                        if(lstAllUnassignedANOTJobs[j].delivery_note_work_start_date.DeclareAsDtl() > lstAllUnassignedANOTJobs[j+1].delivery_note_work_start_date.DeclareAsDtl())
+                        {
+                            let lstTmp = lstAllUnassignedANOTJobs[j];
+                            lstAllUnassignedANOTJobs[j] = lstAllUnassignedANOTJobs[j+1];
+                            lstAllUnassignedANOTJobs[j+1] = lstTmp;
+                            bWasChanged = true;
+                        }
+                    }
+                }
+            }
 
             for(let recData2 of lstAllUnassignedANOTJobs)
             {
