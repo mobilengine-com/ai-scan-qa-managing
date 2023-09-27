@@ -125,7 +125,7 @@
         <let id='stSelectedJobId' shape='scalar' value='{SELECT AUJ.current_job FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
         <let id='stSelectedJobLastUser' shape='scalar' value='{SELECT LOWER(REPLACE(JH.users, RTRIM(JH.users, REPLACE(JH.users, ",", "")), "")) FROM ai_scan_jobs_history JH WHERE JH.id = stSelectedJobId}'/>
         <let id='stSelectedJobAssignedStatus' shape='scalar' value='{SELECT COALESCE(JH.job_assigned_status,"") FROM ai_scan_jobs_history JH WHERE JH.id = stSelectedJobId}'/>
-        <let id='bSelectedJobIdAssignFailed' shape='scalar' value='{CASE WHEN stSelectedJobAssignedStatus != "success" AND stSelectedJobLastUser = stLoggedUserId THEN true ELSE false END}'/>
+        <let id='bSelectedJobIdAssignFailed' shape='scalar' value='{CASE WHEN stSelectedJobAssignedStatus != "success" AND COALESCE(stSelectedJobAssignedStatus,"") != "" AND stSelectedJobLastUser = stLoggedUserId THEN true ELSE false END}'/>
 
         <let id='iLoggedUserJobCount' shape='scalar' value='{SELECT COUNT(0) FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobId' shape='scalar' value='{SELECT LUJ.current_job FROM ltblLoggedUserJobs LUJ}'/>
