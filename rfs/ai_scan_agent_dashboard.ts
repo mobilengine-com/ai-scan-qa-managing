@@ -79,6 +79,8 @@
 
     if(bGetJob)
     {
+        let dtlTimeNow = dtl.Now();
+
         let bUserGetCurrentQAJob = false;
         let bUserGetCurrentANOTJob = false;
         //All unassigned QA jobs
@@ -110,8 +112,6 @@
                     }
                 }
             }
-
-            let dtlTimeNow = dtl.Now();
 
             let stCurrentQAJobId = "";
 
