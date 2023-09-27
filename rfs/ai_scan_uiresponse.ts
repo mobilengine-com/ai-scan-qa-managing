@@ -34,7 +34,7 @@
         {
             db.ai_scan_user.DeleteMany({id : logRow.munkas_id});
 
-            db.ai_scan_user.UpdateMany({msg_guid : logRow.msg_guid},logRow);
+            db.ai_scan_um_log.UpdateMany({msg_guid : stDacsMsgGuid},logRow);
             
             Log("ERROR! User not created! Go to ai_scan_um_log reftab for more information!");
         }
