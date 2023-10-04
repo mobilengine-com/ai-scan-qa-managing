@@ -138,6 +138,8 @@
             i=i+1;
         }
 
+        let iJobJobDeliveryNoteItems = i;
+
         let stJobResultStatus = "APPROVED";
 
         //get current job's user
@@ -232,6 +234,7 @@
             //If two ANNOT jobs 100% same
             //Other ANNOT jobs delivery note datas
             let bSameANNOTDatas = false;
+            let bSameANNOTItemsDatas = true;
 
             let stOtherJobDeliveryNoteCustomerAddress = "";
             let stOtherJobDeliveryNoteCustomerName = "";
@@ -323,9 +326,14 @@
                 }
             }
 
+            if(lstOtherJobJobDeliveryNoteItems.Count() != iJobJobDeliveryNoteItems)
+            {
+                bSameANNOTItemsDatas = false;
+            }
+
             if(bMofifiedAnywhere == true)
             {
-                bSameANNOTDatas = false;
+                bSameANNOTItemsDatas = false;
             }
 
             let stOtherJobResultStatus = "";
@@ -336,7 +344,7 @@
 
             if(stJobResultStatus != "" && stOtherJobResultStatus != "")
             {
-                if(bSameANNOTDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
+                if(bSameANNOTDatas == true && bSameANNOTItemsDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
                 {
                     Log("Perfect Approved Annotations");
                     Log(dtlCurrentDeliveryNoteStartWorkingTime);
