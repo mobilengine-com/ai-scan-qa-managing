@@ -2,6 +2,8 @@
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;
+//# using reftab ai_scan_settings;
+//# using dacs AssignAITask;
 
 {
     Log(dacs);
@@ -9,6 +11,14 @@
     // Create 2 anot job guid
     let stJobId = dacs.qaTask.requestFileId1;
     let stJobId2 = dacs.qaTask.requestFileId2;
+
+    let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+
+    if(stDefaultAIUser == "" || stDefaultAIUser == null)
+    {
+        Log("No Default AI User in ai_scan_settings table!");
+        stDefaultAIUser = "";
+    }
 
     // Get supplier id if exist
     let stSupplierID = null;
@@ -51,6 +61,14 @@
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 
+    //Add default user from ANNOT first job on AI page    
+    let dacs2 = messages.AssignAITask.New();
+    dacs2.assignTask.scanId = dacs.qaTask.scanId;
+    dacs2.assignTask.requestFileId = stJobId;
+    dacs2.assignTask.agent = stDefaultAIUser;
+    //dacs2.assignTask.agent = "botond.bakai@mobilengine.com";
+    dacs2.Send();
+
     // Creat second job
     db.ai_scan_jobs.Insert({
         id: stJobId2,
@@ -84,4 +102,13 @@
         avg_score_overall: 0.0,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
+
+    //Add default user from ANNOT second job on AI page
+    
+    let dacs3 = messages.AssignAITask.New();
+    dacs3.assignTask.scanId = dacs.qaTask.scanId;
+    dacs3.assignTask.requestFileId = stJobId2;
+    dacs3.assignTask.agent = stDefaultAIUser;
+    //dacs3.assignTask.agent = "botond.bakai@mobilengine.com";
+    dacs3.Send();
 }
