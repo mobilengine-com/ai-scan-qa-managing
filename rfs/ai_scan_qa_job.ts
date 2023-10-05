@@ -166,47 +166,6 @@
             let lstAgentBItemTableUnit = list.New();
             let lstAgentAItemTableGrossWeight = list.New();
             let lstAgentBItemTableGrossWeight = list.New();
-
-            for(let recData of form.rptItemTable.rows)
-            {
-                lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
-                lstAgentBItemTableItemNameRowIdEdit = recData.stEditItemAgentBItemNameRowId.SplitOnMany([","],false);
-                lstAgentAItemTableItemNameRowIdAccept = recData.stAcceptItemAgentAItemNameRowId.SplitOnMany([","],false);
-                lstAgentBItemTableItemNameRowIdAccept = recData.stAcceptItemAgentBItemNameRowId.SplitOnMany([","],false);
-                lstAgentAItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableTaxNumberRowIdEdit = recData.stEditItemAgentATaxNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableTaxNumberRowIdEdit = recData.stEditItemAgentBTaxNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentATaxNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentBTaxNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableAmountRowIdEdit = recData.stEditItemAgentAAmountRowId.SplitOnMany([","],false);
-                lstAgentBItemTableAmountRowIdEdit = recData.stEditItemAgentBAmountRowId.SplitOnMany([","],false);
-                lstAgentAItemTableAmountRowIdAccept = recData.stAcceptItemAgentAAmountRowId.SplitOnMany([","],false);
-                lstAgentBItemTableAmountRowIdAccept = recData.stAcceptItemAgentBAmountRowId.SplitOnMany([","],false);
-                lstAgentAItemTableUnitRowIdEdit = recData.stEditItemAgentAUnitRowId.SplitOnMany([","],false);
-                lstAgentBItemTableUnitRowIdEdit = recData.stEditItemAgentBUnitRowId.SplitOnMany([","],false);
-                lstAgentAItemTableUnitRowIdAccept = recData.stAcceptItemAgentAUnitRowId.SplitOnMany([","],false);
-                lstAgentBItemTableUnitRowIdAccept = recData.stAcceptItemAgentBUnitRowId.SplitOnMany([","],false);
-                lstAgentAItemTableGrossWeightRowIdEdit = recData.stEditItemAgentAGrossWeightRowId.SplitOnMany([","],false);
-                lstAgentBItemTableGrossWeightRowIdEdit = recData.stEditItemAgentBGrossWeightRowId.SplitOnMany([","],false);
-                lstAgentAItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentAGrossWeightRowId.SplitOnMany([","],false);
-                lstAgentBItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentBGrossWeightRowId.SplitOnMany([","],false);
-
-                lstAgentAItemTableItemName = recData.stItemTableAItemName.SplitOnMany([","],false);
-                lstAgentBItemTableItemName = recData.stItemTableBItemName.SplitOnMany([","],false);
-                lstAgentAItemTableManufacturerItemNumber = recData.stItemTableAManufacturerItemNumber.SplitOnMany([","],false);
-                lstAgentBItemTableManufacturerItemNumber = recData.stItemTableBManufacturerItemNumber.SplitOnMany([","],false);
-                lstAgentAItemTableTaxNumber = recData.stItemTableATaxNumber.SplitOnMany([","],false);
-                lstAgentBItemTableTaxNumber = recData.stItemTableBTaxNumber.SplitOnMany([","],false);
-                lstAgentAItemTableAmount = recData.stItemTableAAmount.SplitOnMany([","],false);
-                lstAgentBItemTableAmount = recData.stItemTableBAmount.SplitOnMany([","],false);
-                lstAgentAItemTableUnit = recData.stItemTableAUnit.SplitOnMany([","],false);
-                lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany([","],false);
-                lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
-                lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
-            }
             
             let iCount = 0;
 
@@ -224,8 +183,52 @@
             {
                 iCount = iSelectedQAJobAgentAResultItemTable;
             }
-            
+
             let lstFinalItemTable = list.New();
+
+            if(iCount != 0)
+            {
+                for(let recData of form.rptItemTable.rows)
+                {
+                    lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableItemNameRowIdEdit = recData.stEditItemAgentBItemNameRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableItemNameRowIdAccept = recData.stAcceptItemAgentAItemNameRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableItemNameRowIdAccept = recData.stAcceptItemAgentBItemNameRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableTaxNumberRowIdEdit = recData.stEditItemAgentATaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableTaxNumberRowIdEdit = recData.stEditItemAgentBTaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentATaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentBTaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableAmountRowIdEdit = recData.stEditItemAgentAAmountRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableAmountRowIdEdit = recData.stEditItemAgentBAmountRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableAmountRowIdAccept = recData.stAcceptItemAgentAAmountRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableAmountRowIdAccept = recData.stAcceptItemAgentBAmountRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableUnitRowIdEdit = recData.stEditItemAgentAUnitRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableUnitRowIdEdit = recData.stEditItemAgentBUnitRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableUnitRowIdAccept = recData.stAcceptItemAgentAUnitRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableUnitRowIdAccept = recData.stAcceptItemAgentBUnitRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableGrossWeightRowIdEdit = recData.stEditItemAgentAGrossWeightRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableGrossWeightRowIdEdit = recData.stEditItemAgentBGrossWeightRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentAGrossWeightRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentBGrossWeightRowId.SplitOnMany([","],false);
+
+                    lstAgentAItemTableItemName = recData.stItemTableAItemName.SplitOnMany([","],false);
+                    lstAgentBItemTableItemName = recData.stItemTableBItemName.SplitOnMany([","],false);
+                    lstAgentAItemTableManufacturerItemNumber = recData.stItemTableAManufacturerItemNumber.SplitOnMany([","],false);
+                    lstAgentBItemTableManufacturerItemNumber = recData.stItemTableBManufacturerItemNumber.SplitOnMany([","],false);
+                    lstAgentAItemTableTaxNumber = recData.stItemTableATaxNumber.SplitOnMany([","],false);
+                    lstAgentBItemTableTaxNumber = recData.stItemTableBTaxNumber.SplitOnMany([","],false);
+                    lstAgentAItemTableAmount = recData.stItemTableAAmount.SplitOnMany([","],false);
+                    lstAgentBItemTableAmount = recData.stItemTableBAmount.SplitOnMany([","],false);
+                    lstAgentAItemTableUnit = recData.stItemTableAUnit.SplitOnMany([","],false);
+                    lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany([","],false);
+                    lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
+                    lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
+                }
+            }
 
             for(let i = 0; i < iCount; i = i + 1)
             {
@@ -379,19 +382,23 @@
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
 
-            for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+            if(iCount != 0)
             {
-                let item = {
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                {
+                    let item = {
 
-                    itemName: lstFinalItemTable.GetAt(1+i),
-                    manufacturerItemNumber: lstFinalItemTable.GetAt(2+i),
-                    taxNumber: lstFinalItemTable.GetAt(3+i),
-                    amount: lstFinalItemTable.GetAt(4+i),
-                    unit: lstFinalItemTable.GetAt(5+i),
-                    grossWeight: lstFinalItemTable.GetAt(6+i)
-                };
-                dacs.dnResponse.items.Add(item);
+                        itemName: lstFinalItemTable.GetAt(1+i),
+                        manufacturerItemNumber: lstFinalItemTable.GetAt(2+i),
+                        taxNumber: lstFinalItemTable.GetAt(3+i),
+                        amount: lstFinalItemTable.GetAt(4+i),
+                        unit: lstFinalItemTable.GetAt(5+i),
+                        grossWeight: lstFinalItemTable.GetAt(6+i)
+                    };
+                    dacs.dnResponse.items.Add(item);
+                }
             }
+            
             Log(dacs);
             dacs.Send();
 
@@ -499,47 +506,6 @@
             let lstAgentBItemTableUnit = list.New();
             let lstAgentAItemTableGrossWeight = list.New();
             let lstAgentBItemTableGrossWeight = list.New();
-
-            for(let recData of form.rptItemTable.rows)
-            {
-                lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
-                lstAgentBItemTableItemNameRowIdEdit = recData.stEditItemAgentBItemNameRowId.SplitOnMany([","],false);
-                lstAgentAItemTableItemNameRowIdAccept = recData.stAcceptItemAgentAItemNameRowId.SplitOnMany([","],false);
-                lstAgentBItemTableItemNameRowIdAccept = recData.stAcceptItemAgentBItemNameRowId.SplitOnMany([","],false);
-                lstAgentAItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableTaxNumberRowIdEdit = recData.stEditItemAgentATaxNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableTaxNumberRowIdEdit = recData.stEditItemAgentBTaxNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentATaxNumberRowId.SplitOnMany([","],false);
-                lstAgentBItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentBTaxNumberRowId.SplitOnMany([","],false);
-                lstAgentAItemTableAmountRowIdEdit = recData.stEditItemAgentAAmountRowId.SplitOnMany([","],false);
-                lstAgentBItemTableAmountRowIdEdit = recData.stEditItemAgentBAmountRowId.SplitOnMany([","],false);
-                lstAgentAItemTableAmountRowIdAccept = recData.stAcceptItemAgentAAmountRowId.SplitOnMany([","],false);
-                lstAgentBItemTableAmountRowIdAccept = recData.stAcceptItemAgentBAmountRowId.SplitOnMany([","],false);
-                lstAgentAItemTableUnitRowIdEdit = recData.stEditItemAgentAUnitRowId.SplitOnMany([","],false);
-                lstAgentBItemTableUnitRowIdEdit = recData.stEditItemAgentBUnitRowId.SplitOnMany([","],false);
-                lstAgentAItemTableUnitRowIdAccept = recData.stAcceptItemAgentAUnitRowId.SplitOnMany([","],false);
-                lstAgentBItemTableUnitRowIdAccept = recData.stAcceptItemAgentBUnitRowId.SplitOnMany([","],false);
-                lstAgentAItemTableGrossWeightRowIdEdit = recData.stEditItemAgentAGrossWeightRowId.SplitOnMany([","],false);
-                lstAgentBItemTableGrossWeightRowIdEdit = recData.stEditItemAgentBGrossWeightRowId.SplitOnMany([","],false);
-                lstAgentAItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentAGrossWeightRowId.SplitOnMany([","],false);
-                lstAgentBItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentBGrossWeightRowId.SplitOnMany([","],false);
-
-                lstAgentAItemTableItemName = recData.stItemTableAItemName.SplitOnMany([","],false);
-                lstAgentBItemTableItemName = recData.stItemTableBItemName.SplitOnMany([","],false);
-                lstAgentAItemTableManufacturerItemNumber = recData.stItemTableAManufacturerItemNumber.SplitOnMany([","],false);
-                lstAgentBItemTableManufacturerItemNumber = recData.stItemTableBManufacturerItemNumber.SplitOnMany([","],false);
-                lstAgentAItemTableTaxNumber = recData.stItemTableATaxNumber.SplitOnMany([","],false);
-                lstAgentBItemTableTaxNumber = recData.stItemTableBTaxNumber.SplitOnMany([","],false);
-                lstAgentAItemTableAmount = recData.stItemTableAAmount.SplitOnMany([","],false);
-                lstAgentBItemTableAmount = recData.stItemTableBAmount.SplitOnMany([","],false);
-                lstAgentAItemTableUnit = recData.stItemTableAUnit.SplitOnMany([","],false);
-                lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany([","],false);
-                lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
-                lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
-            }
             
             let iCount = 0;
 
@@ -557,8 +523,52 @@
             {
                 iCount = iSelectedQAJobAgentAResultItemTable;
             }
-            
+
             let lstFinalItemTable = list.New();
+
+            if(iCount != 0)
+            {
+                for(let recData of form.rptItemTable.rows)
+                {
+                    lstAgentAItemTableItemNameRowIdEdit = recData.stEditItemAgentAItemNameRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableItemNameRowIdEdit = recData.stEditItemAgentBItemNameRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableItemNameRowIdAccept = recData.stAcceptItemAgentAItemNameRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableItemNameRowIdAccept = recData.stAcceptItemAgentBItemNameRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableManufacturerItemNumberRowIdEdit = recData.stEditItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentAManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableManufacturerItemNumberRowIdAccept = recData.stAcceptItemAgentBManufacturerItemNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableTaxNumberRowIdEdit = recData.stEditItemAgentATaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableTaxNumberRowIdEdit = recData.stEditItemAgentBTaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentATaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableTaxNumberRowIdAccept = recData.stAcceptItemAgentBTaxNumberRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableAmountRowIdEdit = recData.stEditItemAgentAAmountRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableAmountRowIdEdit = recData.stEditItemAgentBAmountRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableAmountRowIdAccept = recData.stAcceptItemAgentAAmountRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableAmountRowIdAccept = recData.stAcceptItemAgentBAmountRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableUnitRowIdEdit = recData.stEditItemAgentAUnitRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableUnitRowIdEdit = recData.stEditItemAgentBUnitRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableUnitRowIdAccept = recData.stAcceptItemAgentAUnitRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableUnitRowIdAccept = recData.stAcceptItemAgentBUnitRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableGrossWeightRowIdEdit = recData.stEditItemAgentAGrossWeightRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableGrossWeightRowIdEdit = recData.stEditItemAgentBGrossWeightRowId.SplitOnMany([","],false);
+                    lstAgentAItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentAGrossWeightRowId.SplitOnMany([","],false);
+                    lstAgentBItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentBGrossWeightRowId.SplitOnMany([","],false);
+
+                    lstAgentAItemTableItemName = recData.stItemTableAItemName.SplitOnMany([","],false);
+                    lstAgentBItemTableItemName = recData.stItemTableBItemName.SplitOnMany([","],false);
+                    lstAgentAItemTableManufacturerItemNumber = recData.stItemTableAManufacturerItemNumber.SplitOnMany([","],false);
+                    lstAgentBItemTableManufacturerItemNumber = recData.stItemTableBManufacturerItemNumber.SplitOnMany([","],false);
+                    lstAgentAItemTableTaxNumber = recData.stItemTableATaxNumber.SplitOnMany([","],false);
+                    lstAgentBItemTableTaxNumber = recData.stItemTableBTaxNumber.SplitOnMany([","],false);
+                    lstAgentAItemTableAmount = recData.stItemTableAAmount.SplitOnMany([","],false);
+                    lstAgentBItemTableAmount = recData.stItemTableBAmount.SplitOnMany([","],false);
+                    lstAgentAItemTableUnit = recData.stItemTableAUnit.SplitOnMany([","],false);
+                    lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany([","],false);
+                    lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany([","],false);
+                    lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany([","],false);
+                }
+            }
 
             for(let i = 0; i < iCount; i = i + 1)
             {
@@ -712,18 +722,21 @@
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
 
-            for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+            if(iCount != 0)
             {
-                let item = {
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                {
+                    let item = {
 
-                    itemName: lstFinalItemTable.GetAt(1+i),
-                    manufacturerItemNumber: lstFinalItemTable.GetAt(2+i),
-                    taxNumber: lstFinalItemTable.GetAt(3+i),
-                    amount: lstFinalItemTable.GetAt(4+i),
-                    unit: lstFinalItemTable.GetAt(5+i),
-                    grossWeight: lstFinalItemTable.GetAt(6+i)
-                };
-                dacs.dnResponse.items.Add(item);
+                        itemName: lstFinalItemTable.GetAt(1+i),
+                        manufacturerItemNumber: lstFinalItemTable.GetAt(2+i),
+                        taxNumber: lstFinalItemTable.GetAt(3+i),
+                        amount: lstFinalItemTable.GetAt(4+i),
+                        unit: lstFinalItemTable.GetAt(5+i),
+                        grossWeight: lstFinalItemTable.GetAt(6+i)
+                    };
+                    dacs.dnResponse.items.Add(item);
+                }
             }
             Log(dacs);
             dacs.Send();
