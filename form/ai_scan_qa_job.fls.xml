@@ -181,8 +181,11 @@
                             iItemTableAmountErrorCount +
                             iItemTableUnitErrorCount +
                             iItemTableGrossWeightErrorCount +
-                            ABS(((iCountItemTableAAddbutton * 6) + (iCountItemTableBAddbutton * 6)) +
-                            ((iCountItemTableARemovebutton * 6) + (iCountItemTableBRemovebutton * 6)))
+                            ABS(
+                                ((iCountItemTableAAddbutton * 6)+(iCountItemTableBAddbutton * 6)+(iCountItemTableAAddbuttonNew * 6)+(iCountItemTableBAddbuttonNew * 6))
+                                -
+                                ((iCountItemTableARemovebutton * 6)+(iCountItemTableBRemovebutton * 6)+(iCountItemTableARemovebuttonNew * 6)+(iCountItemTableBRemovebuttonNew * 6))
+                            )
                         )
                     }'
         />
@@ -431,8 +434,14 @@
         <let id='iCountItemTableAAddbutton' access='private' shape='scalar' value='{0}'/>
         <let id='iCountItemTableBAddbutton' access='private' shape='scalar' value='{0}'/>
 
+        <let id='iCountItemTableAAddbuttonNew' access='private' shape='scalar' value='{0}'/>
+        <let id='iCountItemTableBAddbuttonNew' access='private' shape='scalar' value='{0}'/>
+
         <let id='iCountItemTableARemovebutton' access='private' shape='scalar' value='{0}'/>
         <let id='iCountItemTableBRemovebutton' access='private' shape='scalar' value='{0}'/>
+
+        <let id='iCountItemTableARemovebuttonNew' access='private' shape='scalar' value='{0}'/>
+        <let id='iCountItemTableBRemovebuttonNew' access='private' shape='scalar' value='{0}'/>
     
     </declarations>
     <header></header>
@@ -1705,7 +1714,7 @@
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentAItemRowTbNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentAItemRowTbNewRow" || "[" || TOSTRING(rAIndex) || "]"}'>
                             <actionbutton>
-                                <set value='{iCountItemTableARemovebutton + 1}' target='iCountItemTableARemovebutton'/>
+                                <set value='{iCountItemTableARemovebuttonNew + 1}' target='iCountItemTableARemovebuttonNew'/>
                             </actionbutton>
                             <removebutton/>
                         </combinedbutton>
@@ -1734,7 +1743,7 @@
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentAItemRowTvNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentAItemRowTvNewRow" || "[" || TOSTRING(rAIndex) || "]"}'>
                             <actionbutton>
-                                <set value='{iCountItemTableARemovebutton + 1}' target='iCountItemTableARemovebutton'/>
+                                <set value='{iCountItemTableARemovebuttonNew + 1}' target='iCountItemTableARemovebuttonNew'/>
                             </actionbutton>
                             <removebutton/>
                         </combinedbutton>
@@ -1746,8 +1755,8 @@
         <if cond='{iItemTableAgentARowCount = iItemTableAgentBRowCount}'>
             <combinedbutton id='cbtnAddNewItemAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentA"}'>
                 <actionbutton>
-                    <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
-                    <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
+                    <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
+                    <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
                 </actionbutton>
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
@@ -2067,7 +2076,7 @@
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentBItemRowTbNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentBItemRowTbNewRow" || "[" || TOSTRING(rBIndex) || "]"}'>
                             <actionbutton>
-                                <set value='{iCountItemTableBRemovebutton + 1}' target='iCountItemTableBRemovebutton'/>
+                                <set value='{iCountItemTableBRemovebuttonNew + 1}' target='iCountItemTableBRemovebuttonNew'/>
                             </actionbutton>
                             <removebutton/>
                         </combinedbutton>
@@ -2096,7 +2105,7 @@
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentBItemRowTvNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentBItemRowTvNewRow" || "[" || TOSTRING(rBIndex) || "]"}'>
                             <actionbutton>
-                                <set value='{iCountItemTableBRemovebutton + 1}' target='iCountItemTableBRemovebutton'/>
+                                <set value='{iCountItemTableBRemovebuttonNew + 1}' target='iCountItemTableBRemovebuttonNew'/>
                             </actionbutton>
                             <removebutton/>
                         </combinedbutton>
@@ -2108,8 +2117,8 @@
         <if cond='{iItemTableAgentBRowCount = iItemTableAgentARowCount}'>
             <combinedbutton id='cbtnAddNewItemAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentB"}'>
                 <actionbutton>
-                    <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
-                    <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
+                    <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
+                    <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
                 </actionbutton>
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
