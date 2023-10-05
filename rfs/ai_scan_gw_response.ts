@@ -6,7 +6,9 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_job_result;
+//# using reftab ai_scan_settings;
 //# using dacs QATaskDone;
+//# using dacs AssignAITask;
 
 {
     let rgstdtf = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
@@ -201,6 +203,17 @@
 
         // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stDeliveryNoteJobId, user_id : stCurrentJobUserId});
+
+        //Remove user from ANNOT job on AI page
+        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stDeliveryNoteJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+        let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+        
+        let dacs2 = messages.AssignAITask.New();
+        dacs2.assignTask.scanId = stscanId;
+        dacs2.assignTask.requestFileId = stDeliveryNoteJobId;
+        dacs2.assignTask.agent = stDefaultAIUser;
+        //dacs2.assignTask.agent = "botond.bakai@mobilengine.com";
+        dacs2.Send();
 
         //Get delivery note other job
         let stDeliveryNoteOtherJob = "";
@@ -558,6 +571,17 @@
 
         // Delete the job in ai_scan_job_inprogress table
         db.ai_scan_job_inprogress.DeleteMany({job_id : stDeliveryNoteJobId, user_id : stCurrentJobUserId});
+
+        //Remove user from ANNOT job on AI page
+        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stDeliveryNoteJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+        let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+        
+        let dacs2 = messages.AssignAITask.New();
+        dacs2.assignTask.scanId = stscanId;
+        dacs2.assignTask.requestFileId = stDeliveryNoteJobId;
+        dacs2.assignTask.agent = stDefaultAIUser;
+        //dacs2.assignTask.agent = "botond.bakai@mobilengine.com";
+        dacs2.Send();
 
         //Get delivery note other job
         let stDeliveryNoteOtherJob = "";

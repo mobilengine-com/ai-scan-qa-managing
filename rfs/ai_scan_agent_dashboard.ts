@@ -6,6 +6,7 @@
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_user_language;
+//# using reftab ai_scan_settings;
 //# using dacs AssignAITask;
 
 {
@@ -74,6 +75,17 @@
             },{
                 job_assigned_status: ""
             });
+
+            //Remove user from ANNOT job on AI page
+            let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+            let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+            
+            let dacs = messages.AssignAITask.New();
+            dacs.assignTask.scanId = stscanId;
+            dacs.assignTask.requestFileId = stCurrentJobId;
+            dacs.assignTask.agent = stDefaultAIUser;
+            //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+            dacs.Send();
         }
     }
 
@@ -471,6 +483,17 @@
         },{
             job_assigned_status: ""
         });
+
+        //Remove user from ANNOT job on AI page
+        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+        let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+        
+        let dacs = messages.AssignAITask.New();
+        dacs.assignTask.scanId = stscanId;
+        dacs.assignTask.requestFileId = stCurrentJobId;
+        dacs.assignTask.agent = stDefaultAIUser;
+        //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+        dacs.Send();
     }
 
     if(bCancelDelayCurrentAnotJob)
@@ -519,6 +542,17 @@
         },{
             job_assigned_status: ""
         });
+
+        //Remove user from ANNOT job on AI page
+        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+        let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+        
+        let dacs = messages.AssignAITask.New();
+        dacs.assignTask.scanId = stscanId;
+        dacs.assignTask.requestFileId = stCurrentJobId;
+        dacs.assignTask.agent = stDefaultAIUser;
+        //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+        dacs.Send();
 
     }
 
