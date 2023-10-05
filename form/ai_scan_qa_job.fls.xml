@@ -496,7 +496,7 @@
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobAnotJobsAgentBWeightGross OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobAnotJobsAgentBWeightGross AND (bSignForEditAgentAWeightGross != false OR bSignForEditAgentBWeightGross != false OR bSignForAcceptAgentAWeightGross != false OR bSignForAcceptAgentBWeightGross != false)))
                                 AND
-                                bItemTableFinalValidation = true
+                                ((bItemTableFinalValidation = true AND iItemTableAgentARowCount != 0 AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentARowCount = 0 AND iItemTableAgentBRowCount = 0))
                                 AND
                                 iItemTableAgentARowCount = iItemTableAgentBRowCount
                                 )
@@ -539,7 +539,7 @@
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobAnotJobsAgentBWeightGross OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobAnotJobsAgentBWeightGross AND (bSignForEditAgentAWeightGross != false OR bSignForEditAgentBWeightGross != false OR bSignForAcceptAgentAWeightGross != false OR bSignForAcceptAgentBWeightGross != false)))
                                 AND
-                                bItemTableFinalValidation = true
+                                ((bItemTableFinalValidation = true AND iItemTableAgentARowCount != 0 AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentARowCount = 0 AND iItemTableAgentBRowCount = 0))
                                 AND
                                 iItemTableAgentARowCount = iItemTableAgentBRowCount
                                 )
