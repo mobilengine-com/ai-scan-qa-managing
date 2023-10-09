@@ -181,7 +181,18 @@
             }
             else
             {
-                iCount = iSelectedQAJobAgentAResultItemTable;
+                if(iSelectedQAJobAgentAResultItemTable != 0 && iSelectedQAJobAgentBResultItemTable == 0)
+                {
+                    iCount = iSelectedQAJobAgentAResultItemTable;
+                }
+                else if(iSelectedQAJobAgentAResultItemTable == 0 && iSelectedQAJobAgentBResultItemTable != 0)
+                {
+                    iCount = iSelectedQAJobAgentBResultItemTable;
+                }
+                else
+                {
+                    iCount = 0;
+                }
             }
 
             let lstFinalItemTable = list.New();
@@ -400,6 +411,7 @@
             }
             
             Log(dacs);
+            skdhogshojhs;
             dacs.Send();
 
             //QA job status update to handwritten
@@ -521,7 +533,18 @@
             }
             else
             {
-                iCount = iSelectedQAJobAgentAResultItemTable;
+                if(iSelectedQAJobAgentAResultItemTable != 0 && iSelectedQAJobAgentBResultItemTable == 0)
+                {
+                    iCount = iSelectedQAJobAgentAResultItemTable;
+                }
+                else if(iSelectedQAJobAgentAResultItemTable == 0 && iSelectedQAJobAgentBResultItemTable != 0)
+                {
+                    iCount = iSelectedQAJobAgentBResultItemTable;
+                }
+                else
+                {
+                    iCount = 0;
+                }
             }
 
             let lstFinalItemTable = list.New();
@@ -739,6 +762,7 @@
                 }
             }
             Log(dacs);
+            lgijoiroij;
             dacs.Send();
 
             //QA job status update to approved
