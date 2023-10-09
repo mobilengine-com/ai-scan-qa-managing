@@ -411,7 +411,6 @@
             }
             
             Log(dacs);
-            skdhogshojhs;
             dacs.Send();
 
             //QA job status update to handwritten
@@ -762,7 +761,6 @@
                 }
             }
             Log(dacs);
-            lgijoiroij;
             dacs.Send();
 
             //QA job status update to approved
