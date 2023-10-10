@@ -218,6 +218,8 @@
                             break;
                         }
                     }
+
+                    //QA job assigned because the current user is not assigned in the past to the parent Annot jobs
                     if(lstAllUnassignedQAJobs != null && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
                     {
                         Log("QA job assigned because the user is not assigned in the past to the parent Annot jobs");
@@ -226,36 +228,46 @@
                         break;
                     }
 
-                    //Current user and 1 other user only online user or Current user only user / other user can do this job because didn't do anot jobs
+                    //Current user and 1 other user only online user or Current user only user with correct lang / other user can do this job because didn't do anot jobs
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
                     {
-                        Log("QA Only you + 1 other user");
+                        Log("QA Only you + 0 or 1 other user with correct lang / other user can do this job because didn't do anot jobs");
                         stCurrentQAJobId = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
 
-                    //Current user and 1 other user only online user or Current user only user / you can do this job because didn't do anot jobs
+                    //Current user and 1 other user only online user or Current user only user with correct lang / you can do this job because didn't do anot jobs
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
                     {
-                        Log("QA Only you + 1 other user");
+                        Log("QA Only you + 0 or 1 other user with correct lang / you can do this job because didn't do anot jobs");
                         stCurrentQAJobId = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
 
+                    //Current user and 1 other user only online user with correct lang
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang == 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
-                        Log("QA Only you + 1 other user");
+                        Log("QA Only you + 1 other user with correct lang");
                         stCurrentQAJobId = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
 
-                    //More or equal 3 online user
-                    if(lstAllUnassignedQAJobs != null && lstOtherOnlineUsers.Count() >= 2 && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
+                    //Current user only online user with correct lang
+                    if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang == 0 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
-                        Log("More or equal than 3 online user / users not empty");
+                        Log("QA Only you with correct lang");
+                        stCurrentQAJobId = recData.id;
+                        bUserGetCurrentQAJob = true;
+                        break;
+                    }
+
+                    //More or equal 3 online user with correct lang
+                    if(lstAllUnassignedQAJobs != null && lstOtherOnlineUsers.Count() >= 2 && iOtherUsersWithTheCorrectLang >= 2 && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
+                    {
+                        Log("More or equal than 3 online user with correct lang / users not empty");
                         stCurrentQAJobId = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
