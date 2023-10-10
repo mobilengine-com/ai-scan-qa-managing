@@ -181,7 +181,18 @@
             }
             else
             {
-                iCount = iSelectedQAJobAgentAResultItemTable;
+                if(iSelectedQAJobAgentAResultItemTable != 0 && iSelectedQAJobAgentBResultItemTable == 0)
+                {
+                    iCount = iSelectedQAJobAgentAResultItemTable;
+                }
+                else if(iSelectedQAJobAgentAResultItemTable == 0 && iSelectedQAJobAgentBResultItemTable != 0)
+                {
+                    iCount = iSelectedQAJobAgentBResultItemTable;
+                }
+                else
+                {
+                    iCount = 0;
+                }
             }
 
             let lstFinalItemTable = list.New();
@@ -521,7 +532,18 @@
             }
             else
             {
-                iCount = iSelectedQAJobAgentAResultItemTable;
+                if(iSelectedQAJobAgentAResultItemTable != 0 && iSelectedQAJobAgentBResultItemTable == 0)
+                {
+                    iCount = iSelectedQAJobAgentAResultItemTable;
+                }
+                else if(iSelectedQAJobAgentAResultItemTable == 0 && iSelectedQAJobAgentBResultItemTable != 0)
+                {
+                    iCount = iSelectedQAJobAgentBResultItemTable;
+                }
+                else
+                {
+                    iCount = 0;
+                }
             }
 
             let lstFinalItemTable = list.New();

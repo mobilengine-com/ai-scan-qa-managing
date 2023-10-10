@@ -3,6 +3,8 @@
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_jobs_history;
+//# using reftab ai_scan_delivery_note_job;
+//# using reftab ai_scan_settings;
 //# using dacs AssignAITask;
 
 {
