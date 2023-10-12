@@ -149,6 +149,7 @@
             <discardbutton id='dabtnDashboard' text='Dashboard' confirm='{false}' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='dabtnDashboard'/>
             <discardbutton id='dabtnAgent' text='Agent' confirm='{false}' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabActive}' testId='dabtnAgent'/>
             <discardbutton id='dabtnSetting' text='Setting' confirm='{false}' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='dabtnSetting'/>
+            <discardbutton id='dabtnOutput' text='Output' confirm='{false}' nextForm='{forms.ai_scan_output}' style='{styles.sylTabInActive}' testId='dabtnOutput'/>
             <textview text=''/>
         </hbox>
     </if>

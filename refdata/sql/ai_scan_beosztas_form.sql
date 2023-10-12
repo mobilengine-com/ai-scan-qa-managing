@@ -5,6 +5,7 @@ INSERT INTO ai_scan_beosztas_form VALUES('2','ai_scan_setting','web');
 INSERT INTO ai_scan_beosztas_form VALUES('2','ai_scan_coordinator_dashboard','web');
 INSERT INTO ai_scan_beosztas_form VALUES('2','ai_scan_agent_dashboard','web');
 INSERT INTO ai_scan_beosztas_form VALUES('2','ai_scan_qa_job','web');
+INSERT INTO ai_scan_beosztas_form VALUES('2','ai_scan_output','web');
 INSERT INTO ai_scan_beosztas_form VALUES('1','ai_scan_agent_dashboard','web');
 INSERT INTO ai_scan_beosztas_form VALUES('1','ai_scan_qa_job','web');
 COMMIT;

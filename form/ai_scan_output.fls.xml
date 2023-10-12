@@ -1,0 +1,230 @@
+<form id='ai_scan_output' platforms='web' dashboard='false' menuName='Output' title='' menuOrder='hidden' style='{styles.sylFormUserManagement}' xmlns='http://schemas.mobilengine.com/fls/v2'>
+    <declarations>
+        <let id='stLoggedUserId' shape='scalar' value='{
+            SELECT
+                U.id
+            FROM
+                ai_scan_user U
+            WHERE
+                U.email = sysp.user
+        }'/>
+        
+        <let id='stLoggedUserRole' shape='scalar' value='{
+            SELECT
+                U.role
+            FROM
+                ai_scan_user U
+            WHERE
+                U.email = sysp.user
+        }'/>
+
+        <let id='stLoggedUserStatus' shape='scalar' value='{
+            SELECT
+                U.status
+            FROM
+                ai_scan_user U
+            WHERE
+                U.email = sysp.user
+        }'/>
+
+        <let id='ltblOutputDeliveryNotes' shape='table' access="private"
+            value='{SELECT
+                        J.delivery_note_id delivery_note_id,
+                        CASE WHEN COALESCE(QAJR.result,"") = "" THEN 0 ELSE 1 END delivery_note_qa_job,
+                        CASE WHEN COALESCE(QAJR.result,"") = "" THEN "Approved" ELSE QAJR.result END delivery_note_status
+                    FROM
+                        ai_scan_jobs J
+                    LEFT JOIN
+                        ai_scan_job_result JR ON JR.delivery_note_id = J.delivery_note_id
+                    LEFT JOIN
+                        ai_scan_qa_job_result QAJR ON QAJR.delivery_note_id = J.delivery_note_id
+                    LEFT JOIN
+                        ai_scan_delivery_note_job DNJ ON DNJ.delivery_note_id = J.delivery_note_id
+                    LEFT JOIN
+                        ai_scan_delivery_note_item_job DNIJ ON DNIJ.delivery_note_id = J.delivery_note_id
+                    LEFT JOIN
+                        ai_scan_user U ON U.id = J.current_user
+                    WHERE
+                        J.status = "DONE"
+                        AND
+                        (
+                            J.id NOT IN (SELECT J2.job_id_2 FROM ai_scan_jobs J2 WHERE J2.type = "QA") 
+                            AND J.id NOT IN (SELECT J2.job_id_3 FROM ai_scan_jobs J2 WHERE J2.type = "QA")
+                        )
+                        AND
+                        (
+                            J.job_id_2 IN (SELECT J2.id FROM ai_scan_jobs J2 WHERE J2.type = "ANOT" AND J2.status = "DONE")
+                        )
+                        AND CASE WHEN stANOTAgentFilter != "" THEN
+                            JR.user_id = stANOTAgentFilter
+                        ELSE
+                            DNJ.delivery_note_id != ""
+                        END
+                        AND CASE WHEN stQAAgentFilter != "" THEN
+                            (J.current_user  = stQAAgentFilter AND COALESCE(QAJR.result,"") != "")
+                        ELSE
+                            DNJ.delivery_note_id != ""
+                        END
+                        AND
+                            STARTOFDAY(J.delivery_note_work_end_date) BETWEEN COALESCE(dtlFromFilter, TODATE(1900,1,1,0,0,0)) AND COALESCE(dtlToFilter, TODATE(2100,1,1,0,0,0))
+                        AND CASE WHEN stClientFilter != "" THEN
+                            J.client  = stClientFilter 
+                        ELSE
+                            DNJ.delivery_note_id != ""
+                        END
+                        AND CASE WHEN stProjectFilter != "" THEN
+                            J.project  = stProjectFilter 
+                        ELSE
+                            DNJ.delivery_note_id != ""
+                        END
+                        AND CASE WHEN stStatusFilter IN ("Handwritten") THEN
+                            QAJR.result IN ("Handwritten")
+                        WHEN stStatusFilter IN ("Bad photo") THEN
+                            QAJR.result IN ("Bad photo")
+                        WHEN stStatusFilter IN ("Reviewed") THEN
+                            J.type = "ANOT" OR QAJR.result NOT IN ("Handwritten", "Bad photo")
+                        ELSE
+                            DNJ.delivery_note_id != ""
+                        END
+                        AND CASE WHEN LENGTH(stSearch) &gt;= 1 THEN
+                        (
+                            DNJ.customer_address LIKE "%" || stSearch || "%"
+                            OR DNJ.customer_name LIKE "%" || stSearch || "%"
+                            OR DNJ.delivery_address LIKE "%" || stSearch || "%"
+                            OR DNJ.delivery_recipient_name LIKE "%" || stSearch || "%"
+                            OR DNJ.issue_date LIKE "%" || stSearch || "%"
+                            OR DNJ.order_number LIKE "%" || stSearch || "%"
+                            OR DNJ.supplier_address LIKE "%" || stSearch || "%"
+                            OR DNJ.supplier_name LIKE "%" || stSearch || "%"
+                            OR DNJ.supplier_tax_number LIKE "%" || stSearch || "%"
+                            OR DNJ.supplier_warehouse LIKE "%" || stSearch || "%"
+                            OR DNJ.supplier_id LIKE "%" || stSearch || "%"
+                            OR DNJ.weight_gross LIKE "%" || stSearch || "%"
+                            OR DNIJ.item_name LIKE "%" || stSearch || "%"
+                            OR DNIJ.manufacturer_item_number LIKE "%" || stSearch || "%"
+                            OR DNIJ.tax_number LIKE "%" || stSearch || "%"
+                            OR DNIJ.amount LIKE "%" || stSearch || "%"
+                            OR DNIJ.unit LIKE "%" || stSearch || "%"
+                            OR DNIJ.gross_weight LIKE "%" || stSearch || "%" 
+                        )
+                        ELSE
+                        (
+                            DNJ.delivery_note_id != ""
+                        )
+                        END
+                    GROUP BY J.delivery_note_id
+            }'
+        />
+
+        <let id='iDeliveryNotesSum' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN}'/>
+        <let id='iDeliveryNotesOnlyQA' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_qa_job) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_qa_job = 1}'/>
+        <let id='iDeliveryNotesOnlyHandwritten' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_status) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_status = "Handwritten"}'/>
+        <let id='iDeliveryNotesOnlyBadphoto' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_status) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_status = "Bad photo"}'/>
+        <let id='iDeliveryNotesOnlyApproved' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_status) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_status = "Approved"}'/>
+
+        <let id='stANOTAgentFilter' shape='scalar' access='public'
+			value='{SELECT COALESCE(ddANOTAgentFilter.selectedKey,"")}'
+		/>
+
+        <let id='stQAAgentFilter' shape='scalar' access='public'
+			value='{SELECT COALESCE(ddQAAgentFilter.selectedKey,"")}'
+		/>
+
+        <let id='dtlFromFilter' shape='scalar' access='public'
+            value='{SELECT dpFromFilter.date}'
+        />
+
+        <let id='dtlToFilter' shape='scalar' access='public'
+            value='{SELECT dpToFilter.date}'
+        />
+
+        <let id='stClientFilter' shape='scalar' access='public'
+			value='{SELECT COALESCE(ddClientFilter.selectedKey,"")}'
+		/>
+
+        <let id='stProjectFilter' shape='scalar' access='public'
+			value='{SELECT COALESCE(ddProjectFilter.selectedKey,"")}'
+		/>
+
+        <let id='stStatusFilter' shape='scalar' access='public'
+            value='{SELECT COALESCE(ddStatusFilter.selectedText,"")}'
+        />
+
+        <let id='stSearch' shape='scalar' access='public'
+			value='{SELECT COALESCE(tbSearch.tbSearchValue,"")}'
+		/>
+    </declarations>
+
+    <header></header>
+
+    <if cond='{stLoggedUserRole = "Coordinator"}'>
+        <hbox style='{styles.sylTabsAndSaveButtonHbox}'>
+            <discardbutton id='dabtnDashboard' text='Dashboard' confirm='{false}' nextForm='{forms.ai_scan_coordinator_dashboard}' style='{styles.sylTabInActive}' testId='dabtnDashboard'/>
+            <discardbutton id='dabtnAgent' text='Agent' confirm='{false}' nextForm='{forms.ai_scan_agent_dashboard}' style='{styles.sylTabInActive}' testId='dabtnAgent'/>
+            <discardbutton id='dabtnSetting' text='Setting' confirm='{false}' nextForm='{forms.ai_scan_setting}' style='{styles.sylTabInActive}' testId='dabtnSetting'/>
+            <discardbutton id='dabtnOutput' text='Output' confirm='{false}' nextForm='{forms.ai_scan_output}' style='{styles.sylTabActive}' testId='dabtnOutput'/>
+            <textview text=''/>
+        </hbox>
+    </if>
+
+    <hbox style='{styles.sylOutputFiltersHbox}'>
+        <dropdown id='ddANOTAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: Annotation' testId='{"ddANOTAgentFilter"}' 
+            choices='{clientOrderBy: SELECT DISTINCT JR.user_id, JR.user_name FROM ai_scan_job_result JR WHERE COALESCE(JR.user_id,"") != NULL OR COALESCE(JR.user_id,"") != "" ORDER BY user_name}' selectedKey='{NULL}' 
+        />
+        <dropdown id='ddQAAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: QA' testId='{"ddQAAgentFilter"}' 
+            choices='{clientOrderBy: SELECT DISTINCT QAJR.user_id, QAJR.user_name FROM ai_scan_qa_job_result QAJR WHERE COALESCE(QAJR.user_id,"") != NULL OR COALESCE(QAJR.user_id,"") != "" ORDER BY user_name}' selectedKey='{NULL}' 
+        />
+        <textview id='tvFromText' text='From:' style='{styles.sylOutputTvFromAndTo}' access='private' testId='{"tvFromText"}'/>
+        <datepicker id='dpFromFilter' date='{ADDDAY(sysp.dtlFormOpen, -1)}' dateFormat='(dtf yyyy"."MM"."dd".")' access='private' style='{styles.sylOutputDPDatePicker}' testId='{"dpFromFilter"}'/>
+        <textview id='tvToText' text='To:' style='{styles.sylOutputTvFromAndTo}' access='private' testId='{"tvToText"}'/>
+		<datepicker id='dpToFilter' date='{ADDDAY(sysp.dtlFormOpen, -1)}' dateFormat='(dtf yyyy"."MM"."dd".")' access='private' style='{styles.sylOutputDPDatePicker}' testId='{"dpToFilter"}'/>
+        <dropdown id='ddClientFilter' keyMap='{client}' textMap='{client}' noneText='Client' testId='{"ddClientFilter"}' 
+            choices='{clientOrderBy: SELECT DISTINCT DNJ.client FROM ai_scan_delivery_note_job DNJ WHERE COALESCE(DNJ.client,"") != NULL OR COALESCE(DNJ.client,"") != "" ORDER BY client}' selectedKey='{NULL}' 
+        />
+        <dropdown id='ddProjectFilter' keyMap='{project}' textMap='{project}' noneText='Project' testId='{"ddProjectFilter"}' 
+            choices='{clientOrderBy: SELECT DISTINCT DNJ.project FROM ai_scan_delivery_note_job DNJ WHERE (COALESCE(DNJ.project,"") != NULL OR COALESCE(DNJ.project,"") != "") AND DNJ.client LIKE "%" || stClientFilter || "%" ORDER BY project}' selectedKey='{NULL}' 
+        />
+        <dropdown id='ddStatusFilter' keyMap='{key}' textMap='{value}' noneText='Status' testId='{"ddStatusFilter"}' 
+            choices='{TABLE key, value 
+                (1, "Reviewed"; 
+                2, "Handwritten";
+                3, "Bad photo")}' 
+            selectedKey='{NULL}' 
+        />
+        <textbox id='tbSearch' hint='Search…' text='' access='private'  testId='{"tbSearch"}'>
+            <declarations>
+                <let id='tbSearchValue' shape='scalar' 
+                    value='{SELECT 
+                                CASE 
+                                    WHEN LENGTH(TRIM(COALESCE(text,""), " ")) &lt; 1 
+                                        THEN "" 
+                                    ELSE TRIM(LOWER(COALESCE(text,"")), " ")
+                                END}' 
+                />
+            </declarations>
+		</textbox>
+        <textview text=''/>
+    </hbox>
+
+    <hbox>
+        <block>
+            <textview id='tvDeliveryNotesSumText' text='{TOSTRING(iDeliveryNotesSum) || " delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesSumText"}'/>
+            <textview id='tvDeliveryNotesOnlyQAText' text='{TOSTRING(iDeliveryNotesOnlyQA) || " delivery notes with QA task"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyQAText"}'/>
+            <textview id='tvDeliveryNotesOnlyHandwrittenText' text='{TOSTRING(iDeliveryNotesOnlyHandwritten)|| " handwritten delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyHandwrittenText"}'/>
+            <textview id='tvDeliveryNotesOnlyBadphotoText' text='{TOSTRING(iDeliveryNotesOnlyBadphoto)|| " bad photo delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyBadphotoText"}'/>
+            <textview id='tvDeliveryNotesOnlyApprovedText' text='{TOSTRING(iDeliveryNotesOnlyApproved)|| " successful delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyApprovedText"}'/>
+        </block>
+        <popup title="Click here for a good time">
+            <chapter title="And a good time was had by all">
+                <textbox id="goodTimeBox" text="Goodies"/>
+            </chapter>
+        </popup>
+        <popup title="Click here for a good time 2">
+            <chapter title="And a good time was had by all 2">
+                <textbox id="goodTimeBox2" text="Goodies2"/>
+            </chapter>
+        </popup>
+        <textview text=''/>
+    </hbox>
+    
+</form>

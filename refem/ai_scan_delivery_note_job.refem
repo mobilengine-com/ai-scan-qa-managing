@@ -5,6 +5,8 @@
         <Column Name="status" Type="Text" NotNull="true"/>
         <Column Name="avg_score_must_have" Type="Float" NotNull="true"/>
         <Column Name="avg_score_overall" Type="Float" NotNull="true"/>
+        <Column Name='client' Type='Text'/>
+		<Column Name='project' Type='Text'/>
         <Column Name="customer_address" Type="Text"/>
         <Column Name="customer_name" Type="Text"/>
         <Column Name="delivery_address" Type="Text"/>

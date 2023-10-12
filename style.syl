@@ -8,7 +8,7 @@ styles{
 
 	style sylTabsAndSaveButtonHbox{
 		hbox {
-			sizes = 200px, 200px, 200px, 1, 160px
+			sizes = 200px, 200px, 200px, 200px, 1, 160px
 		}
 	}
 
@@ -4521,6 +4521,71 @@ styles{
 				}
 				fontColor = FF0000
 				fontSize = 24px
+			}
+			textAlign = left			
+		}	
+	}
+
+	style sylOutputFiltersHbox{
+		hbox {
+			sizes = 150px, 150px, 46px, 100px, 30px, 100px, 120px, 120px, 120px, 200px, 1
+			margin{
+				top = 30px
+				bottom = 60px
+				left = 0px
+				right = 0px
+			}
+		}
+	}
+
+	style sylOutputTvFromAndTo{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = 144184
+				bold = true
+			}
+			textAlign = left			
+		}	
+	}
+
+	style sylOutputDPDatePicker{
+		datepicker {
+			margin {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			padding {
+				top = 6px
+				bottom = 6px
+				left = 0px
+				right = 6px
+			}
+			textAlign = center
+			control {
+				width = 88px
+			}		
+		}	
+	}
+
+	style sylOutputTvStatistic{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontSize = 16px
+				bold = true
 			}
 			textAlign = left			
 		}	

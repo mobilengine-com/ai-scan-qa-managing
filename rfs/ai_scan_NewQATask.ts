@@ -3,10 +3,25 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_settings;
+//# using reftab ai_scan_qa_job_result;
+//# using reftab ai_scan_job_result;
+//# using reftab ai_scan_delivery_note_item_job;
 //# using dacs AssignAITask;
 
 {
     Log(dacs);
+
+    let stOldDeliveryNoteId = dacs.qaTask.old_delivery_note_id;
+
+    //If there is bad photo delivery and we retake in BAUAPP
+    if(stOldDeliveryNoteId != null && stOldDeliveryNoteId != "")
+    {
+        db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
+        db.ai_scan_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
+        db.ai_scan_jobs.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
+        db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
+        db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
+    }
 
     // Create 2 anot job guid
     let stJobId = dacs.qaTask.requestFileId1;
@@ -33,6 +48,8 @@
         type: "ANOT",
         status: "UNCHECKED",
         supplier_id: stSupplierID,
+        client: dacs.qaTask.client,
+        project: dacs.qaTask.project,
         lang: dacs.qaTask.lang,
         current_user: null,
         delivery_note_id: dacs.qaTask.scanId,
@@ -58,6 +75,8 @@
         status: "waiting",
         avg_score_must_have: 0.0,
         avg_score_overall: 0.0,
+        client: dacs.qaTask.client,
+        project: dacs.qaTask.project,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 
@@ -75,6 +94,8 @@
         type: "ANOT",
         status: "UNCHECKED",
         supplier_id: stSupplierID,
+        client: dacs.qaTask.client,
+        project: dacs.qaTask.project,
         lang: dacs.qaTask.lang,
         current_user: null,
         delivery_note_id: dacs.qaTask.scanId,
@@ -100,6 +121,8 @@
         status: "waiting",
         avg_score_must_have: 0.0,
         avg_score_overall: 0.0,
+        client: dacs.qaTask.client,
+        project: dacs.qaTask.project,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 
