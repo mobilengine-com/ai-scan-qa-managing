@@ -14,7 +14,7 @@
       <dacsem name='AssignAITaskResponse' />
       <dacsem name='AITaskResult' />
       <dacsem name='NewQATask' />
-      <dacsem name='ResponseDeliveryNoteOperation' />
+      <dacsem name='ResponseDeliveryNoteOperationToDM' />
     </iep>
     <iep name="outDML" direction="out">
       <dacsem name='AssignAITask' />
