@@ -5,6 +5,8 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_job_result;
+//# using dacs SendRedoOperationToDM;
+//# using dacs SendDeliveryNoteOperation;
 
 {
     //Find submit buttons in Redo popup and Delete popup

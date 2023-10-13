@@ -1,4 +1,4 @@
-//# server program ai_scan_ResponseDeliveryNoteOperation for dacs ResponseDeliveryNoteOperation
+//# server program ai_scan_ResponseDeliveryNoteOperation for dacs ResponseDeliveryNoteOperationToDM
 
 {
     Log(dacs);

@@ -1,4 +1,4 @@
-schema 'ResponseDeliveryNoteOperation' meta 'ResponseDeliveryNoteOperation'
+schema 'ResponseDeliveryNoteOperationToDM' meta 'ResponseDeliveryNoteOperationToDM'
 
 redoDeliveryNoteTask: element {
 	scanId: attribute of type string;
