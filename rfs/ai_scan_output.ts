@@ -31,7 +31,6 @@
             for(let i = 0; i < iCount; i = i + 1)
             {
                 Log(lstDeliveryNotesId.GetAt(i));
-                sndgjksdhk;
                 //Send redo operation to DM for redo delivery note in DM 
                 let lstDeliveryNotes = db.ai_scan_jobs.Read({delivery_note_id: lstDeliveryNotesId.GetAt(i), type: "ANOT"});
                 let stAnotJob1 = lstDeliveryNotes.GetAt(0).id;
@@ -63,7 +62,6 @@
             for(let i = 0; i < iCount; i = i + 1)
             {
                 Log(lstDeliveryNotesId.GetAt(i));
-                bsdhjghsoii;
                 //Delete delivery note everywhere in DM
                 db.ai_scan_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_qa_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
