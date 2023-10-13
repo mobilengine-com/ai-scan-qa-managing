@@ -29,7 +29,7 @@
                         J.id = stSelectedQAJobId
                     }'
         />
-        <let id='stSelectedQAJobSupplierId' shape='scalar' access='private' value='{SELECT SQAJD.supplier_id FROM ltblSelectedQAJobDatas SQAJD}'/>
+        <let id='stSelectedQAJobSupplierId' shape='scalar' value='{SELECT SQAJD.supplier_id FROM ltblSelectedQAJobDatas SQAJD}'/>
         <let id='dtlSelectedQAJobDeliveryNoteWorkStartDate' shape='scalar' value='{SELECT SQAJD.delivery_note_work_start_date FROM ltblSelectedQAJobDatas SQAJD}'/>
         <let id='stSelectedQAJobSupplierANNOTJob1' shape='scalar' access='private' value='{SELECT SQAJD.job_id_2 FROM ltblSelectedQAJobDatas SQAJD}'/>
         <let id='stSelectedQAJobSupplierANNOTJob2' shape='scalar' access='private' value='{SELECT SQAJD.job_id_3 FROM ltblSelectedQAJobDatas SQAJD}'/>

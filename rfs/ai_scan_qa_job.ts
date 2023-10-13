@@ -23,6 +23,7 @@
     let stLoggedUserId = form.stLoggedUserId;
     let stSelectedQAJobId = form.stSelectedQAJobId;
     let stSelectedQAJobDeliveryNoteId = form.stSelectedQAJobAnotJobsAgentADeliveryNoteId;
+    let stSelectedQAJobSupplierId = form.stSelectedQAJobSupplierId;
     let stresult = "";
     let dtlSelectedQAJobDeliveryNoteWorkStartDate = form.dtlSelectedQAJobDeliveryNoteWorkStartDate;
 
@@ -390,7 +391,14 @@
             dacs.dnResponse.supplierName = stSendAgentSupplierName;
             dacs.dnResponse.supplierTaxNumber = stSendAgentSupplierTaxNumber;
             dacs.dnResponse.supplierWarehouse = stSendAgentSupplierWarehouse;
-            dacs.dnResponse.supplierId = stSendAgentSupplierId;
+            if(stSendAgentSupplierId.Trim(" ") == "" || stSendAgentSupplierId == null)
+            {
+                dacs.dnResponse.supplierId = stSelectedQAJobSupplierId;
+            }
+            else
+            {
+                dacs.dnResponse.supplierId = stSendAgentSupplierId;
+            }
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
 
             if(iCount != 0)
@@ -741,7 +749,14 @@
             dacs.dnResponse.supplierName = stSendAgentSupplierName;
             dacs.dnResponse.supplierTaxNumber = stSendAgentSupplierTaxNumber;
             dacs.dnResponse.supplierWarehouse = stSendAgentSupplierWarehouse;
-            dacs.dnResponse.supplierId = stSendAgentSupplierId;
+            if(stSendAgentSupplierId.Trim(" ") == "" || stSendAgentSupplierId == null)
+            {
+                dacs.dnResponse.supplierId = stSelectedQAJobSupplierId;
+            }
+            else
+            {
+                dacs.dnResponse.supplierId = stSendAgentSupplierId;
+            }
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
 
             if(iCount != 0)
