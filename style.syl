@@ -4575,12 +4575,18 @@ styles{
 		}	
 	}
 
+	style sylOutputStatisticHbox{
+		hbox {
+			sizes = 300px, 320px, 320px, 1
+		}
+	}
+
 	style sylOutputTvStatistic{
 		textview{
 			control{
 				margin {
-					top = 0px
-					bottom = 0px
+					top = 11px
+					bottom = 9px
 					left = 0px
 					right = 0px
 				}
@@ -4589,6 +4595,250 @@ styles{
 			}
 			textAlign = left			
 		}	
+	}
+
+	style sylOutputRedoPopup{
+		popup{
+			content = sylOutputRedoPopup
+			button {
+				fontColor = FFFFFF
+				fontSize = 12px
+				bold = true
+				backgroundColor = D2A517
+				width = 300px
+				underline = false
+				textAlign = center
+				padding {
+					left = 6px
+					right = 6px
+					top = 8px
+					bottom = 8px
+				}
+			}
+		}
+		
+		frame{ 
+            frameWidth = 720px
+            frameHeight = 250px
+			borderWidth{left = 2px right = 2px top = 2px bottom = 2px}
+            borderColor = 505050		
+        }
+		
+	}
+
+	style sylOutputDeletePopup{
+		popup{
+			content = sylOutputRedoPopup
+			button {
+				fontColor = FFFFFF
+				fontSize = 12px
+				bold = true
+				backgroundColor = D84042
+				width = 300px
+				underline = false
+				textAlign = center
+				padding {
+					left = 6px
+					right = 6px
+					top = 8px
+					bottom = 8px
+				}
+			}
+		}
+		
+		frame{ 
+            frameWidth = 720px
+            frameHeight = 250px
+			borderWidth{left = 2px right = 2px top = 2px bottom = 2px}
+            borderColor = 505050			
+        }
+		
+	}
+
+	style sylOutputBackButtonHeaderInPopup {
+		backbutton {
+			button{
+				backgroundColor = FFFFFF00
+				padding {
+                    left = 0px
+                    right = 0px
+                    top = 0px
+                    bottom = 0px
+                }
+				borderWidth {
+                    left = 0px
+                    right = 0px
+                    top = 0px
+                    bottom = 0px
+                }
+				borderColor = FFFFFF00
+				width = auto
+			}
+			label {
+				position = top
+			}
+			control {
+                iconPosition = right
+				width = auto
+				align = end
+            }
+		}
+	}
+
+	style sylOutputTextPopup{
+		textview{
+			control{
+				margin {
+					top = 10px
+					bottom = 40px
+					left = 0px
+					right = 0px
+				}
+				fontSize = 16px
+				bold = false
+			}
+			textAlign = center			
+		}	
+	}
+
+	style sylOutputTable{
+		table {
+			control {
+                borderWidth {
+                    top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+                }
+				align = center
+            }
+			
+			columnWidth = 80px, 80px
+			body = sylOutputTable
+		}
+
+		row {
+			content = sylOutputTable
+		}
+
+		cell {
+            borderWidth {
+                top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+            }
+			content = sylOutputTable
+        }
+	}
+
+	style sylOutputPopupCombinedButton{
+		combinedbutton{
+			button{
+				backgroundColor = 038a45
+				fontColor = FFFFFF
+			}
+		}
+	}
+
+	style sylOutputPopupCloseButton{
+		backbutton{
+			button{
+				backgroundColor = 144184
+				fontColor = FFFFFF
+			}
+		}
+	}
+
+	style sylOutputSuccessRedoTextHbox{
+		hbox {
+			sizes = 400px, 50px, 1
+		}
+	}
+
+	style sylOutputSuccessDeleteTextHbox{
+		hbox {
+			sizes = 300px, 50px, 1
+		}
+	}
+
+	style sylOutputRedoText{
+		textview{
+			control{
+				margin {
+					top = 10px
+					bottom = 40px
+					left = 0px
+					right = 0px
+				}
+				fontColor = D2A517
+				fontSize = 16px
+				bold = true
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylOutputDeleteText{
+		textview{
+			control{
+				margin {
+					top = 10px
+					bottom = 40px
+					left = 0px
+					right = 0px
+				}
+				fontColor = D84042
+				fontSize = 16px
+				bold = true
+			}
+			textAlign = left			
+		}
+	}
+
+	style sylOutputTextClose{
+		actionbutton{
+			button{
+				backgroundColor = FFFFFF00
+				margin {
+					top = 10px
+					bottom = 40px
+					left = 0px
+					right = 0px
+				}
+				padding {
+                    left = 0px
+                    right = 0px
+                    top = 0px
+                    bottom = 0px
+                }
+				borderWidth {
+                    left = 0px
+                    right = 0px
+                    top = 0px
+                    bottom = 0px
+                }
+				borderColor = FFFFFF00
+				width = auto
+			}
+		}
+	}
+
+	style sylTvRedoInfoText{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 2px
+					right = 0px
+				}
+				fontColor = D84042
+				fontSize = 16px
+				bold = true
+			}
+			textAlign = left			
+		}
 	}
 
 }

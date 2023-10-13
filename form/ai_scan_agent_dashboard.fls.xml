@@ -46,7 +46,8 @@
                             ELSE 2 
                         END iOrder,                       
                         J.delivery_note_work_start_date create_date,
-                        J.delay_time 
+                        J.delay_time,
+                        J.redo_delivery_note 
                     FROM 
                         ai_scan_jobs J                        
                     WHERE
@@ -108,7 +109,8 @@
                             WHEN "QA" THEN 1
                             ELSE 2 
                         END iOrder,
-                        J.delivery_note_work_start_date create_date
+                        J.delivery_note_work_start_date create_date,
+                        J.redo_delivery_note redo
 					FROM
                         ai_scan_jobs J
 					WHERE
@@ -140,6 +142,7 @@
         <let id='bCancelDelayCurrentQAJob' shape='scalar' value='{false}'/>
         <let id='stLoggedUserSelectedJobIsAssigned' shape='scalar' value='{SELECT LUJ.assigned FROM ltblLoggedUserJobs LUJ}'/>
         <let id='stLoggedUserSelectedJobLink' shape='scalar' value='{SELECT LUJ.url FROM ltblLoggedUserJobs LUJ}'/>
+        <let id='stLoggedUserSelectedJobRedoStatus' shape='scalar' value='{SELECT LUJ.redo FROM ltblLoggedUserJobs LUJ}'/>
     </declarations>
 
     <header></header>
@@ -210,6 +213,9 @@
     </if>
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType != "QA" AND stLoggedUserSelectedJobIsAssigned = 1}'>
+        <if cond='{stLoggedUserSelectedJobRedoStatus = "YES"}'>
+            <textview id='tvRedoInfoText' text='This is a redo request!' style='{styles.sylTvRedoInfoText}' testId='tvRedoInfoText'/>
+        </if>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
             <linkview id='lvStartAnotJob' text='Click here to start annotation' url='{stLoggedUserSelectedJobLink}' linkIcon='{NULL}' style='{styles.sylLvStartAnotJob}' testId='lvStartAnotJob'/>
             <combinedbutton id='cbtnCancelAnotJob' text='Cancel' style='{styles.sylCbtnCancelJob}' testId='cbtnCancelAnotJob'>
@@ -241,6 +247,9 @@
     </if>
 
     <if cond='{stLoggedUserStatus != "OFFLINE" AND iLoggedUserJobCount != 0 AND stLoggedUserSelectedJobType = "QA"}'>
+        <if cond='{stLoggedUserSelectedJobRedoStatus = "YES"}'>
+            <textview id='tvQARedoInfoText' text='This is a redo request!' style='{styles.sylTvRedoInfoText}' testId='tvQARedoInfoText'/>
+        </if>
         <hbox style='{styles.sylStartLinkviewAndCancelButtonHbox}'>
             <submitbutton id='sbtnStartQAJob' text='Click here to start QA job' nextForm='{forms.ai_scan_qa_job}' style='{styles.sylSbtnStartQAJob}' testId='sbtnStartQAJob'>
                 <params>

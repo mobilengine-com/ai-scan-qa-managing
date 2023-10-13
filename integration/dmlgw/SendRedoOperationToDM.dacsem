@@ -1,0 +1,8 @@
+schema 'SendRedoOperationToDM' meta 'SendRedoOperationToDM'
+
+OperationTask: element {
+	scanId: attribute of type string;
+	operation: attribute of type string;
+    requestFileId1: attribute of type string;
+	requestFileId2: attribute of type string;
+}

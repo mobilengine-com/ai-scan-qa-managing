@@ -116,6 +116,8 @@
             }'
         />
 
+        <let id='stDeliveryNotes' shape='scalar' value='{SELECT GROUP_CONCAT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN}'/>
+
         <let id='iDeliveryNotesSum' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_id) FROM ltblOutputDeliveryNotes ODN}'/>
         <let id='iDeliveryNotesOnlyQA' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_qa_job) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_qa_job = 1}'/>
         <let id='iDeliveryNotesOnlyHandwritten' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_status) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_status = "Handwritten"}'/>
@@ -153,6 +155,9 @@
         <let id='stSearch' shape='scalar' access='public'
 			value='{SELECT COALESCE(tbSearch.tbSearchValue,"")}'
 		/>
+
+        <let id='bRedoClicked' shape='scalar' value='{false}'/>
+        <let id='bDeleteClicked' shape='scalar' value='{false}'/>
     </declarations>
 
     <header></header>
@@ -206,7 +211,7 @@
         <textview text=''/>
     </hbox>
 
-    <hbox>
+    <hbox style='{styles.sylOutputStatisticHbox}'>
         <block>
             <textview id='tvDeliveryNotesSumText' text='{TOSTRING(iDeliveryNotesSum) || " delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesSumText"}'/>
             <textview id='tvDeliveryNotesOnlyQAText' text='{TOSTRING(iDeliveryNotesOnlyQA) || " delivery notes with QA task"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyQAText"}'/>
@@ -214,17 +219,85 @@
             <textview id='tvDeliveryNotesOnlyBadphotoText' text='{TOSTRING(iDeliveryNotesOnlyBadphoto)|| " bad photo delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyBadphotoText"}'/>
             <textview id='tvDeliveryNotesOnlyApprovedText' text='{TOSTRING(iDeliveryNotesOnlyApproved)|| " successful delivery notes"}' style='{styles.sylOutputTvStatistic}' access='private' testId='{"tvDeliveryNotesOnlyApprovedText"}'/>
         </block>
-        <popup title="Click here for a good time">
-            <chapter title="And a good time was had by all">
-                <textbox id="goodTimeBox" text="Goodies"/>
-            </chapter>
-        </popup>
-        <popup title="Click here for a good time 2">
-            <chapter title="And a good time was had by all 2">
-                <textbox id="goodTimeBox2" text="Goodies2"/>
-            </chapter>
-        </popup>
+        <if cond='{iDeliveryNotesSum != 0}'>
+            <block>
+                <popup id='puRedoPopup' title='Incorrect data, please recheck' linkIcon='{NULL}' deferred='true' openMode='dialog' style='{styles.sylOutputRedoPopup}' testId='{"puRedoPopup"}'>
+                    <backbutton id='bbtnCloseRedoPopup' linkIcon='{icons.delete}' text='' style='{styles.sylOutputBackButtonHeaderInPopup}' testId='{"bbtnCloseRedoPopup"}'/>
+                    <textview id='tvRedoSumText' text='{"Are you sure you want to redo "|| TOSTRING(iDeliveryNotesSum) ||" delivery notes?"}' style='{styles.sylOutputTextPopup}' testId='{"tvRedoSumText"}'/>
+                    <table id='tblRedoTable' record='r' recordset='{SELECT 1}' style='{styles.sylOutputTable}'>
+                        <row>
+                            <cell>
+                                <combinedbutton id='cmbbtnSubmitRedoPopupButton' text='Yes' validatorGroup='vRedoValidity' style='{styles.sylOutputPopupCombinedButton}' testId='{"cmbbtnSubmitRedoPopupButton"}'>
+                                    <validation>
+                                        <validator cond='{iDeliveryNotesSum &lt;= 100}' group='vRedoValidity' message='Maximum 100 delivery notes can be sent to recheck at once!'/>
+                                    </validation>
+                                    <actionbutton >
+                                        <set target='bRedoClicked' value='{true}'/>
+                                    </actionbutton>
+                                    <submitbutton waitForRfs='{false}' closeForm='{false}' />
+                                    <backbutton/>
+                                </combinedbutton>
+                            </cell>
+                            <cell>
+                                <backbutton id='bbtnCloseRedoPopupButton' linkIcon='{NULL}' text='No' style='{styles.sylOutputPopupCloseButton}' testId='{"bbtnCloseRedoPopupButton"}'/>
+                            </cell>
+                        </row>
+                    </table>
+                </popup>
+            </block>
+        </if>
+        <if cond='{iDeliveryNotesSum != 0}'>
+            <block>
+                <popup id='puDeletePopup' title='Delete delivery notes' linkIcon='{NULL}' deferred='true' openMode='dialog' style='{styles.sylOutputDeletePopup}' testId='{"puDeletePopup"}'>
+                    <backbutton id='bbtnCloseDeletePopup' linkIcon='{icons.delete}' text='' style='{styles.sylOutputBackButtonHeaderInPopup}' testId='{"bbtnCloseDeletePopup"}'/>
+                    <textview id='tvDeleteSumText' text='{"Are you sure you want to delete "|| TOSTRING(iDeliveryNotesSum) ||" delivery notes?"}' style='{styles.sylOutputTextPopup}' testId='{"tvDeleteSumText"}'/>
+                    <table id='tblDeleteTable' record='r' recordset='{SELECT 1}' style='{styles.sylOutputTable}'>
+                        <row>
+                            <cell>
+                                <combinedbutton id='cmbbtnSubmitDeletePopupButton' text='Yes' validatorGroup='vDeleteValidity' style='{styles.sylOutputPopupCombinedButton}' testId='{"cmbbtnSubmitDeletePopupButton"}'>
+                                    <validation>
+                                        <validator cond='{iDeliveryNotesSum &lt;= 5}' group='vDeleteValidity' message='Maximum 5 delivery notes can be deleted at once!'/>
+                                    </validation>
+                                    <actionbutton >
+                                        <set target='bDeleteClicked' value='{true}'/>
+                                    </actionbutton>
+                                    <submitbutton waitForRfs='{false}' closeForm='{false}' />
+                                    <backbutton/>
+                                </combinedbutton>
+                            </cell>
+                            <cell>
+                                <backbutton id='bbtnCloseDeletePopupButton' linkIcon='{NULL}' text='No' style='{styles.sylOutputPopupCloseButton}' testId='{"bbtnCloseDeletePopupButton"}'/>
+                            </cell>
+                        </row>
+                    </table>
+                </popup>
+            </block>
+        </if>
+        <if cond='{iDeliveryNotesSum = 0}'>
+            <textview text=''/>
+            <textview text=''/>
+        </if>
         <textview text=''/>
     </hbox>
+
+    <if cond='{bRedoClicked = true}'>
+        <hbox style='{styles.sylOutputSuccessRedoTextHbox}'>
+            <textview id='tvRedoText' text='{"Delivery notes successfully sent to be rechecked!"}' style='{styles.sylOutputRedoText}' testId='{"tvRedoText"}'/>
+            <actionbutton id='abtnCloseRedoText' text='' testId='{"abtnCloseRedoText"}' style='{styles.sylOutputTextClose}' linkIcon='{icons.delete}'>
+                <set target='bRedoClicked' value='{false}'/>
+            </actionbutton>
+            <textview text=''/>
+        </hbox>
+    </if>
+
+    <if cond='{bDeleteClicked = true}'>
+        <hbox style='{styles.sylOutputSuccessDeleteTextHbox}'>
+            <textview id='tvDeleteText' text='{"Delivery notes successfully deleted!"}' style='{styles.sylOutputDeleteText}' testId='{"tvDeleteText"}'/>
+            <actionbutton id='abtnCloseDeleteText' text='' testId='{"abtnCloseDeleteText"}' style='{styles.sylOutputTextClose}' linkIcon='{icons.delete}'>
+                <set target='bDeleteClicked' value='{false}'/>
+            </actionbutton>
+            <textview text=''/>
+        </hbox>
+    </if>
     
 </form>

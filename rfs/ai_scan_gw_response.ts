@@ -167,14 +167,16 @@
         let stCurrentJobLanguage = "";
         let stCurrentJobSupplierId = "";
         let dtlCurrentDeliveryNoteStartWorkingTime = dtl.Now();
+        let stCurrentJobRedo = "";
 
-        let lstCurrentJobLanguageAndSupplierIdAndStartDate = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang","delivery_note_work_start_date"]);
+        let lstCurrentJobLanguageAndSupplierIdAndStartDate = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang","delivery_note_work_start_date","redo_delivery_note"]);
 
         for(let recData of lstCurrentJobLanguageAndSupplierIdAndStartDate)
         {
             stCurrentJobSupplierId = recData.supplier_id;
             stCurrentJobLanguage = recData.lang;
             dtlCurrentDeliveryNoteStartWorkingTime = recData.delivery_note_work_start_date.DeclareAsDtl();
+            stCurrentJobRedo = recData.redo_delivery_note;
         }
 
         //get job work time
@@ -424,7 +426,8 @@
                         create_date: dtl.Now().DtlToDtdb(),
                         delay_time: null,
                         job_id_2: stDeliveryNoteJobId,
-                        job_id_3: stDeliveryNoteOtherJob                    
+                        job_id_3: stDeliveryNoteOtherJob,
+                        redo_delivery_note: stCurrentJobRedo                    
                     });
 
                     // Create jobs history for QA job
@@ -531,18 +534,20 @@
             }
         }
 
-        //get current job's language and supplier id
+        //get current job's language and supplier id and redo
         let stCurrentJobLanguage = "";
         let stCurrentJobSupplierId = "";
         let dtlCurrentDeliveryNoteStartWorkingTime = dtl.Now();
+        let stCurrentJobRedo = "";
 
-        let lstCurrentJobLanguageAndSupplierIdAndStartDate = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang","delivery_note_work_start_date"]);
+        let lstCurrentJobLanguageAndSupplierIdAndStartDate = db.ai_scan_jobs.ReadFields({id: stDeliveryNoteJobId},["supplier_id","lang","delivery_note_work_start_date","redo_delivery_note"]);
 
         for(let recData of lstCurrentJobLanguageAndSupplierIdAndStartDate)
         {
             stCurrentJobSupplierId = recData.supplier_id;
             stCurrentJobLanguage = recData.lang;
             dtlCurrentDeliveryNoteStartWorkingTime = recData.delivery_note_work_start_date.DeclareAsDtl();
+            stCurrentJobRedo = recData.redo_delivery_note;
         }
 
         //get job work time
@@ -641,7 +646,8 @@
                     create_date: dtl.Now().DtlToDtdb(),
                     delay_time: null,
                     job_id_2: stDeliveryNoteJobId,
-                    job_id_3: stDeliveryNoteOtherJob                    
+                    job_id_3: stDeliveryNoteOtherJob,
+                    redo_delivery_note: stCurrentJobRedo                    
                 });
 
                 // Create jobs history for QA job

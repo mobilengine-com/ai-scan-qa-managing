@@ -1,0 +1,6 @@
+schema 'SendDeliveryNoteOperation' meta 'SendDeliveryNoteOperation'
+
+OperationTask: element {
+	scanId: attribute of type string;
+	operation: attribute of type string;
+}
