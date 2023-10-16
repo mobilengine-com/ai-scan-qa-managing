@@ -42,14 +42,17 @@
         stSupplierID = dacs.qaTask.supplierId;
     }
 
+    //
+    // TODO: look up dacs.qaTask.guidLcomp in new reftab, add if not exits, update if name is changed
+    // TODO: look up dacs.qaTask.guidLproj in new reftab, add if not exits, update if name is changed
+    // 
+
     // Creat first job
     db.ai_scan_jobs.Insert({
         id: stJobId,
         type: "ANOT",
         status: "UNCHECKED",
         supplier_id: stSupplierID,
-        client: dacs.qaTask.client,
-        project: dacs.qaTask.project,
         lang: dacs.qaTask.lang,
         current_user: null,
         delivery_note_id: dacs.qaTask.scanId,
@@ -75,8 +78,6 @@
         status: "waiting",
         avg_score_must_have: 0.0,
         avg_score_overall: 0.0,
-        client: dacs.qaTask.client,
-        project: dacs.qaTask.project,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 
@@ -94,8 +95,6 @@
         type: "ANOT",
         status: "UNCHECKED",
         supplier_id: stSupplierID,
-        client: dacs.qaTask.client,
-        project: dacs.qaTask.project,
         lang: dacs.qaTask.lang,
         current_user: null,
         delivery_note_id: dacs.qaTask.scanId,
@@ -121,8 +120,6 @@
         status: "waiting",
         avg_score_must_have: 0.0,
         avg_score_overall: 0.0,
-        client: dacs.qaTask.client,
-        project: dacs.qaTask.project,
         fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
     });
 

@@ -1,0 +1,9 @@
+<Reftab Name="ai_scan_delivery_note" xmlns="http://schemas.mobilengine.com/reftab/v1">
+    <Columns>
+        <Column Name="delivery_note_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+        <Column Name="supplier_id" Type="Text" NotNull="true"/>
+        <Column Name="guidLcomp" Type="Text" />
+        <Column Name="guidLproj" Type="Text" />
+        <Column Name='lang' Type='Text'/>
+    </Columns>
+</Reftab>
