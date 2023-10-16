@@ -6,6 +6,9 @@
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_delivery_note_item_job;
+//# using reftab ai_scan_delivery_note;
+//# using reftab ai_scan_company;
+//# using reftab ai_scan_project;
 //# using dacs AssignAITask;
 
 {
@@ -16,6 +19,7 @@
     //If there is bad photo delivery and we retake in BAUAPP
     if(stOldDeliveryNoteId != null && stOldDeliveryNoteId != "")
     {
+        Log("badphoto retake operation");
         db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
         db.ai_scan_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
         db.ai_scan_jobs.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
@@ -42,10 +46,64 @@
         stSupplierID = dacs.qaTask.supplierId;
     }
 
-    //
-    // TODO: look up dacs.qaTask.guidLcomp in new reftab, add if not exits, update if name is changed
-    // TODO: look up dacs.qaTask.guidLproj in new reftab, add if not exits, update if name is changed
-    // 
+    // Create Delivery Note row in ai_scan_delivery_note reftab
+    db.ai_scan_delivery_note.Insert({
+        delivery_note_id: dacs.qaTask.scanId,
+        supplier_id: stSupplierID,
+        guidLcomp: dacs.qaTask.guidLcomp,
+        guidLproj: dacs.qaTask.guidLproj,
+        lang: dacs.qaTask.lang
+    });
+
+    // If guidLcomp not exist in ai_scan_company reftab or guidLcomp exist in ai_scan_company reftab but dacs company name different
+    let stLcomp = db.ai_scan_company.ReadFields({id: dacs.qaTask.guidLcomp},["id","name"]).SingleOrDefault();
+    if(stLcomp == null)
+    {
+        Log("guidLcomp not exist in ai_scan_company reftab");
+        db.ai_scan_company.Insert({
+            id: dacs.qaTask.guidLcomp,
+            name: dacs.qaTask.nameLcomp
+        });
+    }
+    else
+    {
+        let stLcompId = stLcomp.id;
+        let stLcompName = stLcomp.name;
+        if(stLcompId == dacs.qaTask.guidLcomp && stLcompName != dacs.qaTask.nameLcomp)
+        {
+            Log("guidLcomp exist in ai_scan_company reftab but dacs company name different");
+            db.ai_scan_company.UpdateMany({
+                id: stLcompId
+            },{
+                name: dacs.qaTask.nameLcomp
+            });
+        }
+    }
+
+     // If guidLproj not exist in ai_scan_project reftab or guidLproj exist in ai_scan_project reftab but dacs project name different
+     let stLproj = db.ai_scan_project.ReadFields({id: dacs.qaTask.guidLproj},["id","name"]).SingleOrDefault();
+     if(stLproj == null)
+     {
+        Log("guidLproj not exist in ai_scan_project reftab");
+         db.ai_scan_project.Insert({
+             id: dacs.qaTask.guidLproj,
+             name: dacs.qaTask.nameLproj
+         });
+     }
+     else
+     {
+         let stLprojId = stLproj.id;
+         let stLprojName = stLproj.name;
+         if(stLprojId == dacs.qaTask.guidLproj && stLprojName != dacs.qaTask.nameLproj)
+         {
+            Log("guidLproj exist in ai_scan_project reftab but dacs project name different");
+             db.ai_scan_project.UpdateMany({
+                 id: stLprojId
+             },{
+                 name: dacs.qaTask.nameLproj
+             });
+         }
+     }
 
     // Creat first job
     db.ai_scan_jobs.Insert({
@@ -62,7 +120,8 @@
         job_id_2: stJobId2,
         job_id_3: null,
         job_url: dacs.qaTask.aiUrl1,
-        assigned: 0
+        assigned: 0,
+        redo_delivery_note: "NO"
     });
 
     // Creat first job history
@@ -104,7 +163,8 @@
         job_id_2: stJobId,
         job_id_3: null,
         job_url: dacs.qaTask.aiUrl2,
-        assigned: 0
+        assigned: 0,
+        redo_delivery_note: "NO"
     });
 
     // Create second job history
