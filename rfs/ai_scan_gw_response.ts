@@ -390,14 +390,7 @@
                    doneDacs.dnResponse.supplierName = stDeliveryNoteSupplierName;
                    doneDacs.dnResponse.supplierTaxNumber = stDeliveryNoteSupplierTaxNumber;
                    doneDacs.dnResponse.supplierWarehouse = stDeliveryNoteSupplierWarehouse;
-                   if(stDeliveryNoteSupplierId.Trim(" ") == "" || stDeliveryNoteSupplierId == null)
-                   {
-                        doneDacs.dnResponse.supplierId = stCurrentJobSupplierId;
-                   }
-                   else
-                   {
-                        doneDacs.dnResponse.supplierId = stDeliveryNoteSupplierId;
-                   }                   
+                   doneDacs.dnResponse.supplierId = stDeliveryNoteSupplierId;
                    doneDacs.dnResponse.weightGross = stDeliveryNoteWeightGross;
                    for (let i = 0; i < lstJobDeliveryNoteItemItemName.Count(); i=i+1) {
                     let item = {
