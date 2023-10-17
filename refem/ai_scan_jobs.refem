@@ -6,8 +6,6 @@
         <!-- UNCHECKED-nincs még kiosztva a feladat /INPROGRESS: valaki elvitte a feladatot /DONE:Kész a feladattal -->
 		<Column Name='status' Type='Text' NotNull="true" InitialValue='UNCHECKED'/>
 		<Column Name='supplier_id' Type='Text'/>
-		<Column Name='client' Type='Text'/>
-		<Column Name='project' Type='Text'/>
 		<Column Name='lang' Type='Text'/>
 		<Column Name='current_user' Type='Text'/>
 		<Column Name='delivery_note_id' Type='Text'/>

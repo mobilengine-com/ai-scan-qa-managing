@@ -44,6 +44,8 @@
                         ai_scan_delivery_note_item_job DNIJ ON DNIJ.delivery_note_id = J.delivery_note_id
                     LEFT JOIN
                         ai_scan_user U ON U.id = J.current_user
+                    LEFT JOIN
+                        ai_scan_delivery_note DN ON DN.delivery_note_id = J.delivery_note_id
                     WHERE
                         J.status = "DONE"
                         AND
@@ -68,12 +70,12 @@
                         AND
                             STARTOFDAY(J.delivery_note_work_end_date) BETWEEN COALESCE(dtlFromFilter, TODATE(1900,1,1,0,0,0)) AND COALESCE(dtlToFilter, TODATE(2100,1,1,0,0,0))
                         AND CASE WHEN stClientFilter != "" THEN
-                            J.client  = stClientFilter 
+                            DN.guidLcomp  = stClientFilter 
                         ELSE
                             DNJ.delivery_note_id != ""
                         END
                         AND CASE WHEN stProjectFilter != "" THEN
-                            J.project  = stProjectFilter 
+                            DN.guidLproj  = stProjectFilter 
                         ELSE
                             DNJ.delivery_note_id != ""
                         END
@@ -183,11 +185,11 @@
         <datepicker id='dpFromFilter' date='{ADDDAY(sysp.dtlFormOpen, -1)}' dateFormat='(dtf yyyy"."MM"."dd".")' access='private' style='{styles.sylOutputDPDatePicker}' testId='{"dpFromFilter"}'/>
         <textview id='tvToText' text='To:' style='{styles.sylOutputTvFromAndTo}' access='private' testId='{"tvToText"}'/>
 		<datepicker id='dpToFilter' date='{ADDDAY(sysp.dtlFormOpen, -1)}' dateFormat='(dtf yyyy"."MM"."dd".")' access='private' style='{styles.sylOutputDPDatePicker}' testId='{"dpToFilter"}'/>
-        <dropdown id='ddClientFilter' keyMap='{client}' textMap='{client}' noneText='Client' testId='{"ddClientFilter"}' 
-            choices='{clientOrderBy: SELECT DISTINCT DNJ.client FROM ai_scan_delivery_note_job DNJ WHERE COALESCE(DNJ.client,"") != NULL OR COALESCE(DNJ.client,"") != "" ORDER BY client}' selectedKey='{NULL}' 
+        <dropdown id='ddClientFilter' keyMap='{guidLcomp}' textMap='{name}' noneText='Client' testId='{"ddClientFilter"}' 
+            choices='{clientOrderBy: SELECT DISTINCT DN.guidLcomp, C.name FROM ai_scan_delivery_note DN LEFT JOIN ai_scan_company C ON C.id = DN.guidLcomp WHERE COALESCE(DN.guidLcomp,"") != NULL OR COALESCE(DN.guidLcomp,"") != "" ORDER BY name}' selectedKey='{NULL}' 
         />
-        <dropdown id='ddProjectFilter' keyMap='{project}' textMap='{project}' noneText='Project' testId='{"ddProjectFilter"}' 
-            choices='{clientOrderBy: SELECT DISTINCT DNJ.project FROM ai_scan_delivery_note_job DNJ WHERE (COALESCE(DNJ.project,"") != NULL OR COALESCE(DNJ.project,"") != "") AND DNJ.client LIKE "%" || stClientFilter || "%" ORDER BY project}' selectedKey='{NULL}' 
+        <dropdown id='ddProjectFilter' keyMap='{guidLproj}' textMap='{name}' noneText='Project' testId='{"ddProjectFilter"}' 
+            choices='{clientOrderBy: SELECT DISTINCT DN.guidLproj, P.name FROM ai_scan_delivery_note DN LEFT JOIN ai_scan_project P ON P.id = DN.guidLproj WHERE (COALESCE(DN.guidLproj,"") != NULL OR COALESCE(DN.guidLproj,"") != "") AND DN.guidLcomp LIKE "%" || stClientFilter || "%" ORDER BY name}' selectedKey='{NULL}' 
         />
         <dropdown id='ddStatusFilter' keyMap='{key}' textMap='{value}' noneText='Status' testId='{"ddStatusFilter"}' 
             choices='{TABLE key, value 
