@@ -9,10 +9,10 @@ qaTask: element {
 	aiUrl2: attribute of type string;
 	supplierId: optional attribute of type string;
 	old_delivery_note_id: optional attribute of type string;
-	guidLcomp: attribute of type string;
-	nameLcomp: attribute of type string;
-	guidLproj: attribute of type string;
-	nameLproj: attribute of type string;
+	guidLcomp: optional attribute of type string;
+	nameLcomp: optional attribute of type string;
+	guidLproj: optional attribute of type string;
+	nameLproj: optional attribute of type string;
 	lang: attribute of type string;
 	dtlCreated: attribute of type dtl(dtf yyyy "-" MM "-" dd "T" HH ":" mm ":" ss);
 	redo: optional attribute of type string;

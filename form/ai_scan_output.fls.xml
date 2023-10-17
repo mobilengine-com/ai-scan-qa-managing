@@ -28,7 +28,7 @@
         }'/>
 
         <let id='ltblOutputDeliveryNotes' shape='table' access="private"
-            value='{SELECT
+            value='{loadNewerFromServer: SELECT
                         J.delivery_note_id delivery_note_id,
                         CASE WHEN COALESCE(QAJR.result,"") = "" THEN 0 ELSE 1 END delivery_note_qa_job,
                         CASE WHEN COALESCE(QAJR.result,"") = "" THEN "Approved" ELSE QAJR.result END delivery_note_status

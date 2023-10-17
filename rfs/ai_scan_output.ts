@@ -6,7 +6,7 @@
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_job_result;
 //# using dacs SendRedoOperationToDM;
-//# using dacs SendDeliveryNoteOperation;
+//# using dacs DeliveryNoteOperation;
 
 {
     //Find submit buttons in Redo popup and Delete popup
@@ -45,7 +45,7 @@
                 dacs.Send();
 
                 //Send redo operation to BAUAPP for redo delivery note in BAUAPP    
-                let dacs2 = messages.SendDeliveryNoteOperation.New();
+                let dacs2 = messages.DeliveryNoteOperation.New();
                 dacs2.OperationTask.scanId = lstDeliveryNotesId.GetAt(i);
                 dacs2.OperationTask.operation = "redo";
                 dacs2.Send();
@@ -73,7 +73,7 @@
                 db.ai_scan_jobs.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
 
                 //Send delete operation to BAUAPP for delete delivery note in BAUAPP    
-                let dacs = messages.SendDeliveryNoteOperation.New();
+                let dacs = messages.DeliveryNoteOperation.New();
                 dacs.OperationTask.scanId = lstDeliveryNotesId.GetAt(i);
                 dacs.OperationTask.operation = "delete";
                 dacs.Send();
