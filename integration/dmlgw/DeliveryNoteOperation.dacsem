@@ -1,4 +1,4 @@
-schema 'SendDeliveryNoteOperation' meta 'SendDeliveryNoteOperation'
+schema 'DeliveryNoteOperation' meta 'DeliveryNoteOperation'
 
 OperationTask: element {
 	scanId: attribute of type string;
