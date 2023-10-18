@@ -234,6 +234,65 @@
             stSupplierID = dacs.qaTask.supplierId;
         }
 
+        // Create Delivery Note row in ai_scan_delivery_note reftab
+        db.ai_scan_delivery_note.Insert({
+            delivery_note_id: dacs.qaTask.scanId,
+            supplier_id: stSupplierID,
+            guidLcomp: dacs.qaTask.guidLcomp,
+            guidLproj: dacs.qaTask.guidLproj,
+            lang: dacs.qaTask.lang
+        });
+
+        // If guidLcomp not exist in ai_scan_company reftab or guidLcomp exist in ai_scan_company reftab but dacs company name different
+        let stLcomp = db.ai_scan_company.ReadFields({id: dacs.qaTask.guidLcomp},["id","name"]).SingleOrDefault();
+        if(stLcomp == null)
+        {
+            Log("guidLcomp not exist in ai_scan_company reftab");
+            db.ai_scan_company.Insert({
+                id: dacs.qaTask.guidLcomp,
+                name: dacs.qaTask.nameLcomp
+            });
+        }
+        else
+        {
+            let stLcompId = stLcomp.id;
+            let stLcompName = stLcomp.name;
+            if(stLcompId == dacs.qaTask.guidLcomp && stLcompName != dacs.qaTask.nameLcomp)
+            {
+                Log("guidLcomp exist in ai_scan_company reftab but dacs company name different");
+                db.ai_scan_company.UpdateMany({
+                    id: stLcompId
+                },{
+                    name: dacs.qaTask.nameLcomp
+                });
+            }
+        }
+
+        // If guidLproj not exist in ai_scan_project reftab or guidLproj exist in ai_scan_project reftab but dacs project name different
+        let stLproj = db.ai_scan_project.ReadFields({id: dacs.qaTask.guidLproj},["id","name"]).SingleOrDefault();
+        if(stLproj == null)
+        {
+            Log("guidLproj not exist in ai_scan_project reftab");
+            db.ai_scan_project.Insert({
+                id: dacs.qaTask.guidLproj,
+                name: dacs.qaTask.nameLproj
+            });
+        }
+        else
+        {
+            let stLprojId = stLproj.id;
+            let stLprojName = stLproj.name;
+            if(stLprojId == dacs.qaTask.guidLproj && stLprojName != dacs.qaTask.nameLproj)
+            {
+                Log("guidLproj exist in ai_scan_project reftab but dacs project name different");
+                db.ai_scan_project.UpdateMany({
+                    id: stLprojId
+                },{
+                    name: dacs.qaTask.nameLproj
+                });
+            }
+        }
+
         // Creat first job
         db.ai_scan_jobs.Insert({
             id: stJobId,
