@@ -210,6 +210,7 @@
             db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
             db.ai_scan_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
             db.ai_scan_jobs.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
+            db.ai_scan_delivery_note.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
             db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
             db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
         }
