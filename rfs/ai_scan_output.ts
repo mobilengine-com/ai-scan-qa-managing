@@ -5,7 +5,6 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_job_result;
-//# using dacs SendRedoOperationToDM;
 //# using dacs DeliveryNoteOperation;
 
 {
@@ -33,22 +32,19 @@
             for(let i = 0; i < iCount; i = i + 1)
             {
                 Log(lstDeliveryNotesId.GetAt(i));
-                //Send redo operation to DM for redo delivery note in DM 
-                let lstDeliveryNotes = db.ai_scan_jobs.Read({delivery_note_id: lstDeliveryNotesId.GetAt(i), type: "ANOT"});
-                let stAnotJob1 = lstDeliveryNotes.GetAt(0).id;
-                let stAnotJob2 = lstDeliveryNotes.GetAt(1).id;
-                let dacs = messages.SendRedoOperationToDM.New();
+                
+                ////delete previous result
+                db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                db.ai_scan_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                db.ai_scan_jobs.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+
+                //Send redo operation to BAUAPP and DM for redo delivery note in BAUAPP    
+                let dacs = messages.DeliveryNoteOperation.New();
                 dacs.OperationTask.scanId = lstDeliveryNotesId.GetAt(i);
                 dacs.OperationTask.operation = "redo";
-                dacs.OperationTask.requestFileId1 = stAnotJob1;
-                dacs.OperationTask.requestFileId2 = stAnotJob2;
                 dacs.Send();
-
-                //Send redo operation to BAUAPP for redo delivery note in BAUAPP    
-                let dacs2 = messages.DeliveryNoteOperation.New();
-                dacs2.OperationTask.scanId = lstDeliveryNotesId.GetAt(i);
-                dacs2.OperationTask.operation = "redo";
-                dacs2.Send();
             }
         }
     }

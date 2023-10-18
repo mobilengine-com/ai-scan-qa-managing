@@ -1,9 +1,0 @@
-schema 'ResponseDeliveryNoteOperationToDM' meta 'ResponseDeliveryNoteOperationToDM'
-
-redoDeliveryNoteTask: element {
-	scanId: attribute of type string;
-	requestFileId1: attribute of type string;
-	requestFileId2: attribute of type string;
-	aiUrl1: attribute of type string;
-	aiUrl2: attribute of type string;
-	}

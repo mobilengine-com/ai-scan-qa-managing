@@ -199,13 +199,6 @@
     }
     else
     {
-        //delete previous result
-
-        db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : dacs.qaTask.scanId});
-        db.ai_scan_job_result.DeleteMany({delivery_note_id : dacs.qaTask.scanId});
-        db.ai_scan_jobs.DeleteMany({delivery_note_id : dacs.qaTask.scanId});
-        db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : dacs.qaTask.scanId});
-        db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : dacs.qaTask.scanId});
 
         let stOldDeliveryNoteId = dacs.qaTask.old_delivery_note_id;
 
