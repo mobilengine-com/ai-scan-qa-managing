@@ -5,6 +5,7 @@
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_job_result;
+//# using reftab ai_scan_delivery_note;
 //# using dacs DeliveryNoteOperation;
 
 {
@@ -34,6 +35,7 @@
                 Log(lstDeliveryNotesId.GetAt(i));
                 
                 ////delete previous result
+                db.ai_scan_delivery_note.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_jobs.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
@@ -61,6 +63,7 @@
             {
                 Log(lstDeliveryNotesId.GetAt(i));
                 //Delete delivery note everywhere in DM
+                db.ai_scan_delivery_note.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_qa_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
                 db.ai_scan_jobs_history.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
