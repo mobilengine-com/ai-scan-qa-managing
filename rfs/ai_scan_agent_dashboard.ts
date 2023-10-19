@@ -10,93 +10,15 @@
 //# using dacs AssignAITask;
 
 {
-    let stDelayTime = form.stDelayTime;
-
-    if(stDelayTime == null || stDelayTime == "")
-    {
-        stDelayTime = "1";
-    }
-
-    let stLoggedUserId = form.stLoggedUserId;
-
-    let bChangeOnline = form.bChangeOnline;
-    let bChangeOffline = form.bChangeOffline;
-
-    let bGetJob = form.bGetJob;
-
-    let bCancelCurrentAnotJob = form.bCancelCurrentAnotJob;
-    let bCancelCurrentQAJob = form.bCancelCurrentQAJob;
-
-    let bCancelDelayCurrentAnotJob = form.bCancelDelayCurrentAnotJob;
-    let bCancelDelayCurrentQAJob = form.bCancelDelayCurrentQAJob;
-
-    if(bChangeOnline)
-    {
-        // Update the user in ai_scan_user table
-        db.ai_scan_user.UpdateMany({
-            id : stLoggedUserId
-        },{
-            status : "ONLINE"
-        });
-    }
-
-    if(bChangeOffline)
-    {
-        // Update the user in ai_scan_user table
-        db.ai_scan_user.UpdateMany({
-            id : stLoggedUserId
-        },{
-            status : "OFFLINE"
-        });
-
-        // If switch back to offline and current user has inprogress job then cancel the inprogress job
-        // Update current job history with new online user
-        let stCurrentJobId = null;
-        
-        stCurrentJobId = form.stLoggedUserSelectedJobId;
-
-        if(stCurrentJobId != null)
-        {
-            let stCurrentUser = stLoggedUserId;
-
-            // Update the job in ai_scan_jobs table
-            db.ai_scan_jobs.UpdateMany({
-                id : stCurrentJobId
-            },{
-                status : "UNCHECKED",
-                current_user: null,
-                assigned: 0
-            });
-            // Delete the job in ai_scan_job_inprogress table
-            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
-
-            db.ai_scan_jobs_history.UpdateMany({
-                id: stCurrentJobId
-            },{
-                job_assigned_status: ""
-            });
-
-            //Remove user from ANNOT job on AI page
-            let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
-            let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
-            
-            let dacs = messages.AssignAITask.New();
-            dacs.assignTask.scanId = stscanId;
-            dacs.assignTask.requestFileId = stCurrentJobId;
-            dacs.assignTask.agent = stDefaultAIUser;
-            //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
-            dacs.Send();
-        }
-    }
-
-    if(bGetJob)
-    {
-        let dtlTimeNow = dtl.Now();
+    let fGetJob = function () {
 
         let bUserGetCurrentQAJob = false;
         let bUserGetCurrentANOTJob = false;
+
+        let stJob_id = "";
+		
         //All unassigned QA jobs
-        let lstAllUnassignedQAJobs = db.ai_scan_jobs.ReadFields({current_user: null, type: "QA"},["id","type","status","lang","current_user","delivery_note_work_start_date","delay_time"]);
+        let lstAllUnassignedQAJobs = db.ai_scan_jobs.ReadFields({type: "QA", status: "UNCHECKED", current_user: null},["id","type","status","lang","current_user","delivery_note_work_start_date","delay_time"]);
 
         if(lstAllUnassignedQAJobs.Count() == 0)
         {
@@ -124,8 +46,6 @@
                     }
                 }
             }
-
-            let stCurrentQAJobId = "";
 
             let lstOtherOnlineUsers = db.ai_scan_user.ReadFields({status: "ONLINE", id: {notEqual : stLoggedUserId}},["id"]);            
 
@@ -223,7 +143,7 @@
                     if(lstAllUnassignedQAJobs != null && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
                     {
                         Log("QA job assigned because the user is not assigned in the past to the parent Annot jobs");
-                        stCurrentQAJobId = recData.id;
+                        stJob_id = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
@@ -232,7 +152,7 @@
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
                     {
                         Log("QA Only you + 0 or 1 other user with correct lang / other user can do this job because didn't do anot jobs");
-                        stCurrentQAJobId = recData.id;
+                        stJob_id = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
@@ -241,7 +161,7 @@
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you + 0 or 1 other user with correct lang / you can do this job because didn't do anot jobs");
-                        stCurrentQAJobId = recData.id;
+                        stJob_id = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
@@ -250,7 +170,7 @@
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang == 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you + 1 other user with correct lang");
-                        stCurrentQAJobId = recData.id;
+                        stJob_id = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
@@ -259,7 +179,7 @@
                     if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang == 0 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you with correct lang");
-                        stCurrentQAJobId = recData.id;
+                        stJob_id = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
@@ -268,7 +188,7 @@
                     if(lstAllUnassignedQAJobs != null && lstOtherOnlineUsers.Count() >= 2 && iOtherUsersWithTheCorrectLang >= 2 && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
                     {
                         Log("More or equal than 3 online user with correct lang / users not empty");
-                        stCurrentQAJobId = recData.id;
+                        stJob_id = recData.id;
                         bUserGetCurrentQAJob = true;
                         break;
                     }
@@ -278,45 +198,6 @@
             if(bUserGetCurrentQAJob == true)
             {
                 Log("QA job found for current user");
-
-                //Current user save in current job user history
-
-                let stCurrentJobUserHistory = "";
-
-                let lstQAJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentQAJobId},["users"]);
-
-                for(let recCJUH of lstQAJobJobUserHistory)
-                {
-                    if(recCJUH.users != null)
-                    {
-                        stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
-                    }
-                }
-
-                stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentQAJobId
-                },{
-                    users: stCurrentJobUserHistory
-                });
-
-                // Update the job in ai_scan_jobs table
-                db.ai_scan_jobs.UpdateMany({
-                    id : stCurrentQAJobId
-                },{
-                    status : "INPROGRESS",
-                    current_user: stLoggedUserId,
-                    delay_time: null
-                });
-
-                // Insert OR Update the job in ai_scan_job_inprogress table
-                db.ai_scan_job_inprogress.InsertOrUpdate({
-                    job_id : stCurrentQAJobId
-                },{
-                    user_id : stLoggedUserId,
-                    job_start_time : dtl.Now().DtlToDtdb()
-                });
             }
             else
             {
@@ -325,7 +206,7 @@
         }
 
         //All unassigned ANOT jobs
-        let lstAllUnassignedANOTJobs = db.ai_scan_jobs.ReadFields({current_user: null, type: "ANOT"},["id","type","status","lang","current_user","delivery_note_work_start_date","delay_time"]);
+        let lstAllUnassignedANOTJobs = db.ai_scan_jobs.ReadFields({type: "ANOT", status: "UNCHECKED", current_user: null},["id","type","status","lang","current_user","delivery_note_work_start_date","delay_time"]);
 
         if(lstAllUnassignedANOTJobs.Count() == 0 || bUserGetCurrentQAJob == true)
         {
@@ -408,7 +289,7 @@
 
                 if(stLoggedUserId != stDeliveryNoteOtherJobCurrentUser && (dtlDeliveryNoteOtherJobDelayTime == null || dtlTimeNow > dtlDeliveryNoteOtherJobDelayTime) && recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
                 {
-                    stCurrentANOTJobId = recData2.id;
+                    stJob_id = recData2.id;
                     bUserGetCurrentANOTJob = true;
                     break;
                 }
@@ -417,60 +298,225 @@
             if(bUserGetCurrentANOTJob == true)
             {
                 Log("ANOT job found for current user");
-
-                //Current user save in current job user history
-                let stCurrentJobUserHistory = "";
-
-                let lstCurrentANOTJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stCurrentANOTJobId},["users"]);
-
-                for(let recCJUH of lstCurrentANOTJobUserHistory)
-                {
-                    if(recCJUH.users != null)
-                    {
-                        stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
-                    }
-                }
-
-                stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
-
-                db.ai_scan_jobs_history.UpdateMany({
-                    id: stCurrentANOTJobId
-                },{
-                    users: stCurrentJobUserHistory
-                });
-
-                // Update the job in ai_scan_jobs table
-                db.ai_scan_jobs.UpdateMany({
-                    id : stCurrentANOTJobId
-                },{
-                    status : "INPROGRESS",
-                    current_user: stLoggedUserId,
-                    delay_time: null
-                });
-
-                let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentANOTJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
-                let stUserMail = db.ai_scan_user.ReadFields({id : stLoggedUserId},["email"]).SingleOrDefault().email;
-
-                Log("AI task assignement sended for user: " + stUserMail +" with the following annot job id: " + stCurrentANOTJobId);
-                let dacs = messages.AssignAITask.New();
-                dacs.assignTask.scanId = stscanId;
-                dacs.assignTask.requestFileId = stCurrentANOTJobId;
-                dacs.assignTask.agent = stUserMail;
-                //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
-                dacs.Send();
-
-                db.ai_scan_job_inprogress.InsertOrUpdate({
-                    job_id : stCurrentANOTJobId
-                },{
-                    user_id : stLoggedUserId,
-                    job_start_time : dtl.Now().DtlToDtdb()
-                });
             }
             else
             {
                 Log("No ANOT job found to current user");
             }
-        }        
+        } 
+		
+		return stJob_id;
+	};
+
+    let dtlTimeNow = dtl.Now();
+
+    let stDelayTime = form.stDelayTime;
+
+    if(stDelayTime == null || stDelayTime == "")
+    {
+        stDelayTime = "1";
+    }
+
+    let stLoggedUserId = form.stLoggedUserId;
+
+    let bChangeOnline = form.bChangeOnline;
+    let bChangeOffline = form.bChangeOffline;
+
+    let bGetJob = form.bGetJob;
+
+    let bCancelCurrentAnotJob = form.bCancelCurrentAnotJob;
+    let bCancelCurrentQAJob = form.bCancelCurrentQAJob;
+
+    let bCancelDelayCurrentAnotJob = form.bCancelDelayCurrentAnotJob;
+    let bCancelDelayCurrentQAJob = form.bCancelDelayCurrentQAJob;
+
+    if(bChangeOnline)
+    {
+        // Update the user in ai_scan_user table
+        db.ai_scan_user.UpdateMany({
+            id : stLoggedUserId
+        },{
+            status : "ONLINE"
+        });
+    }
+
+    if(bChangeOffline)
+    {
+        // Update the user in ai_scan_user table
+        db.ai_scan_user.UpdateMany({
+            id : stLoggedUserId
+        },{
+            status : "OFFLINE"
+        });
+
+        // If switch back to offline and current user has inprogress job then cancel the inprogress job
+        // Update current job history with new online user
+        let stCurrentJobId = null;
+        
+        stCurrentJobId = form.stLoggedUserSelectedJobId;
+
+        if(stCurrentJobId != null)
+        {
+            let stCurrentUser = stLoggedUserId;
+
+            // Update the job in ai_scan_jobs table
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentJobId
+            },{
+                status : "UNCHECKED",
+                current_user: null,
+                assigned: 0
+            });
+            // Delete the job in ai_scan_job_inprogress table
+            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+
+            db.ai_scan_jobs_history.UpdateMany({
+                id: stCurrentJobId
+            },{
+                job_assigned_status: ""
+            });
+
+            //Remove user from ANNOT job on AI page
+            let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+            let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+            
+            let dacs = messages.AssignAITask.New();
+            dacs.assignTask.scanId = stscanId;
+            dacs.assignTask.requestFileId = stCurrentJobId;
+            dacs.assignTask.agent = stDefaultAIUser;
+            //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+            dacs.Send();
+        }
+    }
+
+    if(bGetJob)
+    {
+        let stGetJobId = "";
+        let bGetJob = false;
+
+        for(let i = 0; i < 5; i=i+1)
+        {
+            let stJobId = fGetJob();
+
+            if(stJobId == stGetJobId && stGetJobId != "")
+            {
+                Log("stGetJobId");
+                Log(stGetJobId);
+                let lstJobIdRecheck = db.ai_scan_jobs.ReadFields({id: stGetJobId, status: "UNCHECKED"},["type"]);
+                let iJobIdRecheckCount = lstJobIdRecheck.Count();
+                if(iJobIdRecheckCount != 0)
+                {
+                    if(lstJobIdRecheck.GetAt(0).type == "QA")
+                    {
+                        Log("QA job found for current user");
+
+                        //Current user save in current job user history
+
+                        let stCurrentJobUserHistory = "";
+
+                        let lstQAJobJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stGetJobId},["users"]);
+
+                        for(let recCJUH of lstQAJobJobUserHistory)
+                        {
+                            if(recCJUH.users != null)
+                            {
+                                stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
+                            }
+                        }
+
+                        stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
+
+                        db.ai_scan_jobs_history.UpdateMany({
+                            id: stGetJobId
+                        },{
+                            users: stCurrentJobUserHistory
+                        });
+
+                        // Update the job in ai_scan_jobs table
+                        db.ai_scan_jobs.UpdateMany({
+                            id : stGetJobId
+                        },{
+                            status : "INPROGRESS",
+                            current_user: stLoggedUserId,
+                            delay_time: null
+                        });
+
+                        // Insert OR Update the job in ai_scan_job_inprogress table
+                        db.ai_scan_job_inprogress.InsertOrUpdate({
+                            job_id : stGetJobId
+                        },{
+                            user_id : stLoggedUserId,
+                            job_start_time : dtl.Now().DtlToDtdb()
+                        });
+                    }
+
+                    if(lstJobIdRecheck.GetAt(0).type == "ANOT")
+                    {
+                        Log("ANOT job found for current user");
+
+                        //Current user save in current job user history
+                        let stCurrentJobUserHistory = "";
+
+                        let lstCurrentANOTJobUserHistory = db.ai_scan_jobs_history.ReadFields({id: stGetJobId},["users"]);
+
+                        for(let recCJUH of lstCurrentANOTJobUserHistory)
+                        {
+                            if(recCJUH.users != null)
+                            {
+                                stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
+                            }
+                        }
+
+                        stCurrentJobUserHistory = stCurrentJobUserHistory + stLoggedUserId;
+
+                        db.ai_scan_jobs_history.UpdateMany({
+                            id: stGetJobId
+                        },{
+                            users: stCurrentJobUserHistory
+                        });
+
+                        // Update the job in ai_scan_jobs table
+                        db.ai_scan_jobs.UpdateMany({
+                            id : stGetJobId
+                        },{
+                            status : "INPROGRESS",
+                            current_user: stLoggedUserId,
+                            delay_time: null
+                        });
+
+                        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stGetJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+                        let stUserMail = db.ai_scan_user.ReadFields({id : stLoggedUserId},["email"]).SingleOrDefault().email;
+
+                        Log("AI task assignement sended for user: " + stUserMail +" with the following annot job id: " + stGetJobId);
+                        let dacs = messages.AssignAITask.New();
+                        dacs.assignTask.scanId = stscanId;
+                        dacs.assignTask.requestFileId = stGetJobId;
+                        dacs.assignTask.agent = stUserMail;
+                        //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+                        dacs.Send();
+
+                        db.ai_scan_job_inprogress.InsertOrUpdate({
+                            job_id : stGetJobId
+                        },{
+                            user_id : stLoggedUserId,
+                            job_start_time : dtl.Now().DtlToDtdb()
+                        });
+                    }
+
+                    bGetJob = true;
+
+                    break;
+                }
+            }
+
+            stGetJobId = stJobId;
+        } 
+        
+        if(bGetJob == false)
+        {
+            Log("after 5 FIFO try user can't get job!");
+            Error("after 5 FIFO try user can't get job!");
+        }
     }
 
     if(bCancelCurrentAnotJob)

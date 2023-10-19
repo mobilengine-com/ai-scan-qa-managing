@@ -124,7 +124,7 @@
 		/>
         <let id='iJobCount' shape='scalar' access='private' value='{SELECT COUNT(0) FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
         
-        <let id='stSelectedJobId' shape='scalar' value='{SELECT AUJ.current_job FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
+        <let id='stSelectedJobId' shape='scalar' access='private' value='{SELECT AUJ.current_job FROM ltblCurrentUserJobAvaiableInAllUnassignedJobs AUJ}'/>
         <let id='stSelectedJobLastUser' shape='scalar' value='{SELECT LOWER(REPLACE(JH.users, RTRIM(JH.users, REPLACE(JH.users, ",", "")), "")) FROM ai_scan_jobs_history JH WHERE JH.id = stSelectedJobId}'/>
         <let id='stSelectedJobAssignedStatus' shape='scalar' value='{SELECT COALESCE(JH.job_assigned_status,"") FROM ai_scan_jobs_history JH WHERE JH.id = stSelectedJobId}'/>
         <let id='bSelectedJobIdAssignFailed' shape='scalar' value='{CASE WHEN stSelectedJobAssignedStatus != "success" AND COALESCE(stSelectedJobAssignedStatus,"") != "" AND stSelectedJobLastUser = stLoggedUserId THEN true ELSE false END}'/>
