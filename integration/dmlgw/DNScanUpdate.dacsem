@@ -1,0 +1,9 @@
+schema 'DNScanUpdate' meta 'DNScanUpdate'
+
+dnUpdate: element {
+	guid: attribute of type string;
+	guidLcomp: attribute of type string;
+	nameLcomp: attribute of type string;
+	guidLproj: attribute of type string;
+	nameLproj: attribute of type string;
+}
