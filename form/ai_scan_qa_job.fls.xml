@@ -1274,35 +1274,35 @@
     <repeater id='rptItemTable' record='r' recordset='{SELECT 1}'>
         <block>
             <declarations>
-                <let id='stEditItemAgentAItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAItemNameFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBItemNameFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentAItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAItemNameFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBItemNameFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentAItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAItemNameFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBItemNameFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAItemNameFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBItemNameRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBItemNameFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
 
-                <let id='stEditItemAgentAManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAManufacturerItemNumberFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBManufacturerItemNumberFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentAManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAManufacturerItemNumberFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBManufacturerItemNumberFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentAManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAManufacturerItemNumberFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBManufacturerItemNumberFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAManufacturerItemNumberFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBManufacturerItemNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBManufacturerItemNumberFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
 
-                <let id='stEditItemAgentATaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentATaxNumberFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBTaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBTaxNumberFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentATaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentATaxNumberFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBTaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBTaxNumberFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentATaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentATaxNumberFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBTaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBTaxNumberFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentATaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentATaxNumberFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBTaxNumberRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBTaxNumberFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
 
-                <let id='stEditItemAgentAAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAAmountFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBAmountFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentAAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAAmountFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBAmountFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentAAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAAmountFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBAmountFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAAmountFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBAmountRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBAmountFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
 
-                <let id='stEditItemAgentAUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAUnitFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBUnitFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentAUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAUnitFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBUnitFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentAUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAUnitFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBUnitFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAUnitFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBUnitRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBUnitFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
 
-                <let id='stEditItemAgentAGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAGrossWeightFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stEditItemAgentBGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBGrossWeightFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
-                <let id='stAcceptItemAgentAGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAGrossWeightFinal) FROM rtpItemTableAgentA.rows ITAA}'/>
-                <let id='stAcceptItemAgentBGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBGrossWeightFinal) FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stEditItemAgentAGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAGrossWeightFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBGrossWeightFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAGrossWeightFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBGrossWeightFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
                 
                 <let id='iItemTableItemNameErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAItemName+iEditItemAgentBItemName)) + (1*(iAcceptItemAgentAItemName+iAcceptItemAgentBItemName))}'/>
                 <let id='iEditItemAgentAItemName' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForEditAgentAItemNameFinal}'/>
@@ -1353,18 +1353,18 @@
                 <let id='stItemTableAGrossWeightValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeightValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBGrossWeightValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBGrossWeightValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
 
-                <let id='stItemTableAItemName' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAItemName) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBItemName' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBItemName) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableAManufacturerItemNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAManufacturerItemNumber) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBManufacturerItemNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBManufacturerItemNumber) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableATaxNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentATaxNumber) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBTaxNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBTaxNumber) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableAAmount' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAAmount) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBAmount' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBAmount) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableAUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnit) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnit) FROM rtpItemTableAgentB.rows RPTITAB}'/>
-                <let id='stItemTableAGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeight) FROM rtpItemTableAgentA.rows RPTITAA}'/>
-                <let id='stItemTableBGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBGrossWeight) FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAItemName' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAItemName,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBItemName' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBItemName,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAManufacturerItemNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAManufacturerItemNumber,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBManufacturerItemNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBManufacturerItemNumber,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableATaxNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentATaxNumber,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBTaxNumber' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBTaxNumber,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAAmount' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAAmount,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBAmount' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBAmount,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnit,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnit,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeight,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBGrossWeight,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
 
                 <let id='iItemTableAgentARowCount' shape='scalar' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA}'/>
                 <let id='iItemTableAgentBRowCount' shape='scalar' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB}'/>
