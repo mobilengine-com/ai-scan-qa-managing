@@ -22,6 +22,8 @@ pipeline {
 				powershell """.\\writeVersion.ps1 -Version:${VER}"""
 				bat """
 					rem -- compile --
+					del *.dpkg /q
+					del *.mes /q
 					mebt\\mebt compile . AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
 					rem -- copy --
