@@ -215,8 +215,6 @@
         else
         {
             //Find oldest ANOT jobs in unassigned jobs and ASC order if no QA jobs in unassigned jobs
-            let stCurrentANOTJobId = "";
-            
             if(lstAllUnassignedANOTJobs.Count() >= 2)
             {
                 let bWasChanged = true;
@@ -239,60 +237,84 @@
 
             for(let recData2 of lstAllUnassignedANOTJobs)
             {
+                Log("DEBUG");
+                Log(recData2.id);
+                Log(recData2.status);
 
-                //Get current user ANOT language tpye
-                let stCurrentUserANOTHUNLanguage = "";
-                let stCurrentUserANOTENGLanguage = "";
-                let stCurrentUserANOTPLLanguage = "";
+                //If current job has result in ai_scan_job_result reftab
+                let lstAnotJobResult = db.ai_scan_job_result.ReadFields({job_id: recData2.id},["user_id","result"]);
 
-                for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "hu_hu", job_type: "ANOT"},["lang"]))
+                if(lstAnotJobResult.Count() == 0)
                 {
-                    stCurrentUserANOTHUNLanguage = recUserLang.lang;
-                }
+                    //Get current user ANOT language tpye
+                    let stCurrentUserANOTHUNLanguage = "";
+                    let stCurrentUserANOTENGLanguage = "";
+                    let stCurrentUserANOTPLLanguage = "";
 
-                for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "eng_eng", job_type: "ANOT"},["lang"]))
-                {
-                    stCurrentUserANOTENGLanguage = recUserLang.lang;
-                }
-
-                for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "pl_pl", job_type: "ANOT"},["lang"]))
-                {
-                    stCurrentUserANOTPLLanguage = recUserLang.lang;
-                }
-
-                // Get current job other job id
-                let lstDeliveryNoteOtherJobs = db.ai_scan_jobs.ReadFields({id: recData2.id},["job_id_2"]);
-
-                let stCurrentDeliveryNoteOtherJobId = "";
-
-                for(let recOtherJob of lstDeliveryNoteOtherJobs)
-                {
-                    if(recOtherJob.job_id_2 != recData2.id)
+                    for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "hu_hu", job_type: "ANOT"},["lang"]))
                     {
-                        stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
+                        stCurrentUserANOTHUNLanguage = recUserLang.lang;
+                    }
+
+                    for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "eng_eng", job_type: "ANOT"},["lang"]))
+                    {
+                        stCurrentUserANOTENGLanguage = recUserLang.lang;
+                    }
+
+                    for(let recUserLang of db.ai_scan_user_language.ReadFields({user_id: stLoggedUserId, lang: "pl_pl", job_type: "ANOT"},["lang"]))
+                    {
+                        stCurrentUserANOTPLLanguage = recUserLang.lang;
+                    }
+
+                    // Get current job other job id
+                    let lstDeliveryNoteOtherJobs = db.ai_scan_jobs.ReadFields({id: recData2.id},["job_id_2"]);
+
+                    let stCurrentDeliveryNoteOtherJobId = "";
+
+                    for(let recOtherJob of lstDeliveryNoteOtherJobs)
+                    {
+                        if(recOtherJob.job_id_2 != recData2.id)
+                        {
+                            stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
+                        }
+                    }
+
+                    //Get current delivery note other job's current_user variable and delay time
+                    let lstCurrentANOTJobOtherANOTJob = list.New();
+                    let stDeliveryNoteOtherJobCurrentUser = "";
+                    let dtlDeliveryNoteOtherJobDelayTime = null;
+
+                    lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
+
+                    stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
+
+                    if(lstCurrentANOTJobOtherANOTJob.delay_time != null)
+                    {
+                        dtlDeliveryNoteOtherJobDelayTime = lstCurrentANOTJobOtherANOTJob.delay_time.DeclareAsDtl();
+                    }
+
+                    if(stLoggedUserId != stDeliveryNoteOtherJobCurrentUser && (dtlDeliveryNoteOtherJobDelayTime == null || dtlTimeNow > dtlDeliveryNoteOtherJobDelayTime) && recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
+                    {
+                        stJob_id = recData2.id;
+                        bUserGetCurrentANOTJob = true;
+                        break;
                     }
                 }
-
-                //Get current delivery note other job's current_user variable and delay time
-                let lstCurrentANOTJobOtherANOTJob = list.New();
-                let stDeliveryNoteOtherJobCurrentUser = "";
-                let dtlDeliveryNoteOtherJobDelayTime = null;
-
-                lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
-
-                stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
-
-                if(lstCurrentANOTJobOtherANOTJob.delay_time != null)
+                else
                 {
-                    dtlDeliveryNoteOtherJobDelayTime = lstCurrentANOTJobOtherANOTJob.delay_time.DeclareAsDtl();
-                }
+                    //current job has result datas and somehow set to unchecked
+                    //set back to done status
+                    Log("set back to done status");
+                    db.ai_scan_jobs.UpdateMany({
+                        id: recData2.id
+                    },{
+                        status: "DONE",
+                        current_user: lstAnotJobResult.GetAt(0).user_id,
+                        delay_time: null
+                    });
 
-                if(stLoggedUserId != stDeliveryNoteOtherJobCurrentUser && (dtlDeliveryNoteOtherJobDelayTime == null || dtlTimeNow > dtlDeliveryNoteOtherJobDelayTime) && recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
-                {
-                    stJob_id = recData2.id;
-                    bUserGetCurrentANOTJob = true;
-                    break;
                 }
+                
             }
 
             if(bUserGetCurrentANOTJob == true)
