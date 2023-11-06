@@ -20,6 +20,12 @@
         });
     }else{
         Log("Assignment failed for job: " + stCurrentJobId);
+
+        //DEBUG Log (Assignment failed for current job)
+        Log("DEBUG");
+        Log(stCurrentJobId);
+        Log("Assignment failed for current job / status -> UNCHECKED");
+
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentJobId
         },{

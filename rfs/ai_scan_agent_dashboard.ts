@@ -381,6 +381,12 @@
         {
             let stCurrentUser = stLoggedUserId;
 
+            //DEBUG Log (Current user inprogress Job set to unchecked because logout)
+            Log("DEBUG");
+            Log(stCurrentUser);
+            Log(stCurrentJobId);
+            Log("Current user inprogress Job set to unchecked because logout / status -> UNCHECKED");
+
             // Update the job in ai_scan_jobs table
             db.ai_scan_jobs.UpdateMany({
                 id : stCurrentJobId
@@ -455,6 +461,12 @@
                         users: stCurrentJobUserHistory
                     });
 
+                    //DEBUG Log (Get QA job)
+                    Log("DEBUG");
+                    Log(stLoggedUserId);
+                    Log(stGetJobId);
+                    Log("Get QA job / status -> INPROGRESS");
+
                     // Update the job in ai_scan_jobs table
                     db.ai_scan_jobs.UpdateMany({
                         id : stGetJobId
@@ -497,6 +509,12 @@
                     },{
                         users: stCurrentJobUserHistory
                     });
+
+                    //DEBUG Log (Get ANOT job)
+                    Log("DEBUG");
+                    Log(stLoggedUserId);
+                    Log(stGetJobId);
+                    Log("Get ANOT job / status -> INPROGRESS");
 
                     // Update the job in ai_scan_jobs table
                     db.ai_scan_jobs.UpdateMany({
@@ -541,6 +559,12 @@
         // Update current job history with new online user
         let stCurrentJobId = form.stLoggedUserSelectedJobId;
         let stCurrentUser = stLoggedUserId;
+
+        //DEBUG Log (CANCEL Current ANOT job)
+        Log("DEBUG");
+        Log(stLoggedUserId);
+        Log(stCurrentJobId);
+        Log("CANCEL Current ANOT job / status -> UNCHECKED");
 
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
@@ -592,6 +616,12 @@
             }
         }
 
+        //DEBUG Log (DELAY Current ANOT job)
+        Log("DEBUG");
+        Log(stLoggedUserId);
+        Log(stCurrentJobId);
+        Log("DELAY Current ANOT job / status -> UNCHECKED");
+
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentJobId
@@ -637,6 +667,12 @@
         let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
         let stCurrentUser = stLoggedUserId;
 
+        //DEBUG Log (CANCEL Current QA job)
+        Log("DEBUG");
+        Log(stLoggedUserId);
+        Log(stCurrentQAJobId);
+        Log("CANCEL Current QA job / status -> UNCHECKED");
+
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentQAJobId
@@ -654,6 +690,12 @@
         // Update current job history with new online user
         let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
         let stCurrentUser = stLoggedUserId;
+
+        //DEBUG Log (DELAY Current QA job)
+        Log("DEBUG");
+        Log(stLoggedUserId);
+        Log(stCurrentQAJobId);
+        Log("DELAY Current QA job / status -> UNCHECKED");
 
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({

@@ -194,6 +194,11 @@
             job_work_time_minutes: iJobWorkTime
         });
 
+        //DEBUG Log (Get approved ANOT Job result)
+        Log("DEBUG");
+        Log(stDeliveryNoteJobId);
+        Log("Get approved ANOT Job result  / status -> DONE");
+
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stDeliveryNoteJobId
@@ -408,8 +413,10 @@
                 }            
                 else
                 {
-                    //Set all Anot job to DONE
-                    Log("Set all Anot job to DONE");
+                    //Set these Anot job to DONE
+                    Log(stDeliveryNoteJobId);
+                    Log(stDeliveryNoteOtherJob);
+                    Log("Set these Anot job to DONE");
                     db.ai_scan_jobs.UpdateMany({
                         type: "ANOT",
                         delivery_note_id: stDeliveryNoteId
@@ -422,6 +429,11 @@
                     
                     // Create QA job
                     let stQAJobId = guid.Generate().ToStringN();
+
+                    //DEBUG Log (QA Job created)
+                    Log("DEBUG");
+                    Log(stQAJobId);
+                    Log("QA Job created  / status -> UNCHECKED");
 
                     db.ai_scan_jobs.Insert({
                         id: stQAJobId,
@@ -573,6 +585,11 @@
             job_work_time_minutes: iJobWorkTime
         });
 
+        //DEBUG Log (Get rejected ANOT Job result)
+        Log("DEBUG");
+        Log(stDeliveryNoteJobId);
+        Log("Get rejected ANOT Job result  / status -> DONE");
+
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stDeliveryNoteJobId
@@ -635,8 +652,10 @@
             }            
             else
             {
-                //Set all Anot job to DONE
-                Log("Set all Anot job to DONE");
+                //Set these Anot job to DONE
+                Log(stDeliveryNoteJobId);
+                Log(stDeliveryNoteOtherJob);
+                Log("Set these Anot job to DONE");
                 db.ai_scan_jobs.UpdateMany({
                     type: "ANOT",
                     delivery_note_id: stDeliveryNoteId
@@ -649,6 +668,11 @@
                 
                 // Create QA job
                 let stQAJobId = guid.Generate().ToStringN();
+
+                //DEBUG Log (QA Job created)
+                Log("DEBUG");
+                Log(stQAJobId);
+                Log("QA Job created  / status -> UNCHECKED");
 
                 db.ai_scan_jobs.Insert({
                     id: stQAJobId,

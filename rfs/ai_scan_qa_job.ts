@@ -35,6 +35,11 @@
         // Update current job history with new online user
         let stCurrentQAJobId = stSelectedQAJobId;
 
+        //DEBUG Log (stLoggedUserId, stSelectedQAJobDeliveryNoteId and dtlSelectedQAJobDeliveryNoteWorkStartDate empty or null)
+        Log("DEBUG");
+        Log(stCurrentQAJobId);
+        Log("QA Job stLoggedUserId, stSelectedQAJobDeliveryNoteId and dtlSelectedQAJobDeliveryNoteWorkStartDate empty or null  / status -> UNCHECKED");
+
         // Update the job in ai_scan_jobs table
         db.ai_scan_jobs.UpdateMany({
             id : stCurrentQAJobId
@@ -98,6 +103,11 @@
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
             });
+
+            //DEBUG Log (QA Job BAD PHOTO DONE)
+            Log("DEBUG");
+            Log(stSelectedQAJobId);
+            Log("QA Job BAD PHOTO DONE  / status -> DONE");
 
             // Update the job in ai_scan_jobs table
             db.ai_scan_jobs.UpdateMany({
@@ -449,6 +459,11 @@
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
             });
+
+            //DEBUG Log (QA Job Handwritten DONE)
+            Log("DEBUG");
+            Log(stSelectedQAJobId);
+            Log("QA Job Handwritten DONE  / status -> DONE");
 
             // Update the job in ai_scan_jobs table
             db.ai_scan_jobs.UpdateMany({
@@ -803,6 +818,11 @@
                 job_work_time_minutes: iJobWorkTime
             });
 
+            //DEBUG Log (QA Job Approved DONE)
+            Log("DEBUG");
+            Log(stSelectedQAJobId);
+            Log("QA Job Approved DONE  / status -> DONE");
+
             // Update the job in ai_scan_jobs table
             db.ai_scan_jobs.UpdateMany({
                 id : stSelectedQAJobId
@@ -827,6 +847,11 @@
             let stCurrentQAJobId = stSelectedQAJobId;
             let stCurrentUser = stLoggedUserId;
 
+            //DEBUG Log (QA Job Cancel)
+            Log("DEBUG");
+            Log(stCurrentQAJobId);
+            Log("QA Job Cancel  / status -> UNCHECKED");
+
             // Update the job in ai_scan_jobs table
             db.ai_scan_jobs.UpdateMany({
                 id : stCurrentQAJobId
@@ -846,6 +871,11 @@
             // Update current job history with new online user
             let stCurrentQAJobId = stSelectedQAJobId;
             let stCurrentUser = stLoggedUserId;
+
+            //DEBUG Log (QA Job Delay)
+            Log("DEBUG");
+            Log(stCurrentQAJobId);
+            Log("QA Job Delay  / status -> UNCHECKED");
 
             // Update the job in ai_scan_jobs table
             db.ai_scan_jobs.UpdateMany({

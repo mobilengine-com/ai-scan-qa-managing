@@ -27,6 +27,11 @@
         stSupplierID = dacs.qaTask.supplierId;
     }
 
+    //DEBUG Log (ANOT Job1 created)
+    Log("DEBUG");
+    Log(stJobId);
+    Log("ANOT Job1 created  / status -> UNCHECKED");
+
     // Creat first job
     db.ai_scan_jobs.Insert({
         id: stJobId,
@@ -68,6 +73,11 @@
     dacs2.assignTask.agent = stDefaultAIUser;
     //dacs2.assignTask.agent = "botond.bakai@mobilengine.com";
     dacs2.Send();
+
+    //DEBUG Log (ANOT Job2 created)
+    Log("DEBUG");
+    Log(stJobId2);
+    Log("ANOT Job2 created  / status -> UNCHECKED");
 
     // Creat second job
     db.ai_scan_jobs.Insert({
