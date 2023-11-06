@@ -111,6 +111,11 @@
             }
         }
 
+        //DEBUG Log (not redo ANOT Job1 created)
+        Log("DEBUG");
+        Log(stJobId);
+        Log("not redo ANOT Job1 created  / status -> UNCHECKED");
+
         // Creat first job
         db.ai_scan_jobs.Insert({
             id: stJobId,
@@ -153,6 +158,11 @@
         dacs2.assignTask.agent = stDefaultAIUser;
         //dacs2.assignTask.agent = "botond.bakai@mobilengine.com";
         dacs2.Send();
+
+        //DEBUG Log (not redo ANOT Job2 created)
+        Log("DEBUG");
+        Log(stJobId2);
+        Log("not redo ANOT Job2 created  / status -> UNCHECKED");
 
         // Creat second job
         db.ai_scan_jobs.Insert({
@@ -293,6 +303,11 @@
             }
         }
 
+        //DEBUG Log (redo ANOT Job created)
+        Log("DEBUG");
+        Log(stJobId);
+        Log("redo ANOT Job created  / status -> UNCHECKED");
+
         // Creat first job
         db.ai_scan_jobs.Insert({
             id: stJobId,
@@ -335,6 +350,11 @@
         dacs2.assignTask.agent = stDefaultAIUser;
         //dacs2.assignTask.agent = "botond.bakai@mobilengine.com";
         dacs2.Send();
+
+        //DEBUG Log (redo ANOT Job2 created)
+        Log("DEBUG");
+        Log(stJobId2);
+        Log("redo ANOT Job2 created  / status -> UNCHECKED");
 
         // Creat second job
         db.ai_scan_jobs.Insert({
