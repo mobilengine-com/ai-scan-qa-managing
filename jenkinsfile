@@ -7,6 +7,9 @@ pipeline {
     stages {
         stage('Copy and unzip artifacts') {
             steps {
+				bat """
+					del Mebt_*_Debug.zip /q
+				"""
                 copyArtifacts filter: 'MobileServer\\artifacts\\Mebt_*_Debug.zip', fingerprintArtifacts: true, flatten: true, 
                     projectName: 'MobileEngine Server S49', selector: latestSavedBuild()
                 powershell '''# hide progress bar, makes extract run faster
