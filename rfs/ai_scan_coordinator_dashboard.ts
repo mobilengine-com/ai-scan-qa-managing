@@ -63,6 +63,12 @@
                                 let stCurrentJobId = stJobId;
                                 let stCurrentUser = stUserId;
 
+                                //DEBUG Log (Current user inprogress HU Anot Job set to unchecked)
+                                Log("DEBUG");
+                                Log(stCurrentUser);
+                                Log(stCurrentJobId);
+                                Log("Current user inprogress HU Anot Job set to unchecked  / status -> UNCHECKED");
+
                                 // Update the job in ai_scan_jobs table
                                 db.ai_scan_jobs.UpdateMany({
                                     id : stCurrentJobId
@@ -136,6 +142,12 @@
                                 let stCurrentJobId = stJobId;
                                 let stCurrentUser = stUserId;
 
+                                //DEBUG Log (Current user inprogress ENG Anot Job set to unchecked)
+                                Log("DEBUG");
+                                Log(stCurrentUser);
+                                Log(stCurrentJobId);
+                                Log("Current user inprogress ENG Anot Job set to unchecked  / status -> UNCHECKED");
+
                                 // Update the job in ai_scan_jobs table
                                 db.ai_scan_jobs.UpdateMany({
                                     id : stCurrentJobId
@@ -208,6 +220,12 @@
                                 // Update current job history with new online user
                                 let stCurrentJobId = stJobId;
                                 let stCurrentUser = stUserId;
+
+                                //DEBUG Log (Current user inprogress PL Anot Job set to unchecked)
+                                Log("DEBUG");
+                                Log(stCurrentUser);
+                                Log(stCurrentJobId);
+                                Log("Current user inprogress PL Anot Job set to unchecked  / status -> UNCHECKED");
 
                                 // Update the job in ai_scan_jobs table
                                 db.ai_scan_jobs.UpdateMany({
@@ -291,6 +309,12 @@
                                 let stCurrentJobId = stJobId;
                                 let stCurrentUser = stUserId;
 
+                                //DEBUG Log (Current user inprogress HU QA Job set to unchecked)
+                                Log("DEBUG");
+                                Log(stCurrentUser);
+                                Log(stCurrentJobId);
+                                Log("Current user inprogress HU QA Job set to unchecked  / status -> UNCHECKED");
+
                                 // Update the job in ai_scan_jobs table
                                 db.ai_scan_jobs.UpdateMany({
                                     id : stCurrentJobId
@@ -353,6 +377,12 @@
                                 let stCurrentJobId = stJobId;
                                 let stCurrentUser = stUserId;
 
+                                //DEBUG Log (Current user inprogress ENG QA Job set to unchecked)
+                                Log("DEBUG");
+                                Log(stCurrentUser);
+                                Log(stCurrentJobId);
+                                Log("Current user inprogress ENG QA Job set to unchecked  / status -> UNCHECKED");
+
                                 // Update the job in ai_scan_jobs table
                                 db.ai_scan_jobs.UpdateMany({
                                     id : stCurrentJobId
@@ -414,6 +444,12 @@
                                 // Update current job history with new online user
                                 let stCurrentJobId = stJobId;
                                 let stCurrentUser = stUserId;
+
+                                //DEBUG Log (Current user inprogress PL QA Job set to unchecked)
+                                Log("DEBUG");
+                                Log(stCurrentUser);
+                                Log(stCurrentJobId);
+                                Log("Current user inprogress PL QA Job set to unchecked  / status -> UNCHECKED");
 
                                 // Update the job in ai_scan_jobs table
                                 db.ai_scan_jobs.UpdateMany({
