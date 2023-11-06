@@ -371,7 +371,8 @@
                         delivery_note_id: stDeliveryNoteId
                     },{
                         delivery_note_work_end_date: dtl.Now().DtlToDtdb(),
-                        delivery_note_work_time: dtl.Now().Diff(dtlCurrentDeliveryNoteStartWorkingTime).TotalHours
+                        delivery_note_work_time: dtl.Now().Diff(dtlCurrentDeliveryNoteStartWorkingTime).TotalHours,
+                        delay_time: null
                     });
 
                     //TODO Send QATaskDone with data which is received in this dacs. 
@@ -409,6 +410,16 @@
                 }            
                 else
                 {
+                    //Set all Anot job to DONE
+                    Log("Set all Anot job to DONE");
+                    db.ai_scan_jobs.UpdateMany({
+                        type: "ANOT",
+                        delivery_note_id: stDeliveryNoteId
+                    },{
+                        status: "DONE",
+                        delay_time: null
+                    });
+
                     Log("Create QA job");
                     
                     // Create QA job
@@ -629,6 +640,16 @@
             }            
             else
             {
+                //Set all Anot job to DONE
+                Log("Set all Anot job to DONE");
+                db.ai_scan_jobs.UpdateMany({
+                    type: "ANOT",
+                    delivery_note_id: stDeliveryNoteId
+                },{
+                    status: "DONE",
+                    delay_time: null
+                });
+
                 Log("Create QA job");
                 
                 // Create QA job
