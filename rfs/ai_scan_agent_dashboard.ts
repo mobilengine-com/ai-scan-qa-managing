@@ -373,12 +373,12 @@
 
         // If switch back to offline and current user has inprogress job then cancel the inprogress job
         // Update current job history with new online user
-        let stCurrentJobId = null;
-        
-        stCurrentJobId = form.stLoggedUserSelectedJobId;
 
-        if(stCurrentJobId != null)
+        let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
+        if(lstUserInprogressJob.Count() != 0)
         {
+            let stCurrentJobId = lstUserInprogressJob.GetAt(0).job_id;
+
             let stCurrentUser = stLoggedUserId;
 
             //DEBUG Log (Current user inprogress Job set to unchecked because logout)
@@ -556,157 +556,174 @@
 
     if(bCancelCurrentAnotJob)
     {
-        // Update current job history with new online user
-        let stCurrentJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentUser = stLoggedUserId;
+        let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
+        if(lstUserInprogressJob.Count() != 0)
+        {
+            // Update current job history with new online user
+            let stCurrentJobId = lstUserInprogressJob.GetAt(0).job_id;
 
-        //DEBUG Log (CANCEL Current ANOT job)
-        Log("DEBUG");
-        Log(stLoggedUserId);
-        Log(stCurrentJobId);
-        Log("CANCEL Current ANOT job / status -> UNCHECKED");
+            let stCurrentUser = stLoggedUserId;
 
-        // Update the job in ai_scan_jobs table
-        db.ai_scan_jobs.UpdateMany({
-            id : stCurrentJobId
-        },{
-            status : "UNCHECKED",
-            current_user: null,
-            assigned: 0
-        });
-        // Delete the job in ai_scan_job_inprogress table
-        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+            //DEBUG Log (CANCEL Current ANOT job)
+            Log("DEBUG");
+            Log(stCurrentUser);
+            Log(stCurrentJobId);
+            Log("CANCEL Current ANOT job / status -> UNCHECKED");
 
-        db.ai_scan_jobs_history.UpdateMany({
-            id: stCurrentJobId
-        },{
-            job_assigned_status: ""
-        });
+            // Update the job in ai_scan_jobs table
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentJobId
+            },{
+                status : "UNCHECKED",
+                current_user: null,
+                assigned: 0
+            });
+            // Delete the job in ai_scan_job_inprogress table
+            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
 
-        //Remove user from ANNOT job on AI page
-        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
-        let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
-        
-        let dacs = messages.AssignAITask.New();
-        dacs.assignTask.scanId = stscanId;
-        dacs.assignTask.requestFileId = stCurrentJobId;
-        dacs.assignTask.agent = stDefaultAIUser;
-        //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
-        dacs.Send();
+            db.ai_scan_jobs_history.UpdateMany({
+                id: stCurrentJobId
+            },{
+                job_assigned_status: ""
+            });
+
+            //Remove user from ANNOT job on AI page
+            let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+            let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+            
+            let dacs = messages.AssignAITask.New();
+            dacs.assignTask.scanId = stscanId;
+            dacs.assignTask.requestFileId = stCurrentJobId;
+            dacs.assignTask.agent = stDefaultAIUser;
+            //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+            dacs.Send();
+        }
     }
 
     if(bCancelDelayCurrentAnotJob)
     {
-        let dtlDelayTime = dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb();
-
-        // Update current job history with new online user
-        let stCurrentJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentUser = stLoggedUserId;
-
-        // Get current job other job id
-        let lstDeliveryNoteOtherJobs = db.ai_scan_jobs.ReadFields({id: stCurrentJobId},["job_id_2"]);
-
-        let stCurrentDeliveryNoteOtherJobId = "";
-
-        for(let recOtherJob of lstDeliveryNoteOtherJobs)
+        let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
+        if(lstUserInprogressJob.Count() != 0)
         {
-            if(recOtherJob.job_id_2 != stCurrentJobId)
+            let dtlDelayTime = dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb();
+
+            // Update current job history with new online user
+            let stCurrentJobId = lstUserInprogressJob.GetAt(0).job_id;
+
+            let stCurrentUser = stLoggedUserId;
+
+            // Get current job other job id
+            let lstDeliveryNoteOtherJobs = db.ai_scan_jobs.ReadFields({id: stCurrentJobId},["job_id_2"]);
+
+            let stCurrentDeliveryNoteOtherJobId = "";
+
+            for(let recOtherJob of lstDeliveryNoteOtherJobs)
             {
-                stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
+                if(recOtherJob.job_id_2 != stCurrentJobId)
+                {
+                    stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
+                }
             }
+
+            //DEBUG Log (DELAY Current ANOT job)
+            Log("DEBUG");
+            Log(stCurrentUser);
+            Log(stCurrentJobId);
+            Log("DELAY Current ANOT job / status -> UNCHECKED");
+
+            // Update the job in ai_scan_jobs table
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentJobId
+            },{
+                status : "UNCHECKED",
+                current_user: null,
+                delay_time: dtlDelayTime,
+                assigned: 0
+            });
+
+            // Delete the job in ai_scan_job_inprogress table
+            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
+
+            // Add delay time to other job
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentDeliveryNoteOtherJobId
+            },{
+                delay_time: dtlDelayTime
+            });
+
+            db.ai_scan_jobs_history.UpdateMany({
+                id: stCurrentJobId
+            },{
+                job_assigned_status: ""
+            });
+
+            //Remove user from ANNOT job on AI page
+            let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
+            let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
+            
+            let dacs = messages.AssignAITask.New();
+            dacs.assignTask.scanId = stscanId;
+            dacs.assignTask.requestFileId = stCurrentJobId;
+            dacs.assignTask.agent = stDefaultAIUser;
+            //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
+            dacs.Send();
         }
-
-        //DEBUG Log (DELAY Current ANOT job)
-        Log("DEBUG");
-        Log(stLoggedUserId);
-        Log(stCurrentJobId);
-        Log("DELAY Current ANOT job / status -> UNCHECKED");
-
-        // Update the job in ai_scan_jobs table
-        db.ai_scan_jobs.UpdateMany({
-            id : stCurrentJobId
-        },{
-            status : "UNCHECKED",
-            current_user: null,
-            delay_time: dtlDelayTime,
-            assigned: 0
-        });
-
-        // Delete the job in ai_scan_job_inprogress table
-        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentJobId, user_id : stCurrentUser});
-
-        // Add delay time to other job
-        db.ai_scan_jobs.UpdateMany({
-            id : stCurrentDeliveryNoteOtherJobId
-        },{
-            delay_time: dtlDelayTime
-        });
-
-        db.ai_scan_jobs_history.UpdateMany({
-            id: stCurrentJobId
-        },{
-            job_assigned_status: ""
-        });
-
-        //Remove user from ANNOT job on AI page
-        let stscanId = db.ai_scan_delivery_note_job.ReadFields({job_id: stCurrentJobId},["delivery_note_id"]).SingleOrDefault().delivery_note_id;
-        let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
-        
-        let dacs = messages.AssignAITask.New();
-        dacs.assignTask.scanId = stscanId;
-        dacs.assignTask.requestFileId = stCurrentJobId;
-        dacs.assignTask.agent = stDefaultAIUser;
-        //dacs.assignTask.agent = "botond.bakai@mobilengine.com";
-        dacs.Send();
-
     }
 
     if(bCancelCurrentQAJob)
     {
-        // Update current job history with new online user
-        let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentUser = stLoggedUserId;
+        let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
+        if(lstUserInprogressJob.Count() != 0)
+        {
+            // Update current job history with new online user
+            let stCurrentQAJobId = lstUserInprogressJob.GetAt(0).job_id;
+            let stCurrentUser = stLoggedUserId;
 
-        //DEBUG Log (CANCEL Current QA job)
-        Log("DEBUG");
-        Log(stLoggedUserId);
-        Log(stCurrentQAJobId);
-        Log("CANCEL Current QA job / status -> UNCHECKED");
+            //DEBUG Log (CANCEL Current QA job)
+            Log("DEBUG");
+            Log(stCurrentUser);
+            Log(stCurrentQAJobId);
+            Log("CANCEL Current QA job / status -> UNCHECKED");
 
-        // Update the job in ai_scan_jobs table
-        db.ai_scan_jobs.UpdateMany({
-            id : stCurrentQAJobId
-        },{
-            status : "UNCHECKED",
-            current_user: null
-        });
+            // Update the job in ai_scan_jobs table
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentQAJobId
+            },{
+                status : "UNCHECKED",
+                current_user: null
+            });
 
-        // Delete the job in ai_scan_job_inprogress table
-        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId, user_id : stCurrentUser});
+            // Delete the job in ai_scan_job_inprogress table
+            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId, user_id : stCurrentUser});
+        }
     }
 
     if(bCancelDelayCurrentQAJob)
     {
-        // Update current job history with new online user
-        let stCurrentQAJobId = form.stLoggedUserSelectedJobId;
-        let stCurrentUser = stLoggedUserId;
+        let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
+        if(lstUserInprogressJob.Count() != 0)
+        {
+            // Update current job history with new online user
+            let stCurrentQAJobId = lstUserInprogressJob.GetAt(0).job_id;
+            let stCurrentUser = stLoggedUserId;
 
-        //DEBUG Log (DELAY Current QA job)
-        Log("DEBUG");
-        Log(stLoggedUserId);
-        Log(stCurrentQAJobId);
-        Log("DELAY Current QA job / status -> UNCHECKED");
+            //DEBUG Log (DELAY Current QA job)
+            Log("DEBUG");
+            Log(stCurrentUser);
+            Log(stCurrentQAJobId);
+            Log("DELAY Current QA job / status -> UNCHECKED");
 
-        // Update the job in ai_scan_jobs table
-        db.ai_scan_jobs.UpdateMany({
-            id : stCurrentQAJobId
-        },{
-            status : "UNCHECKED",
-            current_user: null,
-            delay_time: dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb()
-        });
+            // Update the job in ai_scan_jobs table
+            db.ai_scan_jobs.UpdateMany({
+                id : stCurrentQAJobId
+            },{
+                status : "UNCHECKED",
+                current_user: null,
+                delay_time: dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb()
+            });
 
-        // Delete the job in ai_scan_job_inprogress table
-        db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId, user_id : stCurrentUser});
+            // Delete the job in ai_scan_job_inprogress table
+            db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId, user_id : stCurrentUser});
+        }
     }
 }
