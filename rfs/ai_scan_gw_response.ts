@@ -151,15 +151,40 @@
 
         let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
 
-        for(let recData of lstCurrentJobUser)
+        if(lstCurrentJobUser.Count() != 0)
         {
-            let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["name"]);
+            for(let recData of lstCurrentJobUser)
+            {
+                let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["name"]);
+
+                for(let recUser of lstCurrentUser)
+                {
+                    stCurrentJobUserId = recData.user_id;
+                    stCurrentJobUserName = recUser.name;
+                    dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
+                }
+            }
+        }
+        else
+        {
+            let lstCurrentJobUserinHistory = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteJobId},["users"]);
+
+            Log("LastUserId");
+
+            let stLastUsersIds = lstCurrentJobUserinHistory.GetAt(0).users;
+
+            let iLastIndex = stLastUsersIds.LastIndexOf(",");
+
+            let stLastUserId = stLastUsersIds.SubString(iLastIndex + 1, stLastUsersIds.Length() - (iLastIndex + 1));
+
+            Log(stLastUserId);
+
+            let lstCurrentUser = db.ai_scan_user.ReadFields({id: stLastUserId},["name"]);
 
             for(let recUser of lstCurrentUser)
             {
-                stCurrentJobUserId = recData.user_id;
+                stCurrentJobUserId = stLastUserId;
                 stCurrentJobUserName = recUser.name;
-                dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
             }
         }
 
@@ -203,7 +228,8 @@
         db.ai_scan_jobs.UpdateMany({
             id : stDeliveryNoteJobId
         },{
-            status : "DONE"
+            status : "DONE",
+            current_user : stCurrentJobUserId
         });
 
         // Delete the job in ai_scan_job_inprogress table
@@ -542,15 +568,40 @@
 
         let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
 
-        for(let recData of lstCurrentJobUser)
+        if(lstCurrentJobUser.Count() != 0)
         {
-            let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["name"]);
+            for(let recData of lstCurrentJobUser)
+            {
+                let lstCurrentUser = db.ai_scan_user.ReadFields({id: recData.user_id},["name"]);
+
+                for(let recUser of lstCurrentUser)
+                {
+                    stCurrentJobUserId = recData.user_id;
+                    stCurrentJobUserName = recUser.name;
+                    dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
+                }
+            }
+        }
+        else
+        {
+            let lstCurrentJobUserinHistory = db.ai_scan_jobs_history.ReadFields({id: stDeliveryNoteJobId},["users"]);
+
+            Log("LastUserId");
+
+            let stLastUsersIds = lstCurrentJobUserinHistory.GetAt(0).users;
+
+            let iLastIndex = stLastUsersIds.LastIndexOf(",");
+
+            let stLastUserId = stLastUsersIds.SubString(iLastIndex + 1, stLastUsersIds.Length() - (iLastIndex + 1));
+
+            Log(stLastUserId);
+
+            let lstCurrentUser = db.ai_scan_user.ReadFields({id: stLastUserId},["name"]);
 
             for(let recUser of lstCurrentUser)
             {
-                stCurrentJobUserId = recData.user_id;
+                stCurrentJobUserId = stLastUserId;
                 stCurrentJobUserName = recUser.name;
-                dtlCurrentJobStartTime = recData.job_start_time.DeclareAsDtl();
             }
         }
 
@@ -594,7 +645,8 @@
         db.ai_scan_jobs.UpdateMany({
             id : stDeliveryNoteJobId
         },{
-            status : "DONE"
+            status : "DONE",
+            current_user : stCurrentJobUserId
         });
 
         // Delete the job in ai_scan_job_inprogress table
