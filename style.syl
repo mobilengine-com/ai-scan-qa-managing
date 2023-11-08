@@ -4841,4 +4841,26 @@ styles{
 		}
 	}
 
+	style sylQAAddNewItemInItemTable{
+		hbox {
+            sizes = 40px, 200px, 1
+        }
+	}
+
+	style sylTvQAItemsTablesErrorText{
+		textview{
+			control{
+				margin {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				fontColor = ff0000
+				bold = true
+			}
+			textAlign = left			
+		}
+	}
+
 }
