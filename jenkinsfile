@@ -20,8 +20,10 @@ pipeline {
             }
         }
         stage('Checkout') {
-			dir('solution') {
-				checkout scm
+			steps {
+				dir('solution') {
+					checkout scm
+				}
 			}
 		}
         stage('Build') {
