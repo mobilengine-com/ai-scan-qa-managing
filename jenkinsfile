@@ -24,7 +24,7 @@ pipeline {
         stage('Checkout') {
 			steps {
 				dir('solution') {
-					checkout scm
+					def GIT_COMMIT = checkout(scm).GIT_COMMIT
 				}
 				script {
 					VER = "${VER0}.${env.GIT_COMMIT.take(7)}"
