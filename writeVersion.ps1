@@ -5,7 +5,7 @@ param (
     $Version
 )
 
-$packInfo = [xml](Get-Content .\package.xml)
+$packInfo = [xml](Get-Content .\solution\package.xml)
 $packInfo.package.version = $Version
 
 $currLoc = Get-Location

@@ -1,40 +1,47 @@
 pipeline {
     agent any
-
+	options { 
+		skipDefaultCheckout() 
+	}
 	environment {
 		VER = "3.0.${env.BUILD_NUMBER}.${env.GIT_COMMIT.take(7)}"
 	}
     stages {
         stage('Copy and unzip artifacts') {
             steps {
-				bat """
-					del Mebt_*_Debug.zip /q
-				"""
+				powershell '''Remove-Item -Recurse Mebt'''
+				powershell '''Remove-Item Mebt_*_Debug.zip'''
+				powershell '''Remove-Item Bauapp-*'''
                 copyArtifacts filter: 'MobileServer\\artifacts\\Mebt_*_Debug.zip', fingerprintArtifacts: true, flatten: true, 
-                    projectName: 'MobileEngine Server S49', selector: latestSavedBuild()
+                    projectName: 'mebo/s50', selector: latestSavedBuild()
                 powershell '''# hide progress bar, makes extract run faster
                                 $ProgressPreference="SilentlyContinue"
                                 Expand-Archive Mebt_*_Debug.zip Mebt'''
             }
         }
+        stage('Checkout') {
+			dir('solution') {
+				checkout scm
+			}
+		}
         stage('Build') {
             steps {
 				script {
                     currentBuild.description = "AIScan-DM: $VER"
                 }
-				powershell """.\\writeVersion.ps1 -Version:${VER}"""
+				powershell """.\\solution\\writeVersion.ps1 -Version:${VER}"""
 				bat """
 					rem -- compile --
 					del *.dpkg /q
 					del *.mes /q
-					mebt\\mebt compile . AIScan-DM-${VER}.mes
+					mebt\\mebt compile .\\solution AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
 					rem -- copy --
 					copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-w-minimaldata.mes
 					rem -- package --
 					mebt\\mebt package AIScan-DM-${VER}.mes
 					if %errorlevel% neq 0 exit /b %errorlevel%
-					mebt\\mebt package AIScan-DM-${VER}-w-minimaldata.mes .\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
+					mebt\\mebt package AIScan-DM-${VER}-w-minimaldata.mes .\\solution\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
 					rem if %errorlevel% neq 0 exit /b %errorlevel%
 					"""
 			}
@@ -43,7 +50,7 @@ pipeline {
 	post {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'refdata/sqlite/*.sqlite')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/refdata/sqlite/*.sqlite')
 		}
 
 		unstable {
