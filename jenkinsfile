@@ -5,7 +5,8 @@ pipeline {
 		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
 	}
 	environment {
-		VER = "3.0.${env.BUILD_NUMBER}.${env.GIT_COMMIT.take(7)}"
+		VER0 = "3.0.${env.BUILD_NUMBER}"
+		VER = ""
 	}
     stages {
         stage('Copy and unzip artifacts') {
@@ -24,6 +25,9 @@ pipeline {
 			steps {
 				dir('solution') {
 					checkout scm
+				}
+				script {
+					VER = "${VER0}.${scmVars['GIT_COMMIT'].substring(0,7)}"
 				}
 			}
 		}
