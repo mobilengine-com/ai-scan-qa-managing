@@ -27,7 +27,7 @@ pipeline {
 					checkout scm
 				}
 				script {
-					VER = "${VER0}.${scmVars['GIT_COMMIT'].substring(0,7)}"
+					VER = "${VER0}.${env.GIT_COMMIT.take(7)}"
 				}
 			}
 		}
