@@ -31,8 +31,8 @@
         />
         <let id='stSelectedQAJobSupplierId' shape='scalar' access='private' value='{SELECT SQAJD.supplier_id FROM ltblSelectedQAJobDatas SQAJD}'/>
         <let id='dtlSelectedQAJobDeliveryNoteWorkStartDate' shape='scalar' value='{SELECT SQAJD.delivery_note_work_start_date FROM ltblSelectedQAJobDatas SQAJD}'/>
-        <let id='stSelectedQAJobSupplierANNOTJob1' shape='scalar' access='private' value='{SELECT SQAJD.job_id_2 FROM ltblSelectedQAJobDatas SQAJD}'/>
-        <let id='stSelectedQAJobSupplierANNOTJob2' shape='scalar' access='private' value='{SELECT SQAJD.job_id_3 FROM ltblSelectedQAJobDatas SQAJD}'/>
+        <let id='stSelectedQAJobSupplierANNOTJob1' shape='scalar' value='{SELECT SQAJD.job_id_2 FROM ltblSelectedQAJobDatas SQAJD}'/>
+        <let id='stSelectedQAJobSupplierANNOTJob2' shape='scalar' value='{SELECT SQAJD.job_id_3 FROM ltblSelectedQAJobDatas SQAJD}'/>
         
         <let id='ltblSelectedQAJobAgentAResult' access='private' shape='table' 
 			value='{SELECT
@@ -296,6 +296,70 @@
                         WHEN bSignForAcceptAgentAWeightGross = true THEN stSelectedQAJobAnotJobsAgentAWeightGross
                         WHEN bSignForAcceptAgentBWeightGross = true THEN stSelectedQAJobAnotJobsAgentBWeightGross 
                         ELSE "" 
+                    END}'
+        />
+
+        <let id='bMainTableEditedTextAvaiable' shape='scalar' 
+            value='{CASE
+                        WHEN 
+                            (
+                                bSignForEditAgentACustomerAddress = true OR bSignForEditAgentBCustomerAddress = true OR
+                                bSignForEditAgentACustomerName = true OR bSignForEditAgentBCustomerName = true OR
+                                bSignForEditAgentADeliveryAddress = true OR bSignForEditAgentBDeliveryAddress OR
+                                bSignForEditAgentADeliveryRecipientName = true OR bSignForEditAgentBDeliveryRecipientName = true OR
+                                bSignForEditAgentAIssueDate = true OR bSignForEditAgentBIssueDate = true OR
+                                bSignForEditAgentAOrderNumber = true OR bSignForEditAgentBOrderNumber = true OR
+                                bSignForEditAgentASupplierAddress = true OR bSignForEditAgentBSupplierAddress = true OR
+                                bSignForEditAgentASupplierName = true OR bSignForEditAgentBSupplierName = true OR
+                                bSignForEditAgentASupplierTaxNumber = true OR bSignForEditAgentBSupplierTaxNumber = true OR
+                                bSignForEditAgentASupplierWarehouse = true OR bSignForEditAgentBSupplierWarehouse = true OR
+                                bSignForEditAgentASupplierId = true OR bSignForEditAgentBSupplierId = true OR
+                                bSignForEditAgentAWeightGross = true OR bSignForEditAgentBWeightGross = true
+                            ) 
+                        THEN true 
+                        ELSE false 
+                    END}'
+        />
+        <let id='bMainTableOnlyAgentAAccepted' shape='scalar' 
+            value='{CASE 
+                        WHEN 
+                            (
+                                bSignForAcceptAgentACustomerAddress = true OR
+                                bSignForAcceptAgentACustomerName = true OR
+                                bSignForAcceptAgentADeliveryAddress = true OR
+                                bSignForAcceptAgentADeliveryRecipientName = true OR
+                                bSignForAcceptAgentAIssueDate = true OR
+                                bSignForAcceptAgentAOrderNumber = true OR
+                                bSignForAcceptAgentASupplierAddress = true OR
+                                bSignForAcceptAgentASupplierName = true OR
+                                bSignForAcceptAgentASupplierTaxNumber = true OR
+                                bSignForAcceptAgentASupplierWarehouse = true OR
+                                bSignForAcceptAgentASupplierId = true OR
+                                bSignForAcceptAgentAWeightGross = true
+                            ) 
+                        THEN true 
+                        ELSE false 
+                    END}'
+        />
+        <let id='bMainTableOnlyAgentBAccepted' shape='scalar' 
+            value='{CASE 
+                        WHEN 
+                            (
+                                bSignForAcceptAgentBCustomerAddress = true OR
+                                bSignForAcceptAgentBCustomerName = true OR
+                                bSignForAcceptAgentBDeliveryAddress = true OR
+                                bSignForAcceptAgentBDeliveryRecipientName = true OR
+                                bSignForAcceptAgentBIssueDate = true OR
+                                bSignForAcceptAgentBOrderNumber = true OR
+                                bSignForAcceptAgentBSupplierAddress = true OR
+                                bSignForAcceptAgentBSupplierName = true OR
+                                bSignForAcceptAgentBSupplierTaxNumber = true OR
+                                bSignForAcceptAgentBSupplierWarehouse = true OR
+                                bSignForAcceptAgentBSupplierId = true OR
+                                bSignForAcceptAgentBWeightGross = true
+                            ) 
+                        THEN true 
+                        ELSE false
                     END}'
         />
 

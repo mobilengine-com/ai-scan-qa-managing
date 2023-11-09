@@ -218,7 +218,8 @@
             user_name: stCurrentJobUserName,
             finish_date: dtl.Now().DtlToDtdb(),
             result: stJobResultStatus,
-            job_work_time_minutes: iJobWorkTime
+            job_work_time_minutes: iJobWorkTime,
+            perfect_job: 0
         });
 
         //DEBUG Log (Get approved ANOT Job result)
@@ -404,6 +405,20 @@
                         delivery_note_work_end_date: dtl.Now().DtlToDtdb(),
                         delivery_note_work_time: dtl.Now().Diff(dtlCurrentDeliveryNoteStartWorkingTime).TotalHours,
                         delay_time: null
+                    });
+
+                    //Add perfect point to selected Anot jobs
+                    //First Anot job
+                    db.ai_scan_job_result.UpdateMany({
+                        job_id: stDeliveryNoteJobId
+                    },{
+                        perfect_job: 1
+                    });
+                    //Second Anot job
+                    db.ai_scan_job_result.UpdateMany({
+                        job_id: stDeliveryNoteOtherJob
+                    },{
+                        perfect_job: 1
                     });
 
                     //TODO Send QATaskDone with data which is received in this dacs. 
@@ -638,7 +653,8 @@
             user_name: stCurrentJobUserName,
             finish_date: dtl.Now().DtlToDtdb(),
             result: stJobResultStatus,
-            job_work_time_minutes: iJobWorkTime
+            job_work_time_minutes: iJobWorkTime,
+            perfect_job: 0
         });
 
         //DEBUG Log (Get rejected ANOT Job result)
@@ -705,6 +721,7 @@
 
             if(stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
             {
+                //Never get here
                 Log("Perfect Approved Annotations");
             }            
             else

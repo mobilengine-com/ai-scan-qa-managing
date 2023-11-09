@@ -2791,7 +2791,7 @@ styles{
 				}
 			control{
 				textAlign = left
-				width = 60px
+				width = 70px
 				borderWidth {
 					top = 0px
 					bottom = 0px
@@ -2951,7 +2951,7 @@ styles{
 				}
 			control{
 				textAlign = left
-				width = 60px
+				width = 70px
 				borderWidth {
 					top = 0px
 					bottom = 0px

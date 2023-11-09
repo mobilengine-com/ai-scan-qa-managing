@@ -7,5 +7,6 @@
         <Column Name='finish_date' Type='Date'/>
 		<Column Name='result' Type='Text'/>
         <Column Name='job_work_time_minutes' Type='Integer'/>
+        <Column Name='perfect_job' Type='Integer' NotNull='true' InitialValue='0'/>
 	</Columns>	
 </Reftab>

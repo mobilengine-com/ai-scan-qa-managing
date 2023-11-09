@@ -181,6 +181,110 @@
         <let id='fOutputDeliveryNoteOldestHUN' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "hu_hu"}'/>
         <let id='fOutputDeliveryNoteOldestENG' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "eng_eng"}'/>
         <let id='fOutputDeliveryNoteOldestPL' shape='scalar' value='{SELECT MAX(ODN.delivery_note_work_time) FROM ltblOutputDeliveryNotes ODN WHERE ODN.lang = "pl_pl"}'/>
+
+        <let id='ltblTeamAnotDatas' shape='table' access="private"
+            value='{SELECT
+                        J.id job_id,
+                        JR.job_work_time_minutes work_time_minutes,
+                        JR.perfect_job perfect_job,
+                        J.lang lang
+                    FROM
+                        ai_scan_jobs J
+                    INNER JOIN
+                        ai_scan_job_result JR ON JR.job_id = J.id    
+                    WHERE
+                        J.status = "DONE"
+                        AND
+                        J.type = "ANOT"
+                        AND
+                        CASE 
+                            WHEN ddDateFilter.selectedKey = 1 THEN STARTOFDAY(JR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                            WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(JR.finish_date) = STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1))
+                            WHEN ddDateFilter.selectedKey = 3 THEN 
+                                CASE 
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 0 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-6)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 1 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,6))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 2 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,5))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 3 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-2)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,4))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 4 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-3)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,3))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 5 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-4)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,2))
+                                    ELSE STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-5)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,1))
+                                END                            
+                            WHEN ddDateFilter.selectedKey = 4 THEN STARTOFMONTH(JR.finish_date) = STARTOFMONTH(sysp.dtlFormOpen)
+                            WHEN ddDateFilter.selectedKey = 5 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(dpToDate.date)
+                            ELSE STARTOFDAY(JR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                        END                    
+            }'
+        />
+
+        <let id='fTeamAnotDatasWorkedHoursSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD}'/>
+        <let id='fTeamAnotDatasWorkedHoursHUN' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "hu_hu"}'/>
+        <let id='fTeamAnotDatasWorkedHoursENG' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "eng_eng"}'/>
+        <let id='fTeamAnotDatasWorkedHoursPL' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "pl_pl"}'/>
+
+        <let id='iTeamAnotDatasOutputSUM' shape='scalar' value='{SELECT COUNT(TAD.job_id) FROM ltblTeamAnotDatas TAD}'/>
+        <let id='iTeamAnotDatasOutputHUN' shape='scalar' value='{SELECT COUNT(TAD.job_id) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "hu_hu"}'/>
+        <let id='iTeamAnotDatasOutputENG' shape='scalar' value='{SELECT COUNT(TAD.job_id) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "eng_eng"}'/>
+        <let id='iTeamAnotDatasOutputPL' shape='scalar' value='{SELECT COUNT(TAD.job_id) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "pl_pl"}'/>
+
+        <let id='iTeamAnotDatasPerfectSUM' shape='scalar' value='{SELECT COUNT(TAD.perfect_job) FROM ltblTeamAnotDatas TAD WHERE TAD.perfect_job = 1}'/>
+        <let id='iTeamAnotDatasPerfectHUN' shape='scalar' value='{SELECT COUNT(TAD.perfect_job) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "hu_hu" AND TAD.perfect_job = 1}'/>
+        <let id='iTeamAnotDatasPerfectENG' shape='scalar' value='{SELECT COUNT(TAD.perfect_job) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "eng_eng" AND TAD.perfect_job = 1}'/>
+        <let id='iTeamAnotDatasPerfectPL' shape='scalar' value='{SELECT COUNT(TAD.perfect_job) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "pl_pl" AND TAD.perfect_job = 1}'/>
+
+        <let id='fTeamAnotDatasAVGMinPerJobSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(COUNT(TAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD}'/>
+        <let id='fTeamAnotDatasAVGMinPerJobHUN' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(COUNT(TAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "hu_hu"}'/>
+        <let id='fTeamAnotDatasAVGMinPerJobENG' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(COUNT(TAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "eng_eng"}'/>
+        <let id='fTeamAnotDatasAVGMinPerJobPL' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TAD.work_time_minutes))/TOFLOAT(COUNT(TAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamAnotDatas TAD WHERE TAD.lang = "pl_pl"}'/>
+
+        <let id='ltblTeamQADatas' shape='table' access="private"
+            value='{SELECT
+                        J.id job_id,
+                        QAJR.job_work_time_minutes work_time_minutes,
+                        J.lang lang
+                    FROM
+                        ai_scan_jobs J
+                    INNER JOIN
+                        ai_scan_qa_job_result QAJR ON QAJR.job_id = J.id    
+                    WHERE
+                        J.status = "DONE"
+                        AND
+                        J.type = "QA"
+                        AND
+                        CASE 
+                            WHEN ddDateFilter.selectedKey = 1 THEN STARTOFDAY(QAJR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                            WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(QAJR.finish_date) = STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1))
+                            WHEN ddDateFilter.selectedKey = 3 THEN 
+                                CASE 
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 0 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-6)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 1 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,6))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 2 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,5))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 3 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-2)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,4))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 4 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-3)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,3))
+                                    WHEN DAYOFWEEK(sysp.dtlFormOpen) = 5 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-4)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,2))
+                                    ELSE STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-5)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,1))
+                                END                            
+                            WHEN ddDateFilter.selectedKey = 4 THEN STARTOFMONTH(QAJR.finish_date) = STARTOFMONTH(sysp.dtlFormOpen)
+                            WHEN ddDateFilter.selectedKey = 5 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(dpToDate.date)
+                            ELSE STARTOFDAY(QAJR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                        END                    
+            }'
+        />
+
+        <let id='fTeamQADatasWorkedHoursSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD}'/>
+        <let id='fTeamQADatasWorkedHoursHUN' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "hu_hu"}'/>
+        <let id='fTeamQADatasWorkedHoursENG' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "eng_eng"}'/>
+        <let id='fTeamQADatasWorkedHoursPL' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "pl_pl"}'/>
+
+        <let id='iTeamQADatasOutputSUM' shape='scalar' value='{SELECT COUNT(TQAD.job_id) FROM ltblTeamQADatas TQAD}'/>
+        <let id='iTeamQADatasOutputHUN' shape='scalar' value='{SELECT COUNT(TQAD.job_id) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "hu_hu"}'/>
+        <let id='iTeamQADatasOutputENG' shape='scalar' value='{SELECT COUNT(TQAD.job_id) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "eng_eng"}'/>
+        <let id='iTeamQADatasOutputPL' shape='scalar' value='{SELECT COUNT(TQAD.job_id) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "pl_pl"}'/>
+
+        <let id='fTeamQADatasAVGMinPerJobSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(COUNT(TQAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD}'/>
+        <let id='fTeamQADatasAVGMinPerJobHUN' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(COUNT(TQAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "hu_hu"}'/>
+        <let id='fTeamQADatasAVGMinPerJobENG' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(COUNT(TQAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "eng_eng"}'/>
+        <let id='fTeamQADatasAVGMinPerJobPL' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(TQAD.work_time_minutes))/TOFLOAT(COUNT(TQAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblTeamQADatas TQAD WHERE TQAD.lang = "pl_pl"}'/>
     </declarations>
     <header></header>
 
@@ -540,6 +644,46 @@
                                     <textview text=''/>
                                     <textview id='tvCordinatorStatsAnotJobsPL' text='{TOSTRING(iANOTJobsSumPL)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsPL"}'/>
                                 </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsAnotJobs}'>
+                                    <textview id='tvCordinatorStatsAnotJobsWorkedHText' text='{"WORKED h"}' style='{styles.sylTvCordinatorStatsAnotJobsText}' testId='{"tvCordinatorStatsAnotJobsWorkedHText"}'/>
+                                    <textview id='tvCordinatorStatsAnotJobsWorkedHSum' text='{CASE WHEN fTeamAnotDatasWorkedHoursSUM IS NOT NULL THEN TOSTRING(fTeamAnotDatasWorkedHoursSUM) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsWorkedHSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsAnotJobsWorkedHENG' text='{CASE WHEN fTeamAnotDatasWorkedHoursENG IS NOT NULL THEN TOSTRING(fTeamAnotDatasWorkedHoursENG) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsWorkedHENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsWorkedHHUN' text='{CASE WHEN fTeamAnotDatasWorkedHoursHUN IS NOT NULL THEN TOSTRING(fTeamAnotDatasWorkedHoursHUN) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsWorkedHHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsWorkedHPL' text='{CASE WHEN fTeamAnotDatasWorkedHoursPL IS NOT NULL THEN TOSTRING(fTeamAnotDatasWorkedHoursPL) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsWorkedHPL"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsAnotJobs}'>
+                                    <textview id='tvCordinatorStatsAnotJobsOutputText' text='{"OUTPUT"}' style='{styles.sylTvCordinatorStatsAnotJobsText}' testId='{"tvCordinatorStatsAnotJobsOutputText"}'/>
+                                    <textview id='tvCordinatorStatsAnotJobsOutputSum' text='{TOSTRING(iTeamAnotDatasOutputSUM)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsOutputSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsAnotJobsOutputENG' text='{TOSTRING(iTeamAnotDatasOutputENG)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsOutputENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsOutputHUN' text='{TOSTRING(iTeamAnotDatasOutputHUN)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsOutputHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsOutputPL' text='{TOSTRING(iTeamAnotDatasOutputPL)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsOutputPL"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsAnotJobs}'>
+                                    <textview id='tvCordinatorStatsAnotJobsPerfectText' text='{"PERFECT"}' style='{styles.sylTvCordinatorStatsAnotJobsText}' testId='{"tvCordinatorStatsAnotJobsPerfectText"}'/>
+                                    <textview id='tvCordinatorStatsAnotJobsPerfectSum' text='{TOSTRING(iTeamAnotDatasPerfectSUM)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsPerfectSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsAnotJobsPerfectENG' text='{TOSTRING(iTeamAnotDatasPerfectENG)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsPerfectENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsPerfectHUN' text='{TOSTRING(iTeamAnotDatasPerfectHUN)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsPerfectHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsPerfectPL' text='{TOSTRING(iTeamAnotDatasPerfectPL)}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsPerfectPL"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsAnotJobs}'>
+                                    <textview id='tvCordinatorStatsAnotJobsAVGMinPerJobText' text='{"AVG m/job"}' style='{styles.sylTvCordinatorStatsAnotJobsText}' testId='{"tvCordinatorStatsAnotJobsAVGMinPerJobText"}'/>
+                                    <textview id='tvCordinatorStatsAnotJobsAVGMinPerJobSum' text='{CASE WHEN fTeamAnotDatasAVGMinPerJobSUM IS NOT NULL THEN TOSTRING(fTeamAnotDatasAVGMinPerJobSUM) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsAVGMinPerJobSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsAnotJobsAVGMinPerJobENG' text='{CASE WHEN fTeamAnotDatasAVGMinPerJobENG IS NOT NULL THEN TOSTRING(fTeamAnotDatasAVGMinPerJobENG) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsAVGMinPerJobENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsAVGMinPerJobHUN' text='{CASE WHEN fTeamAnotDatasAVGMinPerJobHUN IS NOT NULL THEN TOSTRING(fTeamAnotDatasAVGMinPerJobHUN) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsAVGMinPerJobHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsAnotJobsAVGMinPerJobPL' text='{CASE WHEN fTeamAnotDatasAVGMinPerJobPL IS NOT NULL THEN TOSTRING(fTeamAnotDatasAVGMinPerJobPL) ELSE "0" END}' style='{styles.sylTvCordinatorStatsAnotJobs}' testId='{"tvCordinatorStatsAnotJobsAVGMinPerJobPL"}'/>
+                                </hbox>
                             </cell>
                         </row>
                     </header>
@@ -564,6 +708,50 @@
                             <let id='bHUNANOTJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTA.id AND UL.job_type = "ANOT" AND UL.lang = "hu_hu"}'/>
                             <let id='bENGANOTJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTA.id AND UL.job_type = "ANOT" AND UL.lang = "eng_eng"}'/>
                             <let id='bPLANOTJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTA.id AND UL.job_type = "ANOT" AND UL.lang = "pl_pl"}'/>
+
+                            <let id='ltblUserAnotDatas' shape='table' access="private"
+                                value='{SELECT
+                                            J.id job_id,
+                                            JR.job_work_time_minutes work_time_minutes,
+                                            JR.perfect_job perfect_job,
+                                            J.lang lang
+                                        FROM
+                                            ai_scan_jobs J
+                                        INNER JOIN
+                                            ai_scan_job_result JR ON JR.job_id = J.id AND JR.user_id = tblTA.id 
+                                        WHERE
+                                            J.status = "DONE"
+                                            AND
+                                            J.type = "ANOT"
+                                            AND
+                                            CASE 
+                                                WHEN ddDateFilter.selectedKey = 1 THEN STARTOFDAY(JR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                                                WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(JR.finish_date) = STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1))
+                                                WHEN ddDateFilter.selectedKey = 3 THEN 
+                                                    CASE 
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 0 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-6)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 1 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,6))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 2 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,5))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 3 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-2)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,4))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 4 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-3)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,3))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 5 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-4)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,2))
+                                                        ELSE STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-5)) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,1))
+                                                    END                            
+                                                WHEN ddDateFilter.selectedKey = 4 THEN STARTOFMONTH(JR.finish_date) = STARTOFMONTH(sysp.dtlFormOpen)
+                                                WHEN ddDateFilter.selectedKey = 5 THEN STARTOFDAY(JR.finish_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(JR.finish_date) &lt;= STARTOFDAY(dpToDate.date)
+                                                ELSE STARTOFDAY(JR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                                            END                    
+                                }'
+                            />
+
+                            <let id='fUserAnotDatasWorkedHoursSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(UAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblUserAnotDatas UAD}'/>
+
+                            <let id='iUserAnotDatasOutputSUM' shape='scalar' value='{SELECT COUNT(UAD.job_id) FROM ltblUserAnotDatas UAD}'/>
+
+                            <let id='iUserAnotDatasPerfectSUM' shape='scalar' value='{SELECT COUNT(UAD.perfect_job) FROM ltblUserAnotDatas UAD WHERE UAD.perfect_job = 1}'/>
+
+                            <let id='fUserAnotDatasAVGMinPerJobSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(UAD.work_time_minutes))/TOFLOAT(COUNT(UAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblUserAnotDatas UAD}'/>
+
                         </declarations>
                         <cell>
                             <chapter title='' style='{styles.chapterTopBorder}'/>
@@ -623,6 +811,22 @@
                             <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
                                 <textview id='tvAnotCurrentJobTimeText' text='{"Current job min"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvAnotCurrentJobTimeText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
                                 <textview id='tvAnotCurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvAnotCurrentJobTime" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
+                                <textview id='tvAnotOutputText' text='{"Output"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvAnotOutputText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvAnotOutput' text='{CASE WHEN iUserAnotDatasOutputSUM IS NOT NULL THEN TOSTRING(iUserAnotDatasOutputSUM) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvAnotOutput" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
+                                <textview id='tvAnotPerfectText' text='{"Perfect"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvAnotPerfectText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvAnotPerfect' text='{CASE WHEN iUserAnotDatasPerfectSUM IS NOT NULL THEN TOSTRING(iUserAnotDatasPerfectSUM) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvAnotPerfect" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
+                                <textview id='tvAnotWorkedHText' text='{"Worked h"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvAnotWorkedHText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvAnotWorkedH' text='{CASE WHEN fUserAnotDatasWorkedHoursSUM IS NOT NULL THEN TOSTRING(fUserAnotDatasWorkedHoursSUM) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvAnotWorkedH" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsAnotUsersStats}'>                                
+                                <textview id='tvAnotAVGMinPerJobText' text='{"AVG m/job"}' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTimeText}' testId='{"tvAnotAVGMinPerJobText" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
+                                <textview id='tvAnotAVGMinPerJob' text='{CASE WHEN fUserAnotDatasAVGMinPerJobSUM IS NOT NULL THEN TOSTRING(fUserAnotDatasAVGMinPerJobSUM) ELSE "-" END }' style='{styles.sylTvCordinatorStatsAnotUsersCurrentJobTime}' testId='{"tvAnotAVGMinPerJob" || "[" || TOSTRING(tblTAIndex) || "]"}'/>
                             </hbox>
                         </cell>
                     </row>
@@ -709,6 +913,46 @@
                                     <textview text=''/>
                                     <textview id='tvCordinatorStatsQAJobsPL' text='{TOSTRING(iQAJobsSumPL)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsPL"}'/>
                                 </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsQAJobs}'>
+                                    <textview id='tvCordinatorStatsQAJobsWorkedHText' text='{"WORKED h"}' style='{styles.sylTvCordinatorStatsQAJobsText}' testId='{"tvCordinatorStatsQAJobsWorkedHText"}'/>
+                                    <textview id='tvCordinatorStatsQAJobsWorkedHSum' text='{CASE WHEN fTeamQADatasWorkedHoursSUM IS NOT NULL THEN TOSTRING(fTeamQADatasWorkedHoursSUM) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsWorkedHSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsQAJobsWorkedHENG' text='{CASE WHEN fTeamQADatasWorkedHoursENG IS NOT NULL THEN TOSTRING(fTeamQADatasWorkedHoursENG) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsWorkedHENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsWorkedHHUN' text='{CASE WHEN fTeamQADatasWorkedHoursHUN IS NOT NULL THEN TOSTRING(fTeamQADatasWorkedHoursHUN) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsWorkedHHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsWorkedHPL' text='{CASE WHEN fTeamQADatasWorkedHoursPL IS NOT NULL THEN TOSTRING(fTeamQADatasWorkedHoursPL) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsWorkedHPL"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsQAJobs}'>
+                                    <textview id='tvCordinatorStatsQAJobsOutputText' text='{"OUTPUT"}' style='{styles.sylTvCordinatorStatsQAJobsText}' testId='{"tvCordinatorStatsQAJobsOutputText"}'/>
+                                    <textview id='tvCordinatorStatsQAJobsOutputSum' text='{TOSTRING(iTeamQADatasOutputSUM)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsOutputSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsQAJobsOutputENG' text='{TOSTRING(iTeamQADatasOutputENG)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsOutputENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsOutputHUN' text='{TOSTRING(iTeamQADatasOutputHUN)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsOutputHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsOutputPL' text='{TOSTRING(iTeamQADatasOutputPL)}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsOutputPL"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsQAJobs}'>
+                                    <textview id='tvCordinatorStatsQAJobsAVGMinPerJobText' text='{"AVG m/job"}' style='{styles.sylTvCordinatorStatsQAJobsText}' testId='{"tvCordinatorStatsQAJobsAVGMinPerJobText"}'/>
+                                    <textview id='tvCordinatorStatsQAJobsAVGMinPerJobSum' text='{CASE WHEN fTeamQADatasAVGMinPerJobSUM IS NOT NULL THEN TOSTRING(fTeamQADatasAVGMinPerJobSUM) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsAVGMinPerJobSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsQAJobsAVGMinPerJobENG' text='{CASE WHEN fTeamQADatasAVGMinPerJobENG IS NOT NULL THEN TOSTRING(fTeamQADatasAVGMinPerJobENG) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsAVGMinPerJobENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsAVGMinPerJobHUN' text='{CASE WHEN fTeamQADatasAVGMinPerJobHUN IS NOT NULL THEN TOSTRING(fTeamQADatasAVGMinPerJobHUN) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsAVGMinPerJobHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsAVGMinPerJobPL' text='{CASE WHEN fTeamQADatasAVGMinPerJobPL IS NOT NULL THEN TOSTRING(fTeamQADatasAVGMinPerJobPL) ELSE "0" END}' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsAVGMinPerJobPL"}'/>
+                                </hbox>
+                                <hbox style='{styles.sylHboxCordinatorStatsQAJobs}'>
+                                    <textview id='tvCordinatorStatsQAJobsEmptyRowText' text=' ' style='{styles.sylTvCordinatorStatsQAJobsText}' testId='{"tvCordinatorStatsQAJobsEmptyRowText"}'/>
+                                    <textview id='tvCordinatorStatsQAJobsEmptyRowSum' text='' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsEmptyRowSum"}'/>
+                                    <textview text=''/>                                    
+                                    <textview id='tvCordinatorStatsQAJobsEmptyRowENG' text='' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsEmptyRowENG"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsEmptyRowHUN' text='' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsEmptyRowHUN"}'/>
+                                    <textview text=''/>
+                                    <textview id='tvCordinatorStatsQAJobsEmptyRowPL' text='' style='{styles.sylTvCordinatorStatsQAJobs}' testId='{"tvCordinatorStatsQAJobsEmptyRowPL"}'/>
+                                </hbox>
                             </cell>
                         </row>
                     </header>
@@ -732,6 +976,47 @@
                             <let id='bHUNQAJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTQ.id AND UL.job_type = "QA" AND UL.lang = "hu_hu"}'/>
                             <let id='bENGQAJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTQ.id AND UL.job_type = "QA" AND UL.lang = "eng_eng"}'/>
                             <let id='bPLQAJobAccess' shape='scalar' value='{SELECT COUNT(0) != 0 FROM ai_scan_user_language UL WHERE UL.user_id = tblTQ.id AND UL.job_type = "QA" AND UL.lang = "pl_pl"}'/>
+
+                            <let id='ltblUserQADatas' shape='table' access="private"
+                                value='{SELECT
+                                            J.id job_id,
+                                            QAJR.job_work_time_minutes work_time_minutes,
+                                            J.lang lang
+                                        FROM
+                                            ai_scan_jobs J
+                                        INNER JOIN
+                                            ai_scan_qa_job_result QAJR ON QAJR.job_id = J.id AND QAJR.user_id = tblTQ.id
+                                        WHERE
+                                            J.status = "DONE"
+                                            AND
+                                            J.type = "QA"
+                                            AND
+                                            CASE 
+                                                WHEN ddDateFilter.selectedKey = 1 THEN STARTOFDAY(QAJR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                                                WHEN ddDateFilter.selectedKey = 2 THEN STARTOFDAY(QAJR.finish_date) = STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1))
+                                                WHEN ddDateFilter.selectedKey = 3 THEN 
+                                                    CASE 
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 0 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-6)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 1 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,0)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,6))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 2 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-1)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,5))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 3 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-2)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,4))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 4 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-3)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,3))
+                                                        WHEN DAYOFWEEK(sysp.dtlFormOpen) = 5 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-4)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,2))
+                                                        ELSE STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,-5)) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(ADDDAY(sysp.dtlFormOpen,1))
+                                                    END                            
+                                                WHEN ddDateFilter.selectedKey = 4 THEN STARTOFMONTH(QAJR.finish_date) = STARTOFMONTH(sysp.dtlFormOpen)
+                                                WHEN ddDateFilter.selectedKey = 5 THEN STARTOFDAY(QAJR.finish_date) &gt;= STARTOFDAY(dpFromDate.date) AND STARTOFDAY(QAJR.finish_date) &lt;= STARTOFDAY(dpToDate.date)
+                                                ELSE STARTOFDAY(QAJR.finish_date) = STARTOFDAY(sysp.dtlFormOpen)
+                                            END                    
+                                }'
+                            />
+
+                            <let id='fUserQADatasWorkedHoursSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(UQAD.work_time_minutes))/TOFLOAT(60), {decimalSeparator:",", maxFraction: 2}) FROM ltblUserQADatas UQAD}'/>
+
+                            <let id='iUserQADatasOutputSUM' shape='scalar' value='{SELECT COUNT(UQAD.job_id) FROM ltblUserQADatas UQAD}'/>
+
+                            <let id='fUserQADatasAVGMinPerJobSUM' shape='scalar' value='{SELECT FORMATNUMBER(TOFLOAT(SUM(UQAD.work_time_minutes))/TOFLOAT(COUNT(UQAD.job_id)), {decimalSeparator:",", maxFraction: 2}) FROM ltblUserQADatas UQAD}'/>
+
                         </declarations>
                         <cell>
                             <chapter title='' style='{styles.chapterTopBorder}'/>
@@ -791,6 +1076,22 @@
                             <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
                                 <textview id='tvQACurrentJobTimeText' text='{"Current job min"}' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvQACurrentJobTimeText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
                                 <textview id='tvQACurrentJobTime' text='{CASE WHEN fDtlDifference IS NOT NULL THEN TOSTRING(FORMATNUMBER(fDtlDifference, {decimalSeparator:",", maxFraction: 2})) ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvQACurrentJobTime" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
+                                <textview id='tvQAOutputText' text='{"Output"}' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvQAOutputText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvQAOutput' text='{CASE WHEN iUserQADatasOutputSUM IS NOT NULL THEN TOSTRING(iUserQADatasOutputSUM)  ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvQAOutput" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
+                                <textview id='tvQAWorkedHText' text='{"Worked h"}' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvQAWorkedHText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvQAWorkedH' text='{CASE WHEN fUserQADatasWorkedHoursSUM IS NOT NULL THEN TOSTRING(fUserQADatasWorkedHoursSUM) ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvQAWorkedH" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
+                                <textview id='tvQAAVGMinPerJobText' text='{"AVG m/job"}' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvQAAVGMinPerJobText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvQAAVGMinPerJob' text='{CASE WHEN fUserQADatasAVGMinPerJobSUM IS NOT NULL THEN TOSTRING(fUserQADatasAVGMinPerJobSUM) ELSE "-" END }' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvQAAVGMinPerJob" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                            </hbox>
+                            <hbox style='{styles.sylHboxCordinatorStatsQAUsersStats}'>                                
+                                <textview id='tvQAEmptyRowText' text=' ' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTimeText}' testId='{"tvQAEmptyRowText" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
+                                <textview id='tvQAEmptyRow' text='' style='{styles.sylTvCordinatorStatsQAUsersCurrentJobTime}' testId='{"tvQAEmptyRow" || "[" || TOSTRING(tblTQIndex) || "]"}'/>
                             </hbox>
                         </cell>
                     </row>
