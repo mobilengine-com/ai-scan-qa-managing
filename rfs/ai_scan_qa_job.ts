@@ -4,9 +4,48 @@
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_user;
 //# using reftab ai_scan_job_result;
+//# using reftab ai_scan_delivery_note_qaj;
+//# using reftab ai_scan_delivery_note_item_qaj;
 //# using dacs QATaskDone;
 
 {
+    let rgstdtf = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
+    let rgnf = [
+        {decimalSeparator: ",",   groupSize: 3, groupSeparator: "."},
+        {decimalSeparator: ",",   groupSize: 3, groupSeparator: " "},
+        {decimalSeparator: ".",   groupSize: 3, groupSeparator: " "},
+        {decimalSeparator: ".",   groupSize: 3, groupSeparator: ","}
+      ];
+
+    let DateFrom = function(st) {
+        if (st == null || st == undefined) 
+            return null;
+
+        Log(["rgstdtf", rgstdtf]);
+        for (let stdtf of rgstdtf) {
+          Log(["stdtf", stdtf]);
+          let dtlIssueDate = dtl.Parse(dtf.Parse(stdtf), st);
+          if (dtlIssueDate != undefined) {
+            Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate.DtlToDtdb()]);
+            return dtlIssueDate.DtlToDtdb();
+          }
+        }
+        return null;
+    };
+
+    let NumberFrom = function (st) {
+        if (st == null || st == undefined) 
+            return null;
+        for (let nf of rgnf) {
+            let n = float.ParseNuf(nf, st);
+            if (n != undefined) {
+              Log(["number", st, "parsed with ", nf]);
+              return n;
+            }
+          }
+          return null;
+    };
+
     let stDelayTime = form.stDelayTime;
 
     if(stDelayTime == null || stDelayTime == "")
@@ -106,6 +145,16 @@
                 result: stresult,
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
+            });
+
+            // Update delivery_note QA job
+            db.ai_scan_delivery_note_qaj.UpdateMany({
+                delivery_note_id: stSelectedQAJobDeliveryNoteId,
+                job_id: stSelectedQAJobId
+            },{
+                status: "rejected",
+                avg_score_must_have: 0.0,
+                avg_score_overall: 0.0
             });
 
             //DEBUG Log (QA Job BAD PHOTO DONE)
@@ -549,6 +598,55 @@
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
             });
+
+            // Update delivery_note QA job
+            db.ai_scan_delivery_note_qaj.UpdateMany({
+                job_id: stSelectedQAJobId
+            },{
+                status: "done_handwritten",
+                avg_score_must_have: 100.0,
+                avg_score_overall: 100.0,
+                customer_address: stSendAgentCustomerAddress,
+                customer_name: stSendAgentCustomerName,
+                delivery_address: stSendAgentDeliveryAddress,
+                delivery_recipient_name: stSendAgentDeliveryRecipientName,
+                issue_date: stSendAgentIssueDate,
+                dtl_issue_date: DateFrom(stSendAgentIssueDate),
+                order_number: stSendAgentOrderNumber,
+                supplier_address: stSendAgentSupplierAddress,
+                supplier_name: stSendAgentSupplierName,
+                supplier_tax_number: stSendAgentSupplierTaxNumber,
+                supplier_warehouse: stSendAgentSupplierWarehouse,
+                supplier_id: stSendAgentSupplierId,
+                weight_gross: stSendAgentWeightGross
+            });
+            
+            // delivery_note's QA items
+
+            if(iCount != 0)
+            {
+                let ii = 0;
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                {
+
+                    // Update delivery_note QA job
+                    db.ai_scan_delivery_note_item_qaj.InsertOrUpdate({
+                        delivery_note_id: stSelectedQAJobDeliveryNoteId,
+                        job_id: stSelectedQAJobId,
+                        row_counter: ii
+                    },{
+                        item_name: lstFinalItemTable.GetAt(1+i),
+                        manufacturer_item_number: lstFinalItemTable.GetAt(2+i),
+                        tax_number: lstFinalItemTable.GetAt(3+i),
+                        amount: lstFinalItemTable.GetAt(4+i),
+                        amount_number: NumberFrom(lstFinalItemTable.GetAt(4+i)),
+                        unit: lstFinalItemTable.GetAt(5+i),
+                        gross_weight: lstFinalItemTable.GetAt(6+i)
+                    });
+
+                    ii=ii+1;
+                }
+            }
 
             //Set perfect point to Anot job if possible
             if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableAOnlyAccepted == true || bMainTableOnlyAgentAAccepted == true) && (bItemTableBOnlyAccepted == false && bMainTableOnlyAgentBAccepted == false))
@@ -1016,6 +1114,55 @@
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
             });
+
+            // Update delivery_note QA job
+            db.ai_scan_delivery_note_qaj.UpdateMany({
+                job_id: stSelectedQAJobId
+            },{
+                status: "done_approved",
+                avg_score_must_have: 100.0,
+                avg_score_overall: 100.0,
+                customer_address: stSendAgentCustomerAddress,
+                customer_name: stSendAgentCustomerName,
+                delivery_address: stSendAgentDeliveryAddress,
+                delivery_recipient_name: stSendAgentDeliveryRecipientName,
+                issue_date: stSendAgentIssueDate,
+                dtl_issue_date: DateFrom(stSendAgentIssueDate),
+                order_number: stSendAgentOrderNumber,
+                supplier_address: stSendAgentSupplierAddress,
+                supplier_name: stSendAgentSupplierName,
+                supplier_tax_number: stSendAgentSupplierTaxNumber,
+                supplier_warehouse: stSendAgentSupplierWarehouse,
+                supplier_id: stSendAgentSupplierId,
+                weight_gross: stSendAgentWeightGross
+            });
+            
+            // delivery_note's QA items
+
+            if(iCount != 0)
+            {
+                let ii = 0;
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                {
+
+                    // Update delivery_note QA job
+                    db.ai_scan_delivery_note_item_qaj.InsertOrUpdate({
+                        delivery_note_id: stSelectedQAJobDeliveryNoteId,
+                        job_id: stSelectedQAJobId,
+                        row_counter: ii
+                    },{
+                        item_name: lstFinalItemTable.GetAt(1+i),
+                        manufacturer_item_number: lstFinalItemTable.GetAt(2+i),
+                        tax_number: lstFinalItemTable.GetAt(3+i),
+                        amount: lstFinalItemTable.GetAt(4+i),
+                        amount_number: NumberFrom(lstFinalItemTable.GetAt(4+i)),
+                        unit: lstFinalItemTable.GetAt(5+i),
+                        gross_weight: lstFinalItemTable.GetAt(6+i)
+                    });
+
+                    ii=ii+1;
+                }
+            }
 
              //Set perfect point to Anot job if possible
              if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableAOnlyAccepted == true || bMainTableOnlyAgentAAccepted == true) && (bItemTableBOnlyAccepted == false && bMainTableOnlyAgentBAccepted == false))

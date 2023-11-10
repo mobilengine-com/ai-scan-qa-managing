@@ -1,0 +1,16 @@
+<Reftab Name="ai_scan_delivery_note_item_qaj" xmlns="http://schemas.mobilengine.com/reftab/v1">
+    <Columns>
+        <Column Name="delivery_note_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+        <Column Name="job_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+        <Column Name="row_counter" Type="Integer" PrimaryKey="true" NotNull="true"/>
+        <Column Name="item_name" Type="Text"/>
+        <Column Name="manufacturer_item_number" Type="Text"/>
+        <Column Name="tax_number" Type="Text"/>
+        <Column Name="amount" Type="Text"/>
+        <Column Name="amount_number" Type="Float"/>
+        <Column Name="unit" Type="Text"/>
+        <Column Name="gross_weight" Type="Text"/>
+        <Column Name="gross_weight_number" Type="Float"/>
+        <Column Name="gross_weight_unit" Type="Text"/>
+    </Columns>
+</Reftab>

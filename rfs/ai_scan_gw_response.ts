@@ -7,6 +7,7 @@
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_settings;
+//# using reftab ai_scan_delivery_note_qaj;
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
@@ -499,6 +500,15 @@
                         id: stQAJobId,
                         users: null
                     });
+
+                    // Create QA job status
+                    db.ai_scan_delivery_note_qaj.Insert({
+                        delivery_note_id: stDeliveryNoteId,
+                        job_id: stQAJobId,
+                        status: "waiting",
+                        avg_score_must_have: 0.0,
+                        avg_score_overall: 0.0
+                    });
                 }
             }
         }
@@ -768,6 +778,15 @@
                 db.ai_scan_jobs_history.Insert({
                     id: stQAJobId,
                     users: null
+                });
+
+                // Create QA job status
+                db.ai_scan_delivery_note_qaj.Insert({
+                    delivery_note_id: stDeliveryNoteId,
+                    job_id: stQAJobId,
+                    status: "waiting",
+                    avg_score_must_have: 0.0,
+                    avg_score_overall: 0.0
                 });
             }
         }
