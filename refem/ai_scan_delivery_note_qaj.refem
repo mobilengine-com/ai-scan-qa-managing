@@ -1,0 +1,22 @@
+<Reftab Name="ai_scan_delivery_note_qaj" xmlns="http://schemas.mobilengine.com/reftab/v1">
+    <Columns>
+        <Column Name="delivery_note_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+        <Column Name="job_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+        <Column Name="status" Type="Text" NotNull="true"/>
+        <Column Name="avg_score_must_have" Type="Float" NotNull="true"/>
+        <Column Name="avg_score_overall" Type="Float" NotNull="true"/>
+        <Column Name="customer_address" Type="Text"/>
+        <Column Name="customer_name" Type="Text"/>
+        <Column Name="delivery_address" Type="Text"/>
+        <Column Name="delivery_recipient_name" Type="Text"/>
+        <Column Name="issue_date" Type="Text"/>
+        <Column Name='dtl_issue_date' Type='Date'/>
+        <Column Name="order_number" Type="Text"/>
+        <Column Name="supplier_address" Type="Text"/>
+        <Column Name="supplier_name" Type="Text"/>
+        <Column Name="supplier_tax_number" Type="Text"/>
+        <Column Name="supplier_warehouse" Type="Text"/>
+        <Column Name="supplier_id" Type="Text"/>
+        <Column Name="weight_gross" Type="Text"/>
+    </Columns>
+</Reftab>

@@ -7,6 +7,7 @@
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_settings;
+//# using reftab ai_scan_delivery_note_qaj;
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
@@ -218,7 +219,8 @@
             user_name: stCurrentJobUserName,
             finish_date: dtl.Now().DtlToDtdb(),
             result: stJobResultStatus,
-            job_work_time_minutes: iJobWorkTime
+            job_work_time_minutes: iJobWorkTime,
+            perfect_job: 0
         });
 
         //DEBUG Log (Get approved ANOT Job result)
@@ -406,6 +408,20 @@
                         delay_time: null
                     });
 
+                    //Add perfect point to selected Anot jobs
+                    //First Anot job
+                    db.ai_scan_job_result.UpdateMany({
+                        job_id: stDeliveryNoteJobId
+                    },{
+                        perfect_job: 1
+                    });
+                    //Second Anot job
+                    db.ai_scan_job_result.UpdateMany({
+                        job_id: stDeliveryNoteOtherJob
+                    },{
+                        perfect_job: 1
+                    });
+
                     //TODO Send QATaskDone with data which is received in this dacs. 
                     let doneDacs = messages.QATaskDone.New();
                     Log(stDeliveryNoteId);
@@ -483,6 +499,15 @@
                     db.ai_scan_jobs_history.Insert({
                         id: stQAJobId,
                         users: null
+                    });
+
+                    // Create QA job status
+                    db.ai_scan_delivery_note_qaj.Insert({
+                        delivery_note_id: stDeliveryNoteId,
+                        job_id: stQAJobId,
+                        status: "waiting",
+                        avg_score_must_have: 0.0,
+                        avg_score_overall: 0.0
                     });
                 }
             }
@@ -638,7 +663,8 @@
             user_name: stCurrentJobUserName,
             finish_date: dtl.Now().DtlToDtdb(),
             result: stJobResultStatus,
-            job_work_time_minutes: iJobWorkTime
+            job_work_time_minutes: iJobWorkTime,
+            perfect_job: 0
         });
 
         //DEBUG Log (Get rejected ANOT Job result)
@@ -705,6 +731,7 @@
 
             if(stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
             {
+                //Never get here
                 Log("Perfect Approved Annotations");
             }            
             else
@@ -751,6 +778,15 @@
                 db.ai_scan_jobs_history.Insert({
                     id: stQAJobId,
                     users: null
+                });
+
+                // Create QA job status
+                db.ai_scan_delivery_note_qaj.Insert({
+                    delivery_note_id: stDeliveryNoteId,
+                    job_id: stQAJobId,
+                    status: "waiting",
+                    avg_score_must_have: 0.0,
+                    avg_score_overall: 0.0
                 });
             }
         }

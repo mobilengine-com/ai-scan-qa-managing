@@ -31,8 +31,8 @@
         />
         <let id='stSelectedQAJobSupplierId' shape='scalar' access='private' value='{SELECT SQAJD.supplier_id FROM ltblSelectedQAJobDatas SQAJD}'/>
         <let id='dtlSelectedQAJobDeliveryNoteWorkStartDate' shape='scalar' value='{SELECT SQAJD.delivery_note_work_start_date FROM ltblSelectedQAJobDatas SQAJD}'/>
-        <let id='stSelectedQAJobSupplierANNOTJob1' shape='scalar' access='private' value='{SELECT SQAJD.job_id_2 FROM ltblSelectedQAJobDatas SQAJD}'/>
-        <let id='stSelectedQAJobSupplierANNOTJob2' shape='scalar' access='private' value='{SELECT SQAJD.job_id_3 FROM ltblSelectedQAJobDatas SQAJD}'/>
+        <let id='stSelectedQAJobSupplierANNOTJob1' shape='scalar' value='{SELECT SQAJD.job_id_2 FROM ltblSelectedQAJobDatas SQAJD}'/>
+        <let id='stSelectedQAJobSupplierANNOTJob2' shape='scalar' value='{SELECT SQAJD.job_id_3 FROM ltblSelectedQAJobDatas SQAJD}'/>
         
         <let id='ltblSelectedQAJobAgentAResult' access='private' shape='table' 
 			value='{SELECT
@@ -299,6 +299,70 @@
                     END}'
         />
 
+        <let id='bMainTableEditedTextAvaiable' shape='scalar' 
+            value='{CASE
+                        WHEN 
+                            (
+                                bSignForEditAgentACustomerAddress = true OR bSignForEditAgentBCustomerAddress = true OR
+                                bSignForEditAgentACustomerName = true OR bSignForEditAgentBCustomerName = true OR
+                                bSignForEditAgentADeliveryAddress = true OR bSignForEditAgentBDeliveryAddress OR
+                                bSignForEditAgentADeliveryRecipientName = true OR bSignForEditAgentBDeliveryRecipientName = true OR
+                                bSignForEditAgentAIssueDate = true OR bSignForEditAgentBIssueDate = true OR
+                                bSignForEditAgentAOrderNumber = true OR bSignForEditAgentBOrderNumber = true OR
+                                bSignForEditAgentASupplierAddress = true OR bSignForEditAgentBSupplierAddress = true OR
+                                bSignForEditAgentASupplierName = true OR bSignForEditAgentBSupplierName = true OR
+                                bSignForEditAgentASupplierTaxNumber = true OR bSignForEditAgentBSupplierTaxNumber = true OR
+                                bSignForEditAgentASupplierWarehouse = true OR bSignForEditAgentBSupplierWarehouse = true OR
+                                bSignForEditAgentASupplierId = true OR bSignForEditAgentBSupplierId = true OR
+                                bSignForEditAgentAWeightGross = true OR bSignForEditAgentBWeightGross = true
+                            ) 
+                        THEN true 
+                        ELSE false 
+                    END}'
+        />
+        <let id='bMainTableOnlyAgentAAccepted' shape='scalar' 
+            value='{CASE 
+                        WHEN 
+                            (
+                                bSignForAcceptAgentACustomerAddress = true OR
+                                bSignForAcceptAgentACustomerName = true OR
+                                bSignForAcceptAgentADeliveryAddress = true OR
+                                bSignForAcceptAgentADeliveryRecipientName = true OR
+                                bSignForAcceptAgentAIssueDate = true OR
+                                bSignForAcceptAgentAOrderNumber = true OR
+                                bSignForAcceptAgentASupplierAddress = true OR
+                                bSignForAcceptAgentASupplierName = true OR
+                                bSignForAcceptAgentASupplierTaxNumber = true OR
+                                bSignForAcceptAgentASupplierWarehouse = true OR
+                                bSignForAcceptAgentASupplierId = true OR
+                                bSignForAcceptAgentAWeightGross = true
+                            ) 
+                        THEN true 
+                        ELSE false 
+                    END}'
+        />
+        <let id='bMainTableOnlyAgentBAccepted' shape='scalar' 
+            value='{CASE 
+                        WHEN 
+                            (
+                                bSignForAcceptAgentBCustomerAddress = true OR
+                                bSignForAcceptAgentBCustomerName = true OR
+                                bSignForAcceptAgentBDeliveryAddress = true OR
+                                bSignForAcceptAgentBDeliveryRecipientName = true OR
+                                bSignForAcceptAgentBIssueDate = true OR
+                                bSignForAcceptAgentBOrderNumber = true OR
+                                bSignForAcceptAgentBSupplierAddress = true OR
+                                bSignForAcceptAgentBSupplierName = true OR
+                                bSignForAcceptAgentBSupplierTaxNumber = true OR
+                                bSignForAcceptAgentBSupplierWarehouse = true OR
+                                bSignForAcceptAgentBSupplierId = true OR
+                                bSignForAcceptAgentBWeightGross = true
+                            ) 
+                        THEN true 
+                        ELSE false
+                    END}'
+        />
+
         <let id='stSendAgentCustomerAddress' shape='scalar' value='{CASE WHEN stSavedAgentCustomerAddress = "" OR stSavedAgentCustomerAddress = " " THEN stSelectedQAJobAnotJobsAgentACustomerAddress ELSE stSavedAgentCustomerAddress END}'/>
         <let id='stSendAgentCustomerName' shape='scalar' value='{CASE WHEN stSavedAgentCustomerName = "" OR stSavedAgentCustomerName = " " THEN stSelectedQAJobAnotJobsAgentACustomerName ELSE stSavedAgentCustomerName END}'/>
         <let id='stSendAgentDeliveryAddress' shape='scalar' value='{CASE WHEN stSavedAgentDeliveryAddress = "" OR stSavedAgentDeliveryAddress = " " THEN stSelectedQAJobAnotJobsAgentADeliveryAddress ELSE stSavedAgentDeliveryAddress END}'/>
@@ -507,7 +571,7 @@
                                 AND
                                 ((bItemTableFinalValidation = true AND iItemTableAgentARowCount = iItemTableAgentBRowCount AND iItemTableAgentARowCount != 0 AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentARowCount = 0 AND iItemTableAgentBRowCount = 0))
                                 )
-                            }' message='{"Accept or Edit all differences!"}'/>
+                            }' message='{"Please correct the red marks!"}'/>
                         </validation>
                     </submitbutton>
                     <submitbutton id='sbtnApprove' text='Approve' style='{styles.sylSbtnApprove}' nextForm='{forms.ai_scan_agent_dashboard}' testId='sbtnApprove'>
@@ -548,7 +612,7 @@
                                 AND
                                 ((bItemTableFinalValidation = true AND iItemTableAgentARowCount = iItemTableAgentBRowCount AND iItemTableAgentARowCount != 0 AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentARowCount = 0 AND iItemTableAgentBRowCount = 0))
                                 )
-                            }' message='{"Accept or Edit all differences!"}'/>
+                            }' message='{"Please correct the red marks!"}'/>
                         </validation>
                     </submitbutton>
                     <combinedbutton id='cbtnCancel' text='Cancel' style='{styles.sylCbtnCancel}' testId='cbtnCancel'>
@@ -1752,22 +1816,40 @@
         </repeater>
 
         <if cond='{iItemTableAgentARowCount = iItemTableAgentBRowCount}'>
-            <combinedbutton id='cbtnAddNewItemAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentA"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
-                    <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentA"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
+                        <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
+                </combinedbutton>
+                <if cond='{iItemTableAgentARowCount &lt; iItemTableAgentBRowCount}'>
+                    <textview id='tvItemTableAgentARowCountError' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentARowCountError'/>
+                </if>
+                <if cond='{iItemTableAgentARowCount = iItemTableAgentBRowCount}'>
+                    <textview id='tvItemTableAgentARowCountErrorEqualsEmpty' text='' testId='tvItemTableAgentARowCountErrorEqualsEmpty'/>
+                </if>
+                <textview id='tvItemTableAgentARowCountErrorEmpty' text='' testId='tvItemTableAgentARowCountErrorEmpty'/>
+            </hbox>            
         </if>
         <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount}'>
-            <combinedbutton id='cbtnAddNewItemAgentANewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRow"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentANewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRow"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                </combinedbutton>
+                <if cond='{iItemTableAgentARowCount &lt; iItemTableAgentBRowCount}'>
+                    <textview id='tvItemTableAgentANewRowRowCountError' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountError'/>
+                </if>
+                <if cond='{iItemTableAgentARowCount = iItemTableAgentBRowCount}'>
+                    <textview id='tvItemTableAgentANewRowRowCountErrorEqualsEmpty' text='' testId='tvItemTableAgentANewRowRowCountErrorEqualsEmpty'/>
+                </if>
+                <textview id='tvItemTableAgentANewRowRowCountErrorEmpty' text='' testId='tvItemTableAgentANewRowRowCountErrorEmpty'/>
+            </hbox>            
         </if>
 
         <!-- Separator -->
@@ -2117,22 +2199,40 @@
         </repeater>
 
         <if cond='{iItemTableAgentBRowCount = iItemTableAgentARowCount}'>
-            <combinedbutton id='cbtnAddNewItemAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentB"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
-                    <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentB"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
+                        <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
+                </combinedbutton>
+                <if cond='{iItemTableAgentBRowCount &lt; iItemTableAgentARowCount}'>
+                    <textview id='tvItemTableAgentBRowCountError' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountError'/>
+                </if>
+                <if cond='{iItemTableAgentBRowCount = iItemTableAgentARowCount}'>
+                    <textview id='tvItemTableAgentBRowCountEqualsEmpty' text='' testId='tvItemTableAgentBRowCountEqualsEmpty'/>
+                </if>
+                <textview id='tvItemTableAgentBRowCountEmpty' text='' testId='tvItemTableAgentBRowCountEmpty'/>
+            </hbox>
         </if>
         <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount}'>
-            <combinedbutton id='cbtnAddNewItemAgentBNewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRow"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentBNewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRow"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                </combinedbutton>
+                <if cond='{iItemTableAgentBRowCount &lt; iItemTableAgentARowCount}'>
+                    <textview id='tvItemTableAgentBNewRowRowCountError' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBNewRowRowCountError'/>
+                </if>
+                <if cond='{iItemTableAgentBRowCount = iItemTableAgentARowCount}'>
+                    <textview id='tvItemTableAgentBNewRowRowCountEqualsEmpty' text='' testId='tvItemTableAgentBNewRowRowCountEqualsEmpty'/>
+                </if>
+                <textview id='tvItemTableAgentBNewRowRowCountEmpty' text='' testId='tvItemTableAgentBNewRowRowCountEmpty'/>
+            </hbox>            
         </if>
 
     </repeater>

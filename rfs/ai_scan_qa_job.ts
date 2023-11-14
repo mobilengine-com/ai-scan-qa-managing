@@ -3,15 +3,58 @@
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_user;
+//# using reftab ai_scan_job_result;
+//# using reftab ai_scan_delivery_note_qaj;
+//# using reftab ai_scan_delivery_note_item_qaj;
 //# using dacs QATaskDone;
 
 {
+    let rgstdtf = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
+    let rgnf = [
+        {decimalSeparator: ",",   groupSize: 3, groupSeparator: "."},
+        {decimalSeparator: ",",   groupSize: 3, groupSeparator: " "},
+        {decimalSeparator: ".",   groupSize: 3, groupSeparator: " "},
+        {decimalSeparator: ".",   groupSize: 3, groupSeparator: ","}
+      ];
+
+    let DateFrom = function(st) {
+        if (st == null || st == undefined) 
+            return null;
+
+        Log(["rgstdtf", rgstdtf]);
+        for (let stdtf of rgstdtf) {
+          Log(["stdtf", stdtf]);
+          let dtlIssueDate = dtl.Parse(dtf.Parse(stdtf), st);
+          if (dtlIssueDate != undefined) {
+            Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate.DtlToDtdb()]);
+            return dtlIssueDate.DtlToDtdb();
+          }
+        }
+        return null;
+    };
+
+    let NumberFrom = function (st) {
+        if (st == null || st == undefined) 
+            return null;
+        for (let nf of rgnf) {
+            let n = float.ParseNuf(nf, st);
+            if (n != undefined) {
+              Log(["number", st, "parsed with ", nf]);
+              return n;
+            }
+          }
+          return null;
+    };
+
     let stDelayTime = form.stDelayTime;
 
     if(stDelayTime == null || stDelayTime == "")
     {
         stDelayTime = "1";
     }
+
+    let stSelectedQAJobSupplierANNOTJob1 = form.stSelectedQAJobSupplierANNOTJob1;
+    let stSelectedQAJobSupplierANNOTJob2 = form.stSelectedQAJobSupplierANNOTJob2;
 
     let bBadPhoto = form.bBadPhoto;
     let bCancel = form.bCancel;
@@ -102,6 +145,16 @@
                 result: stresult,
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
+            });
+
+            // Update delivery_note QA job
+            db.ai_scan_delivery_note_qaj.UpdateMany({
+                delivery_note_id: stSelectedQAJobDeliveryNoteId,
+                job_id: stSelectedQAJobId
+            },{
+                status: "rejected",
+                avg_score_must_have: 0.0,
+                avg_score_overall: 0.0
             });
 
             //DEBUG Log (QA Job BAD PHOTO DONE)
@@ -251,6 +304,14 @@
                 }
             }
 
+            let bMainTableEditedTextAvaiable = form.bMainTableEditedTextAvaiable;
+            let bMainTableOnlyAgentAAccepted = form.bMainTableOnlyAgentAAccepted;
+            let bMainTableOnlyAgentBAccepted = form.bMainTableOnlyAgentBAccepted;
+
+            let bItemTableEdittedVariable = false;
+            let bItemTableAOnlyAccepted = false;
+            let bItemTableBOnlyAccepted = false;
+
             for(let i = 0; i < iCount; i = i + 1)
             {
                 //item row
@@ -277,6 +338,19 @@
                     }
                 }
 
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
                 //manufacturer item number
                 if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
                 {                
@@ -298,6 +372,19 @@
                     }
                 }
 
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
                 //tax number
                 if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
                 {                
@@ -317,7 +404,20 @@
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
                     }
-                }            
+                }  
+                
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
 
                 //amount number
                 if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
@@ -340,6 +440,19 @@
                     }
                 }
 
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
                 //unit
                 if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
                 {                
@@ -359,7 +472,20 @@
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
                     }
-                }            
+                }   
+                
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
 
                 //gross weight
                 if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
@@ -380,7 +506,20 @@
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
                     }
-                }            
+                }    
+                
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
             }
 
             //Send DACS
@@ -459,6 +598,81 @@
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
             });
+
+            // Update delivery_note QA job
+            db.ai_scan_delivery_note_qaj.UpdateMany({
+                job_id: stSelectedQAJobId
+            },{
+                status: "done_handwritten",
+                avg_score_must_have: 100.0,
+                avg_score_overall: 100.0,
+                customer_address: stSendAgentCustomerAddress,
+                customer_name: stSendAgentCustomerName,
+                delivery_address: stSendAgentDeliveryAddress,
+                delivery_recipient_name: stSendAgentDeliveryRecipientName,
+                issue_date: stSendAgentIssueDate,
+                dtl_issue_date: DateFrom(stSendAgentIssueDate),
+                order_number: stSendAgentOrderNumber,
+                supplier_address: stSendAgentSupplierAddress,
+                supplier_name: stSendAgentSupplierName,
+                supplier_tax_number: stSendAgentSupplierTaxNumber,
+                supplier_warehouse: stSendAgentSupplierWarehouse,
+                supplier_id: stSendAgentSupplierId,
+                weight_gross: stSendAgentWeightGross
+            });
+            
+            // delivery_note's QA items
+
+            if(iCount != 0)
+            {
+                let ii = 0;
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                {
+
+                    // Update delivery_note QA job
+                    db.ai_scan_delivery_note_item_qaj.InsertOrUpdate({
+                        delivery_note_id: stSelectedQAJobDeliveryNoteId,
+                        job_id: stSelectedQAJobId,
+                        row_counter: ii
+                    },{
+                        item_name: lstFinalItemTable.GetAt(1+i),
+                        manufacturer_item_number: lstFinalItemTable.GetAt(2+i),
+                        tax_number: lstFinalItemTable.GetAt(3+i),
+                        amount: lstFinalItemTable.GetAt(4+i),
+                        amount_number: NumberFrom(lstFinalItemTable.GetAt(4+i)),
+                        unit: lstFinalItemTable.GetAt(5+i),
+                        gross_weight: lstFinalItemTable.GetAt(6+i)
+                    });
+
+                    ii=ii+1;
+                }
+            }
+
+            //Set perfect point to Anot job if possible
+            if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableAOnlyAccepted == true || bMainTableOnlyAgentAAccepted == true) && (bItemTableBOnlyAccepted == false && bMainTableOnlyAgentBAccepted == false))
+            {
+                Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob1+" !");
+                db.ai_scan_job_result.UpdateMany({
+                    job_id: stSelectedQAJobSupplierANNOTJob1
+                },{
+                    perfect_job: 1
+                });
+            }
+
+            if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableBOnlyAccepted == true || bMainTableOnlyAgentBAccepted == true) && (bItemTableAOnlyAccepted == false && bMainTableOnlyAgentAAccepted == false))
+            {
+                Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob2+" !");
+                db.ai_scan_job_result.UpdateMany({
+                    job_id: stSelectedQAJobSupplierANNOTJob2
+                },{
+                    perfect_job: 1
+                });
+            }
+
+            if(bMainTableEditedTextAvaiable == true || bItemTableEdittedVariable == true)
+            {
+                Log("No perfect Anot jobs");
+            }
 
             //DEBUG Log (QA Job Handwritten DONE)
             Log("DEBUG");
@@ -607,8 +821,13 @@
                 }
             }
 
-            Log(lstAgentAItemTableAmount);
-            Log(lstAgentBItemTableAmount);
+            let bMainTableEditedTextAvaiable = form.bMainTableEditedTextAvaiable;
+            let bMainTableOnlyAgentAAccepted = form.bMainTableOnlyAgentAAccepted;
+            let bMainTableOnlyAgentBAccepted = form.bMainTableOnlyAgentBAccepted;
+
+            let bItemTableEdittedVariable = false;
+            let bItemTableAOnlyAccepted = false;
+            let bItemTableBOnlyAccepted = false;
 
             for(let i = 0; i < iCount; i = i + 1)
             {
@@ -636,6 +855,19 @@
                     }
                 }
 
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
                 //manufacturer item number
                 if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
                 {                
@@ -657,6 +889,19 @@
                     }
                 }
 
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
                 //tax number
                 if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
                 {                
@@ -676,7 +921,20 @@
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
                     }
-                }            
+                }  
+                
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
 
                 //amount number
                 if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
@@ -699,6 +957,19 @@
                     }
                 }
 
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
                 //unit
                 if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
                 {                
@@ -718,7 +989,20 @@
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
                     }
-                }            
+                }   
+                
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
 
                 //gross weight
                 if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
@@ -739,6 +1023,19 @@
                     {
                         lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
                     }
+                }    
+                
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                {
+                    bItemTableBOnlyAccepted = true;
                 }            
             }
 
@@ -817,6 +1114,81 @@
                 finish_date: dtl.Now().DtlToDtdb(),
                 job_work_time_minutes: iJobWorkTime
             });
+
+            // Update delivery_note QA job
+            db.ai_scan_delivery_note_qaj.UpdateMany({
+                job_id: stSelectedQAJobId
+            },{
+                status: "done_approved",
+                avg_score_must_have: 100.0,
+                avg_score_overall: 100.0,
+                customer_address: stSendAgentCustomerAddress,
+                customer_name: stSendAgentCustomerName,
+                delivery_address: stSendAgentDeliveryAddress,
+                delivery_recipient_name: stSendAgentDeliveryRecipientName,
+                issue_date: stSendAgentIssueDate,
+                dtl_issue_date: DateFrom(stSendAgentIssueDate),
+                order_number: stSendAgentOrderNumber,
+                supplier_address: stSendAgentSupplierAddress,
+                supplier_name: stSendAgentSupplierName,
+                supplier_tax_number: stSendAgentSupplierTaxNumber,
+                supplier_warehouse: stSendAgentSupplierWarehouse,
+                supplier_id: stSendAgentSupplierId,
+                weight_gross: stSendAgentWeightGross
+            });
+            
+            // delivery_note's QA items
+
+            if(iCount != 0)
+            {
+                let ii = 0;
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                {
+
+                    // Update delivery_note QA job
+                    db.ai_scan_delivery_note_item_qaj.InsertOrUpdate({
+                        delivery_note_id: stSelectedQAJobDeliveryNoteId,
+                        job_id: stSelectedQAJobId,
+                        row_counter: ii
+                    },{
+                        item_name: lstFinalItemTable.GetAt(1+i),
+                        manufacturer_item_number: lstFinalItemTable.GetAt(2+i),
+                        tax_number: lstFinalItemTable.GetAt(3+i),
+                        amount: lstFinalItemTable.GetAt(4+i),
+                        amount_number: NumberFrom(lstFinalItemTable.GetAt(4+i)),
+                        unit: lstFinalItemTable.GetAt(5+i),
+                        gross_weight: lstFinalItemTable.GetAt(6+i)
+                    });
+
+                    ii=ii+1;
+                }
+            }
+
+             //Set perfect point to Anot job if possible
+             if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableAOnlyAccepted == true || bMainTableOnlyAgentAAccepted == true) && (bItemTableBOnlyAccepted == false && bMainTableOnlyAgentBAccepted == false))
+             {
+                 Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob1+" !");
+                 db.ai_scan_job_result.UpdateMany({
+                     job_id: stSelectedQAJobSupplierANNOTJob1
+                 },{
+                     perfect_job: 1
+                 });
+             }
+ 
+             if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableBOnlyAccepted == true || bMainTableOnlyAgentBAccepted == true) && (bItemTableAOnlyAccepted == false && bMainTableOnlyAgentAAccepted == false))
+             {
+                 Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob2+" !");
+                 db.ai_scan_job_result.UpdateMany({
+                     job_id: stSelectedQAJobSupplierANNOTJob2
+                 },{
+                     perfect_job: 1
+                 });
+             }
+ 
+             if(bMainTableEditedTextAvaiable == true || bItemTableEdittedVariable == true)
+             {
+                 Log("No perfect Anot jobs");
+             }
 
             //DEBUG Log (QA Job Approved DONE)
             Log("DEBUG");
