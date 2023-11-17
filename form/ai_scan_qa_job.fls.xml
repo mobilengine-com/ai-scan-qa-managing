@@ -1372,14 +1372,14 @@
                 <let id='stAgentARowId' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentARowId) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stAgentBRowId' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBRowId) FROM rtpItemTableAgentB.rows RPTITAB}'/>                
 
-                <let id='stGetAgentALastRowId' shape='scalar' value='{clientOrderBy:SELECT RPTITAA.stAgentARowId FROM rtpItemTableAgentA.rows RPTITAA ORDER BY TOINT(stAgentARowId) DESC LIMIT 1}'/>
-                <let id='stGetAgentBLastRowId' shape='scalar' value='{clientOrderBy:SELECT RPTITAB.stAgentBRowId FROM rtpItemTableAgentB.rows RPTITAB ORDER BY TOINT(stAgentBRowId) DESC LIMIT 1}'/>
+                <let id='stGetAgentAFirstDiffRowId' shape='scalar' value='{clientOrderBy:SELECT RPTITAA.stAgentARowId FROM rtpItemTableAgentA.rows RPTITAA WHERE RPTITAA.stAgentARowId NOT IN (SELECT RPTITAB.stAgentBRowId FROM rtpItemTableAgentB.rows RPTITAB) ORDER BY TOINT(stAgentARowId) ASC LIMIT 1}'/>
+                <let id='stGetAgentBFirstDiffRowId' shape='scalar' value='{clientOrderBy:SELECT RPTITAB.stAgentBRowId FROM rtpItemTableAgentB.rows RPTITAB WHERE RPTITAB.stAgentBRowId NOT IN (SELECT RPTITAA.stAgentARowId FROM rtpItemTableAgentA.rows RPTITAA) ORDER BY TOINT(stAgentBRowId) ASC LIMIT 1}'/>
 
-                <let id='bAgentALastRowNewRow' shape='scalar' value='{SELECT RPTITAA.stAgentANewRow FROM rtpItemTableAgentA.rows RPTITAA WHERE RPTITAA.stAgentARowId = stGetAgentALastRowId}'/>
-                <let id='bAgentBLastRowNewRow' shape='scalar' value='{SELECT RPTITAB.stAgentBNewRow FROM rtpItemTableAgentB.rows RPTITAB WHERE RPTITAB.stAgentBRowId = stGetAgentBLastRowId}'/>
+                <let id='bAgentAFirstDiffRowNewRow' shape='scalar' value='{SELECT RPTITAA.stAgentANewRow FROM rtpItemTableAgentA.rows RPTITAA WHERE RPTITAA.stAgentARowId = stGetAgentAFirstDiffRowId}'/>
+                <let id='bAgentBFirstDiffRowNewRow' shape='scalar' value='{SELECT RPTITAB.stAgentBNewRow FROM rtpItemTableAgentB.rows RPTITAB WHERE RPTITAB.stAgentBRowId = stGetAgentBFirstDiffRowId}'/>
 
-                <let id='bAgentALastRowNewRowReadOnly' shape='scalar' value='{SELECT RPTITAA.stAgentANewRowReadonly FROM rtpItemTableAgentA.rows RPTITAA WHERE RPTITAA.stAgentARowId = stGetAgentALastRowId}'/>
-                <let id='bAgentBLastRowNewRowReadOnly' shape='scalar' value='{SELECT RPTITAB.stAgentBNewRowReadonly FROM rtpItemTableAgentB.rows RPTITAB WHERE RPTITAB.stAgentBRowId = stGetAgentBLastRowId}'/>
+                <let id='bAgentAFirstDiffRowNewRowReadOnly' shape='scalar' value='{SELECT RPTITAA.stAgentANewRowReadonly FROM rtpItemTableAgentA.rows RPTITAA WHERE RPTITAA.stAgentARowId = stGetAgentAFirstDiffRowId}'/>
+                <let id='bAgentBFirstDiffRowNewRowReadOnly' shape='scalar' value='{SELECT RPTITAB.stAgentBNewRowReadonly FROM rtpItemTableAgentB.rows RPTITAB WHERE RPTITAB.stAgentBRowId = stGetAgentBFirstDiffRowId}'/>
 
                 <let id='ltblDefaulItemTableAgentA' shape='table' 
                     value='{SELECT
@@ -1774,13 +1774,11 @@
             <combinedbutton id='cbtnAddNewItemBiggerAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemBiggerAgentA"}'>
                 <actionbutton>
                     <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
-                    <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
                 </actionbutton>
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
             </combinedbutton>
         </if>
-        <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount AND bAgentBLastRowNewRow = false AND bAgentBLastRowNewRowReadOnly = false}'>
+        <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount AND bAgentBFirstDiffRowNewRow = false AND bAgentBFirstDiffRowNewRowReadOnly = false}'>
             <combinedbutton id='cbtnAddNewItemAgentANewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRow"}'>
                 <actionbutton>
                     <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
@@ -1788,7 +1786,7 @@
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
             </combinedbutton>
         </if>
-        <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount AND bAgentBLastRowNewRow = true AND bAgentBLastRowNewRowReadOnly = false}'>
+        <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount AND bAgentBFirstDiffRowNewRow = true AND bAgentBFirstDiffRowNewRowReadOnly = false}'>
             <combinedbutton id='cbtnAddNewItemAgentANewRowReadOnly' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRowReadOnly"}'>
                 <actionbutton>
                     <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
@@ -2157,13 +2155,11 @@
             <combinedbutton id='cbtnAddNewItemBiggerAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemBiggerAgentB"}'>
                 <actionbutton>
                     <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
-                    <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
                 </actionbutton>
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
             </combinedbutton>
         </if>
-        <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount AND bAgentALastRowNewRow = false AND bAgentALastRowNewRowReadOnly = false}'>
+        <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount AND bAgentAFirstDiffRowNewRow = false AND bAgentAFirstDiffRowNewRowReadOnly = false}'>
             <combinedbutton id='cbtnAddNewItemAgentBNewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRow"}'>
                 <actionbutton>
                     <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
@@ -2171,7 +2167,7 @@
                 <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
             </combinedbutton>
         </if>
-        <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount AND bAgentALastRowNewRow = true AND bAgentALastRowNewRowReadOnly = false}'>
+        <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount AND bAgentAFirstDiffRowNewRow = true AND bAgentAFirstDiffRowNewRowReadOnly = false}'>
             <combinedbutton id='cbtnAddNewItemAgentBNewRowReadOnly' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRowReadOnly"}'>
                 <actionbutton>
                     <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
