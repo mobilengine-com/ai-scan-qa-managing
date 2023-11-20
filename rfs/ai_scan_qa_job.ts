@@ -607,9 +607,6 @@
                 }
             }
 
-            Log(lstAgentAItemTableAmount);
-            Log(lstAgentBItemTableAmount);
-
             for(let i = 0; i < iCount; i = i + 1)
             {
                 //item row
