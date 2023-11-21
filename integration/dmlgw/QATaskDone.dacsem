@@ -40,6 +40,7 @@ dnResponse: element {
 		manufacturerItemNumber: optional attribute of type string;
 		taxNumber: optional attribute of type string;
 		unit: optional attribute of type string;
+		
 		unitPrice: optional attribute of type string;
 		unitPriceCurrency: optional attribute of type string;
 	}

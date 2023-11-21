@@ -22,6 +22,18 @@ dnResponse: element {
 	supplierWarehouse: optional attribute of type string;
 	supplierId: optional attribute of type string;
 	weightGross: optional attribute of type string;
+
+
+	concreteArrival: optional attribute of type string;
+	concreteStartpour: optional attribute of type string;
+	concreteEndpour: optional attribute of type string;
+	concreteDeparture: optional attribute of type string;
+	concretePumplength: optional attribute of type string;
+	concreteJobtime: optional attribute of type string;
+	
+	totalPrice: optional attribute of type string;
+	totalPriceCurrency: optional attribute of type string;
+
 	items: wrapped list of element item {
 		amount: optional attribute of type string;
 		grossWeight: optional attribute of type string;
@@ -29,5 +41,8 @@ dnResponse: element {
 		manufacturerItemNumber: optional attribute of type string;
 		taxNumber: optional attribute of type string;
 		unit: optional attribute of type string;
+
+		unitPrice: optional attribute of type string;
+		unitPriceCurrency: optional attribute of type string;
 	}
 }
