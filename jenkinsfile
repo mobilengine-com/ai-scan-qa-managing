@@ -68,9 +68,4 @@ pipeline {
 			mail to: "zoltan.gaspar@mobilengine.com, app@mobilengine.com", subject: "${env.JOB_NAME} failed", body: "${env.JOB_NAME} is failed: ${env.BUILD_URL}";
 		}
 	}
-	options {
-		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
-	}
-
-    
 }
