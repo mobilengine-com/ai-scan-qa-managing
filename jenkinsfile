@@ -18,7 +18,7 @@ pipeline {
                     projectName: 'mebo/s50', selector: latestSavedBuild()
                 powershell '''# hide progress bar, makes extract run faster
                                 $ProgressPreference="SilentlyContinue"
-                                Expand-Archive Mebt_*_Debug.zip Mebt'''
+                                Expand-Archive Mebt_*_Debug.zip Mebt -force'''
             }
         }
         stage('Checkout') {
@@ -58,6 +58,7 @@ pipeline {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/refdata/sqlite/*.sqlite')
+			build job: "bauapp-scantest-dm/autotest-for-scan-a3", wait: false
 		}
 
 		unstable {
@@ -67,4 +68,9 @@ pipeline {
 			mail to: "zoltan.gaspar@mobilengine.com, app@mobilengine.com", subject: "${env.JOB_NAME} failed", body: "${env.JOB_NAME} is failed: ${env.BUILD_URL}";
 		}
 	}
+	options {
+		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
+	}
+
+    
 }
