@@ -14,7 +14,7 @@ pipeline {
                     projectName: 'MobileEngine Server S49', selector: latestSavedBuild()
                 powershell '''# hide progress bar, makes extract run faster
                                 $ProgressPreference="SilentlyContinue"
-                                Expand-Archive Mebt_*_Debug.zip Mebt'''
+                                Expand-Archive Mebt_*_Debug.zip Mebt -force'''
             }
         }
         stage('Build') {
@@ -44,7 +44,7 @@ pipeline {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'refdata/sqlite/*.sqlite')
-			build job: "bauapp-scantest-dm/autotest-for-scan-a3", wait: false
+			build job: "bauapp-scantest-dm/autotest-for-scan-a2", wait: false
 		}
 
 		unstable {
