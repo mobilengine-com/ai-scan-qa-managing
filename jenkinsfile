@@ -44,6 +44,7 @@ pipeline {
 		success {
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
 			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'refdata/sqlite/*.sqlite')
+			build job: "bauapp-scantest-dm/autotest-for-scan-a3"
 		}
 
 		unstable {
@@ -57,5 +58,5 @@ pipeline {
 		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
 	}
 
-    build 'bauapp-scantest-dm/autotest-for-scan-a2'
+    
 }
