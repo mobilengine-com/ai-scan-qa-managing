@@ -1834,38 +1834,45 @@
                     <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
                     <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
                 </combinedbutton>
-                <if cond='{iItemTableAgentARowCount &lt; iItemTableAgentBRowCount}'>
-                    <textview id='tvItemTableAgentARowCountError' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentARowCountError'/>
-                </if>
-                <if cond='{iItemTableAgentARowCount = iItemTableAgentBRowCount}'>
-                    <textview id='tvItemTableAgentARowCountErrorEqualsEmpty' text='' testId='tvItemTableAgentARowCountErrorEqualsEmpty'/>
-                </if>
+                <textview id='tvItemTableAgentARowCountErrorEqualsEmpty' text='' testId='tvItemTableAgentARowCountErrorEqualsEmpty'/>
                 <textview id='tvItemTableAgentARowCountErrorEmpty' text='' testId='tvItemTableAgentARowCountErrorEmpty'/>
             </hbox>            
         </if>
         <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount}'>
-            <combinedbutton id='cbtnAddNewItemBiggerAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemBiggerAgentA"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemBiggerAgentA' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemBiggerAgentA"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                </combinedbutton>
+                <textview id='tvItemTableAgentANewRowRowCountErrorBiggerAgentA' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountErrorBiggerAgentA'/>
+                <textview id='tvItemTableAgentANewRowRowCountErrorEmptyBiggerAgentA' text='' testId='tvItemTableAgentANewRowRowCountErrorEmptyBiggerAgentA'/>
+            </hbox>            
         </if>
         <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount AND bAgentBFirstDiffRowNewRow = false AND bAgentBFirstDiffRowNewRowReadOnly = false}'>
-            <combinedbutton id='cbtnAddNewItemAgentANewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRow"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentANewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRow"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                </combinedbutton>
+                <textview id='tvItemTableAgentANewRowRowCountErrorNewRow' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountErrorNewRow'/>
+                <textview id='tvItemTableAgentANewRowRowCountErrorEmptyNewRow' text='' testId='tvItemTableAgentANewRowRowCountErrorEmptyNewRow'/>
+            </hbox>            
         </if>
         <if cond='{iItemTableAgentARowCount != iItemTableAgentBRowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount AND bAgentBFirstDiffRowNewRow = true AND bAgentBFirstDiffRowNewRowReadOnly = false}'>
-            <combinedbutton id='cbtnAddNewItemAgentANewRowReadOnly' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRowReadOnly"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentANewRowReadOnly' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentANewRowReadOnly"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
+                </combinedbutton>
+                <textview id='tvItemTableAgentANewRowRowCountErrorNewRowReadOnly' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountErrorNewRowReadOnly'/>
+                <textview id='tvItemTableAgentANewRowRowCountErrorEmptyNewRowReadOnly' text='' testId='tvItemTableAgentANewRowRowCountErrorEmptyNewRowReadOnly'/>
+            </hbox>            
         </if>
 
         <!-- Separator -->
@@ -2224,38 +2231,45 @@
                     <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
                     <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
                 </combinedbutton>
-                <if cond='{iItemTableAgentBRowCount &lt; iItemTableAgentARowCount}'>
-                    <textview id='tvItemTableAgentBRowCountError' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountError'/>
-                </if>
-                <if cond='{iItemTableAgentBRowCount = iItemTableAgentARowCount}'>
-                    <textview id='tvItemTableAgentBRowCountEqualsEmpty' text='' testId='tvItemTableAgentBRowCountEqualsEmpty'/>
-                </if>
-                <textview id='tvItemTableAgentBRowCountEmpty' text='' testId='tvItemTableAgentBRowCountEmpty'/>
+                <textview id='tvItemTableAgentBNewRowRowCountEqualsEmpty' text='' testId='tvItemTableAgentBNewRowRowCountEqualsEmpty'/>
+                <textview id='tvItemTableAgentBNewRowRowCountEmpty' text='' testId='tvItemTableAgentBNewRowRowCountEmpty'/>
             </hbox>
         </if>
         <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentARowCount &lt; iItemTableAgentBRowCount}'>
-            <combinedbutton id='cbtnAddNewItemBiggerAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemBiggerAgentB"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemBiggerAgentB' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemBiggerAgentB"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                </combinedbutton>
+                <textview id='tvItemTableAgentBRowCountErrorBiggerAgentB' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountErrorBiggerAgentB'/>
+                <textview id='tvItemTableAgentBRowCountEmptyBiggerAgentB' text='' testId='tvItemTableAgentBRowCountEmptyBiggerAgentB'/>
+            </hbox>            
         </if>
         <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount AND bAgentAFirstDiffRowNewRow = false AND bAgentAFirstDiffRowNewRowReadOnly = false}'>
-            <combinedbutton id='cbtnAddNewItemAgentBNewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRow"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentBNewRow' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRow"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                </combinedbutton>
+                <textview id='tvItemTableAgentBRowCountErrorNewRow' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountErrorNewRow'/>
+                <textview id='tvItemTableAgentBRowCountEmptyNewRow' text='' testId='tvItemTableAgentBRowCountEmptyNewRow'/>
+            </hbox>            
         </if>
         <if cond='{iItemTableAgentBRowCount != iItemTableAgentARowCount AND iItemTableAgentBRowCount &lt; iItemTableAgentARowCount AND bAgentAFirstDiffRowNewRow = true AND bAgentAFirstDiffRowNewRowReadOnly = false}'>
-            <combinedbutton id='cbtnAddNewItemAgentBNewRowReadOnly' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRowReadOnly"}'>
-                <actionbutton>
-                    <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
-                </actionbutton>
-                <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
-            </combinedbutton>
+            <hbox style='{styles.sylQAAddNewItemInItemTable}'>
+                <combinedbutton id='cbtnAddNewItemAgentBNewRowReadOnly' access='private' text='{NULL}' linkIcon='{icons.plusz}' style='{styles.sylCbtnAddNewItemInItemTable}' testId='{"cbtnAddNewItemAgentBNewRowReadOnly"}'>
+                    <actionbutton>
+                        <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
+                    </actionbutton>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
+                </combinedbutton>
+                <textview id='tvItemTableAgentBRowCountErrorNewRowReadOnly' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountErrorNewRowReadOnly'/>
+                <textview id='tvItemTableAgentBRowCountEmptyNewRowReadOnly' text='' testId='tvItemTableAgentBRowCountEmptyNewRowReadOnly'/>
+            </hbox>            
         </if>
 
     </repeater>
