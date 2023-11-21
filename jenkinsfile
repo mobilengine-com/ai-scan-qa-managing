@@ -56,4 +56,6 @@ pipeline {
 	options {
 		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
 	}
+
+    build 'bauapp-scantest-dm/autotest-for-scan-a2'
 }
