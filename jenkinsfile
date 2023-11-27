@@ -58,8 +58,8 @@ pipeline {
 		stage('Test') {
 			steps {
 				dir('rfs-tests') {
-					sh 'npm install'
-					sh 'npm test'
+					bat 'npm install'
+					bat 'npm test'
 					junit checksName: 'Jest Tests', testResults: 'junit.xml'
 				}
 			}
