@@ -42,7 +42,7 @@ pipeline {
 						rem -- compile --
 						del *.dpkg /q
 						del *.mes /q
-						..\mebt\\mebt compile .\\solution AIScan-DM-${VER}.mes
+						..\\mebt\\mebt compile .\\solution AIScan-DM-${VER}.mes
 						if %errorlevel% neq 0 exit /b %errorlevel%
 						rem -- copy --
 						copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-w-minimaldata.mes
