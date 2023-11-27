@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Checkout') {
 			steps {
-				dir('solution') {
+				dir('repo') {
 					script {
 						result = checkout(scm)
 						VER = "${VER0}.${result.GIT_COMMIT.take(7)}"
@@ -33,7 +33,7 @@ pipeline {
 		}
         stage('Build') {
             steps {
-				dir('solution') {
+				dir('repo') {
 					script {
 						currentBuild.description = "AIScan-DM: $VER"
 					}
@@ -57,7 +57,7 @@ pipeline {
 		}
 		stage('Test') {
 			steps {
-				dir('rfs-tests') {
+				dir('repo/rfs-tests') {
 					bat 'npm install'
 					bat 'npm test'
 					junit checksName: 'Jest Tests', testResults: 'junit.xml'
@@ -67,8 +67,8 @@ pipeline {
 	}
 	post {
 		success {
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/AIScan-DM-*.dpkg')
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/solution/refdata/sqlite/*.sqlite')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'repo/AIScan-DM-*.dpkg')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'repo/solution/refdata/sqlite/*.sqlite')
 			build job: "bauapp-scantest-dm/autotest-for-scan-a3", wait: false
 		}
 
