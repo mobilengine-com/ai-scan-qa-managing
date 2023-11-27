@@ -33,31 +33,40 @@ pipeline {
 		}
         stage('Build') {
             steps {
-				script {
-                    currentBuild.description = "AIScan-DM: $VER"
-                }
-				powershell """.\\solution\\writeVersion.ps1 -Version:${VER}"""
-				bat """
-					rem -- compile --
-					del *.dpkg /q
-					del *.mes /q
-					mebt\\mebt compile .\\solution AIScan-DM-${VER}.mes
-					if %errorlevel% neq 0 exit /b %errorlevel%
-					rem -- copy --
-					copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-w-minimaldata.mes
-					rem -- package --
-					mebt\\mebt package AIScan-DM-${VER}.mes
-					if %errorlevel% neq 0 exit /b %errorlevel%
-					mebt\\mebt package AIScan-DM-${VER}-w-minimaldata.mes .\\solution\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
-					rem if %errorlevel% neq 0 exit /b %errorlevel%
-					"""
+				dir('solution') {
+					script {
+						currentBuild.description = "AIScan-DM: $VER"
+					}
+					powershell """.\\solution\\writeVersion.ps1 -Version:${VER}"""
+					bat """
+						rem -- compile --
+						del *.dpkg /q
+						del *.mes /q
+						mebt\\mebt compile .\\solution AIScan-DM-${VER}.mes
+						if %errorlevel% neq 0 exit /b %errorlevel%
+						rem -- copy --
+						copy AIScan-DM-${VER}.mes AIScan-DM-${VER}-w-minimaldata.mes
+						rem -- package --
+						mebt\\mebt package AIScan-DM-${VER}.mes
+						if %errorlevel% neq 0 exit /b %errorlevel%
+						mebt\\mebt package AIScan-DM-${VER}-w-minimaldata.mes .\\solution\\refdata\\sqlite\\dm_minimal_data_existing.sqlite
+						rem if %errorlevel% neq 0 exit /b %errorlevel%
+						"""
+				}
+			}
+		}
+		stage('Test') {
+			dir('rfs-tests') {
+				sh 'npm install'
+				sh 'npm test'
+				junit checksName: 'Jest Tests', testResults: 'junit.xml'
 			}
 		}
 	}
 	post {
 		success {
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'AIScan-DM-*.dpkg')
-			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/refdata/sqlite/*.sqlite')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/AIScan-DM-*.dpkg')
+			step(onlyIfSuccessful: true, $class: 'ArtifactArchiver', artifacts: 'solution/solution/refdata/sqlite/*.sqlite')
 			build job: "bauapp-scantest-dm/autotest-for-scan-a3", wait: false
 		}
 
