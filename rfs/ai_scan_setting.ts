@@ -30,7 +30,7 @@
 
         let stLoggedUserName = form.stLoggedUserName;
 
-        if(stLoggedUserName == null || stLoggedUserName == "")
+        if(stLoggedUserName === null || stLoggedUserName === "")
         {
             stLoggedUserName = "dev user";
         }
@@ -66,7 +66,7 @@
         for(let rowMF of db.ai_scan_beosztas_form.Read(map.New())) {
 			
 			// Megvizsgáljuk, hogy egy formhoz különböző platformot ne lehessen megadni
-			if (mapFormPlatform.ContainsKey(rowMF.form_name) && mapFormPlatform[rowMF.form_name] != rowMF.platform) {
+			if (mapFormPlatform.ContainsKey(rowMF.form_name) && mapFormPlatform[rowMF.form_name] !== rowMF.platform) {
 				Error(rowMF.form_name + " form esetén több platform is meg van adva!");
 			}
 			mapFormPlatform[rowMF.form_name] = rowMF.platform;
@@ -78,7 +78,7 @@
         for(let rowBF of lstMBF) {
             //trace "3";            
             
-            if (mapFormPlatform.ContainsKey(rowBF.form_name) && mapFormPlatform[rowBF.form_name] == "web") {
+            if (mapFormPlatform.ContainsKey(rowBF.form_name) && mapFormPlatform[rowBF.form_name] === "web") {
                 platformWeb = "true";
                 //trace "5";
             }
@@ -98,7 +98,7 @@
         addItem(uiMsg, "mobileNumber", "", "string");
         addItem(uiMsg, "webformAccess", platformWeb, "bool");
 
-        if (mapFormok.Keys().Count() != 0 ) {
+        if (mapFormok.Keys().Count() !== 0 ) {
 			let formListItem = uiMsg.MessageRoot.Request.ItemList.AddNew();
 			formListItem.name = "forms";
 			
@@ -115,11 +115,11 @@
 
     let stEditedUsers = form.stSelectedUserForEdit;
 
-    if(stEditedUsers != null || stEditedUsers != "")
+    if(stEditedUsers !== null || stEditedUsers !== "")
     {
         for(let recEU of form.tblUser.rows)
         {
-            if(recEU.bSignForEdit == true)
+            if(recEU.bSignForEdit === true)
             {
                 let mapFormok = map.New();
                 let mapFormPlatform = map.New();
@@ -127,7 +127,7 @@
 
                 let stLoggedUserName = form.stLoggedUserName;
 
-                if(stLoggedUserName == null || stLoggedUserName == "")
+                if(stLoggedUserName === null || stLoggedUserName === "")
                 {
                     stLoggedUserName = "dev user";
                 }
@@ -165,7 +165,7 @@
                 for(let rowMF of db.ai_scan_beosztas_form.Read(map.New())) {
                     
                     // Megvizsgáljuk, hogy egy formhoz különböző platformot ne lehessen megadni
-                    if (mapFormPlatform.ContainsKey(rowMF.form_name) && mapFormPlatform[rowMF.form_name] != rowMF.platform) {
+                    if (mapFormPlatform.ContainsKey(rowMF.form_name) && mapFormPlatform[rowMF.form_name] !== rowMF.platform) {
                         Error(rowMF.form_name + " form esetén több platform is meg van adva!");
                     }
                     mapFormPlatform[rowMF.form_name] = rowMF.platform;
@@ -177,7 +177,7 @@
                 for(let rowBF of lstMBF) {
                     //trace "3";            
                     
-                    if (mapFormPlatform.ContainsKey(rowBF.form_name) && mapFormPlatform[rowBF.form_name] == "web") {
+                    if (mapFormPlatform.ContainsKey(rowBF.form_name) && mapFormPlatform[rowBF.form_name] === "web") {
                         platformWeb = "true";
                         //trace "5";
                     }
@@ -199,7 +199,7 @@
                 addItem(uiMsg, "fSendEmail", "false", "bool");
 		        addItem(uiMsg, "fSendSms", "false", "bool");
 
-                if (mapFormok.Keys().Count() != 0 ) {
+                if (mapFormok.Keys().Count() !== 0 ) {
                     let formListItem = uiMsg.MessageRoot.Request.ItemList.AddNew();
                     formListItem.name = "forms";
                     
@@ -220,17 +220,17 @@
 
     let stDeletedUsers = form.stSelectedUserForDelete;
 
-    if(stDeletedUsers != null || stDeletedUsers != "")
+    if(stDeletedUsers !== null || stDeletedUsers !== "")
     {
         for(let recDU of form.tblUser.rows)
         {
-            if(recDU.bSignForDelete == true)
+            if(recDU.bSignForDelete === true)
             {
                 let stMsgGuid = guid.Generate().ToStringN();
 
                 let stLoggedUserName = form.stLoggedUserName;
 
-                if(stLoggedUserName == null || stLoggedUserName == "")
+                if(stLoggedUserName === null || stLoggedUserName === "")
                 {
                     stLoggedUserName = "dev user";
                 }

@@ -11,7 +11,7 @@
     let lstDeliveryNote = db.ai_scan_delivery_note.Read({delivery_note_id: dacs.dnUpdate.guid});
     let iDeliveryNoteCount = lstDeliveryNote.Count();
 
-    if(iDeliveryNoteCount == 0)
+    if(iDeliveryNoteCount === 0)
     {
         Log("Delivery note not exist in ai_scan_delivery_note reftab");
 
@@ -26,7 +26,7 @@
 
         // If guidLcomp not exist in ai_scan_company reftab
         let stLcomp = db.ai_scan_company.ReadFields({id: dacs.dnUpdate.guidLcomp},["id","name"]).SingleOrDefault();
-        if(stLcomp == null)
+        if(stLcomp === null)
         {
             Log("guidLcomp not exist in ai_scan_company reftab");
             db.ai_scan_company.Insert({
@@ -37,7 +37,7 @@
 
         // If guidLproj not exist in ai_scan_project reftab
         let stLproj = db.ai_scan_project.ReadFields({id: dacs.dnUpdate.guidLproj},["id","name"]).SingleOrDefault();
-        if(stLproj == null)
+        if(stLproj === null)
         {
             Log("guidLproj not exist in ai_scan_project reftab");
             db.ai_scan_project.Insert({

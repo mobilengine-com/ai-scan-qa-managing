@@ -22,14 +22,14 @@
       ];
 
     let DateFrom = function(st) {
-        if (st == null || st == undefined) 
+        if (st === null || st === undefined) 
             return null;
 
         Log(["rgstdtf", rgstdtf]);
         for (let stdtf of rgstdtf) {
           Log(["stdtf", stdtf]);
           let dtlIssueDate = dtl.Parse(dtf.Parse(stdtf), st);
-          if (dtlIssueDate != undefined) {
+          if (dtlIssueDate !== undefined) {
             Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate.DtlToDtdb()]);
             return dtlIssueDate.DtlToDtdb();
           }
@@ -38,11 +38,11 @@
     };
 
     let NumberFrom = function (st) {
-        if (st == null || st == undefined) 
+        if (st === null || st === undefined) 
             return null;
         for (let nf of rgnf) {
             let n = float.ParseNuf(nf, st);
-            if (n != undefined) {
+            if (n !== undefined) {
               Log(["number", st, "parsed with ", nf]);
               return n;
             }
@@ -52,7 +52,7 @@
 
     let stDelayTime = form.stDelayTime;
 
-    if(stDelayTime == null || stDelayTime == "")
+    if(stDelayTime === null || stDelayTime === "")
     {
         stDelayTime = "1";
     }
@@ -73,7 +73,7 @@
     let stresult = "";
     let dtlSelectedQAJobDeliveryNoteWorkStartDate = form.dtlSelectedQAJobDeliveryNoteWorkStartDate;
 
-    if((stLoggedUserId == null || stLoggedUserId == "") || (stSelectedQAJobDeliveryNoteId == null || stSelectedQAJobDeliveryNoteId == "") || (dtlSelectedQAJobDeliveryNoteWorkStartDate == null))
+    if((stLoggedUserId === null || stLoggedUserId === "") || (stSelectedQAJobDeliveryNoteId === null || stSelectedQAJobDeliveryNoteId === "") || (dtlSelectedQAJobDeliveryNoteWorkStartDate === null))
     {
         //hiba van és eldobjuk az aktuális usertől a feladatot
         Log("stLoggedUserId, stSelectedQAJobDeliveryNoteId and dtlSelectedQAJobDeliveryNoteWorkStartDate empty or null");
@@ -99,7 +99,7 @@
         db.ai_scan_job_inprogress.DeleteMany({job_id : stCurrentQAJobId});
     }
 
-    if((stLoggedUserId != null && stLoggedUserId != "") && (stSelectedQAJobDeliveryNoteId != null && stSelectedQAJobDeliveryNoteId != "") && (dtlSelectedQAJobDeliveryNoteWorkStartDate != null))
+    if((stLoggedUserId !== null && stLoggedUserId !== "") && (stSelectedQAJobDeliveryNoteId !== null && stSelectedQAJobDeliveryNoteId !== "") && (dtlSelectedQAJobDeliveryNoteWorkStartDate !== null))
     {
         if(bBadPhoto)
         {
@@ -242,17 +242,17 @@
             let iRptItemTableAgentARowCount = form.iItemTableAgentARowCount;
             let iRptItemTableAgentBRowCount = form.iItemTableAgentBRowCount;
 
-            if(iRptItemTableAgentARowCount == iRptItemTableAgentBRowCount)
+            if(iRptItemTableAgentARowCount === iRptItemTableAgentBRowCount)
             {
                 iCount = iRptItemTableAgentARowCount;
             }
             else
             {
-                if(iSelectedQAJobAgentAResultItemTable != 0 && iSelectedQAJobAgentBResultItemTable == 0)
+                if(iSelectedQAJobAgentAResultItemTable !== 0 && iSelectedQAJobAgentBResultItemTable === 0)
                 {
                     iCount = iSelectedQAJobAgentAResultItemTable;
                 }
-                else if(iSelectedQAJobAgentAResultItemTable == 0 && iSelectedQAJobAgentBResultItemTable != 0)
+                else if(iSelectedQAJobAgentAResultItemTable === 0 && iSelectedQAJobAgentBResultItemTable !== 0)
                 {
                     iCount = iSelectedQAJobAgentBResultItemTable;
                 }
@@ -264,7 +264,7 @@
 
             let lstFinalItemTable = list.New();
 
-            if(iCount != 0)
+            if(iCount !== 0)
             {
                 for(let recData of form.rptItemTable.rows)
                 {
@@ -322,17 +322,17 @@
                 lstFinalItemTable.Add(i);
 
                 //item name
-                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
                 }
-                if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
                 }
-                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) === "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) === "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) === "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableItemName.GetAt(i) != null && lstAgentAItemTableItemName.GetAt(i) != " ")
+                    if(lstAgentAItemTableItemName.GetAt(i) !== null && lstAgentAItemTableItemName.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
                     }
@@ -342,31 +342,31 @@
                     }
                 }
 
-                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableItemNameRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //manufacturer item number
-                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
                 }
-                if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
                 }
-                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) === "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) === "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) === "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableManufacturerItemNumber.GetAt(i) != null && lstAgentAItemTableManufacturerItemNumber.GetAt(i) != " ")
+                    if(lstAgentAItemTableManufacturerItemNumber.GetAt(i) !== null && lstAgentAItemTableManufacturerItemNumber.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
                     }
@@ -376,31 +376,31 @@
                     }
                 }
 
-                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //tax number
-                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
                 }
-                if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
                 }
-                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) === "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) === "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) === "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableTaxNumber.GetAt(i) != null && lstAgentAItemTableTaxNumber.GetAt(i) != " ")
+                    if(lstAgentAItemTableTaxNumber.GetAt(i) !== null && lstAgentAItemTableTaxNumber.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
                     }
@@ -410,31 +410,31 @@
                     }
                 }  
                 
-                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //amount number
-                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
                 }
-                if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
                 }
-                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) === "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) === "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) === "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableAmount.GetAt(i) != null && lstAgentAItemTableAmount.GetAt(i) != " ")
+                    if(lstAgentAItemTableAmount.GetAt(i) !== null && lstAgentAItemTableAmount.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
                     }
@@ -444,31 +444,31 @@
                     }
                 }
 
-                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableAmountRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //unit
-                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
                 }
-                if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
                 }
-                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) === "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) === "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) === "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableUnit.GetAt(i) != null && lstAgentAItemTableUnit.GetAt(i) != " ")
+                    if(lstAgentAItemTableUnit.GetAt(i) !== null && lstAgentAItemTableUnit.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
                     }
@@ -478,31 +478,31 @@
                     }
                 }   
                 
-                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //gross weight
-                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                 }
-                if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
                 }
-                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) === "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) === "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) === "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableGrossWeight.GetAt(i) != null && lstAgentAItemTableGrossWeight.GetAt(i) != " ")
+                    if(lstAgentAItemTableGrossWeight.GetAt(i) !== null && lstAgentAItemTableGrossWeight.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                     }
@@ -512,15 +512,15 @@
                     }
                 }    
                 
-                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
@@ -546,7 +546,7 @@
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
 
-            if(iCount != 0)
+            if(iCount !== 0)
             {
                 for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
                 {
@@ -627,7 +627,7 @@
             
             // delivery_note's QA items
 
-            if(iCount != 0)
+            if(iCount !== 0)
             {
                 let ii = 0;
                 for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
@@ -653,7 +653,7 @@
             }
 
             //Set perfect point to Anot job if possible
-            if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableAOnlyAccepted == true || bMainTableOnlyAgentAAccepted == true) && (bItemTableBOnlyAccepted == false && bMainTableOnlyAgentBAccepted == false))
+            if((bMainTableEditedTextAvaiable === false && bItemTableEdittedVariable === false) && (bItemTableAOnlyAccepted === true || bMainTableOnlyAgentAAccepted === true) && (bItemTableBOnlyAccepted === false && bMainTableOnlyAgentBAccepted === false))
             {
                 Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob1+" !");
                 db.ai_scan_job_result.UpdateMany({
@@ -663,7 +663,7 @@
                 });
             }
 
-            if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableBOnlyAccepted == true || bMainTableOnlyAgentBAccepted == true) && (bItemTableAOnlyAccepted == false && bMainTableOnlyAgentAAccepted == false))
+            if((bMainTableEditedTextAvaiable === false && bItemTableEdittedVariable === false) && (bItemTableBOnlyAccepted === true || bMainTableOnlyAgentBAccepted === true) && (bItemTableAOnlyAccepted === false && bMainTableOnlyAgentAAccepted === false))
             {
                 Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob2+" !");
                 db.ai_scan_job_result.UpdateMany({
@@ -673,7 +673,7 @@
                 });
             }
 
-            if(bMainTableEditedTextAvaiable == true || bItemTableEdittedVariable == true)
+            if(bMainTableEditedTextAvaiable === true || bItemTableEdittedVariable === true)
             {
                 Log("No perfect Anot jobs");
             }
@@ -759,17 +759,17 @@
             let iRptItemTableAgentARowCount = form.iItemTableAgentARowCount;
             let iRptItemTableAgentBRowCount = form.iItemTableAgentBRowCount;
 
-            if(iRptItemTableAgentARowCount == iRptItemTableAgentBRowCount)
+            if(iRptItemTableAgentARowCount === iRptItemTableAgentBRowCount)
             {
                 iCount = iRptItemTableAgentARowCount;
             }
             else
             {
-                if(iSelectedQAJobAgentAResultItemTable != 0 && iSelectedQAJobAgentBResultItemTable == 0)
+                if(iSelectedQAJobAgentAResultItemTable !== 0 && iSelectedQAJobAgentBResultItemTable === 0)
                 {
                     iCount = iSelectedQAJobAgentAResultItemTable;
                 }
-                else if(iSelectedQAJobAgentAResultItemTable == 0 && iSelectedQAJobAgentBResultItemTable != 0)
+                else if(iSelectedQAJobAgentAResultItemTable === 0 && iSelectedQAJobAgentBResultItemTable !== 0)
                 {
                     iCount = iSelectedQAJobAgentBResultItemTable;
                 }
@@ -781,7 +781,7 @@
 
             let lstFinalItemTable = list.New();
 
-            if(iCount != 0)
+            if(iCount !== 0)
             {
                 for(let recData of form.rptItemTable.rows)
                 {
@@ -839,17 +839,17 @@
                 lstFinalItemTable.Add(i);
 
                 //item name
-                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
                 }
-                if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableItemNameRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableItemName.GetAt(i));
                 }
-                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) == "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) === "" && lstAgentAItemTableItemNameRowIdAccept.GetAt(i) === "" && lstAgentBItemTableItemNameRowIdEdit.GetAt(i) === "" && lstAgentBItemTableItemNameRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableItemName.GetAt(i) != null && lstAgentAItemTableItemName.GetAt(i) != " ")
+                    if(lstAgentAItemTableItemName.GetAt(i) !== null && lstAgentAItemTableItemName.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableItemName.GetAt(i));
                     }
@@ -859,31 +859,31 @@
                     }
                 }
 
-                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) != "" || lstAgentBItemTableItemNameRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableItemNameRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableItemNameRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableItemNameRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableItemNameRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //manufacturer item number
-                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
                 }
-                if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableManufacturerItemNumber.GetAt(i));
                 }
-                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) === "" && lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) === "" && lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) === "" && lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableManufacturerItemNumber.GetAt(i) != null && lstAgentAItemTableManufacturerItemNumber.GetAt(i) != " ")
+                    if(lstAgentAItemTableManufacturerItemNumber.GetAt(i) !== null && lstAgentAItemTableManufacturerItemNumber.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableManufacturerItemNumber.GetAt(i));
                     }
@@ -893,31 +893,31 @@
                     }
                 }
 
-                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableManufacturerItemNumberRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableManufacturerItemNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //tax number
-                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
                 }
-                if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableTaxNumber.GetAt(i));
                 }
-                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) == "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) === "" && lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) === "" && lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) === "" && lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableTaxNumber.GetAt(i) != null && lstAgentAItemTableTaxNumber.GetAt(i) != " ")
+                    if(lstAgentAItemTableTaxNumber.GetAt(i) !== null && lstAgentAItemTableTaxNumber.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableTaxNumber.GetAt(i));
                     }
@@ -927,31 +927,31 @@
                     }
                 }  
                 
-                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) != "" || lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableTaxNumberRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableTaxNumberRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableTaxNumberRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //amount number
-                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
                 }
-                if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableAmountRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableAmount.GetAt(i));
                 }
-                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) == "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) == "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) === "" && lstAgentAItemTableAmountRowIdAccept.GetAt(i) === "" && lstAgentBItemTableAmountRowIdEdit.GetAt(i) === "" && lstAgentBItemTableAmountRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableAmount.GetAt(i) != null && lstAgentAItemTableAmount.GetAt(i) != " ")
+                    if(lstAgentAItemTableAmount.GetAt(i) !== null && lstAgentAItemTableAmount.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableAmount.GetAt(i));
                     }
@@ -961,31 +961,31 @@
                     }
                 }
 
-                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) != "" || lstAgentBItemTableAmountRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableAmountRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableAmountRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableAmountRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableAmountRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //unit
-                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
                 }
-                if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableUnitRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableUnit.GetAt(i));
                 }
-                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) == "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) == "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) === "" && lstAgentAItemTableUnitRowIdAccept.GetAt(i) === "" && lstAgentBItemTableUnitRowIdEdit.GetAt(i) === "" && lstAgentBItemTableUnitRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableUnit.GetAt(i) != null && lstAgentAItemTableUnit.GetAt(i) != " ")
+                    if(lstAgentAItemTableUnit.GetAt(i) !== null && lstAgentAItemTableUnit.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableUnit.GetAt(i));
                     }
@@ -995,31 +995,31 @@
                     }
                 }   
                 
-                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) != "" || lstAgentBItemTableUnitRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableUnitRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableUnitRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableUnitRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }
 
                 //gross weight
-                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                 }
-                if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {                
                     lstFinalItemTable.Add(lstAgentBItemTableGrossWeight.GetAt(i));
                 }
-                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) == "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) == "")
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) === "" && lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) === "" && lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) === "" && lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) === "")
                 {
-                    if(lstAgentAItemTableGrossWeight.GetAt(i) != null && lstAgentAItemTableGrossWeight.GetAt(i) != " ")
+                    if(lstAgentAItemTableGrossWeight.GetAt(i) !== null && lstAgentAItemTableGrossWeight.GetAt(i) !== " ")
                     {
                         lstFinalItemTable.Add(lstAgentAItemTableGrossWeight.GetAt(i));
                     }
@@ -1029,15 +1029,15 @@
                     }
                 }    
                 
-                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) != "" || lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) != "")
+                if(lstAgentAItemTableGrossWeightRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableGrossWeightRowIdEdit.GetAt(i) !== "")
                 {
                     bItemTableEdittedVariable = true;
                 }
-                if(lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentAItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableAOnlyAccepted = true;
                 }
-                if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) != "")
+                if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
                 }            
@@ -1063,7 +1063,7 @@
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
 
-            if(iCount != 0)
+            if(iCount !== 0)
             {
                 for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
                 {
@@ -1143,7 +1143,7 @@
             
             // delivery_note's QA items
 
-            if(iCount != 0)
+            if(iCount !== 0)
             {
                 let ii = 0;
                 for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
@@ -1169,7 +1169,7 @@
             }
 
              //Set perfect point to Anot job if possible
-             if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableAOnlyAccepted == true || bMainTableOnlyAgentAAccepted == true) && (bItemTableBOnlyAccepted == false && bMainTableOnlyAgentBAccepted == false))
+             if((bMainTableEditedTextAvaiable === false && bItemTableEdittedVariable === false) && (bItemTableAOnlyAccepted === true || bMainTableOnlyAgentAAccepted === true) && (bItemTableBOnlyAccepted === false && bMainTableOnlyAgentBAccepted === false))
              {
                  Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob1+" !");
                  db.ai_scan_job_result.UpdateMany({
@@ -1179,7 +1179,7 @@
                  });
              }
  
-             if((bMainTableEditedTextAvaiable == false && bItemTableEdittedVariable == false) && (bItemTableBOnlyAccepted == true || bMainTableOnlyAgentBAccepted == true) && (bItemTableAOnlyAccepted == false && bMainTableOnlyAgentAAccepted == false))
+             if((bMainTableEditedTextAvaiable === false && bItemTableEdittedVariable === false) && (bItemTableBOnlyAccepted === true || bMainTableOnlyAgentBAccepted === true) && (bItemTableAOnlyAccepted === false && bMainTableOnlyAgentAAccepted === false))
              {
                  Log("Perfect Anot job: "+stSelectedQAJobSupplierANNOTJob2+" !");
                  db.ai_scan_job_result.UpdateMany({
@@ -1189,7 +1189,7 @@
                  });
              }
  
-             if(bMainTableEditedTextAvaiable == true || bItemTableEdittedVariable == true)
+             if(bMainTableEditedTextAvaiable === true || bItemTableEdittedVariable === true)
              {
                  Log("No perfect Anot jobs");
              }
@@ -1211,7 +1211,7 @@
             // Delete the job in ai_scan_job_inprogress table
             db.ai_scan_job_inprogress.DeleteMany({job_id : stSelectedQAJobId, user_id : stCurrentJobUserId});
         }
-        if (stresult!="") {
+        if (stresult!=="") {
             Log("QA job with delivery note: "+stSelectedQAJobDeliveryNoteId+" complited with the following result: "+stresult);
         }
         

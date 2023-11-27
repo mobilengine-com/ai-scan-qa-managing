@@ -23,7 +23,7 @@
     }
 
     //Yes button clicked in Redo popup
-    if(sbRedo != null)
+    if(sbRedo !== null)
     {
         if(sbRedo.submitter)
         {
@@ -52,7 +52,7 @@
     }
 
     //Yes button clicked in Delete popup
-    if(sbDelete != null)
+    if(sbDelete !== null)
     {
         if(sbDelete.submitter)
         {
