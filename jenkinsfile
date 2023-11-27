@@ -56,10 +56,12 @@ pipeline {
 			}
 		}
 		stage('Test') {
-			dir('rfs-tests') {
-				sh 'npm install'
-				sh 'npm test'
-				junit checksName: 'Jest Tests', testResults: 'junit.xml'
+			steps {
+				dir('rfs-tests') {
+					sh 'npm install'
+					sh 'npm test'
+					junit checksName: 'Jest Tests', testResults: 'junit.xml'
+				}
 			}
 		}
 	}
