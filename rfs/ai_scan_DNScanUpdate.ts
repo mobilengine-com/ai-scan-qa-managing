@@ -1,4 +1,4 @@
-//# server program ai_scan_DNScanUpdate for dacs DNScanUpdate
+//# server typescript program ai_scan_DNScanUpdate for dacs DNScanUpdate
 //# using reftab ai_scan_delivery_note;
 //# using reftab ai_scan_company;
 //# using reftab ai_scan_project;

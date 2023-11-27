@@ -1,4 +1,4 @@
-//# server program ai_scan_gw_response for dacs AITaskResult
+//# server typescript program ai_scan_gw_response for dacs AITaskResult
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_delivery_note_item_job;
@@ -20,7 +20,7 @@
       {decimalSeparator: ".",   groupSize: 3, groupSeparator: ","}
     ];
 
-    let DateFrom = function(st) {
+    let DateFrom = function(st: string): dtdb {
         if (st == null || st == undefined) 
             return null;
 
@@ -36,7 +36,7 @@
         return null;
     };
 
-    let NumberFrom = function (st) {
+    let NumberFrom = function (st: string): number {
         if (st == null || st == undefined) 
             return null;
         for (let nf of rgnf) {
@@ -289,7 +289,7 @@
             let stOtherJobDeliveryNoteDeliveryAddress = "";
             let stOtherJobDeliveryNoteDeliveryRecipientName = "";
             let stOtherJobDeliveryNoteIssueDate = "";
-            let stOtherJobDeliveryNoteDtlIssueDate = "";
+            let stOtherJobDeliveryNoteDtlIssueDate = null;
             let stOtherJobDeliveryNoteOrderNumber = "";
             let stOtherJobDeliveryNoteSupplierAddress = "";
             let stOtherJobDeliveryNoteSupplierName = "";

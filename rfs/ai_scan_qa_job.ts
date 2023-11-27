@@ -1,4 +1,4 @@
-//# server program ai_scan_qa_job for form ai_scan_qa_job
+//# server typescript program ai_scan_qa_job for form ai_scan_qa_job
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_qa_job_result;
@@ -9,7 +9,11 @@
 //# using dacs QATaskDone;
 
 {
-    let rgstdtf = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
+    let rgstdtf = [
+        "yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\". \"MM\". \"dd",
+        "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", 
+        "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\". \"MM\". \"yyyy", 
+        "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
     let rgnf = [
         {decimalSeparator: ",",   groupSize: 3, groupSeparator: "."},
         {decimalSeparator: ",",   groupSize: 3, groupSeparator: " "},

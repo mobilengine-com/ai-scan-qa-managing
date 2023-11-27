@@ -1,4 +1,4 @@
-//# server program ai_scan_NewQATask for dacs NewQATask
+//# server typescript program ai_scan_NewQATask for dacs NewQATask
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;

@@ -1,4 +1,4 @@
-//# server program ai_scan_AssignAITaskResponse for dacs AssignAITaskResponse
+//# server typescript program ai_scan_AssignAITaskResponse for dacs AssignAITaskResponse
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_jobs_history;

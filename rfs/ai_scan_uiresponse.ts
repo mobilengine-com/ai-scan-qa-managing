@@ -1,4 +1,4 @@
-//# server program ai_scan_uiresponse for dacs UserIntegrationResponseDacs
+//# server typescript program ai_scan_uiresponse for dacs UserIntegrationResponseDacs
 //# using reftab ai_scan_um_log;
 //# using reftab ai_scan_user;
 

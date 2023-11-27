@@ -1,4 +1,4 @@
-//# server program ai_scan_agent_dashboard for form ai_scan_agent_dashboard
+//# server typescript program ai_scan_agent_dashboard for form ai_scan_agent_dashboard
 //# using reftab ai_scan_user;
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;
@@ -280,11 +280,10 @@
                     }
 
                     //Get current delivery note other job's current_user variable and delay time
-                    let lstCurrentANOTJobOtherANOTJob = list.New();
                     let stDeliveryNoteOtherJobCurrentUser = "";
                     let dtlDeliveryNoteOtherJobDelayTime = null;
 
-                    lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
+                    let lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
 
                     stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
 

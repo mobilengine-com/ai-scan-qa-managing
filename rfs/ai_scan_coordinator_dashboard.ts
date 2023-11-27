@@ -1,4 +1,4 @@
-//# server program ai_scan_coordinator_dashboard for form ai_scan_coordinator_dashboard
+//# server typescript program ai_scan_coordinator_dashboard for form ai_scan_coordinator_dashboard
 //# using reftab ai_scan_user_language;
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_jobs;

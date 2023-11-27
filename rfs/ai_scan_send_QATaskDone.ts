@@ -1,4 +1,4 @@
-//#server program ai_scan_send_QATaskDone for schedule 50 01 * * * first run at 2111-01-01 00:00
+//#server typescript program ai_scan_send_QATaskDone for schedule 50 01 * * * first run at 2111-01-01 00:00
 //#using dacs QATaskDone;
 {
     Log("params");

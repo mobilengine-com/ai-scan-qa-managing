@@ -1,4 +1,4 @@
-//# server program ai_scan_setting for form ai_scan_setting
+//# server typescript program ai_scan_setting for form ai_scan_setting
 //# using reftab ai_scan_user;
 //# using reftab ai_scan_um_log;
 //# using reftab ai_scan_beosztas_form;
@@ -6,7 +6,7 @@
 
 {
     // Új Item létrehozása
-	let addItem = function(var msg, var name, var value, var type) {
+	let addItem = function(msg, name, value, type) {
 		let item = msg.MessageRoot.Request.Items.AddNew();
 		item.name = name;
 		item.value = value;
@@ -14,7 +14,7 @@
 	};
 	
 	// Új ItemList létrehozása
-	let addItemToList = function(var listItem, var value, var type) {
+	let addItemToList = function(listItem, value, type) {
 		let item = listItem.Items.AddNew();
 		item.value = value;
 		item.valueType = type;
@@ -22,7 +22,7 @@
 
     //CODE
 
-    for(let recNU in form.tblNewUser.rows)
+    for(let recNU of form.tblNewUser.rows)
     {
         let mapFormok = map.New();
         let mapFormPlatform = map.New();
@@ -63,7 +63,7 @@
             state		: "running"
         });
 
-        for(let rowMF in db.ai_scan_beosztas_form.Read(map.New())) {
+        for(let rowMF of db.ai_scan_beosztas_form.Read(map.New())) {
 			
 			// Megvizsgáljuk, hogy egy formhoz különböző platformot ne lehessen megadni
 			if (mapFormPlatform.ContainsKey(rowMF.form_name) && mapFormPlatform[rowMF.form_name] != rowMF.platform) {
@@ -75,7 +75,7 @@
 
         let lstMBF = db.ai_scan_beosztas_form.Read({beosztas_id : stUserRoleId.ToString(), platform: ["web"]});
 
-        for(let rowBF in lstMBF) {
+        for(let rowBF of lstMBF) {
             //trace "3";            
             
             if (mapFormPlatform.ContainsKey(rowBF.form_name) && mapFormPlatform[rowBF.form_name] == "web") {
@@ -102,7 +102,7 @@
 			let formListItem = uiMsg.MessageRoot.Request.ItemList.AddNew();
 			formListItem.name = "forms";
 			
-			for (let form in mapFormok.Keys()) {
+			for (let form of mapFormok.Keys()) {
 				addItemToList(formListItem, form, "string");
 			}
 		}
@@ -117,7 +117,7 @@
 
     if(stEditedUsers != null || stEditedUsers != "")
     {
-        for(let recEU in form.tblUser.rows)
+        for(let recEU of form.tblUser.rows)
         {
             if(recEU.bSignForEdit == true)
             {
@@ -162,7 +162,7 @@
                     state		: "running"
                 });
 
-                for(let rowMF in db.ai_scan_beosztas_form.Read(map.New())) {
+                for(let rowMF of db.ai_scan_beosztas_form.Read(map.New())) {
                     
                     // Megvizsgáljuk, hogy egy formhoz különböző platformot ne lehessen megadni
                     if (mapFormPlatform.ContainsKey(rowMF.form_name) && mapFormPlatform[rowMF.form_name] != rowMF.platform) {
@@ -174,7 +174,7 @@
 
                 let lstMBF = db.ai_scan_beosztas_form.Read({beosztas_id : stEditedUserRoleId.ToString(), platform: ["web"]});
 
-                for(let rowBF in lstMBF) {
+                for(let rowBF of lstMBF) {
                     //trace "3";            
                     
                     if (mapFormPlatform.ContainsKey(rowBF.form_name) && mapFormPlatform[rowBF.form_name] == "web") {
@@ -203,7 +203,7 @@
                     let formListItem = uiMsg.MessageRoot.Request.ItemList.AddNew();
                     formListItem.name = "forms";
                     
-                    for (let form in mapFormok.Keys()) {
+                    for (let form of mapFormok.Keys()) {
                         addItemToList(formListItem, form, "string");
                     }
                 }
@@ -222,7 +222,7 @@
 
     if(stDeletedUsers != null || stDeletedUsers != "")
     {
-        for(let recDU in form.tblUser.rows)
+        for(let recDU of form.tblUser.rows)
         {
             if(recDU.bSignForDelete == true)
             {
