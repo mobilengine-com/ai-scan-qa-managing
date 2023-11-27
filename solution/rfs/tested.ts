@@ -1,3 +1,5 @@
+//# server typescript program tested for schedule * * * * * first run at 2100-01-01 00:00
+
 export function add(numbers: string): number {
     let integers = numbers.split(',').map(x => parseInt(x));
     let negatives = integers.filter(x => x < 0);
