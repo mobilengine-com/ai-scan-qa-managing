@@ -1,4 +1,4 @@
-//# server program ai_scan_NewQATask for dacs NewQATask
+//# server typescript program ai_scan_NewQATask for dacs NewQATask
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;
@@ -17,12 +17,12 @@
     //If delivery note is redo
     let stRedoDeliveryNote = dacs.qaTask.redo;
 
-    if(stRedoDeliveryNote == null || stRedoDeliveryNote == "")
+    if(stRedoDeliveryNote === null || stRedoDeliveryNote === "")
     {
         let stOldDeliveryNoteId = dacs.qaTask.old_delivery_note_id;
 
         //If there is bad photo delivery and we retake in BAUAPP
-        if(stOldDeliveryNoteId != null && stOldDeliveryNoteId != "")
+        if(stOldDeliveryNoteId !== null && stOldDeliveryNoteId !== "")
         {
             Log("badphoto retake operation");
             db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
@@ -39,7 +39,7 @@
 
         let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
 
-        if(stDefaultAIUser == "" || stDefaultAIUser == null)
+        if(stDefaultAIUser === "" || stDefaultAIUser === null)
         {
             Log("No Default AI User in ai_scan_settings table!");
             stDefaultAIUser = "";
@@ -47,7 +47,7 @@
 
         // Get supplier id if exist
         let stSupplierID = null;
-        if(dacs.qaTask.supplierId != null || dacs.qaTask.supplierId != "")
+        if(dacs.qaTask.supplierId !== null || dacs.qaTask.supplierId !== "")
         {
             stSupplierID = dacs.qaTask.supplierId;
         }
@@ -63,7 +63,7 @@
 
         // If guidLcomp not exist in ai_scan_company reftab or guidLcomp exist in ai_scan_company reftab but dacs company name different
         let stLcomp = db.ai_scan_company.ReadFields({id: dacs.qaTask.guidLcomp},["id","name"]).SingleOrDefault();
-        if(stLcomp == null)
+        if(stLcomp === null)
         {
             Log("guidLcomp not exist in ai_scan_company reftab");
             db.ai_scan_company.Insert({
@@ -75,7 +75,7 @@
         {
             let stLcompId = stLcomp.id;
             let stLcompName = stLcomp.name;
-            if(stLcompId == dacs.qaTask.guidLcomp && stLcompName != dacs.qaTask.nameLcomp)
+            if(stLcompId === dacs.qaTask.guidLcomp && stLcompName !== dacs.qaTask.nameLcomp)
             {
                 Log("guidLcomp exist in ai_scan_company reftab but dacs company name different");
                 db.ai_scan_company.UpdateMany({
@@ -88,7 +88,7 @@
 
         // If guidLproj not exist in ai_scan_project reftab or guidLproj exist in ai_scan_project reftab but dacs project name different
         let stLproj = db.ai_scan_project.ReadFields({id: dacs.qaTask.guidLproj},["id","name"]).SingleOrDefault();
-        if(stLproj == null)
+        if(stLproj === null)
         {
             Log("guidLproj not exist in ai_scan_project reftab");
             db.ai_scan_project.Insert({
@@ -100,7 +100,7 @@
         {
             let stLprojId = stLproj.id;
             let stLprojName = stLproj.name;
-            if(stLprojId == dacs.qaTask.guidLproj && stLprojName != dacs.qaTask.nameLproj)
+            if(stLprojId === dacs.qaTask.guidLproj && stLprojName !== dacs.qaTask.nameLproj)
             {
                 Log("guidLproj exist in ai_scan_project reftab but dacs project name different");
                 db.ai_scan_project.UpdateMany({
@@ -148,7 +148,7 @@
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
-            fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
+            fileref_pdf: dacs.qaTask.mediaIdPdf === null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
         });
 
         //Add default user from ANNOT first job on AI page    
@@ -196,7 +196,7 @@
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
-            fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
+            fileref_pdf: dacs.qaTask.mediaIdPdf === null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
         });
 
         //Add default user from ANNOT second job on AI page
@@ -214,7 +214,7 @@
         let stOldDeliveryNoteId = dacs.qaTask.old_delivery_note_id;
 
         //If there is bad photo delivery and we retake in BAUAPP
-        if(stOldDeliveryNoteId != null && stOldDeliveryNoteId != "")
+        if(stOldDeliveryNoteId !== null && stOldDeliveryNoteId !== "")
         {
             Log("badphoto retake operation");
             db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : stOldDeliveryNoteId});
@@ -231,7 +231,7 @@
 
         let stDefaultAIUser = db.ai_scan_settings.ReadFields({name: "ai_default_user"},["value"]).SingleOrDefault().value;
 
-        if(stDefaultAIUser == "" || stDefaultAIUser == null)
+        if(stDefaultAIUser === "" || stDefaultAIUser === null)
         {
             Log("No Default AI User in ai_scan_settings table!");
             stDefaultAIUser = "";
@@ -239,7 +239,7 @@
 
         // Get supplier id if exist
         let stSupplierID = null;
-        if(dacs.qaTask.supplierId != null || dacs.qaTask.supplierId != "")
+        if(dacs.qaTask.supplierId !== null || dacs.qaTask.supplierId !== "")
         {
             stSupplierID = dacs.qaTask.supplierId;
         }
@@ -255,7 +255,7 @@
 
         // If guidLcomp not exist in ai_scan_company reftab or guidLcomp exist in ai_scan_company reftab but dacs company name different
         let stLcomp = db.ai_scan_company.ReadFields({id: dacs.qaTask.guidLcomp},["id","name"]).SingleOrDefault();
-        if(stLcomp == null)
+        if(stLcomp === null)
         {
             Log("guidLcomp not exist in ai_scan_company reftab");
             db.ai_scan_company.Insert({
@@ -267,7 +267,7 @@
         {
             let stLcompId = stLcomp.id;
             let stLcompName = stLcomp.name;
-            if(stLcompId == dacs.qaTask.guidLcomp && stLcompName != dacs.qaTask.nameLcomp)
+            if(stLcompId === dacs.qaTask.guidLcomp && stLcompName !== dacs.qaTask.nameLcomp)
             {
                 Log("guidLcomp exist in ai_scan_company reftab but dacs company name different");
                 db.ai_scan_company.UpdateMany({
@@ -280,7 +280,7 @@
 
         // If guidLproj not exist in ai_scan_project reftab or guidLproj exist in ai_scan_project reftab but dacs project name different
         let stLproj = db.ai_scan_project.ReadFields({id: dacs.qaTask.guidLproj},["id","name"]).SingleOrDefault();
-        if(stLproj == null)
+        if(stLproj === null)
         {
             Log("guidLproj not exist in ai_scan_project reftab");
             db.ai_scan_project.Insert({
@@ -292,7 +292,7 @@
         {
             let stLprojId = stLproj.id;
             let stLprojName = stLproj.name;
-            if(stLprojId == dacs.qaTask.guidLproj && stLprojName != dacs.qaTask.nameLproj)
+            if(stLprojId === dacs.qaTask.guidLproj && stLprojName !== dacs.qaTask.nameLproj)
             {
                 Log("guidLproj exist in ai_scan_project reftab but dacs project name different");
                 db.ai_scan_project.UpdateMany({
@@ -340,7 +340,7 @@
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
-            fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
+            fileref_pdf: dacs.qaTask.mediaIdPdf === null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
         });
 
         //Add default user from ANNOT first job on AI page    
@@ -388,7 +388,7 @@
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
-            fileref_pdf: dacs.qaTask.mediaIdPdf == null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
+            fileref_pdf: dacs.qaTask.mediaIdPdf === null ? null : fileref.New(dacs.qaTask.mediaIdPdf, 0)
         });
 
         //Add default user from ANNOT second job on AI page

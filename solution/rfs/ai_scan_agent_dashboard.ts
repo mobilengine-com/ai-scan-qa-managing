@@ -1,4 +1,4 @@
-//# server program ai_scan_agent_dashboard for form ai_scan_agent_dashboard
+//# server typescript program ai_scan_agent_dashboard for form ai_scan_agent_dashboard
 //# using reftab ai_scan_user;
 //# using reftab ai_scan_jobs_history;
 //# using reftab ai_scan_delivery_note_job;
@@ -140,7 +140,7 @@
                     }
 
                     //QA job assigned because the current user is not assigned in the past to the parent Annot jobs
-                    if(lstAllUnassignedQAJobs != null && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
+                    if(lstAllUnassignedQAJobs !== null && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
                     {
                         Log("QA job assigned because the user is not assigned in the past to the parent Annot jobs");
                         stJob_id = recData.id;
@@ -149,7 +149,7 @@
                     }
 
                     //Current user and 1 other user only online user or Current user only user with correct lang / other user can do this job because didn't do anot jobs
-                    if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
+                    if(lstAllUnassignedQAJobs !== null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == false)
                     {
                         Log("QA Only you + 0 or 1 other user with correct lang / other user can do this job because didn't do anot jobs");
                         stJob_id = recData.id;
@@ -158,7 +158,7 @@
                     }
 
                     //Current user and 1 other user only online user or Current user only user with correct lang / you can do this job because didn't do anot jobs
-                    if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
+                    if(lstAllUnassignedQAJobs !== null && iOtherUsersWithTheCorrectLang <= 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == false && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you + 0 or 1 other user with correct lang / you can do this job because didn't do anot jobs");
                         stJob_id = recData.id;
@@ -167,7 +167,7 @@
                     }
 
                     //Current user and 1 other user only online user with correct lang
-                    if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang == 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
+                    if(lstAllUnassignedQAJobs !== null && iOtherUsersWithTheCorrectLang == 1 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you + 1 other user with correct lang");
                         stJob_id = recData.id;
@@ -176,7 +176,7 @@
                     }
 
                     //Current user only online user with correct lang
-                    if(lstAllUnassignedQAJobs != null && iOtherUsersWithTheCorrectLang == 0 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
+                    if(lstAllUnassignedQAJobs !== null && iOtherUsersWithTheCorrectLang == 0 && bCurrentUserFoundInCurrentQAJobANOTJobs == true && bOtherOnlineUserGetQAJob == true)
                     {
                         Log("QA Only you with correct lang");
                         stJob_id = recData.id;
@@ -185,7 +185,7 @@
                     }
 
                     //More or equal 3 online user with correct lang
-                    if(lstAllUnassignedQAJobs != null && lstOtherOnlineUsers.Count() >= 2 && iOtherUsersWithTheCorrectLang >= 2 && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
+                    if(lstAllUnassignedQAJobs !== null && lstOtherOnlineUsers.Count() >= 2 && iOtherUsersWithTheCorrectLang >= 2 && bCurrentUserFoundInCurrentQAJobANOTJobs == false)
                     {
                         Log("More or equal than 3 online user with correct lang / users not empty");
                         stJob_id = recData.id;
@@ -273,27 +273,26 @@
 
                     for(let recOtherJob of lstDeliveryNoteOtherJobs)
                     {
-                        if(recOtherJob.job_id_2 != recData2.id)
+                        if(recOtherJob.job_id_2 !== recData2.id)
                         {
                             stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
                         }
                     }
 
                     //Get current delivery note other job's current_user variable and delay time
-                    let lstCurrentANOTJobOtherANOTJob = list.New();
                     let stDeliveryNoteOtherJobCurrentUser = "";
                     let dtlDeliveryNoteOtherJobDelayTime = null;
 
-                    lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
+                    let lstCurrentANOTJobOtherANOTJob = db.ai_scan_jobs.ReadFields({id: stCurrentDeliveryNoteOtherJobId},["current_user","delay_time"]).SingleOrDefault();
 
                     stDeliveryNoteOtherJobCurrentUser = lstCurrentANOTJobOtherANOTJob.current_user;
 
-                    if(lstCurrentANOTJobOtherANOTJob.delay_time != null)
+                    if(lstCurrentANOTJobOtherANOTJob.delay_time !== null)
                     {
                         dtlDeliveryNoteOtherJobDelayTime = lstCurrentANOTJobOtherANOTJob.delay_time.DeclareAsDtl();
                     }
 
-                    if(stLoggedUserId != stDeliveryNoteOtherJobCurrentUser && (dtlDeliveryNoteOtherJobDelayTime == null || dtlTimeNow > dtlDeliveryNoteOtherJobDelayTime) && recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
+                    if(stLoggedUserId !== stDeliveryNoteOtherJobCurrentUser && (dtlDeliveryNoteOtherJobDelayTime == null || dtlTimeNow > dtlDeliveryNoteOtherJobDelayTime) && recData2.type == "ANOT" && recData2.status == "UNCHECKED" && (recData2.delay_time == null || dtlTimeNow > recData2.delay_time.DeclareAsDtl()) && (recData2.lang == stCurrentUserANOTHUNLanguage || recData2.lang == stCurrentUserANOTENGLanguage || recData2.lang == stCurrentUserANOTPLLanguage))
                     {
                         stJob_id = recData2.id;
                         bUserGetCurrentANOTJob = true;
@@ -375,7 +374,7 @@
         // Update current job history with new online user
 
         let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
-        if(lstUserInprogressJob.Count() != 0)
+        if(lstUserInprogressJob.Count() !== 0)
         {
             let stCurrentJobId = lstUserInprogressJob.GetAt(0).job_id;
 
@@ -427,13 +426,13 @@
         Log("stGetJobId value:");
         Log(stGetJobId);
 
-        if(stGetJobId != "" || stGetJobId != null)
+        if(stGetJobId !== "" || stGetJobId !== null)
         {
             let lstJobIdRecheck = db.ai_scan_jobs.ReadFields({id: stGetJobId, status: "UNCHECKED"},["type"]);
             let iJobIdRecheckCount = lstJobIdRecheck.Count();
             Log("Recheck Count Result:");
             Log(iJobIdRecheckCount);
-            if(iJobIdRecheckCount != 0)
+            if(iJobIdRecheckCount !== 0)
             {
                 if(lstJobIdRecheck.GetAt(0).type == "QA")
                 {
@@ -447,7 +446,7 @@
 
                     for(let recCJUH of lstQAJobJobUserHistory)
                     {
-                        if(recCJUH.users != null)
+                        if(recCJUH.users !== null)
                         {
                             stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
                         }
@@ -496,7 +495,7 @@
 
                     for(let recCJUH of lstCurrentANOTJobUserHistory)
                     {
-                        if(recCJUH.users != null)
+                        if(recCJUH.users !== null)
                         {
                             stCurrentJobUserHistory = stCurrentJobUserHistory + recCJUH.users + ",";
                         }
@@ -557,7 +556,7 @@
     if(bCancelCurrentAnotJob)
     {
         let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
-        if(lstUserInprogressJob.Count() != 0)
+        if(lstUserInprogressJob.Count() !== 0)
         {
             // Update current job history with new online user
             let stCurrentJobId = lstUserInprogressJob.GetAt(0).job_id;
@@ -603,7 +602,7 @@
     if(bCancelDelayCurrentAnotJob)
     {
         let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
-        if(lstUserInprogressJob.Count() != 0)
+        if(lstUserInprogressJob.Count() !== 0)
         {
             let dtlDelayTime = dtl.Now().DtlAddHours(int.Parse(stDelayTime)).DtlToDtdb();
 
@@ -619,7 +618,7 @@
 
             for(let recOtherJob of lstDeliveryNoteOtherJobs)
             {
-                if(recOtherJob.job_id_2 != stCurrentJobId)
+                if(recOtherJob.job_id_2 !== stCurrentJobId)
                 {
                     stCurrentDeliveryNoteOtherJobId = recOtherJob.job_id_2;
                 }
@@ -673,7 +672,7 @@
     if(bCancelCurrentQAJob)
     {
         let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
-        if(lstUserInprogressJob.Count() != 0)
+        if(lstUserInprogressJob.Count() !== 0)
         {
             // Update current job history with new online user
             let stCurrentQAJobId = lstUserInprogressJob.GetAt(0).job_id;
@@ -701,7 +700,7 @@
     if(bCancelDelayCurrentQAJob)
     {
         let lstUserInprogressJob = db.ai_scan_job_inprogress.ReadFields({user_id: stLoggedUserId},["job_id"]);
-        if(lstUserInprogressJob.Count() != 0)
+        if(lstUserInprogressJob.Count() !== 0)
         {
             // Update current job history with new online user
             let stCurrentQAJobId = lstUserInprogressJob.GetAt(0).job_id;

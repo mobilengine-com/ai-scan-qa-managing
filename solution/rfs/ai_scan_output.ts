@@ -1,4 +1,4 @@
-//# server program ai_scan_output for form ai_scan_output
+//# server typescript program ai_scan_output for form ai_scan_output
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_delivery_note_item_job;
@@ -11,19 +11,19 @@
 {
     //Find submit buttons in Redo popup and Delete popup
     let sbRedo = null;
-    for(let recRP in form.puRedoPopup.tblRedoTable.rows)
+    for(let recRP of form.puRedoPopup.tblRedoTable.rows)
     {
         sbRedo = recRP.cmbbtnSubmitRedoPopupButton;
     }
 
     let sbDelete = null;
-    for(let recDP in form.puDeletePopup.tblDeleteTable.rows)
+    for(let recDP of form.puDeletePopup.tblDeleteTable.rows)
     {
         sbDelete = recDP.cmbbtnSubmitDeletePopupButton;
     }
 
     //Yes button clicked in Redo popup
-    if(sbRedo != null)
+    if(sbRedo !== null)
     {
         if(sbRedo.submitter)
         {
@@ -52,7 +52,7 @@
     }
 
     //Yes button clicked in Delete popup
-    if(sbDelete != null)
+    if(sbDelete !== null)
     {
         if(sbDelete.submitter)
         {

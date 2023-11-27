@@ -1,4 +1,4 @@
-//# server program ai_scan_gw_response for dacs AITaskResult
+//# server typescript program ai_scan_gw_response for dacs AITaskResult
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_delivery_note_item_job;
@@ -20,15 +20,15 @@
       {decimalSeparator: ".",   groupSize: 3, groupSeparator: ","}
     ];
 
-    let DateFrom = function(st) {
-        if (st == null || st == undefined) 
+    let DateFrom = function(st: string): dtdb {
+        if (st === null || st === undefined) 
             return null;
 
         Log(["rgstdtf", rgstdtf]);
         for (let stdtf of rgstdtf) {
           Log(["stdtf", stdtf]);
           let dtlIssueDate = dtl.Parse(dtf.Parse(stdtf), st);
-          if (dtlIssueDate != undefined) {
+          if (dtlIssueDate !== undefined) {
             Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate.DtlToDtdb()]);
             return dtlIssueDate.DtlToDtdb();
           }
@@ -36,12 +36,12 @@
         return null;
     };
 
-    let NumberFrom = function (st) {
-        if (st == null || st == undefined) 
+    let NumberFrom = function (st: string): number {
+        if (st === null || st === undefined) 
             return null;
         for (let nf of rgnf) {
             let n = float.ParseNuf(nf, st);
-            if (n != undefined) {
+            if (n !== undefined) {
               Log(["number", st, "parsed with ", nf]);
               return n;
             }
@@ -52,13 +52,13 @@
     Log(dacs);
 
     //Delivery note job "done" status
-    if(dacs.dnResponse.accepted == 1)
+    if(dacs.dnResponse.accepted === 1)
     {
         let stDeliveryNoteId = dacs.dnResponse.guid;
         let stDeliveryNoteJobId = dacs.dnResponse.requestFileId;
 
         //get Delivery note job datas
-        let bDeliveryNoteStatus = dacs.dnResponse.accepted == 1;
+        let bDeliveryNoteStatus = dacs.dnResponse.accepted === 1;
         let stDeliveryNoteStatus = bDeliveryNoteStatus ? "done" : "waiting";
         let stDeliveryNoteCustomerAddress = dacs.dnResponse.customerAddress;
         let stDeliveryNoteCustomerName = dacs.dnResponse.customerName;
@@ -152,7 +152,7 @@
 
         let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
 
-        if(lstCurrentJobUser.Count() != 0)
+        if(lstCurrentJobUser.Count() !== 0)
         {
             for(let recData of lstCurrentJobUser)
             {
@@ -257,7 +257,7 @@
 
         for(let recDNJ of lstDeliveryNoteJobs)
         {
-            if(recDNJ.job_id != stDeliveryNoteJobId)
+            if(recDNJ.job_id !== stDeliveryNoteJobId)
             {
                 stDeliveryNoteOtherJob = recDNJ.job_id;
             }
@@ -277,7 +277,7 @@
         //If delivery note other job finished
         let lstDeliveryNoteOtherJobStatus = db.ai_scan_job_result.ReadFields({job_id: stDeliveryNoteOtherJob},["job_id","result"]);
 
-        if(lstDeliveryNoteOtherJobStatus.Count() != 0)
+        if(lstDeliveryNoteOtherJobStatus.Count() !== 0)
         {
             //If two ANNOT jobs 100% same
             //Other ANNOT jobs delivery note datas
@@ -289,7 +289,7 @@
             let stOtherJobDeliveryNoteDeliveryAddress = "";
             let stOtherJobDeliveryNoteDeliveryRecipientName = "";
             let stOtherJobDeliveryNoteIssueDate = "";
-            let stOtherJobDeliveryNoteDtlIssueDate = "";
+            let stOtherJobDeliveryNoteDtlIssueDate = null;
             let stOtherJobDeliveryNoteOrderNumber = "";
             let stOtherJobDeliveryNoteSupplierAddress = "";
             let stOtherJobDeliveryNoteSupplierName = "";
@@ -317,18 +317,18 @@
                 stOtherJobDeliveryNoteWeightGross = recData.weight_gross;
             }
 
-            if(stOtherJobDeliveryNoteCustomerAddress == stDeliveryNoteCustomerAddress && 
-                stOtherJobDeliveryNoteCustomerName == stDeliveryNoteCustomerName &&
-                stOtherJobDeliveryNoteDeliveryAddress == stDeliveryNoteDeliveryAddress &&
-                stOtherJobDeliveryNoteDeliveryRecipientName == stDeliveryNoteDeliveryRecipientName &&
-                stOtherJobDeliveryNoteIssueDate == stDeliveryNoteIssueDate &&
-                stOtherJobDeliveryNoteOrderNumber == stDeliveryNoteOrderNumber &&
-                stOtherJobDeliveryNoteSupplierAddress == stDeliveryNoteSupplierAddress &&
-                stOtherJobDeliveryNoteSupplierName == stDeliveryNoteSupplierName &&
-                stOtherJobDeliveryNoteSupplierTaxNumber == stDeliveryNoteSupplierTaxNumber &&
-                stOtherJobDeliveryNoteSupplierWarehouse == stDeliveryNoteSupplierWarehouse &&
-                stOtherJobDeliveryNoteSupplierId == stDeliveryNoteSupplierId &&
-                stOtherJobDeliveryNoteWeightGross == stDeliveryNoteWeightGross)
+            if(stOtherJobDeliveryNoteCustomerAddress === stDeliveryNoteCustomerAddress && 
+                stOtherJobDeliveryNoteCustomerName === stDeliveryNoteCustomerName &&
+                stOtherJobDeliveryNoteDeliveryAddress === stDeliveryNoteDeliveryAddress &&
+                stOtherJobDeliveryNoteDeliveryRecipientName === stDeliveryNoteDeliveryRecipientName &&
+                stOtherJobDeliveryNoteIssueDate === stDeliveryNoteIssueDate &&
+                stOtherJobDeliveryNoteOrderNumber === stDeliveryNoteOrderNumber &&
+                stOtherJobDeliveryNoteSupplierAddress === stDeliveryNoteSupplierAddress &&
+                stOtherJobDeliveryNoteSupplierName === stDeliveryNoteSupplierName &&
+                stOtherJobDeliveryNoteSupplierTaxNumber === stDeliveryNoteSupplierTaxNumber &&
+                stOtherJobDeliveryNoteSupplierWarehouse === stDeliveryNoteSupplierWarehouse &&
+                stOtherJobDeliveryNoteSupplierId === stDeliveryNoteSupplierId &&
+                stOtherJobDeliveryNoteWeightGross === stDeliveryNoteWeightGross)
             {
                 bSameANNOTDatas = true;
             }
@@ -357,29 +357,29 @@
 
             let bMofifiedAnywhere = false;
 
-            if(lstOtherJobJobDeliveryNoteItems.Count() == i)
+            if(lstOtherJobJobDeliveryNoteItems.Count() === i)
             {
                 for(let l = 0;l<lstOtherJobJobDeliveryNoteItems.Count();l=l+1)
                 {
-                    if(lstOtherJobJobDeliveryNoteItemItemName.GetAt(l) != lstJobDeliveryNoteItemItemName.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemManufacturerItemNumber.GetAt(l) != lstJobDeliveryNoteItemManufacturerItemNumber.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemTaxNumber.GetAt(l) != lstJobDeliveryNoteItemTaxNumber.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemAmount.GetAt(l) != lstJobDeliveryNoteItemAmount.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemNumberAmount.GetAt(l) != lstJobDeliveryNoteItemNumberAmount.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemUnit.GetAt(l) != lstJobDeliveryNoteItemUnit.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) != lstJobDeliveryNoteItemGrossWeight.GetAt(l))
+                    if(lstOtherJobJobDeliveryNoteItemItemName.GetAt(l) !== lstJobDeliveryNoteItemItemName.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemManufacturerItemNumber.GetAt(l) !== lstJobDeliveryNoteItemManufacturerItemNumber.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemTaxNumber.GetAt(l) !== lstJobDeliveryNoteItemTaxNumber.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemAmount.GetAt(l) !== lstJobDeliveryNoteItemAmount.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemNumberAmount.GetAt(l) !== lstJobDeliveryNoteItemNumberAmount.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnit.GetAt(l) !== lstJobDeliveryNoteItemUnit.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) !== lstJobDeliveryNoteItemGrossWeight.GetAt(l))
                     {
                         bMofifiedAnywhere = true;
                     }
                 }
             }
 
-            if(lstOtherJobJobDeliveryNoteItems.Count() != iJobJobDeliveryNoteItems)
+            if(lstOtherJobJobDeliveryNoteItems.Count() !== iJobJobDeliveryNoteItems)
             {
                 bSameANNOTItemsDatas = false;
             }
 
-            if(bMofifiedAnywhere == true)
+            if(bMofifiedAnywhere === true)
             {
                 bSameANNOTItemsDatas = false;
             }
@@ -390,9 +390,9 @@
                 stOtherJobResultStatus = recData.result;
             }
 
-            if(stJobResultStatus != "" && stOtherJobResultStatus != "")
+            if(stJobResultStatus !== "" && stOtherJobResultStatus !== "")
             {
-                if(bSameANNOTDatas == true && bSameANNOTItemsDatas == true && stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
+                if(bSameANNOTDatas === true && bSameANNOTItemsDatas === true && stJobResultStatus !== "REJECTED" && stOtherJobResultStatus !== "REJECTED")
                 {
                     Log("Perfect Approved Annotations");
                     Log(dtlCurrentDeliveryNoteStartWorkingTime);
@@ -515,13 +515,13 @@
     }
 
     //Delivery note job "rejected" status
-    if(dacs.dnResponse.rejected == 1)
+    if(dacs.dnResponse.rejected === 1)
     {
         let stDeliveryNoteId = dacs.dnResponse.guid;
         let stDeliveryNoteJobId = dacs.dnResponse.requestFileId;
 
         //get Delivery note job datas
-        let bDeliveryNoteStatus = dacs.dnResponse.rejected == 1;
+        let bDeliveryNoteStatus = dacs.dnResponse.rejected === 1;
         let stDeliveryNoteStatus = bDeliveryNoteStatus ? "rejected" : "waiting";
         let stDeliveryNoteCustomerAddress = dacs.dnResponse.customerAddress;
         let stDeliveryNoteCustomerName = dacs.dnResponse.customerName;
@@ -596,7 +596,7 @@
 
         let lstCurrentJobUser = db.ai_scan_job_inprogress.ReadFields({job_id: stDeliveryNoteJobId},["user_id","job_start_time"]);
 
-        if(lstCurrentJobUser.Count() != 0)
+        if(lstCurrentJobUser.Count() !== 0)
         {
             for(let recData of lstCurrentJobUser)
             {
@@ -701,7 +701,7 @@
 
         for(let recDNJ of lstDeliveryNoteJobs)
         {
-            if(recDNJ.job_id != stDeliveryNoteJobId)
+            if(recDNJ.job_id !== stDeliveryNoteJobId)
             {
                 stDeliveryNoteOtherJob = recDNJ.job_id;
             }
@@ -721,7 +721,7 @@
         //If delivery note other job finished
         let lstDeliveryNoteOtherJobStatus = db.ai_scan_job_result.ReadFields({job_id: stDeliveryNoteOtherJob},["job_id","result"]);
 
-        if(lstDeliveryNoteOtherJobStatus.Count() != 0)
+        if(lstDeliveryNoteOtherJobStatus.Count() !== 0)
         {
             let stOtherJobResultStatus = "";
             for(let recData of lstDeliveryNoteOtherJobStatus)
@@ -729,7 +729,7 @@
                 stOtherJobResultStatus = recData.result;
             }
 
-            if(stJobResultStatus != "REJECTED" && stOtherJobResultStatus != "REJECTED")
+            if(stJobResultStatus !== "REJECTED" && stOtherJobResultStatus !== "REJECTED")
             {
                 //Never get here
                 Log("Perfect Approved Annotations");
