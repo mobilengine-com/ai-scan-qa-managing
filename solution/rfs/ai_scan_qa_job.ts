@@ -161,6 +161,9 @@
                 avg_score_overall: 0.0
             });
 
+            //AUTO TEST LOG
+            Log("Bad Photo QA job result saved in refems");
+
             //DEBUG Log (QA Job BAD PHOTO DONE)
             Log("DEBUG");
             Log(stSelectedQAJobId);
@@ -651,6 +654,9 @@
                     ii=ii+1;
                 }
             }
+
+            //AUTO TEST LOG
+            Log("Handwritten QA job result saved in refems");
 
             //Set perfect point to Anot job if possible
             if((bMainTableEditedTextAvaiable === false && bItemTableEdittedVariable === false) && (bItemTableAOnlyAccepted === true || bMainTableOnlyAgentAAccepted === true) && (bItemTableBOnlyAccepted === false && bMainTableOnlyAgentBAccepted === false))
@@ -1167,6 +1173,9 @@
                     ii=ii+1;
                 }
             }
+
+            //AUTO TEST LOG
+            Log("Approved QA job result saved in refems");
 
              //Set perfect point to Anot job if possible
              if((bMainTableEditedTextAvaiable === false && bItemTableEdittedVariable === false) && (bItemTableAOnlyAccepted === true || bMainTableOnlyAgentAAccepted === true) && (bItemTableBOnlyAccepted === false && bMainTableOnlyAgentBAccepted === false))

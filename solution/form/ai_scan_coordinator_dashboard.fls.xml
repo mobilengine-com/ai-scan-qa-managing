@@ -483,15 +483,17 @@
 
     <if cond='{ddDateFilter.selectedKey == 5}' deferred='true'>
         <hbox style='{styles.sylHboxDpDate}'>
-            <datepicker id='dpFromDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"ERROR"}' style='{styles.sylDpDate}' access='private' testId='{"dpFromDate"}'>
+            <datepicker id='dpFromDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"Wrong date format!"}' style='{styles.sylDpDate}' access='private' testId='{"dpFromDate"}'>
                 <validation>
-                    <validator cond='{date BETWEEN dtlMinDate AND dtlMaxDate}' message='{"FROM DATE ERROR"}'/> 
+                    <validator cond='{date BETWEEN dtlMinDate AND dtlMaxDate}' message='{"date must beetween 01.01.1000. and 12.31.2999.!"}'/>
+                    <validator cond='{dpFromDate.date &lt; dpToDate.date}' message='{"From date must smaller than to date!"}'/>  
                 </validation>
             </datepicker>
             <textview text = '-' access='private' style='{styles.sylTvDateSep}'/>
-            <datepicker id='dpToDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"ERROR"}' style='{styles.sylDpDate}' access='private' testId='{"dpToDate"}'>
+            <datepicker id='dpToDate' date='{SELECT sysp.dtlFormOpen}' hint='{SELECT FORMATDTL(sysp.dtlFormOpen, (dtf MM"/"dd"/"yyyy))}' dateFormat='(dtf MM "-" dd "-" yyyy)' invalidDateMessage='{"Wrong date format!"}' style='{styles.sylDpDate}' access='private' testId='{"dpToDate"}'>
                 <validation>
-                    <validator cond='{date BETWEEN dtlMinDate AND dtlMaxDate}' message='{"TO DATE ERROR"}'/> 
+                    <validator cond='{date BETWEEN dtlMinDate AND dtlMaxDate}' message='{"date must beetween 01.01.1000. and 12.31.2999.!"}'/>
+                    <validator cond='{dpToDate.date > dpFromDate.date}' message='{"To date must bigger than from date!"}'/> 
                 </validation>
             </datepicker>
         </hbox>      
