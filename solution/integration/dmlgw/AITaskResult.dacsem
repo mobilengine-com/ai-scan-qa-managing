@@ -23,7 +23,6 @@ dnResponse: element {
 	supplierId: optional attribute of type string;
 	weightGross: optional attribute of type string;
 
-
 	concreteArrival: optional attribute of type string;
 	concreteStartpour: optional attribute of type string;
 	concreteEndpour: optional attribute of type string;
