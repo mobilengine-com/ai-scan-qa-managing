@@ -953,21 +953,20 @@ declare global {
 	const forms: __forms_type;
 }
 
-globalThis.Log = function (rv: any) {
-	console.log(rv);
-}
+globalThis.Log = (rv: any) => console.log(rv);
+
 globalThis.float={
-	ParseNuf: (rvnuf: map, st: string): number | undefined => {
-		return 1;
-	},
+
 		/** Returns positive infinity. */
-	PositiveInfinity: ():  number => { return 1; },
+	PositiveInfinity: ():  number => Number.POSITIVE_INFINITY,
 		/** Returns negative infinity. */
-	NegativeInfinity: (): number => { return 1; },
+	NegativeInfinity: (): number => Number.NEGATIVE_INFINITY,
 		/** Returns a value that is not a number (NaN). */
-	NaN: (): number => { return 1; },
+	NaN: (): number => Number.NaN,
 		/** Converts the string representation of a number to its floating-point number equivalent. Returns <<undefined>> if the conversion fails. */
-	Parse: (st: string): number | undefined => { return 1; },
+	Parse: (st: string): number | undefined => { throw "function not implemented in ts" },
+		/** Converts the string representation of a number to its floating-point number equivalent, returns <<undefined>> if the conversion fails. */
+	ParseNuf: (rvnuf: map, st: string): number | undefined => { throw "function not implemented in ts" },
 		/** Returns a random value in the interval [0, 1) */
-	Random: (): number => { return 1; },
+	Random: (): number => Math.random(),
 }

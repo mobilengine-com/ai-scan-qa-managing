@@ -1,13 +1,13 @@
 //# server typescript program conversion for schedule * * * * * first run at 2100-01-01 00:00
 
-export class nuf {
+class nuf {
   decimalSeparator: string;
   groupSize: number;
   groupSeparator: string;
 }
 
-let rgstdtf: string[] = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
-let rgnf: nuf[] = [
+const rgstdtf: string[] = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
+const rgnf: nuf[] = [
   {decimalSeparator: ",",  groupSize: 3, groupSeparator: "."},
   {decimalSeparator: ",",  groupSize: 3, groupSeparator: " "},
   {decimalSeparator: ".",  groupSize: 3, groupSeparator: " "},
@@ -53,15 +53,6 @@ export function NumberFrom(st: string): number {
       return null;
 };
 
-export function escapeRegExp(string: string): string {
+function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-export function parseNumber(value) {
-  const example = Intl.NumberFormat("hu").format(1.1);
-  const cleanPattern = new RegExp(`[^-+0-9${ example.charAt( 1 ) }]`, 'g');
-  const cleaned = value.replace(cleanPattern, '');
-  const normalized = cleaned.replace(example.charAt(1), '.');
-  return parseFloat(normalized);
-
 }
