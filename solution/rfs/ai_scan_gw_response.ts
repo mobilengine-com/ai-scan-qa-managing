@@ -11,44 +11,9 @@
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
+import { NumberFrom, DateFrom } from "conversion";
+
 {
-    let rgstdtf = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
-    let rgnf = [
-      {decimalSeparator: ",",   groupSize: 3, groupSeparator: "."},
-      {decimalSeparator: ",",   groupSize: 3, groupSeparator: " "},
-      {decimalSeparator: ".",   groupSize: 3, groupSeparator: " "},
-      {decimalSeparator: ".",   groupSize: 3, groupSeparator: ","}
-    ];
-
-    let DateFrom = function(st: string): dtdb {
-        if (st === null || st === undefined) 
-            return null;
-
-        Log(["rgstdtf", rgstdtf]);
-        for (let stdtf of rgstdtf) {
-          Log(["stdtf", stdtf]);
-          let dtlIssueDate = dtl.Parse(dtf.Parse(stdtf), st);
-          if (dtlIssueDate !== undefined) {
-            Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate.DtlToDtdb()]);
-            return dtlIssueDate.DtlToDtdb();
-          }
-        }
-        return null;
-    };
-
-    let NumberFrom = function (st: string): number {
-        if (st === null || st === undefined) 
-            return null;
-        for (let nf of rgnf) {
-            let n = float.ParseNuf(nf, st);
-            if (n !== undefined) {
-              Log(["number", st, "parsed with ", nf]);
-              return n;
-            }
-          }
-          return null;
-    };
-
     Log(dacs);
 
     //Delivery note job "done" status

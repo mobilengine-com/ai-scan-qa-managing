@@ -9,5 +9,6 @@ module.exports = {
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
+    "setupFiles": ["./src/mobilengine.ts"],
     "testResultsProcessor": "jest-junit"
   }
