@@ -61,7 +61,7 @@ pipeline {
 					bat 'npm install'
 					bat """
 						npm test -- --silent=false
-						exit 0
+						exit /b 0
 					"""
 					junit checksName: 'Jest Tests', testResults: 'junit.xml'
 				}
