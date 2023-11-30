@@ -60,13 +60,11 @@ pipeline {
 				dir('repo/rfs-tests') {
 					bat 'echo testing'
 					bat 'npm install'
-/*
 					bat( 
-						returnStatus: false,
+						returnStatus: true,
 						script:       "npm test -- --silent=false"
 					)
 					junit checksName: 'Jest Tests', testResults: 'junit.xml'
-*/					
 				}
 			}
 		}
