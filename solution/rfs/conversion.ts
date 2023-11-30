@@ -43,7 +43,7 @@ export function NumberFrom(st: string): number {
         let fMatch = regex.test(st);
         if (!fMatch) continue;
 
-        const stReplaced = st.replace(escapeRegExp(nf.groupSeparator), '').replace(escapeRegExp(nf.decimalSeparator), '\.');
+        const stReplaced = st.replaceAll(escapeRegExp(nf.groupSeparator), '').replaceAll(escapeRegExp(nf.decimalSeparator), '\.');
         Log(["stReplaced: ", stReplaced]);
         let n = parseFloat(stReplaced); 
         if (n !== undefined && !Number.isNaN(n))  {
