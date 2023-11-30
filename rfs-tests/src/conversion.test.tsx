@@ -15,10 +15,14 @@ describe('testing number conversion', () => {
     expect(NumberFrom('-12,3')).toBe(-12.3);
   });
   test('double fraction no grouping is fraction', () => {
+    expect(NumberFrom('12.00')).toBe(12);
+    expect(NumberFrom('12,00')).toBe(12);
     expect(NumberFrom('12.34')).toBe(12.34);
     expect(NumberFrom('12,34')).toBe(12.34);
     expect(NumberFrom('1,002.34')).toBe(1002.34);
     expect(NumberFrom('1 002,34')).toBe(1002.34);
+    expect(NumberFrom('-12.00')).toBe(-12);
+    expect(NumberFrom('-12,00')).toBe(-12);
     expect(NumberFrom('-12.34')).toBe(-12.34);
     expect(NumberFrom('-12,34')).toBe(-12.34);
     expect(NumberFrom('-1,002.34')).toBe(-1002.34);
