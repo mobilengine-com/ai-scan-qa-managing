@@ -59,7 +59,10 @@ pipeline {
 			steps {
 				dir('repo/rfs-tests') {
 					bat 'npm install'
-					bat 'npm test -- --silent=false'
+					bat """
+						npm test -- --silent=false
+						exit 0
+					"""
 					junit checksName: 'Jest Tests', testResults: 'junit.xml'
 				}
 			}
