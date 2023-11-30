@@ -6,30 +6,52 @@ describe('testing number conversion', () => {
   });
   test('simple positive', () => {
     expect(NumberFrom('12')).toBe(12);
+    expect(NumberFrom('-12')).toBe(-12);
   });
   test('single fraction no grouping', () => {
     expect(NumberFrom('12.3')).toBe(12.3);
     expect(NumberFrom('12,3')).toBe(12.3);
+    expect(NumberFrom('-12.3')).toBe(-12.3);
+    expect(NumberFrom('-12,3')).toBe(-12.3);
   });
   test('double fraction no grouping is fraction', () => {
     expect(NumberFrom('12.34')).toBe(12.34);
     expect(NumberFrom('12,34')).toBe(12.34);
     expect(NumberFrom('1,002.34')).toBe(1002.34);
     expect(NumberFrom('1 002,34')).toBe(1002.34);
+    expect(NumberFrom('-12.34')).toBe(-12.34);
+    expect(NumberFrom('-12,34')).toBe(-12.34);
+    expect(NumberFrom('-1,002.34')).toBe(-1002.34);
+    expect(NumberFrom('-1 002,34')).toBe(-1002.34);
+
+    // non grouping
+    expect(NumberFrom('1,234')).toBe(1.234);
+    expect(NumberFrom('-1,234')).toBe(-1.234);
   });
   test('grouping', () => {
     expect(NumberFrom('1 234')).toBe(1234);
     expect(NumberFrom('1 234,567')).toBe(1234.567);
     expect(NumberFrom('100 234,567')).toBe(100234.567);
-    // non grouping
-    expect(NumberFrom('1,234')).toBe(1.234);
     expect(NumberFrom('1,234.567')).toBe(1234.567);
     expect(NumberFrom('100,234.567')).toBe(100234.567);
+
+    expect(NumberFrom('1,100,234.567')).toBe(1100234.567);
+    expect(NumberFrom('1 100 234,567')).toBe(1100234.567);
+    expect(NumberFrom('100,234.567')).toBe(100234.567);
+
+    expect(NumberFrom('-1 234')).toBe(-1234);
+    expect(NumberFrom('-1 234,567')).toBe(-1234.567);
+    expect(NumberFrom('-100 234,567')).toBe(-100234.567);
+    expect(NumberFrom('-1,234.567')).toBe(-1234.567);
+    expect(NumberFrom('-100,234.567')).toBe(-100234.567);
   });
   test('no grouping', () => {
     expect(NumberFrom('1234')).toBe(1234);
     expect(NumberFrom('1234,567')).toBe(1234.567);
     expect(NumberFrom('1234.567')).toBe(1234.567);
+    expect(NumberFrom('-1234')).toBe(-1234);
+    expect(NumberFrom('-1234,567')).toBe(-1234.567);
+    expect(NumberFrom('-1234.567')).toBe(-1234.567);
   });
   test('non numbers', () => {
     expect(NumberFrom(null)).toBe(null);
@@ -41,6 +63,8 @@ describe('testing number conversion', () => {
     expect(NumberFrom('2121.234.56')).toBe(null);
     expect(NumberFrom('12 34 56')).toBe(null);
     expect(NumberFrom('12,34,56')).toBe(null);
+    expect(NumberFrom('-12 34 56')).toBe(null);
+    expect(NumberFrom('-12,34,56')).toBe(null);
   });
 
 });
