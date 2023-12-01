@@ -183,8 +183,8 @@
                         DNIJB.amount,
                         DNIJB.unit,
                         DNIJB.gross_weight,
-                        DNIJA.unit_price,
-                        DNIJA.unit_price_currency,
+                        DNIJB.unit_price,
+                        DNIJB.unit_price_currency,
                         false new_row,
                         false new_row_readonly
                     FROM 
