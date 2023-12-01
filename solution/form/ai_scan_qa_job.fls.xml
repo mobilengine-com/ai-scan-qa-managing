@@ -51,6 +51,14 @@
                         DNJ.supplier_warehouse,
                         DNJ.supplier_id,
                         DNJ.weight_gross,
+                        DNJ.concrete_arrival,
+                        DNJ.concrete_startpour,
+                        DNJ.concrete_endpour,
+                        DNJ.concrete_departure,
+                        DNJ.concrete_pumplength,
+                        DNJ.concrete_jobtime,
+                        DNJ.total_price,
+                        DNJ.total_price_currency,
                         DNJ.fileref_pdf
 					FROM
                         ai_scan_job_result JR
@@ -77,6 +85,14 @@
         <let id='stSelectedQAJobAnotJobsAgentASupplierWarehouse' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_warehouse," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentASupplierId' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.supplier_id," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentAWeightGross' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.weight_gross," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteArrival' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_arrival," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteStartpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_startpour," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteEndpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_endpour," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteDeparture' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_departure," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcretePumplength' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_pumplength," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteJobtime' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_jobtime," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentATotalPrice' shape='scalar' access='private' value='{SELECT COALESCE(TOSTRING(SQAJAAR.total_price)," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentATotalPriceCurrency' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.total_price_currency," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
 
         <let id='stSelectedQAJobAnotJobsAgentAPDFFile' shape='scalar' access='private' value='{SELECT SQAJAAR.fileref_pdf FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         
@@ -88,6 +104,8 @@
                         DNIJA.amount,
                         DNIJA.unit,
                         DNIJA.gross_weight,
+                        DNIJA.unit_price,
+                        DNIJA.unit_price_currency,
                         false new_row,
                         false new_row_readonly
                     FROM 
@@ -116,6 +134,14 @@
                         DNJ.supplier_warehouse,
                         DNJ.supplier_id,
                         DNJ.weight_gross,
+                        DNJ.concrete_arrival,
+                        DNJ.concrete_startpour,
+                        DNJ.concrete_endpour,
+                        DNJ.concrete_departure,
+                        DNJ.concrete_pumplength,
+                        DNJ.concrete_jobtime,
+                        DNJ.total_price,
+                        DNJ.total_price_currency,
                         DNJ.fileref_pdf
 					FROM
                         ai_scan_job_result JR
@@ -140,6 +166,14 @@
         <let id='stSelectedQAJobAnotJobsAgentBSupplierWarehouse' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_warehouse," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBSupplierId' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.supplier_id," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBWeightGross' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.weight_gross," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteArrival' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_arrival," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteStartpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_startpour," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteEndpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_endpour," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteDeparture' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_departure," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcretePumplength' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_pumplength," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteJobtime' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_jobtime," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBTotalPrice' shape='scalar' access='private' value='{SELECT COALESCE(TOSTRING(SQAJABR.total_price)," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBTotalPriceCurrency' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.total_price_currency," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
 
         <let id='ltblSelectedQAJobAgentBResultItemTable' shape='table' access='private' 
 			value='{SELECT 
@@ -149,6 +183,8 @@
                         DNIJB.amount,
                         DNIJB.unit,
                         DNIJB.gross_weight,
+                        DNIJA.unit_price,
+                        DNIJA.unit_price_currency,
                         false new_row,
                         false new_row_readonly
                     FROM 

@@ -12,5 +12,7 @@
         <Column Name="gross_weight" Type="Text"/>
         <Column Name="gross_weight_number" Type="Float"/>
         <Column Name="gross_weight_unit" Type="Text"/>
+        <Column Name="unit_price" Type="Float"/>
+        <Column Name="unit_price_currency" Type="Text"/>
     </Columns>
 </Reftab>

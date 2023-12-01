@@ -53,6 +53,65 @@ export function NumberFrom(st: string): number {
       return null;
 };
 
+export function TimeFrom(st: string): string {
+  Log([st]);
+  if (st === null || st === undefined || st === "") 
+      return null;
+
+  let regex = null;
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    return st;
+  }
+  regex = RegExp('^([0-9]):[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    return st;
+  }
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3])[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let stFormatingSt = st.match(/.{1,2}/g);
+    return stFormatingSt.join(':');
+  }
+  regex = RegExp('^([0-9])[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let stFormatingSt = st.match(/.{1,2}/g);
+    return stFormatingSt.join(':');
+  }
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3]) [0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let stFormatingSt = st.replace(" ", ":")
+    return stFormatingSt;
+  }
+  regex = RegExp('^([0-9]) [0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let stFormatingSt = st.replace(" ", ":")
+    return stFormatingSt;
+  }
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3]).[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let stFormatingSt = st.replace(".", ":")
+    return stFormatingSt;
+  }
+  regex = RegExp('^([0-9]).[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let stFormatingSt = st.replace(".", ":")
+    return stFormatingSt;
+  }
+  return st;
+};
+
 function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }

@@ -11,7 +11,7 @@
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
-import { NumberFrom, DateFrom } from "conversion";
+import { NumberFrom, DateFrom, TimeFrom } from "conversion";
 
 {
     Log(dacs);
@@ -38,6 +38,14 @@ import { NumberFrom, DateFrom } from "conversion";
         let stDeliveryNoteSupplierWarehouse = dacs.dnResponse.supplierWarehouse;
         let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
         let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
+        let stDeliveryNoteConcreteArrival = TimeFrom(dacs.dnResponse.concreteArrival);
+        let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
+        let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
+        let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
+        let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
+        let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
+        let stDeliveryNoteTotalPrice = NumberFrom(dacs.dnResponse.totalPrice);
+        let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
 
         // Update delivery_note job
         db.ai_scan_delivery_note_job.UpdateMany({
@@ -56,7 +64,15 @@ import { NumberFrom, DateFrom } from "conversion";
             supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
             supplier_warehouse: stDeliveryNoteSupplierWarehouse,
             supplier_id: stDeliveryNoteSupplierId,
-            weight_gross: stDeliveryNoteWeightGross
+            weight_gross: stDeliveryNoteWeightGross,
+            concrete_arrival: stDeliveryNoteConcreteArrival,
+            concrete_startpour: stDeliveryNoteConcreteStartpour,
+            concrete_endpour: stDeliveryNoteConcreteEndpour,
+            concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_pumplength: stDeliveryNoteConcretePumplength,
+            concrete_jobtime: stDeliveryNoteConcreteJobtime,
+            total_price: stDeliveryNoteTotalPrice,
+            total_price_currency: stDeliveryNoteTotalPriceCurrency
         });
 
         // delivery_note's items
@@ -68,6 +84,8 @@ import { NumberFrom, DateFrom } from "conversion";
         let lstJobDeliveryNoteItemNumberAmount = list.New();
         let lstJobDeliveryNoteItemUnit = list.New();
         let lstJobDeliveryNoteItemGrossWeight = list.New();
+        let lstJobDeliveryNoteItemUnitPrice = list.New();
+        let lstJobDeliveryNoteItemUnitPriceCurrency = list.New();
 
         let i = 0;
         for (let item of dacs.dnResponse.items) {
@@ -79,6 +97,8 @@ import { NumberFrom, DateFrom } from "conversion";
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
             let stDeliveryNoteItemUnit = item.unit;
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
+            let stDeliveryNoteItemUnitPrice = NumberFrom(item.unitPrice);
+            let stDeliveryNoteItemUnitPriceCurrency = item.unitPriceCurrency;
 
             lstJobDeliveryNoteItemItemName.Add(stDeliveryNoteItemItemName);
             lstJobDeliveryNoteItemManufacturerItemNumber.Add(stDeliveryNoteItemManufacturerItemNumber);
@@ -87,6 +107,8 @@ import { NumberFrom, DateFrom } from "conversion";
             lstJobDeliveryNoteItemNumberAmount.Add(iDeliveryNoteItemAmount);
             lstJobDeliveryNoteItemUnit.Add(stDeliveryNoteItemUnit);
             lstJobDeliveryNoteItemGrossWeight.Add(stDeliveryNoteItemGrossWeight);
+            lstJobDeliveryNoteItemUnitPrice.Add(stDeliveryNoteItemUnitPrice);
+            lstJobDeliveryNoteItemUnitPriceCurrency.Add(stDeliveryNoteItemUnitPriceCurrency);
 
             // Update delivery_note job
             db.ai_scan_delivery_note_item_job.InsertOrUpdate({
@@ -100,7 +122,9 @@ import { NumberFrom, DateFrom } from "conversion";
                 amount: stDeliveryNoteItemAmount,
                 amount_number: iDeliveryNoteItemAmount,
                 unit: stDeliveryNoteItemUnit,
-                gross_weight: stDeliveryNoteItemGrossWeight
+                gross_weight: stDeliveryNoteItemGrossWeight,
+                unit_price: stDeliveryNoteItemUnitPrice,
+                unit_price_currency: stDeliveryNoteItemUnitPriceCurrency
             });
 
             i=i+1;
@@ -263,6 +287,15 @@ import { NumberFrom, DateFrom } from "conversion";
             let stOtherJobDeliveryNoteSupplierId = "";
             let stOtherJobDeliveryNoteWeightGross = "";
 
+            let stOtherJobDeliveryNoteConcreteArrival = "";
+            let stOtherJobDeliveryNoteConcreteStartpour = "";
+            let stOtherJobDeliveryNoteConcreteEndpour = "";
+            let stOtherJobDeliveryNoteConcreteDeparture = "";
+            let stOtherJobDeliveryNoteConcretePumplength = "";
+            let stOtherJobDeliveryNoteConcreteJobtime = "";
+            let stOtherJobDeliveryNoteTotalPrice = null;
+            let stOtherJobDeliveryNoteTotalPriceCurrency = "";
+
             let lstOtherJobDeliveryNote = db.ai_scan_delivery_note_job.Read({job_id : stDeliveryNoteOtherJob});
 
             for(let recData of lstOtherJobDeliveryNote)
@@ -280,6 +313,14 @@ import { NumberFrom, DateFrom } from "conversion";
                 stOtherJobDeliveryNoteSupplierWarehouse = recData.supplier_warehouse;
                 stOtherJobDeliveryNoteSupplierId = recData.supplier_id;
                 stOtherJobDeliveryNoteWeightGross = recData.weight_gross;
+                stOtherJobDeliveryNoteConcreteArrival = recData.concrete_arrival;
+                stOtherJobDeliveryNoteConcreteStartpour = recData.concrete_startpour;
+                stOtherJobDeliveryNoteConcreteEndpour = recData.concrete_endpour;
+                stOtherJobDeliveryNoteConcreteDeparture = recData.concrete_departure;
+                stOtherJobDeliveryNoteConcretePumplength = recData.concrete_pumplength;
+                stOtherJobDeliveryNoteConcreteJobtime = recData.concrete_jobtime;
+                stOtherJobDeliveryNoteTotalPrice = recData.total_price;
+                stOtherJobDeliveryNoteTotalPriceCurrency =recData.total_price_currency;
             }
 
             if(stOtherJobDeliveryNoteCustomerAddress === stDeliveryNoteCustomerAddress && 
@@ -293,7 +334,15 @@ import { NumberFrom, DateFrom } from "conversion";
                 stOtherJobDeliveryNoteSupplierTaxNumber === stDeliveryNoteSupplierTaxNumber &&
                 stOtherJobDeliveryNoteSupplierWarehouse === stDeliveryNoteSupplierWarehouse &&
                 stOtherJobDeliveryNoteSupplierId === stDeliveryNoteSupplierId &&
-                stOtherJobDeliveryNoteWeightGross === stDeliveryNoteWeightGross)
+                stOtherJobDeliveryNoteWeightGross === stDeliveryNoteWeightGross &&
+                stOtherJobDeliveryNoteConcreteArrival === stDeliveryNoteConcreteArrival &&
+                stOtherJobDeliveryNoteConcreteStartpour === stDeliveryNoteConcreteStartpour &&
+                stOtherJobDeliveryNoteConcreteEndpour === stDeliveryNoteConcreteEndpour &&
+                stOtherJobDeliveryNoteConcreteDeparture === stDeliveryNoteConcreteDeparture &&
+                stOtherJobDeliveryNoteConcretePumplength === stDeliveryNoteConcretePumplength &&
+                stOtherJobDeliveryNoteConcreteJobtime === stDeliveryNoteConcreteJobtime &&
+                stOtherJobDeliveryNoteTotalPrice === stDeliveryNoteTotalPrice &&
+                stOtherJobDeliveryNoteTotalPriceCurrency === stDeliveryNoteTotalPriceCurrency)
             {
                 bSameANNOTDatas = true;
             }
@@ -306,6 +355,8 @@ import { NumberFrom, DateFrom } from "conversion";
             let lstOtherJobJobDeliveryNoteItemNumberAmount = list.New();
             let lstOtherJobJobDeliveryNoteItemUnit = list.New();
             let lstOtherJobJobDeliveryNoteItemGrossWeight = list.New();
+            let lstOtherJobJobDeliveryNoteItemUnitPrice = list.New();
+            let lstOtherJobJobDeliveryNoteItemUnitPriceCurrency = list.New();
     
             let lstOtherJobJobDeliveryNoteItems = db.ai_scan_delivery_note_item_job.Read({job_id : stDeliveryNoteOtherJob});
     
@@ -318,6 +369,8 @@ import { NumberFrom, DateFrom } from "conversion";
                 lstOtherJobJobDeliveryNoteItemNumberAmount.Add(NumberFrom(recData.amount));
                 lstOtherJobJobDeliveryNoteItemUnit.Add(recData.unit);
                 lstOtherJobJobDeliveryNoteItemGrossWeight.Add(recData.gross_weight);
+                lstOtherJobJobDeliveryNoteItemUnitPrice.Add(recData.unit_price);
+                lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.Add(recData.unit_price_currency);
             }
 
             let bMofifiedAnywhere = false;
@@ -332,7 +385,9 @@ import { NumberFrom, DateFrom } from "conversion";
                         lstOtherJobJobDeliveryNoteItemAmount.GetAt(l) !== lstJobDeliveryNoteItemAmount.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemNumberAmount.GetAt(l) !== lstJobDeliveryNoteItemNumberAmount.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemUnit.GetAt(l) !== lstJobDeliveryNoteItemUnit.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) !== lstJobDeliveryNoteItemGrossWeight.GetAt(l))
+                        lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) !== lstJobDeliveryNoteItemGrossWeight.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnitPrice.GetAt(l) !== lstJobDeliveryNoteItemUnitPrice.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.GetAt(l) !== lstJobDeliveryNoteItemUnitPriceCurrency.GetAt(l))
                     {
                         bMofifiedAnywhere = true;
                     }
@@ -408,6 +463,14 @@ import { NumberFrom, DateFrom } from "conversion";
                    doneDacs.dnResponse.supplierWarehouse = stDeliveryNoteSupplierWarehouse;
                    doneDacs.dnResponse.supplierId = stDeliveryNoteSupplierId;
                    doneDacs.dnResponse.weightGross = stDeliveryNoteWeightGross;
+                   doneDacs.dnResponse.concreteArrival = stDeliveryNoteConcreteArrival;
+                   doneDacs.dnResponse.concreteStartpour = stDeliveryNoteConcreteStartpour;
+                   doneDacs.dnResponse.concreteEndpour = stDeliveryNoteConcreteEndpour;
+                   doneDacs.dnResponse.concreteDeparture = stDeliveryNoteConcreteDeparture;
+                   doneDacs.dnResponse.concretePumplength = stDeliveryNoteConcretePumplength;
+                   doneDacs.dnResponse.concreteJobtime = stDeliveryNoteConcreteJobtime;
+                   doneDacs.dnResponse.totalPrice = stDeliveryNoteTotalPrice;
+                   doneDacs.dnResponse.totalPriceCurrency = stDeliveryNoteTotalPriceCurrency;
                    for (let i = 0; i < lstJobDeliveryNoteItemItemName.Count(); i=i+1) {
                     let item = {
                     itemName: lstJobDeliveryNoteItemItemName.GetAt(i),
@@ -416,7 +479,9 @@ import { NumberFrom, DateFrom } from "conversion";
                     amount: lstJobDeliveryNoteItemAmount.GetAt(i),
                     numAmount: NumberFrom(lstJobDeliveryNoteItemAmount.GetAt(i)),
                     unit: lstJobDeliveryNoteItemUnit.GetAt(i),
-                    grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i)
+                    grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i),
+                    unitPrice: lstJobDeliveryNoteItemUnitPrice.GetAt(i),
+                    unitPriceCurrency: lstJobDeliveryNoteItemUnitPriceCurrency.GetAt(i)
                     };
                     doneDacs.dnResponse.items.Add(item);
                    }
@@ -503,6 +568,14 @@ import { NumberFrom, DateFrom } from "conversion";
         let stDeliveryNoteSupplierWarehouse = dacs.dnResponse.supplierWarehouse;
         let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
         let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
+        let stDeliveryNoteConcreteArrival = TimeFrom(dacs.dnResponse.concreteArrival);
+        let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
+        let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
+        let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
+        let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
+        let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
+        let stDeliveryNoteTotalPrice = NumberFrom(dacs.dnResponse.totalPrice);
+        let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
 
         // Update delivery_note job
         db.ai_scan_delivery_note_job.UpdateMany({
@@ -521,7 +594,15 @@ import { NumberFrom, DateFrom } from "conversion";
             supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
             supplier_warehouse: stDeliveryNoteSupplierWarehouse,
             supplier_id: stDeliveryNoteSupplierId,
-            weight_gross: stDeliveryNoteWeightGross
+            weight_gross: stDeliveryNoteWeightGross,
+            concrete_arrival: stDeliveryNoteConcreteArrival,
+            concrete_startpour: stDeliveryNoteConcreteStartpour,
+            concrete_endpour: stDeliveryNoteConcreteEndpour,
+            concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_pumplength: stDeliveryNoteConcretePumplength,
+            concrete_jobtime: stDeliveryNoteConcreteJobtime,
+            total_price: stDeliveryNoteTotalPrice,
+            total_price_currency: stDeliveryNoteTotalPriceCurrency
         });
 
         // delivery_note's items
@@ -535,6 +616,8 @@ import { NumberFrom, DateFrom } from "conversion";
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
             let stDeliveryNoteItemUnit = item.unit;
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
+            let stDeliveryNoteItemUnitPrice = NumberFrom(item.unitPrice);
+            let stDeliveryNoteItemUnitPriceCurrency = item.unitPriceCurrency;
 
             // Update delivery_note job
             db.ai_scan_delivery_note_item_job.InsertOrUpdate({
@@ -548,7 +631,9 @@ import { NumberFrom, DateFrom } from "conversion";
                 amount: stDeliveryNoteItemAmount,
                 amount_number: iDeliveryNoteItemAmount,
                 unit: stDeliveryNoteItemUnit,
-                gross_weight: stDeliveryNoteItemGrossWeight
+                gross_weight: stDeliveryNoteItemGrossWeight,
+                unit_price: stDeliveryNoteItemUnitPrice,
+                unit_price_currency: stDeliveryNoteItemUnitPriceCurrency
             });
 
             i=i+1;
