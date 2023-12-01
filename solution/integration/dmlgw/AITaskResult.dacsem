@@ -15,6 +15,7 @@ dnResponse: element {
 	deliveryAddress: optional attribute of type string;
 	deliveryRecipientName: optional attribute of type string;
 	issueDate: optional attribute of type string;
+	dtlIssueDate: optional attribute of type dtl (dtf yyyy "-" MM "-" dd " " HH ":" mm ":" ss "." S o);
 	orderNumber: optional attribute of type string;
 	supplierAddress: optional attribute of type string;
 	supplierName: optional attribute of type string;
@@ -31,10 +32,12 @@ dnResponse: element {
 	concreteJobtime: optional attribute of type string;
 	
 	totalPrice: optional attribute of type string;
+	numTotalPrice: optional attribute of type float;
 	totalPriceCurrency: optional attribute of type string;
 
 	items: wrapped list of element item {
 		amount: optional attribute of type string;
+		numAmount: optional attribute of type float;
 		grossWeight: optional attribute of type string;
 		itemName: optional attribute of type string;
 		manufacturerItemNumber: optional attribute of type string;
@@ -42,6 +45,7 @@ dnResponse: element {
 		unit: optional attribute of type string;
 
 		unitPrice: optional attribute of type string;
+		numUnitPrice: optional attribute of type float;
 		unitPriceCurrency: optional attribute of type string;
 	}
 }

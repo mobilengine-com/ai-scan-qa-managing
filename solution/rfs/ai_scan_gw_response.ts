@@ -30,7 +30,7 @@ import { NumberFrom, DateFrom } from "conversion";
         let stDeliveryNoteDeliveryAddress = dacs.dnResponse.deliveryAddress;
         let stDeliveryNoteDeliveryRecipientName = dacs.dnResponse.deliveryRecipientName;
         let stDeliveryNoteIssueDate = dacs.dnResponse.issueDate;
-        let stDeliveryNoteDtlIssueDate = DateFrom(stDeliveryNoteIssueDate);
+        let dtlDeliveryNoteIssueDate = DateFrom(stDeliveryNoteIssueDate);
         let stDeliveryNoteOrderNumber = dacs.dnResponse.orderNumber;
         let stDeliveryNoteSupplierAddress = dacs.dnResponse.supplierAddress;
         let stDeliveryNoteSupplierName = dacs.dnResponse.supplierName;
@@ -49,7 +49,7 @@ import { NumberFrom, DateFrom } from "conversion";
             delivery_address: stDeliveryNoteDeliveryAddress,
             delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
             issue_date: stDeliveryNoteIssueDate,
-            dtl_issue_date: stDeliveryNoteDtlIssueDate,
+            dtl_issue_date: dtlDeliveryNoteIssueDate,
             order_number: stDeliveryNoteOrderNumber,
             supplier_address: stDeliveryNoteSupplierAddress,
             supplier_name: stDeliveryNoteSupplierName,
@@ -254,7 +254,7 @@ import { NumberFrom, DateFrom } from "conversion";
             let stOtherJobDeliveryNoteDeliveryAddress = "";
             let stOtherJobDeliveryNoteDeliveryRecipientName = "";
             let stOtherJobDeliveryNoteIssueDate = "";
-            let stOtherJobDeliveryNoteDtlIssueDate = null;
+            let dtlOtherJobDeliveryNoteIssueDate = null;
             let stOtherJobDeliveryNoteOrderNumber = "";
             let stOtherJobDeliveryNoteSupplierAddress = "";
             let stOtherJobDeliveryNoteSupplierName = "";
@@ -272,7 +272,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 stOtherJobDeliveryNoteDeliveryAddress = recData.delivery_address;
                 stOtherJobDeliveryNoteDeliveryRecipientName = recData.delivery_recipient_name;
                 stOtherJobDeliveryNoteIssueDate = recData.issue_date;
-                stOtherJobDeliveryNoteDtlIssueDate = DateFrom(stOtherJobDeliveryNoteIssueDate);
+                dtlOtherJobDeliveryNoteIssueDate = DateFrom(stOtherJobDeliveryNoteIssueDate);
                 stOtherJobDeliveryNoteOrderNumber = recData.order_number;
                 stOtherJobDeliveryNoteSupplierAddress = recData.supplier_address;
                 stOtherJobDeliveryNoteSupplierName = recData.supplier_name;
@@ -400,6 +400,7 @@ import { NumberFrom, DateFrom } from "conversion";
                    doneDacs.dnResponse.deliveryAddress = stDeliveryNoteDeliveryAddress;
                    doneDacs.dnResponse.deliveryRecipientName = stDeliveryNoteDeliveryRecipientName;
                    doneDacs.dnResponse.issueDate = stDeliveryNoteIssueDate;
+                   doneDacs.dnResponse.dtlIssueDate = dtlDeliveryNoteIssueDate;
                    doneDacs.dnResponse.orderNumber = stDeliveryNoteOrderNumber;
                    doneDacs.dnResponse.supplierAddress = stDeliveryNoteSupplierAddress;
                    doneDacs.dnResponse.supplierName = stDeliveryNoteSupplierName;
@@ -413,6 +414,7 @@ import { NumberFrom, DateFrom } from "conversion";
                     manufacturerItemNumber: lstJobDeliveryNoteItemManufacturerItemNumber.GetAt(i),
                     taxNumber: lstJobDeliveryNoteItemTaxNumber.GetAt(i),
                     amount: lstJobDeliveryNoteItemAmount.GetAt(i),
+                    numAmount: NumberFrom(lstJobDeliveryNoteItemAmount.GetAt(i)),
                     unit: lstJobDeliveryNoteItemUnit.GetAt(i),
                     grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i)
                     };
@@ -493,7 +495,7 @@ import { NumberFrom, DateFrom } from "conversion";
         let stDeliveryNoteDeliveryAddress = dacs.dnResponse.deliveryAddress;
         let stDeliveryNoteDeliveryRecipientName = dacs.dnResponse.deliveryRecipientName;
         let stDeliveryNoteIssueDate = dacs.dnResponse.issueDate;
-        let stDeliveryNoteDtlIssueDate = DateFrom(stDeliveryNoteIssueDate);
+        let dtlDeliveryNoteIssueDate = DateFrom(stDeliveryNoteIssueDate);
         let stDeliveryNoteOrderNumber = dacs.dnResponse.orderNumber;
         let stDeliveryNoteSupplierAddress = dacs.dnResponse.supplierAddress;
         let stDeliveryNoteSupplierName = dacs.dnResponse.supplierName;
@@ -512,7 +514,7 @@ import { NumberFrom, DateFrom } from "conversion";
             delivery_address: stDeliveryNoteDeliveryAddress,
             delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
             issue_date: stDeliveryNoteIssueDate,
-            dtl_issue_date: stDeliveryNoteDtlIssueDate,
+            dtl_issue_date: dtlDeliveryNoteIssueDate,
             order_number: stDeliveryNoteOrderNumber,
             supplier_address: stDeliveryNoteSupplierAddress,
             supplier_name: stDeliveryNoteSupplierName,

@@ -18,6 +18,9 @@ import { NumberFrom, DateFrom } from "conversion";
         stDelayTime = "1";
     }
 
+    let mp = map.New();
+
+
     let stSelectedQAJobSupplierANNOTJob1 = form.stSelectedQAJobSupplierANNOTJob1;
     let stSelectedQAJobSupplierANNOTJob2 = form.stSelectedQAJobSupplierANNOTJob2;
 
@@ -152,6 +155,7 @@ import { NumberFrom, DateFrom } from "conversion";
             let stSendAgentDeliveryAddress = form.stSendAgentDeliveryAddress;
             let stSendAgentDeliveryRecipientName = form.stSendAgentDeliveryRecipientName;
             let stSendAgentIssueDate = form.stSendAgentIssueDate;
+            let dtlIssueDate = DateFrom(form.stSendAgentIssueDate);
             let stSendAgentOrderNumber = form.stSendAgentOrderNumber;
             let stSendAgentSupplierAddress = form.stSendAgentSupplierAddress;
             let stSendAgentSupplierName = form.stSendAgentSupplierName;
@@ -502,6 +506,7 @@ import { NumberFrom, DateFrom } from "conversion";
             dacs.dnResponse.deliveryAddress = stSendAgentDeliveryAddress;
             dacs.dnResponse.deliveryRecipientName = stSendAgentDeliveryRecipientName;
             dacs.dnResponse.issueDate = stSendAgentIssueDate;
+            dacs.dnResponse.dtlIssueDate = dtlIssueDate;
             dacs.dnResponse.orderNumber = stSendAgentOrderNumber;
             dacs.dnResponse.supplierAddress = stSendAgentSupplierAddress;
             dacs.dnResponse.supplierName = stSendAgentSupplierName;
@@ -520,6 +525,7 @@ import { NumberFrom, DateFrom } from "conversion";
                         manufacturerItemNumber: lstFinalItemTable.GetAt(2+i),
                         taxNumber: lstFinalItemTable.GetAt(3+i),
                         amount: lstFinalItemTable.GetAt(4+i),
+                        numAmount: NumberFrom(lstFinalItemTable.GetAt(4+i)),
                         unit: lstFinalItemTable.GetAt(5+i),
                         grossWeight: lstFinalItemTable.GetAt(6+i)
                     };
@@ -579,7 +585,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 delivery_address: stSendAgentDeliveryAddress,
                 delivery_recipient_name: stSendAgentDeliveryRecipientName,
                 issue_date: stSendAgentIssueDate,
-                dtl_issue_date: DateFrom(stSendAgentIssueDate),
+                dtl_issue_date: dtlIssueDate,
                 order_number: stSendAgentOrderNumber,
                 supplier_address: stSendAgentSupplierAddress,
                 supplier_name: stSendAgentSupplierName,
@@ -672,6 +678,7 @@ import { NumberFrom, DateFrom } from "conversion";
             let stSendAgentDeliveryAddress = form.stSendAgentDeliveryAddress;
             let stSendAgentDeliveryRecipientName = form.stSendAgentDeliveryRecipientName;
             let stSendAgentIssueDate = form.stSendAgentIssueDate;
+            let dtlIssueDate = DateFrom(stSendAgentIssueDate);
             let stSendAgentOrderNumber = form.stSendAgentOrderNumber;
             let stSendAgentSupplierAddress = form.stSendAgentSupplierAddress;
             let stSendAgentSupplierName = form.stSendAgentSupplierName;
@@ -1022,6 +1029,7 @@ import { NumberFrom, DateFrom } from "conversion";
             dacs.dnResponse.deliveryAddress = stSendAgentDeliveryAddress;
             dacs.dnResponse.deliveryRecipientName = stSendAgentDeliveryRecipientName;
             dacs.dnResponse.issueDate = stSendAgentIssueDate;
+            dacs.dnResponse.dtlIssueDate = dtlIssueDate;
             dacs.dnResponse.orderNumber = stSendAgentOrderNumber;
             dacs.dnResponse.supplierAddress = stSendAgentSupplierAddress;
             dacs.dnResponse.supplierName = stSendAgentSupplierName;
@@ -1098,7 +1106,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 delivery_address: stSendAgentDeliveryAddress,
                 delivery_recipient_name: stSendAgentDeliveryRecipientName,
                 issue_date: stSendAgentIssueDate,
-                dtl_issue_date: DateFrom(stSendAgentIssueDate),
+                dtl_issue_date: dtlIssueDate,
                 order_number: stSendAgentOrderNumber,
                 supplier_address: stSendAgentSupplierAddress,
                 supplier_name: stSendAgentSupplierName,
