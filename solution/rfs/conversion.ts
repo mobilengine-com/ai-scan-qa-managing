@@ -14,7 +14,7 @@ const rgnf: nuf[] = [
   {decimalSeparator: ".",  groupSize: 3, groupSeparator: ","}
 ];
 
-export function DateFrom(st: string): dtdb {
+export function DateFrom(st: string): dtl {
     if (st === null || st === undefined) 
         return null;
 
@@ -23,8 +23,8 @@ export function DateFrom(st: string): dtdb {
       Log(["stdtf", stdtf]);
       let dtlIssueDate = dtl.Parse(dtf.Parse(stdtf), st);
       if (dtlIssueDate !== undefined) {
-        Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate.DtlToDtdb()]);
-        return dtlIssueDate.DtlToDtdb();
+        Log(["date", st, "parsed with ", stdtf, ": ", dtlIssueDate]);
+        return dtlIssueDate;
       }
     }
     return null;
