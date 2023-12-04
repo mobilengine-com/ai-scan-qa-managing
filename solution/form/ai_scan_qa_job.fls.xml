@@ -225,6 +225,8 @@
                             iItemTableAmountErrorCount +
                             iItemTableUnitErrorCount +
                             iItemTableGrossWeightErrorCount +
+                            iItemTableUnitPriceErrorCount +
+                            iItemTableUnitPriceCurrencyErrorCount +
                             ABS(
                                 ((iCountItemTableAAddbutton * 6)+(iCountItemTableBAddbutton * 6)+(iCountItemTableAAddbuttonNew * 6)+(iCountItemTableBAddbuttonNew * 6))
                                 -
@@ -345,8 +347,8 @@
 
         <let id='stSavedAgentConcreteArrival' shape='scalar' access='private' 
             value='{CASE 
-                        WHEN bSignForEditAgentAConcreteArrival = true THEN tbEditConcreteArrivalA.text 
-                        WHEN bSignForEditAgentBConcreteArrival = true THEN tbEditConcreteArrivalB.text 
+                        WHEN bSignForEditAgentAConcreteArrival = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteArrivalA.seconds),(dtf HH":"mm)) 
+                        WHEN bSignForEditAgentBConcreteArrival = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteArrivalB.seconds),(dtf HH":"mm))
                         WHEN bSignForAcceptAgentAConcreteArrival = true THEN stSelectedQAJobAnotJobsAgentAConcreteArrival
                         WHEN bSignForAcceptAgentBConcreteArrival = true THEN stSelectedQAJobAnotJobsAgentBConcreteArrival
                         ELSE "" 
@@ -355,8 +357,8 @@
 
         <let id='stSavedAgentConcreteStartpour' shape='scalar' access='private' 
             value='{CASE 
-                        WHEN bSignForEditAgentAConcreteStartpour = true THEN tbEditConcreteStartpourA.text 
-                        WHEN bSignForEditAgentBConcreteStartpour = true THEN tbEditConcreteStartpourB.text 
+                        WHEN bSignForEditAgentAConcreteStartpour = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteStartpourA.seconds),(dtf HH":"mm)) 
+                        WHEN bSignForEditAgentBConcreteStartpour = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteStartpourB.seconds),(dtf HH":"mm))
                         WHEN bSignForAcceptAgentAConcreteStartpour = true THEN stSelectedQAJobAnotJobsAgentAConcreteStartpour
                         WHEN bSignForAcceptAgentBConcreteStartpour = true THEN stSelectedQAJobAnotJobsAgentBConcreteStartpour
                         ELSE "" 
@@ -365,8 +367,8 @@
 
         <let id='stSavedAgentConcreteEndpour' shape='scalar' access='private' 
             value='{CASE 
-                        WHEN bSignForEditAgentAConcreteEndpour = true THEN tbEditConcreteEndpourA.text 
-                        WHEN bSignForEditAgentBConcreteEndpour = true THEN tbEditConcreteEndpourB.text 
+                        WHEN bSignForEditAgentAConcreteEndpour = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteEndpourA.seconds),(dtf HH":"mm))
+                        WHEN bSignForEditAgentBConcreteEndpour = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteEndpourB.seconds),(dtf HH":"mm))
                         WHEN bSignForAcceptAgentAConcreteEndpour = true THEN stSelectedQAJobAnotJobsAgentAConcreteEndpour
                         WHEN bSignForAcceptAgentBConcreteEndpour = true THEN stSelectedQAJobAnotJobsAgentBConcreteEndpour
                         ELSE "" 
@@ -375,8 +377,8 @@
 
         <let id='stSavedAgentConcreteDeparture' shape='scalar' access='private' 
             value='{CASE 
-                        WHEN bSignForEditAgentAConcreteDeparture = true THEN tbEditConcreteDepartureA.text 
-                        WHEN bSignForEditAgentBConcreteDeparture = true THEN tbEditConcreteDepartureB.text 
+                        WHEN bSignForEditAgentAConcreteDeparture = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteDepartureA.seconds),(dtf HH":"mm)) 
+                        WHEN bSignForEditAgentBConcreteDeparture = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteDepartureB.seconds),(dtf HH":"mm))
                         WHEN bSignForAcceptAgentAConcreteDeparture = true THEN stSelectedQAJobAnotJobsAgentAConcreteDeparture
                         WHEN bSignForAcceptAgentBConcreteDeparture = true THEN stSelectedQAJobAnotJobsAgentBConcreteDeparture
                         ELSE "" 
@@ -395,8 +397,8 @@
 
         <let id='stSavedAgentConcreteJobtime' shape='scalar' access='private' 
             value='{CASE 
-                        WHEN bSignForEditAgentAConcreteJobtime = true THEN tbEditConcreteJobtimeA.text 
-                        WHEN bSignForEditAgentBConcreteJobtime = true THEN tbEditConcreteJobtimeB.text 
+                        WHEN bSignForEditAgentAConcreteJobtime = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteJobtimeA.seconds),(dtf HH":"mm))
+                        WHEN bSignForEditAgentBConcreteJobtime = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteJobtimeB.seconds),(dtf HH":"mm))
                         WHEN bSignForAcceptAgentAConcreteJobtime = true THEN stSelectedQAJobAnotJobsAgentAConcreteJobtime
                         WHEN bSignForAcceptAgentBConcreteJobtime = true THEN stSelectedQAJobAnotJobsAgentBConcreteJobtime
                         ELSE "" 
@@ -658,6 +660,8 @@
         <let id='iItemTableAmountErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableAmountErrorCount FROM rptItemTable.rows RPTIT}'/>
         <let id='iItemTableUnitErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableUnitErrorCount FROM rptItemTable.rows RPTIT}'/>
         <let id='iItemTableGrossWeightErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableGrossWeightErrorCount FROM rptItemTable.rows RPTIT}'/>
+        <let id='iItemTableUnitPriceErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableUnitPriceErrorCount FROM rptItemTable.rows RPTIT}'/>
+        <let id='iItemTableUnitPriceCurrencyErrorCount' shape='scalar' access='private' value='{SELECT RPTIT.iItemTableUnitPriceCurrencyErrorCount FROM rptItemTable.rows RPTIT}'/>
 
         <let id='stItemTableAItemNameValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAItemNameValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableBItemNameValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBItemNameValidated FROM rptItemTable.rows RPTIT}'/>
@@ -671,6 +675,10 @@
         <let id='stItemTableBUnitValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBUnitValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableAGrossWeightValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAGrossWeightValidated FROM rptItemTable.rows RPTIT}'/>
         <let id='stItemTableBGrossWeightValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBGrossWeightValidated FROM rptItemTable.rows RPTIT}'/>
+        <let id='stItemTableAUnitPriceValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAUnitPriceValidated FROM rptItemTable.rows RPTIT}'/>
+        <let id='stItemTableBUnitPriceValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBUnitPriceValidated FROM rptItemTable.rows RPTIT}'/>
+        <let id='stItemTableAUnitPriceCurrencyValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableAUnitPriceCurrencyValidated FROM rptItemTable.rows RPTIT}'/>
+        <let id='stItemTableBUnitPriceCurrencyValidated' shape='scalar' access='private' value='{SELECT RPTIT.stItemTableBUnitPriceCurrencyValidated FROM rptItemTable.rows RPTIT}'/>
 
         <let id='bItemTableFinalValidation' shape='scalar' access='private' 
             value='{SELECT 
@@ -688,6 +696,10 @@
                     AND stItemTableBUnitValidated NOT LIKE "%false%"
                     AND stItemTableAGrossWeightValidated NOT LIKE "%false%"
                     AND stItemTableBGrossWeightValidated NOT LIKE "%false%"
+                    AND stItemTableAUnitPriceValidated NOT LIKE "%false%"
+                    AND stItemTableBUnitPriceValidated NOT LIKE "%false%"
+                    AND stItemTableAUnitPriceCurrencyValidated NOT LIKE "%false%"
+                    AND stItemTableBUnitPriceCurrencyValidated NOT LIKE "%false%"
                 THEN
                     true
                 ELSE
@@ -773,6 +785,22 @@
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobAnotJobsAgentBWeightGross OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobAnotJobsAgentBWeightGross AND (bSignForEditAgentAWeightGross != false OR bSignForEditAgentBWeightGross != false OR bSignForAcceptAgentAWeightGross != false OR bSignForAcceptAgentBWeightGross != false)))
                                 AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteArrival = stSelectedQAJobAnotJobsAgentBConcreteArrival OR (stSelectedQAJobAnotJobsAgentAConcreteArrival != stSelectedQAJobAnotJobsAgentBConcreteArrival AND (bSignForEditAgentAConcreteArrival != false OR bSignForEditAgentBConcreteArrival != false OR bSignForAcceptAgentAConcreteArrival != false OR bSignForAcceptAgentBConcreteArrival != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteStartpour = stSelectedQAJobAnotJobsAgentBConcreteStartpour OR (stSelectedQAJobAnotJobsAgentAConcreteStartpour != stSelectedQAJobAnotJobsAgentBConcreteStartpour AND (bSignForEditAgentAConcreteStartpour != false OR bSignForEditAgentBConcreteStartpour != false OR bSignForAcceptAgentAConcreteStartpour != false OR bSignForAcceptAgentBConcreteStartpour != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteEndpour = stSelectedQAJobAnotJobsAgentBConcreteEndpour OR (stSelectedQAJobAnotJobsAgentAConcreteEndpour != stSelectedQAJobAnotJobsAgentBConcreteEndpour AND (bSignForEditAgentAConcreteEndpour != false OR bSignForEditAgentBConcreteEndpour != false OR bSignForAcceptAgentAConcreteEndpour != false OR bSignForAcceptAgentBConcreteEndpour != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture OR (stSelectedQAJobAnotJobsAgentAConcreteDeparture != stSelectedQAJobAnotJobsAgentBConcreteDeparture AND (bSignForEditAgentAConcreteDeparture != false OR bSignForEditAgentBConcreteDeparture != false OR bSignForAcceptAgentAConcreteDeparture != false OR bSignForAcceptAgentBConcreteDeparture != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcretePumplength = stSelectedQAJobAnotJobsAgentBConcretePumplength OR (stSelectedQAJobAnotJobsAgentAConcretePumplength != stSelectedQAJobAnotJobsAgentBConcretePumplength AND (bSignForEditAgentAConcretePumplength != false OR bSignForEditAgentBConcretePumplength != false OR bSignForAcceptAgentAConcretePumplength != false OR bSignForAcceptAgentBConcretePumplength != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteJobtime = stSelectedQAJobAnotJobsAgentBConcreteJobtime OR (stSelectedQAJobAnotJobsAgentAConcreteJobtime != stSelectedQAJobAnotJobsAgentBConcreteJobtime AND (bSignForEditAgentAConcreteJobtime != false OR bSignForEditAgentBConcreteJobtime != false OR bSignForAcceptAgentAConcreteJobtime != false OR bSignForAcceptAgentBConcreteJobtime != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentATotalPrice = stSelectedQAJobAnotJobsAgentBTotalPrice OR (stSelectedQAJobAnotJobsAgentATotalPrice != stSelectedQAJobAnotJobsAgentBTotalPrice AND (bSignForEditAgentATotalPrice != false OR bSignForEditAgentBTotalPrice != false OR bSignForAcceptAgentATotalPrice != false OR bSignForAcceptAgentBTotalPrice != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentATotalPriceCurrency = stSelectedQAJobAnotJobsAgentBTotalPriceCurrency OR (stSelectedQAJobAnotJobsAgentATotalPriceCurrency != stSelectedQAJobAnotJobsAgentBTotalPriceCurrency AND (bSignForEditAgentATotalPriceCurrency != false OR bSignForEditAgentBTotalPriceCurrency != false OR bSignForAcceptAgentATotalPriceCurrency != false OR bSignForAcceptAgentBTotalPriceCurrency != false)))
+                                AND
                                 ((bItemTableFinalValidation = true AND iItemTableAgentARowCount = iItemTableAgentBRowCount AND iItemTableAgentARowCount != 0 AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentARowCount = 0 AND iItemTableAgentBRowCount = 0))
                                 )
                             }' message='{"Please correct the red marks!"}'/>
@@ -813,6 +841,22 @@
                                 (stSelectedQAJobAnotJobsAgentASupplierId = stSelectedQAJobAnotJobsAgentBSupplierId OR (stSelectedQAJobAnotJobsAgentASupplierId != stSelectedQAJobAnotJobsAgentBSupplierId AND (bSignForEditAgentASupplierId != false OR bSignForEditAgentBSupplierId != false OR bSignForAcceptAgentASupplierId != false OR bSignForAcceptAgentBSupplierId != false)))
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAWeightGross = stSelectedQAJobAnotJobsAgentBWeightGross OR (stSelectedQAJobAnotJobsAgentAWeightGross != stSelectedQAJobAnotJobsAgentBWeightGross AND (bSignForEditAgentAWeightGross != false OR bSignForEditAgentBWeightGross != false OR bSignForAcceptAgentAWeightGross != false OR bSignForAcceptAgentBWeightGross != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteArrival = stSelectedQAJobAnotJobsAgentBConcreteArrival OR (stSelectedQAJobAnotJobsAgentAConcreteArrival != stSelectedQAJobAnotJobsAgentBConcreteArrival AND (bSignForEditAgentAConcreteArrival != false OR bSignForEditAgentBConcreteArrival != false OR bSignForAcceptAgentAConcreteArrival != false OR bSignForAcceptAgentBConcreteArrival != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteStartpour = stSelectedQAJobAnotJobsAgentBConcreteStartpour OR (stSelectedQAJobAnotJobsAgentAConcreteStartpour != stSelectedQAJobAnotJobsAgentBConcreteStartpour AND (bSignForEditAgentAConcreteStartpour != false OR bSignForEditAgentBConcreteStartpour != false OR bSignForAcceptAgentAConcreteStartpour != false OR bSignForAcceptAgentBConcreteStartpour != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteEndpour = stSelectedQAJobAnotJobsAgentBConcreteEndpour OR (stSelectedQAJobAnotJobsAgentAConcreteEndpour != stSelectedQAJobAnotJobsAgentBConcreteEndpour AND (bSignForEditAgentAConcreteEndpour != false OR bSignForEditAgentBConcreteEndpour != false OR bSignForAcceptAgentAConcreteEndpour != false OR bSignForAcceptAgentBConcreteEndpour != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture OR (stSelectedQAJobAnotJobsAgentAConcreteDeparture != stSelectedQAJobAnotJobsAgentBConcreteDeparture AND (bSignForEditAgentAConcreteDeparture != false OR bSignForEditAgentBConcreteDeparture != false OR bSignForAcceptAgentAConcreteDeparture != false OR bSignForAcceptAgentBConcreteDeparture != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcretePumplength = stSelectedQAJobAnotJobsAgentBConcretePumplength OR (stSelectedQAJobAnotJobsAgentAConcretePumplength != stSelectedQAJobAnotJobsAgentBConcretePumplength AND (bSignForEditAgentAConcretePumplength != false OR bSignForEditAgentBConcretePumplength != false OR bSignForAcceptAgentAConcretePumplength != false OR bSignForAcceptAgentBConcretePumplength != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteJobtime = stSelectedQAJobAnotJobsAgentBConcreteJobtime OR (stSelectedQAJobAnotJobsAgentAConcreteJobtime != stSelectedQAJobAnotJobsAgentBConcreteJobtime AND (bSignForEditAgentAConcreteJobtime != false OR bSignForEditAgentBConcreteJobtime != false OR bSignForAcceptAgentAConcreteJobtime != false OR bSignForAcceptAgentBConcreteJobtime != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentATotalPrice = stSelectedQAJobAnotJobsAgentBTotalPrice OR (stSelectedQAJobAnotJobsAgentATotalPrice != stSelectedQAJobAnotJobsAgentBTotalPrice AND (bSignForEditAgentATotalPrice != false OR bSignForEditAgentBTotalPrice != false OR bSignForAcceptAgentATotalPrice != false OR bSignForAcceptAgentBTotalPrice != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentATotalPriceCurrency = stSelectedQAJobAnotJobsAgentBTotalPriceCurrency OR (stSelectedQAJobAnotJobsAgentATotalPriceCurrency != stSelectedQAJobAnotJobsAgentBTotalPriceCurrency AND (bSignForEditAgentATotalPriceCurrency != false OR bSignForEditAgentBTotalPriceCurrency != false OR bSignForAcceptAgentATotalPriceCurrency != false OR bSignForAcceptAgentBTotalPriceCurrency != false)))
                                 AND
                                 ((bItemTableFinalValidation = true AND iItemTableAgentARowCount = iItemTableAgentBRowCount AND iItemTableAgentARowCount != 0 AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentARowCount = 0 AND iItemTableAgentBRowCount = 0))
                                 )
@@ -1522,7 +1566,7 @@
                         <textview id='tvWeightGrossBError' text='{stSelectedQAJobAnotJobsAgentBWeightGross}' style='{CASE WHEN (bSignForEditAgentAWeightGross = true OR bSignForAcceptAgentAWeightGross = true) AND stSelectedQAJobAnotJobsAgentBWeightGross != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBWeightGross = true OR bSignForAcceptAgentAWeightGross = true OR bSignForEditAgentAWeightGross = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvWeightGrossBError'/>
                     </if>
                 </hbox>
-                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
+                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>                          
                     <textview id='tvConcreteArrival' text='{"concrete_arrival:"}' style='{styles.sylTvNormalBold}' testId='tvConcreteArrival'/>
                                         
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteArrival != stSelectedQAJobAnotJobsAgentBConcreteArrival) AND bSignForEditAgentBConcreteArrival != true AND bSignForAcceptAgentBConcreteArrival != true AND bSignForEditAgentAConcreteArrival = false}'>
@@ -1542,7 +1586,7 @@
                         <textview id='tvEditAgentAConcreteArrivalButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteArrivalButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcreteArrival = true}'>
-                        <textbox id='tbEditConcreteArrivalA' text='{stSelectedQAJobAnotJobsAgentAConcreteArrival}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteArrivalA"}'/>
+                        <timepicker id='tpEditConcreteArrivalA' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteArrivalA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteArrival = stSelectedQAJobAnotJobsAgentBConcreteArrival) AND bSignForEditAgentAConcreteArrival = false}'>
                         <textview id='tvConcreteArrivalA' text='{stSelectedQAJobAnotJobsAgentAConcreteArrival}' style='{CASE WHEN (bSignForEditAgentBConcreteArrival = true OR bSignForAcceptAgentBConcreteArrival = true) AND stSelectedQAJobAnotJobsAgentAConcreteArrival != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteArrivalA'/>
@@ -1570,7 +1614,7 @@
                         <textview id='tvEditAgentBConcreteArrivalButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteArrivalButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcreteArrival = true}'>
-                        <textbox id='tbEditConcreteArrivalB' text='{stSelectedQAJobAnotJobsAgentBConcreteArrival}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteArrivalB"}'/>
+                        <timepicker id='tpEditConcreteArrivalB' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteArrivalB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteArrival = stSelectedQAJobAnotJobsAgentBConcreteArrival) AND bSignForEditAgentBConcreteArrival = false}'>
                         <textview id='tvConcreteArrivalB' text='{stSelectedQAJobAnotJobsAgentBConcreteArrival}' style='{CASE WHEN (bSignForEditAgentAConcreteArrival = true OR bSignForAcceptAgentAConcreteArrival = true) AND stSelectedQAJobAnotJobsAgentBConcreteArrival != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteArrivalB'/>
@@ -1599,7 +1643,7 @@
                         <textview id='tvEditAgentAConcreteStartpourButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteStartpourButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcreteStartpour = true}'>
-                        <textbox id='tbEditConcreteStartpourA' text='{stSelectedQAJobAnotJobsAgentAConcreteStartpour}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteStartpourA"}'/>
+                        <timepicker id='tpEditConcreteStartpourA' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteStartpourA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteStartpour = stSelectedQAJobAnotJobsAgentBConcreteStartpour) AND bSignForEditAgentAConcreteStartpour = false}'>
                         <textview id='tvConcreteStartpourA' text='{stSelectedQAJobAnotJobsAgentAConcreteStartpour}' style='{CASE WHEN (bSignForEditAgentBConcreteStartpour = true OR bSignForAcceptAgentBConcreteStartpour = true) AND stSelectedQAJobAnotJobsAgentAConcreteStartpour != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteStartpourA'/>
@@ -1627,7 +1671,7 @@
                         <textview id='tvEditAgentBConcreteStartpourButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteStartpourButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcreteStartpour = true}'>
-                        <textbox id='tbEditConcreteStartpourB' text='{stSelectedQAJobAnotJobsAgentBConcreteStartpour}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteStartpourB"}'/>
+                        <timepicker id='tpEditConcreteStartpourB' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteStartpourB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteStartpour = stSelectedQAJobAnotJobsAgentBConcreteStartpour) AND bSignForEditAgentBConcreteStartpour = false}'>
                         <textview id='tvConcreteStartpourB' text='{stSelectedQAJobAnotJobsAgentBConcreteStartpour}' style='{CASE WHEN (bSignForEditAgentAConcreteStartpour = true OR bSignForAcceptAgentAConcreteStartpour = true) AND stSelectedQAJobAnotJobsAgentBConcreteStartpour != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteStartpourB'/>
@@ -1656,7 +1700,7 @@
                         <textview id='tvEditAgentAConcreteEndpourButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteEndpourButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcreteEndpour = true}'>
-                        <textbox id='tbEditConcreteEndpourA' text='{stSelectedQAJobAnotJobsAgentAConcreteEndpour}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteEndpourA"}'/>
+                        <timepicker id='tpEditConcreteEndpourA' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteEndpourA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteEndpour = stSelectedQAJobAnotJobsAgentBConcreteEndpour) AND bSignForEditAgentAConcreteEndpour = false}'>
                         <textview id='tvConcreteEndpourA' text='{stSelectedQAJobAnotJobsAgentAConcreteEndpour}' style='{CASE WHEN (bSignForEditAgentBConcreteEndpour = true OR bSignForAcceptAgentBConcreteEndpour = true) AND stSelectedQAJobAnotJobsAgentAConcreteEndpour != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteEndpourA'/>
@@ -1684,7 +1728,7 @@
                         <textview id='tvEditAgentBConcreteEndpourButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteEndpourButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcreteEndpour = true}'>
-                        <textbox id='tbEditConcreteEndpourB' text='{stSelectedQAJobAnotJobsAgentBConcreteEndpour}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteEndpourB"}'/>
+                        <timepicker id='tpEditConcreteEndpourB' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteEndpourB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteEndpour = stSelectedQAJobAnotJobsAgentBConcreteEndpour) AND bSignForEditAgentBConcreteEndpour = false}'>
                         <textview id='tvConcreteEndpourB' text='{stSelectedQAJobAnotJobsAgentBConcreteEndpour}' style='{CASE WHEN (bSignForEditAgentAConcreteEndpour = true OR bSignForAcceptAgentAConcreteEndpour = true) AND stSelectedQAJobAnotJobsAgentBConcreteEndpour != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteEndpourB'/>
@@ -1713,7 +1757,7 @@
                         <textview id='tvEditAgentAConcreteDepartureButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteDepartureButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcreteDeparture = true}'>
-                        <textbox id='tbEditConcreteDepartureA' text='{stSelectedQAJobAnotJobsAgentAConcreteDeparture}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteDepartureA"}'/>
+                        <timepicker id='tpEditConcreteDepartureA' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteDepartureA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture) AND bSignForEditAgentAConcreteDeparture = false}'>
                         <textview id='tvConcreteDepartureA' text='{stSelectedQAJobAnotJobsAgentAConcreteDeparture}' style='{CASE WHEN (bSignForEditAgentBConcreteDeparture = true OR bSignForAcceptAgentBConcreteDeparture = true) AND stSelectedQAJobAnotJobsAgentAConcreteDeparture != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteDepartureA'/>
@@ -1741,7 +1785,7 @@
                         <textview id='tvEditAgentBConcreteDepartureButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteDepartureButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcreteDeparture = true}'>
-                        <textbox id='tbEditConcreteDepartureB' text='{stSelectedQAJobAnotJobsAgentBConcreteDeparture}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteDepartureB"}'/>
+                        <timepicker id='tpEditConcreteDepartureB' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteDepartureB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture) AND bSignForEditAgentBConcreteDeparture = false}'>
                         <textview id='tvConcreteDepartureB' text='{stSelectedQAJobAnotJobsAgentBConcreteDeparture}' style='{CASE WHEN (bSignForEditAgentAConcreteDeparture = true OR bSignForAcceptAgentAConcreteDeparture = true) AND stSelectedQAJobAnotJobsAgentBConcreteDeparture != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteDepartureB'/>
@@ -1827,7 +1871,7 @@
                         <textview id='tvEditAgentAConcreteJobtimeButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteJobtimeButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcreteJobtime = true}'>
-                        <textbox id='tbEditConcreteJobtimeA' text='{stSelectedQAJobAnotJobsAgentAConcreteJobtime}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteJobtimeA"}'/>
+                        <timepicker id='tpEditConcreteJobtimeA' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteJobtimeA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteJobtime = stSelectedQAJobAnotJobsAgentBConcreteJobtime) AND bSignForEditAgentAConcreteJobtime = false}'>
                         <textview id='tvConcreteJobtimeA' text='{stSelectedQAJobAnotJobsAgentAConcreteJobtime}' style='{CASE WHEN (bSignForEditAgentBConcreteJobtime = true OR bSignForAcceptAgentBConcreteJobtime = true) AND stSelectedQAJobAnotJobsAgentAConcreteJobtime != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteJobtimeA'/>
@@ -1855,7 +1899,7 @@
                         <textview id='tvEditAgentBConcreteJobtimeButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteJobtimeButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcreteJobtime = true}'>
-                        <textbox id='tbEditConcreteJobtimeB' text='{stSelectedQAJobAnotJobsAgentBConcreteJobtime}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteJobtimeB"}'/>
+                        <timepicker id='tpEditConcreteJobtimeB' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteJobtimeB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteJobtime = stSelectedQAJobAnotJobsAgentBConcreteJobtime) AND bSignForEditAgentBConcreteJobtime = false}'>
                         <textview id='tvConcreteJobtimeB' text='{stSelectedQAJobAnotJobsAgentBConcreteJobtime}' style='{CASE WHEN (bSignForEditAgentAConcreteJobtime = true OR bSignForAcceptAgentAConcreteJobtime = true) AND stSelectedQAJobAnotJobsAgentBConcreteJobtime != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteJobtimeB'/>
@@ -2027,6 +2071,16 @@
                 <let id='stEditItemAgentBGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBGrossWeightFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
                 <let id='stAcceptItemAgentAGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAGrossWeightFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
                 <let id='stAcceptItemAgentBGrossWeightRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBGrossWeightFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+
+                <let id='stEditItemAgentAUnitPriceRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAUnitPriceFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBUnitPriceRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBUnitPriceFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAUnitPriceRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAUnitPriceFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBUnitPriceRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBUnitPriceFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                
+                <let id='stEditItemAgentAUnitPriceCurrencyRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForEditAgentAUnitPriceCurrencyFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stEditItemAgentBUnitPriceCurrencyRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForEditAgentBUnitPriceCurrencyFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
+                <let id='stAcceptItemAgentAUnitPriceCurrencyRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAA.stSignForAcceptAgentAUnitPriceCurrencyFinal,"|") FROM rtpItemTableAgentA.rows ITAA}'/>
+                <let id='stAcceptItemAgentBUnitPriceCurrencyRowId' shape='scalar' value='{SELECT GROUP_CONCAT(ITAB.stSignForAcceptAgentBUnitPriceCurrencyFinal,"|") FROM rtpItemTableAgentB.rows ITAB}'/>
                 
                 <let id='iItemTableItemNameErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAItemName+iEditItemAgentBItemName)) + (1*(iAcceptItemAgentAItemName+iAcceptItemAgentBItemName))}'/>
                 <let id='iEditItemAgentAItemName' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForEditAgentAItemNameFinal}'/>
@@ -2063,6 +2117,18 @@
                 <let id='iEditItemAgentBGrossWeight' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.bSignForEditAgentBGrossWeightFinal}'/>
                 <let id='iAcceptItemAgentAGrossWeight' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForAcceptAgentAGrossWeightFinal}'/>
                 <let id='iAcceptItemAgentBGrossWeight' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.bSignForAcceptAgentBGrossWeightFinal}'/>
+
+                <let id='iItemTableUnitPriceErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAUnitPrice+iEditItemAgentBUnitPrice)) + (1*(iAcceptItemAgentAUnitPrice+iAcceptItemAgentBUnitPrice))}'/>
+                <let id='iEditItemAgentAUnitPrice' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForEditAgentAUnitPriceFinal}'/>
+                <let id='iEditItemAgentBUnitPrice' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.bSignForEditAgentBUnitPriceFinal}'/>
+                <let id='iAcceptItemAgentAUnitPrice' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForAcceptAgentAUnitPriceFinal}'/>
+                <let id='iAcceptItemAgentBUnitPrice' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.bSignForAcceptAgentBUnitPriceFinal}'/>
+                
+                <let id='iItemTableUnitPriceCurrencyErrorCount' shape='scalar' access='private' value='{SELECT (2*(iEditItemAgentAUnitPriceCurrency+iEditItemAgentBUnitPriceCurrency)) + (1*(iAcceptItemAgentAUnitPriceCurrency+iAcceptItemAgentBUnitPriceCurrency))}'/>
+                <let id='iEditItemAgentAUnitPriceCurrency' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForEditAgentAUnitPriceCurrencyFinal}'/>
+                <let id='iEditItemAgentBUnitPriceCurrency' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.bSignForEditAgentBUnitPriceCurrencyFinal}'/>
+                <let id='iAcceptItemAgentAUnitPriceCurrency' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA WHERE ITAA.bSignForAcceptAgentAUnitPriceCurrencyFinal}'/>
+                <let id='iAcceptItemAgentBUnitPriceCurrency' shape='scalar' access='private' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB WHERE ITAB.bSignForAcceptAgentBUnitPriceCurrencyFinal}'/>
             
                 <let id='stItemTableAItemNameValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAItemNameValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBItemNameValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBItemNameValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
@@ -2076,6 +2142,10 @@
                 <let id='stItemTableBUnitValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnitValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableAGrossWeightValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeightValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBGrossWeightValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBGrossWeightValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAUnitPriceValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnitPriceValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBUnitPriceValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnitPriceValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAUnitPriceCurrencyValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnitPriceCurrencyValidation) FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBUnitPriceCurrencyValidated' shape='scalar' access='private' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnitPriceCurrencyValidation) FROM rtpItemTableAgentB.rows RPTITAB}'/>
 
                 <let id='stItemTableAItemName' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAItemName,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBItemName' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBItemName,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
@@ -2089,6 +2159,10 @@
                 <let id='stItemTableBUnit' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnit,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
                 <let id='stItemTableAGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAGrossWeight,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
                 <let id='stItemTableBGrossWeight' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBGrossWeight,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAUnitPrice' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnitPrice,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBUnitPrice' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnitPrice,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
+                <let id='stItemTableAUnitPriceCurrency' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAA.stAgentAUnitPriceCurrency,"|") FROM rtpItemTableAgentA.rows RPTITAA}'/>
+                <let id='stItemTableBUnitPriceCurrency' shape='scalar' value='{SELECT GROUP_CONCAT(RPTITAB.stAgentBUnitPriceCurrency,"|") FROM rtpItemTableAgentB.rows RPTITAB}'/>
 
                 <let id='iItemTableAgentARowCount' shape='scalar' value='{SELECT COUNT(0) FROM rtpItemTableAgentA.rows ITAA}'/>
                 <let id='iItemTableAgentBRowCount' shape='scalar' value='{SELECT COUNT(0) FROM rtpItemTableAgentB.rows ITAB}'/>
@@ -2114,6 +2188,8 @@
                                 ITAA.stAgentAAmount,
                                 ITAA.stAgentAUnit,
                                 ITAA.stAgentAGrossWeight,
+                                ITAA.stAgentAUnitPrice,
+                                ITAA.stAgentAUnitPriceCurrency,
                                 ITAA.stAgentANewRow,
                                 ITAA.stAgentANewRowReadonly
                             FROM 
@@ -2130,6 +2206,8 @@
                                 ITAB.stAgentBAmount,
                                 ITAB.stAgentBUnit,
                                 ITAB.stAgentBGrossWeight,
+                                ITAB.stAgentBUnitPrice,
+                                ITAB.stAgentBUnitPriceCurrency,
                                 ITAB.stAgentBNewRow,
                                 ITAB.stAgentBNewRowReadonly
                             FROM 
@@ -2149,6 +2227,8 @@
             <textview id='tvAgentAItemTableHeaderAmount' text='amount' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderAmount'/>
             <textview id='tvAgentAItemTableHeaderUnit' text='unit' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderUnit'/>
             <textview id='tvAgentAItemTableHeaderGrossWeight' text='grossWeight' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderGrossWeight'/>
+            <textview id='tvAgentAItemTableHeaderUnitPrice' text='unitPrice' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderUnitPrice'/>
+            <textview id='tvAgentAItemTableHeaderUnitPriceCurrency' text='unitPriceCurrency' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentAItemTableHeaderUnitPriceCurrency'/>
             <textview id='tvAgentAItemTableHeaderEmpty' text='' testId='tvAgentAItemTableHeaderEmpty'/>
         </hbox>
 
@@ -2160,6 +2240,8 @@
                             SQAJAARIT.amount,
                             SQAJAARIT.unit,
                             SQAJAARIT.gross_weight,
+                            SQAJAARIT.unit_price,
+                            SQAJAARIT.unit_price_currency,
                             SQAJAARIT.new_row,
                             SQAJAARIT.new_row_readonly
                         FROM 
@@ -2182,7 +2264,11 @@
                     <let id='stAgentAUnit' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentAUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tbAgentAUnit.text," ") WHEN rA.new_row = true AND rA.new_row_readonly = false THEN COALESCE(tbAgentAUnitNewRow.text," ") WHEN "|" || stEditItemAgentAUnitRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tvAgentAUnit.text," ") ELSE " " END}'/>
                     <let id='stAgentBUnit' shape='scalar' access='private' value='{SELECT COALESCE(DITAB.stAgentBUnit," ") FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>                    
                     <let id='stAgentAGrossWeight' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tbAgentAGrossWeight.text," ") WHEN rA.new_row = true AND rA.new_row_readonly = false THEN COALESCE(tbAgentAGrossWeightNewRow.text," ") WHEN "|" || stEditItemAgentAGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tvAgentAGrossWeight.text," ") ELSE " " END}'/>
-                    <let id='stAgentBGrossWeight' shape='scalar' access='private' value='{SELECT COALESCE(DITAB.stAgentBGrossWeight," ") FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>                    
+                    <let id='stAgentBGrossWeight' shape='scalar' access='private' value='{SELECT COALESCE(DITAB.stAgentBGrossWeight," ") FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>                     
+                    <let id='stAgentAUnitPrice' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tbAgentAUnitPrice.text," ") WHEN rA.new_row = true AND rA.new_row_readonly = false THEN COALESCE(tbAgentAUnitPriceNewRow.text," ") WHEN "|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tvAgentAUnitPrice.text," ") ELSE " " END}'/>
+                    <let id='stAgentBUnitPrice' shape='scalar' access='private' value='{SELECT COALESCE(DITAB.stAgentBUnitPrice," ") FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>
+                    <let id='stAgentAUnitPriceCurrency' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tbAgentAUnitPriceCurrency.text," ") WHEN rA.new_row = true AND rA.new_row_readonly = false THEN COALESCE(tbAgentAUnitPriceCurrencyNewRow.text," ") WHEN "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN COALESCE(tvAgentAUnitPriceCurrency.text," ") ELSE " " END}'/>
+                    <let id='stAgentBUnitPriceCurrency' shape='scalar' access='private' value='{SELECT COALESCE(DITAB.stAgentBUnitPriceCurrency," ") FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>
                     
                     <let id='stAgentBNewRow' shape='scalar' access='private' value='{SELECT DITAB.stAgentBNewRow FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>                    
                     <let id='stAgentBNewRowReadonly' shape='scalar' access='private' value='{SELECT DITAB.stAgentBNewRowReadonly FROM ltblDefaulItemTableAgentB DITAB WHERE DITAB.stAgentBRowId = TOSTRING(rAIndex)}'/>                    
@@ -2193,6 +2279,8 @@
                     <let id='bAgentAAmountEquals' shape='scalar' value='{CASE WHEN (stAgentAAmount = stAgentBAmount AND (rA.new_row = false AND stAgentBNewRow = false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly != false OR stAgentBNewRowReadonly != false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly = false AND stAgentBNewRowReadonly = false)AND(stAgentAAmount = stAgentBAmount)) THEN true ELSE false END}'/>
                     <let id='bAgentAUnitEquals' shape='scalar' value='{CASE WHEN (stAgentAUnit = stAgentBUnit AND (rA.new_row = false AND stAgentBNewRow = false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly != false OR stAgentBNewRowReadonly != false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly = false AND stAgentBNewRowReadonly = false)AND(stAgentAUnit = stAgentBUnit)) THEN true ELSE false END}'/>
                     <let id='bAgentAGrossWeightEquals' shape='scalar' value='{CASE WHEN (stAgentAGrossWeight = stAgentBGrossWeight AND (rA.new_row = false AND stAgentBNewRow = false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly != false OR stAgentBNewRowReadonly != false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly = false AND stAgentBNewRowReadonly = false)AND(stAgentAGrossWeight = stAgentBGrossWeight)) THEN true ELSE false END}'/>
+                    <let id='bAgentAUnitPriceEquals' shape='scalar' value='{CASE WHEN (stAgentAUnitPrice = stAgentBUnitPrice AND (rA.new_row = false AND stAgentBNewRow = false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly != false OR stAgentBNewRowReadonly != false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly = false AND stAgentBNewRowReadonly = false)AND(stAgentAUnitPrice = stAgentBUnitPrice)) THEN true ELSE false END}'/>
+                    <let id='bAgentAUnitPriceCurrencyEquals' shape='scalar' value='{CASE WHEN (stAgentAUnitPriceCurrency = stAgentBUnitPriceCurrency AND (rA.new_row = false AND stAgentBNewRow = false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly != false OR stAgentBNewRowReadonly != false)) OR ((rA.new_row = true AND stAgentBNewRow = true)AND(rA.new_row_readonly = false AND stAgentBNewRowReadonly = false)AND(stAgentAUnitPriceCurrency = stAgentBUnitPriceCurrency)) THEN true ELSE false END}'/>
 
                     <let id='stAgentAItemNameValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAItemNameEquals = true OR "|" || stAcceptItemAgentBItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentAManufacturerItemNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAManufacturerItemNumberEquals = true OR "|" || stAcceptItemAgentBManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
@@ -2200,6 +2288,8 @@
                     <let id='stAgentAAmountValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAAmountEquals = true OR "|" || stAcceptItemAgentBAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentAUnitValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAUnitEquals = true OR "|" || stAcceptItemAgentBUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentAGrossWeightValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAGrossWeightEquals = true OR "|" || stAcceptItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
+                    <let id='stAgentAUnitPriceValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAUnitPriceEquals = true OR "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
+                    <let id='stAgentAUnitPriceCurrencyValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentAUnitPriceCurrencyEquals = true OR "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
 
                     <let id='stSignForAcceptAgentAItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAItemName = true AND stAgentARowId != stSignForAcceptAgentAItemName THEN stAgentARowId ELSE stSignForAcceptAgentAItemName END }'/>
                     <let id='bSignForAcceptAgentAItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAItemName = true AND stAgentARowId != stSignForAcceptAgentAItemName THEN true ELSE bSignForAcceptAgentAItemName END}'/>
@@ -2213,6 +2303,10 @@
                     <let id='bSignForAcceptAgentAUnitFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAUnit = true AND stAgentARowId != stSignForAcceptAgentAUnit THEN true ELSE bSignForAcceptAgentAUnit END}'/>
                     <let id='stSignForAcceptAgentAGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAGrossWeight = true AND stAgentARowId != stSignForAcceptAgentAGrossWeight THEN stAgentARowId ELSE stSignForAcceptAgentAGrossWeight END }'/>
                     <let id='bSignForAcceptAgentAGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAGrossWeight = true AND stAgentARowId != stSignForAcceptAgentAGrossWeight THEN true ELSE bSignForAcceptAgentAGrossWeight END}'/>
+                    <let id='stSignForAcceptAgentAUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAUnitPrice = true AND stAgentARowId != stSignForAcceptAgentAUnitPrice THEN stAgentARowId ELSE stSignForAcceptAgentAUnitPrice END }'/>
+                    <let id='bSignForAcceptAgentAUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAUnitPrice = true AND stAgentARowId != stSignForAcceptAgentAUnitPrice THEN true ELSE bSignForAcceptAgentAUnitPrice END}'/>
+                    <let id='stSignForAcceptAgentAUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAUnitPriceCurrency = true AND stAgentARowId != stSignForAcceptAgentAUnitPriceCurrency THEN stAgentARowId ELSE stSignForAcceptAgentAUnitPriceCurrency END }'/>
+                    <let id='bSignForAcceptAgentAUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentAUnitPriceCurrency = true AND stAgentARowId != stSignForAcceptAgentAUnitPriceCurrency THEN true ELSE bSignForAcceptAgentAUnitPriceCurrency END}'/>
 
                     <let id='stSignForEditAgentAItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAItemName = true AND stAgentARowId != stSignForEditAgentAItemName THEN stAgentARowId ELSE stSignForEditAgentAItemName END }'/>
                     <let id='bSignForEditAgentAItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAItemName = true AND stAgentARowId != stSignForEditAgentAItemName THEN true ELSE bSignForEditAgentAItemName END}'/>
@@ -2226,6 +2320,10 @@
                     <let id='bSignForEditAgentAUnitFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAUnit = true AND stAgentARowId != stSignForEditAgentAUnit THEN true ELSE bSignForEditAgentAUnit END}'/>
                     <let id='stSignForEditAgentAGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAGrossWeight = true AND stAgentARowId != stSignForEditAgentAGrossWeight THEN stAgentARowId ELSE stSignForEditAgentAGrossWeight END }'/>
                     <let id='bSignForEditAgentAGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAGrossWeight = true AND stAgentARowId != stSignForEditAgentAGrossWeight THEN true ELSE bSignForEditAgentAGrossWeight END}'/>
+                    <let id='stSignForEditAgentAUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAUnitPrice = true AND stAgentARowId != stSignForEditAgentAUnitPrice THEN stAgentARowId ELSE stSignForEditAgentAUnitPrice END }'/>
+                    <let id='bSignForEditAgentAUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAUnitPrice = true AND stAgentARowId != stSignForEditAgentAUnitPrice THEN true ELSE bSignForEditAgentAUnitPrice END}'/>
+                    <let id='stSignForEditAgentAUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAUnitPriceCurrency = true AND stAgentARowId != stSignForEditAgentAUnitPriceCurrency THEN stAgentARowId ELSE stSignForEditAgentAUnitPriceCurrency END }'/>
+                    <let id='bSignForEditAgentAUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentAUnitPriceCurrency = true AND stAgentARowId != stSignForEditAgentAUnitPriceCurrency THEN true ELSE bSignForEditAgentAUnitPriceCurrency END}'/>
 
                     <let id='stSignForAcceptAgentAItemName' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForAcceptAgentAItemName' shape='scalar' access='private' value='{false}'/>
@@ -2239,6 +2337,10 @@
                     <let id='bSignForAcceptAgentAUnit' shape='scalar' access='private' value='{false}'/>
                     <let id='stSignForAcceptAgentAGrossWeight' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForAcceptAgentAGrossWeight' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForAcceptAgentAUnitPrice' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForAcceptAgentAUnitPrice' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForAcceptAgentAUnitPriceCurrency' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForAcceptAgentAUnitPriceCurrency' shape='scalar' access='private' value='{false}'/>
 
                     <let id='stSignForEditAgentAItemName' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForEditAgentAItemName' shape='scalar' access='private' value='{false}'/>
@@ -2252,6 +2354,10 @@
                     <let id='bSignForEditAgentAUnit' shape='scalar' access='private' value='{false}'/>
                     <let id='stSignForEditAgentAGrossWeight' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForEditAgentAGrossWeight' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForEditAgentAUnitPrice' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForEditAgentAUnitPrice' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForEditAgentAUnitPriceCurrency' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForEditAgentAUnitPriceCurrency' shape='scalar' access='private' value='{false}'/>
                 </declarations>
             </block>
             <if cond='{rA.new_row = false}'>
@@ -2410,7 +2516,59 @@
                     </if>
                     <if cond='{"|" || stEditItemAgentAGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%"}'>
                         <textview id='tvAgentAGrossWeight' text='{COALESCE(rA.gross_weight," ")}' style='{CASE WHEN (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") OR (bAgentAGrossWeightEquals = false AND ("|" || stEditItemAgentBGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentBGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentAGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")) THEN styles.sylTvItemTableDifferent WHEN ("|" || stEditItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND COALESCE(rA.gross_weight," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAGrossWeight" || "[" || TOSTRING(rAIndex) || "]"}'/>
-                    </if>            
+                    </if>
+                    
+                    <!--UnitPrice-->            
+                    <if cond='{((bAgentAUnitPriceEquals = true OR "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <textview id='tvAcceptAgentAUnitPriceButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentAUnitPriceButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>  
+                    <if cond='{((bAgentAUnitPriceEquals = false AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnAcceptAgentAUnitPrice' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentAUnitPriceFinal = TOSTRING(rAIndex) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAUnitPrice" || "[" || TOSTRING(rAIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForAcceptAgentAUnitPrice = "" THEN TOSTRING(rAIndex) ELSE "" END}' target='stSignForAcceptAgentAUnitPrice'/>
+                            <set value='{CASE WHEN bSignForAcceptAgentAUnitPrice = false THEN true ELSE false END}' target='bSignForAcceptAgentAUnitPrice'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <textview id='tvEditAgentAUnitPriceButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentAUnitPriceButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnEditAgentAUnitPrice' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentAUnitPriceFinal = TOSTRING(rAIndex) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAUnitPrice" || "[" || TOSTRING(rAIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForEditAgentAUnitPrice = "" THEN TOSTRING(rAIndex) ELSE "" END}' target='stSignForEditAgentAUnitPrice'/>
+                            <set value='{CASE WHEN bSignForEditAgentAUnitPrice = false THEN true ELSE false END}' target='bSignForEditAgentAUnitPrice'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%"}'>
+                        <textbox id='tbAgentAUnitPrice' text='{TOSTRING(rA.unit_price)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAUnitPrice" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%"}'>
+                        <textview id='tvAgentAUnitPrice' text='{COALESCE(TOSTRING(rA.unit_price)," ")}' style='{CASE WHEN (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") OR (bAgentAUnitPriceEquals = false AND ("|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")) THEN styles.sylTvItemTableDifferent WHEN ("|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND COALESCE(TOSTRING(rA.unit_price)," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAUnitPrice" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>
+
+                    <!--UnitPriceCurrency-->            
+                    <if cond='{((bAgentAUnitPriceCurrencyEquals = true OR "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <textview id='tvAcceptAgentAUnitPriceCurrencyButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentAUnitPriceCurrencyButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>  
+                    <if cond='{((bAgentAUnitPriceCurrencyEquals = false AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnAcceptAgentAUnitPriceCurrency' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentAUnitPriceCurrencyFinal = TOSTRING(rAIndex) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAUnitPriceCurrency" || "[" || TOSTRING(rAIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForAcceptAgentAUnitPriceCurrency = "" THEN TOSTRING(rAIndex) ELSE "" END}' target='stSignForAcceptAgentAUnitPriceCurrency'/>
+                            <set value='{CASE WHEN bSignForAcceptAgentAUnitPriceCurrency = false THEN true ELSE false END}' target='bSignForAcceptAgentAUnitPriceCurrency'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <textview id='tvEditAgentAUnitPriceCurrencyButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentAUnitPriceCurrencyButtonEmpty" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND iItemTableAgentBRowCount != 0) OR (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnEditAgentAUnitPriceCurrency' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentAUnitPriceCurrencyFinal = TOSTRING(rAIndex) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAUnitPriceCurrency" || "[" || TOSTRING(rAIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForEditAgentAUnitPriceCurrency = "" THEN TOSTRING(rAIndex) ELSE "" END}' target='stSignForEditAgentAUnitPriceCurrency'/>
+                            <set value='{CASE WHEN bSignForEditAgentAUnitPriceCurrency = false THEN true ELSE false END}' target='bSignForEditAgentAUnitPriceCurrency'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%"}'>
+                        <textbox id='tbAgentAUnitPriceCurrency' text='{rA.unit_price_currency}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAUnitPriceCurrency" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%"}'>
+                        <textview id='tvAgentAUnitPriceCurrency' text='{COALESCE(rA.unit_price_currency," ")}' style='{CASE WHEN (iItemTableAgentBRowCount = 0 AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") OR (bAgentAUnitPriceCurrencyEquals = false AND ("|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%")) THEN styles.sylTvItemTableDifferent WHEN ("|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rAIndex) || "|" || "%") AND COALESCE(rA.unit_price_currency," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentAUnitPriceCurrency" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                    </if>
                     
                     <!--Remove Button-->    
                     <combinedbutton id='cbtnRemoveAgentAItemRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentAItemRow" || "[" || TOSTRING(rAIndex) || "]"}'>
@@ -2443,6 +2601,12 @@
                         <textview text=' '/>
                         <!--GrossWeight-->
                         <textbox id='tbAgentAGrossWeightNewRow' text='{""}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAGrossWeightNewRow" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPrice-->
+                        <textbox id='tbAgentAUnitPriceNewRow' text='{""}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAUnitPriceNewRow" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPriceCurrency-->
+                        <textbox id='tbAgentAUnitPriceCurrencyNewRow' text='{""}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentAUnitPriceCurrencyNewRow" || "[" || TOSTRING(rAIndex) || "]"}'/>
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentAItemRowTbNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentAItemRowTbNewRow" || "[" || TOSTRING(rAIndex) || "]"}'>
                             <actionbutton>
@@ -2472,6 +2636,12 @@
                         <textview text=' '/>
                         <!--GrossWeight-->
                         <textview id='tvAgentAGrossWeightNewRow' text='{stAgentBGrossWeight}' style='{styles.sylTvItemTableNormalNewRow}' testId='{"tvAgentAGrossWeightNewRow" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPrice-->
+                        <textview id='tvAgentAUnitPriceNewRow' text='{stAgentBUnitPrice}' style='{styles.sylTvItemTableNormalNewRow}' testId='{"tvAgentAUnitPriceNewRow" || "[" || TOSTRING(rAIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPriceCurrency-->
+                        <textview id='tvAgentAUnitPriceCurrencyNewRow' text='{stAgentBUnitPriceCurrency}' style='{styles.sylTvItemTableNormalNewRow}' testId='{"tvAgentAUnitPriceCurrencyNewRow" || "[" || TOSTRING(rAIndex) || "]"}'/>
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentAItemRowTvNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentAItemRowTvNewRow" || "[" || TOSTRING(rAIndex) || "]"}'>
                             <actionbutton>
@@ -2491,8 +2661,8 @@
                         <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
                         <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentARowCountErrorEqualsEmpty' text='' testId='tvItemTableAgentARowCountErrorEqualsEmpty'/>
                 <textview id='tvItemTableAgentARowCountErrorEmpty' text='' testId='tvItemTableAgentARowCountErrorEmpty'/>
@@ -2504,7 +2674,7 @@
                     <actionbutton>
                         <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentANewRowRowCountErrorBiggerAgentA' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountErrorBiggerAgentA'/>
                 <textview id='tvItemTableAgentANewRowRowCountErrorEmptyBiggerAgentA' text='' testId='tvItemTableAgentANewRowRowCountErrorEmptyBiggerAgentA'/>
@@ -2516,7 +2686,7 @@
                     <actionbutton>
                         <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, false new_row, false new_row_readonly}' table='rtpItemTableAgentA'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentANewRowRowCountErrorNewRow' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountErrorNewRow'/>
                 <textview id='tvItemTableAgentANewRowRowCountErrorEmptyNewRow' text='' testId='tvItemTableAgentANewRowRowCountErrorEmptyNewRow'/>
@@ -2528,7 +2698,7 @@
                     <actionbutton>
                         <set value='{iCountItemTableAAddbutton + 1}' target='iCountItemTableAAddbutton'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentANewRowRowCountErrorNewRowReadOnly' text='{"Missing " || TOSTRING(ABS(iItemTableAgentARowCount-iItemTableAgentBRowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentANewRowRowCountErrorNewRowReadOnly'/>
                 <textview id='tvItemTableAgentANewRowRowCountErrorEmptyNewRowReadOnly' text='' testId='tvItemTableAgentANewRowRowCountErrorEmptyNewRowReadOnly'/>
@@ -2547,6 +2717,8 @@
             <textview id='tvAgentBItemTableHeaderAmount' text='amount' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderAmount'/>
             <textview id='tvAgentBItemTableHeaderUnit' text='unit' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderUnit'/>
             <textview id='tvAgentBItemTableHeaderGrossWeight' text='grossWeight' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderGrossWeight'/>
+            <textview id='tvAgentBItemTableHeaderUnitPrice' text='unitPrice' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderUnitPrice'/>
+            <textview id='tvAgentBItemTableHeaderUnitPriceCurrency' text='unitPriceCurrency' style='{styles.sylTvItemTableNormalBold}' testId='tvAgentBItemTableHeaderUnitPriceCurrency'/>
             <textview id='tvAgentBItemTableHeaderEmpty' text='' testId='tvAgentBItemTableHeaderEmpty'/>
         </hbox>
 
@@ -2558,6 +2730,8 @@
                             SQAJABRIT.amount,
                             SQAJABRIT.unit,
                             SQAJABRIT.gross_weight,
+                            SQAJABRIT.unit_price,
+                            SQAJABRIT.unit_price_currency,
                             SQAJABRIT.new_row,
                             SQAJABRIT.new_row_readonly
                         FROM 
@@ -2581,6 +2755,10 @@
                     <let id='stAgentAUnit' shape='scalar' access='private' value='{SELECT COALESCE(DITAA.stAgentAUnit," ") FROM ltblDefaulItemTableAgentA DITAA WHERE DITAA.stAgentARowId = TOSTRING(rBIndex)}'/>                    
                     <let id='stAgentBGrossWeight' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN COALESCE(tbAgentBGrossWeight.text," ") WHEN rB.new_row = true AND rB.new_row_readonly = false THEN COALESCE(tbAgentBGrossWeightNewRow.text," ") WHEN "|" || stEditItemAgentBGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN COALESCE(tvAgentBGrossWeight.text," ") ELSE " " END}'/>
                     <let id='stAgentAGrossWeight' shape='scalar' access='private' value='{SELECT COALESCE(DITAA.stAgentAGrossWeight," ") FROM ltblDefaulItemTableAgentA DITAA WHERE DITAA.stAgentARowId = TOSTRING(rBIndex)}'/>                    
+                    <let id='stAgentBUnitPrice' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN COALESCE(tbAgentBUnitPrice.text," ") WHEN rB.new_row = true AND rB.new_row_readonly = false THEN COALESCE(tbAgentBUnitPriceNewRow.text," ") WHEN "|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN COALESCE(tvAgentBUnitPrice.text," ") ELSE " " END}'/>
+                    <let id='stAgentAUnitPrice' shape='scalar' access='private' value='{SELECT COALESCE(DITAA.stAgentAUnitPrice," ") FROM ltblDefaulItemTableAgentA DITAA WHERE DITAA.stAgentARowId = TOSTRING(rBIndex)}'/>
+                    <let id='stAgentBUnitPriceCurrency' shape='scalar' access='private' value='{SELECT CASE WHEN "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN COALESCE(tbAgentBUnitPriceCurrency.text," ") WHEN rB.new_row = true AND rB.new_row_readonly = false THEN COALESCE(tbAgentBUnitPriceCurrencyNewRow.text," ") WHEN "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN COALESCE(tvAgentBUnitPriceCurrency.text," ") ELSE " " END}'/>
+                    <let id='stAgentAUnitPriceCurrency' shape='scalar' access='private' value='{SELECT COALESCE(DITAA.stAgentAUnitPriceCurrency," ") FROM ltblDefaulItemTableAgentA DITAA WHERE DITAA.stAgentARowId = TOSTRING(rBIndex)}'/>
                     
                     <let id='stAgentANewRow' shape='scalar' access='private' value='{SELECT DITAA.stAgentANewRow FROM ltblDefaulItemTableAgentA DITAA WHERE DITAA.stAgentARowId = TOSTRING(rBIndex)}'/>                    
                     <let id='stAgentANewRowReadonly' shape='scalar' access='private' value='{SELECT DITAA.stAgentANewRowReadonly FROM ltblDefaulItemTableAgentA DITAA WHERE DITAA.stAgentARowId = TOSTRING(rBIndex)}'/>                    
@@ -2591,6 +2769,8 @@
                     <let id='bAgentBAmountEquals' shape='scalar' value='{CASE WHEN (stAgentBAmount = stAgentAAmount AND (rB.new_row = false AND stAgentANewRow = false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly != false OR stAgentANewRowReadonly != false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly = false AND stAgentANewRowReadonly = false)AND(stAgentBAmount = stAgentAAmount)) THEN true ELSE false END}'/>
                     <let id='bAgentBUnitEquals' shape='scalar' value='{CASE WHEN (stAgentBUnit = stAgentAUnit AND (rB.new_row = false AND stAgentANewRow = false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly != false OR stAgentANewRowReadonly != false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly = false AND stAgentANewRowReadonly = false)AND(stAgentBUnit = stAgentAUnit)) THEN true ELSE false END}'/>
                     <let id='bAgentBGrossWeightEquals' shape='scalar' value='{CASE WHEN (stAgentBGrossWeight = stAgentAGrossWeight AND (rB.new_row = false AND stAgentANewRow = false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly != false OR stAgentANewRowReadonly != false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly = false AND stAgentANewRowReadonly = false)AND(stAgentBGrossWeight = stAgentAGrossWeight)) THEN true ELSE false END}'/>
+                    <let id='bAgentBUnitPriceEquals' shape='scalar' value='{CASE WHEN (stAgentBUnitPrice = stAgentAUnitPrice AND (rB.new_row = false AND stAgentANewRow = false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly != false OR stAgentANewRowReadonly != false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly = false AND stAgentANewRowReadonly = false)AND(stAgentBUnitPrice = stAgentAUnitPrice)) THEN true ELSE false END}'/>
+                    <let id='bAgentBUnitPriceCurrencyEquals' shape='scalar' value='{CASE WHEN (stAgentBUnitPriceCurrency = stAgentAUnitPriceCurrency AND (rB.new_row = false AND stAgentANewRow = false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly != false OR stAgentANewRowReadonly != false)) OR ((rB.new_row = true AND stAgentANewRow = true)AND(rB.new_row_readonly = false AND stAgentANewRowReadonly = false)AND(stAgentBUnitPriceCurrency = stAgentAUnitPriceCurrency)) THEN true ELSE false END}'/>
 
                     <let id='stAgentBItemNameValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBItemNameEquals = true OR "|" || stAcceptItemAgentAItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAItemNameRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>                    
                     <let id='stAgentBManufacturerItemNumberValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBManufacturerItemNumberEquals = true OR "|" || stAcceptItemAgentAManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAManufacturerItemNumberRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>                    
@@ -2598,6 +2778,8 @@
                     <let id='stAgentBAmountValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBAmountEquals = true OR "|" || stAcceptItemAgentAAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAAmountRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentBUnitValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBUnitEquals = true OR "|" || stAcceptItemAgentAUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
                     <let id='stAgentBGrossWeightValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBGrossWeightEquals = true OR "|" || stAcceptItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
+                    <let id='stAgentBUnitPriceValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBUnitPriceEquals = true OR "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
+                    <let id='stAgentBUnitPriceCurrencyValidation' shape='scalar' access='private' value='{SELECT CASE WHEN bAgentBUnitPriceCurrencyEquals = true OR "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" THEN "true" ELSE "false" END}'/>
 
                     <let id='stSignForAcceptAgentBItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBItemName = true AND stAgentBRowId != stSignForAcceptAgentBItemName THEN stAgentBRowId ELSE stSignForAcceptAgentBItemName END }'/>
                     <let id='bSignForAcceptAgentBItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBItemName = true AND stAgentBRowId != stSignForAcceptAgentBItemName THEN true ELSE bSignForAcceptAgentBItemName END}'/>
@@ -2611,6 +2793,10 @@
                     <let id='bSignForAcceptAgentBUnitFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBUnit = true AND stAgentBRowId != stSignForAcceptAgentBUnit THEN true ELSE bSignForAcceptAgentBUnit END}'/>
                     <let id='stSignForAcceptAgentBGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBGrossWeight = true AND stAgentBRowId != stSignForAcceptAgentBGrossWeight THEN stAgentBRowId ELSE stSignForAcceptAgentBGrossWeight END }'/>
                     <let id='bSignForAcceptAgentBGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBGrossWeight = true AND stAgentBRowId != stSignForAcceptAgentBGrossWeight THEN true ELSE bSignForAcceptAgentBGrossWeight END}'/>
+                    <let id='stSignForAcceptAgentBUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBUnitPrice = true AND stAgentBRowId != stSignForAcceptAgentBUnitPrice THEN stAgentBRowId ELSE stSignForAcceptAgentBUnitPrice END }'/>
+                    <let id='bSignForAcceptAgentBUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBUnitPrice = true AND stAgentBRowId != stSignForAcceptAgentBUnitPrice THEN true ELSE bSignForAcceptAgentBUnitPrice END}'/>
+                    <let id='stSignForAcceptAgentBUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBUnitPriceCurrency = true AND stAgentBRowId != stSignForAcceptAgentBUnitPriceCurrency THEN stAgentBRowId ELSE stSignForAcceptAgentBUnitPriceCurrency END }'/>
+                    <let id='bSignForAcceptAgentBUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForAcceptAgentBUnitPriceCurrency = true AND stAgentBRowId != stSignForAcceptAgentBUnitPriceCurrency THEN true ELSE bSignForAcceptAgentBUnitPriceCurrency END}'/>
 
                     <let id='stSignForEditAgentBItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBItemName = true AND stAgentBRowId != stSignForEditAgentBItemName THEN stAgentBRowId ELSE stSignForEditAgentBItemName END }'/>
                     <let id='bSignForEditAgentBItemNameFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBItemName = true AND stAgentBRowId != stSignForEditAgentBItemName THEN true ELSE bSignForEditAgentBItemName END}'/>
@@ -2624,6 +2810,10 @@
                     <let id='bSignForEditAgentBUnitFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBUnit = true AND stAgentBRowId != stSignForEditAgentBUnit THEN true ELSE bSignForEditAgentBUnit END}'/>
                     <let id='stSignForEditAgentBGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBGrossWeight = true AND stAgentBRowId != stSignForEditAgentBGrossWeight THEN stAgentBRowId ELSE stSignForEditAgentBGrossWeight END }'/>
                     <let id='bSignForEditAgentBGrossWeightFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBGrossWeight = true AND stAgentBRowId != stSignForEditAgentBGrossWeight THEN true ELSE bSignForEditAgentBGrossWeight END}'/>
+                    <let id='stSignForEditAgentBUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBUnitPrice = true AND stAgentBRowId != stSignForEditAgentBUnitPrice THEN stAgentBRowId ELSE stSignForEditAgentBUnitPrice END }'/>
+                    <let id='bSignForEditAgentBUnitPriceFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBUnitPrice = true AND stAgentBRowId != stSignForEditAgentBUnitPrice THEN true ELSE bSignForEditAgentBUnitPrice END}'/>
+                    <let id='stSignForEditAgentBUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBUnitPriceCurrency = true AND stAgentBRowId != stSignForEditAgentBUnitPriceCurrency THEN stAgentBRowId ELSE stSignForEditAgentBUnitPriceCurrency END }'/>
+                    <let id='bSignForEditAgentBUnitPriceCurrencyFinal' shape='scalar' access='private' value='{CASE WHEN bSignForEditAgentBUnitPriceCurrency = true AND stAgentBRowId != stSignForEditAgentBUnitPriceCurrency THEN true ELSE bSignForEditAgentBUnitPriceCurrency END}'/>
 
                     <let id='stSignForAcceptAgentBItemName' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForAcceptAgentBItemName' shape='scalar' access='private' value='{false}'/>
@@ -2637,6 +2827,10 @@
                     <let id='bSignForAcceptAgentBUnit' shape='scalar' access='private' value='{false}'/>
                     <let id='stSignForAcceptAgentBGrossWeight' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForAcceptAgentBGrossWeight' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForAcceptAgentBUnitPrice' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForAcceptAgentBUnitPrice' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForAcceptAgentBUnitPriceCurrency' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForAcceptAgentBUnitPriceCurrency' shape='scalar' access='private' value='{false}'/>
 
                     <let id='stSignForEditAgentBItemName' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForEditAgentBItemName' shape='scalar' access='private' value='{false}'/>
@@ -2650,6 +2844,10 @@
                     <let id='bSignForEditAgentBUnit' shape='scalar' access='private' value='{false}'/>
                     <let id='stSignForEditAgentBGrossWeight' shape='scalar' access='private' value='{""}'/>
                     <let id='bSignForEditAgentBGrossWeight' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForEditAgentBUnitPrice' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForEditAgentBUnitPrice' shape='scalar' access='private' value='{false}'/>
+                    <let id='stSignForEditAgentBUnitPriceCurrency' shape='scalar' access='private' value='{""}'/>
+                    <let id='bSignForEditAgentBUnitPriceCurrency' shape='scalar' access='private' value='{false}'/>
                 </declarations>
             </block>
             <if cond='{rB.new_row = false}'>
@@ -2809,6 +3007,58 @@
                     <if cond='{"|" || stEditItemAgentBGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%"}'>
                         <textview id='tvAgentBGrossWeight' text='{COALESCE(rB.gross_weight," ")}' style='{CASE WHEN (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") OR (bAgentBGrossWeightEquals = false AND ("|" || stEditItemAgentAGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentAGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentBGrossWeightRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")) THEN styles.sylTvItemTableDifferent WHEN ("|" || stEditItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentAGrossWeightRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND COALESCE(rB.gross_weight," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBGrossWeight" || "[" || TOSTRING(rBIndex) || "]"}'/>
                     </if>
+
+                    <!--UnitPrice-->            
+                    <if cond='{((bAgentBUnitPriceEquals = true OR "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <textview id='tvAcceptAgentBUnitPriceButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentBUnitPriceButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>  
+                    <if cond='{((bAgentBUnitPriceEquals = false AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnAcceptAgentBUnitPrice' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentBUnitPriceFinal = TOSTRING(rBIndex) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBUnitPrice" || "[" || TOSTRING(rBIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForAcceptAgentBUnitPrice = "" THEN TOSTRING(rBIndex) ELSE "" END}' target='stSignForAcceptAgentBUnitPrice'/>
+                            <set value='{CASE WHEN bSignForAcceptAgentBUnitPrice = false THEN true ELSE false END}' target='bSignForAcceptAgentBUnitPrice'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <textview id='tvEditAgentAUnitPriceButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentAUnitPriceButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnEditAgentBUnitPrice' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentBUnitPriceFinal = TOSTRING(rBIndex) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBUnitPrice" || "[" || TOSTRING(rBIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForEditAgentBUnitPrice = "" THEN TOSTRING(rBIndex) ELSE "" END}' target='stSignForEditAgentBUnitPrice'/>
+                            <set value='{CASE WHEN bSignForEditAgentBUnitPrice = false THEN true ELSE false END}' target='bSignForEditAgentBUnitPrice'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentBUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%"}'>
+                        <textbox id='tbAgentBUnitPrice' text='{TOSTRING(rB.unit_price)}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBUnitPrice" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%"}'>
+                        <textview id='tvAgentBUnitPrice' text='{COALESCE(TOSTRING(rB.unit_price)," ")}' style='{CASE WHEN (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") OR (bAgentBUnitPriceEquals = false AND ("|" || stEditItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")) THEN styles.sylTvItemTableDifferent WHEN ("|" || stEditItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND COALESCE(TOSTRING(rB.unit_price)," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBUnitPrice" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>
+
+                    <!--UnitPriceCurrency-->            
+                    <if cond='{((bAgentBUnitPriceCurrencyEquals = true OR "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <textview id='tvAcceptAgentBUnitPriceCurrencyButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvAcceptAgentBUnitPriceCurrencyButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>  
+                    <if cond='{((bAgentBUnitPriceCurrencyEquals = false AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnAcceptAgentBUnitPriceCurrency' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtonsDifferent}' linkIcon='{CASE WHEN stSignForAcceptAgentBUnitPriceCurrencyFinal = TOSTRING(rBIndex) THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBUnitPriceCurrency" || "[" || TOSTRING(rBIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForAcceptAgentBUnitPriceCurrency = "" THEN TOSTRING(rBIndex) ELSE "" END}' target='stSignForAcceptAgentBUnitPriceCurrency'/>
+                            <set value='{CASE WHEN bSignForAcceptAgentBUnitPriceCurrency = false THEN true ELSE false END}' target='bSignForAcceptAgentBUnitPriceCurrency'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <textview id='tvEditAgentAUnitPriceCurrencyButtonEmpty' text='{""}' style='{styles.sylTvItemEmptyText}' testId='{"tvEditAgentAUnitPriceCurrencyButtonEmpty" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>
+                    <if cond='{(("|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND iItemTableAgentARowCount != 0) OR (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")}'>
+                        <actionbutton id='abtnEditAgentBUnitPriceCurrency' text='{NULL}' style='{styles.sylAbtnQADeliveryNoteItemActionButtons}' linkIcon='{CASE WHEN stSignForEditAgentBUnitPriceCurrencyFinal = TOSTRING(rBIndex) THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBUnitPriceCurrency" || "[" || TOSTRING(rBIndex) || "]"}'>
+                            <set value='{CASE WHEN stSignForEditAgentBUnitPriceCurrency = "" THEN TOSTRING(rBIndex) ELSE "" END}' target='stSignForEditAgentBUnitPriceCurrency'/>
+                            <set value='{CASE WHEN bSignForEditAgentBUnitPriceCurrency = false THEN true ELSE false END}' target='bSignForEditAgentBUnitPriceCurrency'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%"}'>
+                        <textbox id='tbAgentBUnitPriceCurrency' text='{rB.unit_price_currency}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBUnitPriceCurrency" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>
+                    <if cond='{"|" || stEditItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%"}'>
+                        <textview id='tvAgentBUnitPriceCurrency' text='{COALESCE(rB.unit_price_currency," ")}' style='{CASE WHEN (iItemTableAgentARowCount = 0 AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") OR (bAgentBUnitPriceCurrencyEquals = false AND ("|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" AND "|" || stAcceptItemAgentBUnitPriceCurrencyRowId || "|" NOT LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%")) THEN styles.sylTvItemTableDifferent WHEN ("|" || stEditItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%" OR "|" || stAcceptItemAgentAUnitPriceCurrencyRowId || "|" LIKE "%" || "|" || TOSTRING(rBIndex) || "|" || "%") AND COALESCE(rB.unit_price_currency," ") != " " THEN styles.sylTvItemTableNormalStrikethrough ELSE styles.sylTvItemTableNormal END}' testId='{"tvAgentBUnitPriceCurrency" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                    </if>
                     
                     <!--Remove Button-->
                     <combinedbutton id='cbtnRemoveAgentBItemRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentBItemRow" || "[" || TOSTRING(rBIndex) || "]"}'>
@@ -2840,6 +3090,12 @@
                         <textview text=' '/>
                         <!--GrossWeight-->
                         <textbox id='tbAgentBGrossWeightNewRow' text='{""}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBGrossWeightNewRow" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPrice-->
+                        <textbox id='tbAgentBUnitPriceNewRow' text='{""}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBUnitPriceNewRow" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPriceCurrency-->
+                        <textbox id='tbAgentBUnitPriceCurrencyNewRow' text='{""}' style='{styles.sylTbItemTableEdit}' testId='{"tbAgentBUnitPriceCurrencyNewRow" || "[" || TOSTRING(rBIndex) || "]"}'/>
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentBItemRowTbNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentBItemRowTbNewRow" || "[" || TOSTRING(rBIndex) || "]"}'>
                             <actionbutton>
@@ -2869,6 +3125,12 @@
                         <textview text=' '/>
                         <!--GrossWeight-->
                         <textview id='tvAgentBGrossWeightNewRow' text='{stAgentAGrossWeight}' style='{styles.sylTvItemTableNormalNewRow}' testId='{"tvAgentBGrossWeightNewRow" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPrice-->
+                        <textview id='tvAgentBUnitPriceNewRow' text='{stAgentAUnitPrice}' style='{styles.sylTvItemTableNormalNewRow}' testId='{"tvAgentBUnitPriceNewRow" || "[" || TOSTRING(rBIndex) || "]"}'/>
+                        <textview text=' '/>
+                        <!--UnitPriceCurrency-->
+                        <textview id='tvAgentBUnitPriceCurrencyNewRow' text='{stAgentAUnitPriceCurrency}' style='{styles.sylTvItemTableNormalNewRow}' testId='{"tvAgentBUnitPriceCurrencyNewRow" || "[" || TOSTRING(rBIndex) || "]"}'/>
                         <!--Remove Button-->    
                         <combinedbutton id='cbtnRemoveAgentBItemRowTvNewRow' access='private' text='{NULL}' linkIcon='{icons.waste}' style='{styles.sylCbtnItemTableRemoveButton}' testId='{"cbtnRemoveAgentBItemRowTvNewRow" || "[" || TOSTRING(rBIndex) || "]"}'>
                             <actionbutton>
@@ -2888,8 +3150,8 @@
                         <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
                         <set value='{iCountItemTableAAddbuttonNew + 1}' target='iCountItemTableAAddbuttonNew'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, true new_row_readonly}' table='rtpItemTableAgentA'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentBNewRowRowCountEqualsEmpty' text='' testId='tvItemTableAgentBNewRowRowCountEqualsEmpty'/>
                 <textview id='tvItemTableAgentBNewRowRowCountEmpty' text='' testId='tvItemTableAgentBNewRowRowCountEmpty'/>
@@ -2901,7 +3163,7 @@
                     <actionbutton>
                         <set value='{iCountItemTableBAddbuttonNew + 1}' target='iCountItemTableBAddbuttonNew'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentBRowCountErrorBiggerAgentB' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountErrorBiggerAgentB'/>
                 <textview id='tvItemTableAgentBRowCountEmptyBiggerAgentB' text='' testId='tvItemTableAgentBRowCountEmptyBiggerAgentB'/>
@@ -2913,7 +3175,7 @@
                     <actionbutton>
                         <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, false new_row, false new_row_readonly}' table='rtpItemTableAgentB'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentBRowCountErrorNewRow' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountErrorNewRow'/>
                 <textview id='tvItemTableAgentBRowCountEmptyNewRow' text='' testId='tvItemTableAgentBRowCountEmptyNewRow'/>
@@ -2925,7 +3187,7 @@
                     <actionbutton>
                         <set value='{iCountItemTableBAddbutton + 1}' target='iCountItemTableBAddbutton'/>
                     </actionbutton>
-                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
+                    <addbutton records='{SELECT " " item_name, " " manufacturer_item_number, " " tax_number, null amount, " " unit, " " gross_weight, null unit_price, " " unit_price_currency, true new_row, true new_row_readonly}' table='rtpItemTableAgentB'/>
                 </combinedbutton>
                 <textview id='tvItemTableAgentBRowCountErrorNewRowReadOnly' text='{"Missing " || TOSTRING(ABS(iItemTableAgentBRowCount-iItemTableAgentARowCount)) || " row!"}' style='{styles.sylTvQAItemsTablesErrorText}' testId='tvItemTableAgentBRowCountErrorNewRowReadOnly'/>
                 <textview id='tvItemTableAgentBRowCountEmptyNewRowReadOnly' text='' testId='tvItemTableAgentBRowCountEmptyNewRowReadOnly'/>

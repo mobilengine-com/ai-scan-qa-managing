@@ -57,7 +57,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             delivery_address: stDeliveryNoteDeliveryAddress,
             delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
             issue_date: stDeliveryNoteIssueDate,
-            dtl_issue_date: dtlDeliveryNoteIssueDate.DtlToDtdb(),
+            dtl_issue_date: dtlDeliveryNoteIssueDate?.DtlToDtdb() || null,
             order_number: stDeliveryNoteOrderNumber,
             supplier_address: stDeliveryNoteSupplierAddress,
             supplier_name: stDeliveryNoteSupplierName,
@@ -85,6 +85,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let lstJobDeliveryNoteItemUnit = list.New();
         let lstJobDeliveryNoteItemGrossWeight = list.New();
         let lstJobDeliveryNoteItemUnitPrice = list.New();
+        let lstJobDeliveryNoteItemUnitPriceAmount = list.New();
         let lstJobDeliveryNoteItemUnitPriceCurrency = list.New();
 
         let i = 0;
@@ -97,7 +98,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
             let stDeliveryNoteItemUnit = item.unit;
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
-            let stDeliveryNoteItemUnitPrice = NumberFrom(item.unitPrice);
+            let stDeliveryNoteItemUnitPrice = item.unitPrice;
+            let stDeliveryNoteItemUnitPriceAmount = NumberFrom(item.unitPrice);
             let stDeliveryNoteItemUnitPriceCurrency = item.unitPriceCurrency;
 
             lstJobDeliveryNoteItemItemName.Add(stDeliveryNoteItemItemName);
@@ -108,6 +110,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             lstJobDeliveryNoteItemUnit.Add(stDeliveryNoteItemUnit);
             lstJobDeliveryNoteItemGrossWeight.Add(stDeliveryNoteItemGrossWeight);
             lstJobDeliveryNoteItemUnitPrice.Add(stDeliveryNoteItemUnitPrice);
+            lstJobDeliveryNoteItemUnitPriceAmount.Add(stDeliveryNoteItemUnitPriceAmount);
             lstJobDeliveryNoteItemUnitPriceCurrency.Add(stDeliveryNoteItemUnitPriceCurrency);
 
             // Update delivery_note job
@@ -124,6 +127,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 unit: stDeliveryNoteItemUnit,
                 gross_weight: stDeliveryNoteItemGrossWeight,
                 unit_price: stDeliveryNoteItemUnitPrice,
+                unit_price_number: stDeliveryNoteItemUnitPriceAmount,
                 unit_price_currency: stDeliveryNoteItemUnitPriceCurrency
             });
 
@@ -356,6 +360,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let lstOtherJobJobDeliveryNoteItemUnit = list.New();
             let lstOtherJobJobDeliveryNoteItemGrossWeight = list.New();
             let lstOtherJobJobDeliveryNoteItemUnitPrice = list.New();
+            let lstOtherJobJobDeliveryNoteItemUnitPriceAmount = list.New();
             let lstOtherJobJobDeliveryNoteItemUnitPriceCurrency = list.New();
     
             let lstOtherJobJobDeliveryNoteItems = db.ai_scan_delivery_note_item_job.Read({job_id : stDeliveryNoteOtherJob});
@@ -370,6 +375,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 lstOtherJobJobDeliveryNoteItemUnit.Add(recData.unit);
                 lstOtherJobJobDeliveryNoteItemGrossWeight.Add(recData.gross_weight);
                 lstOtherJobJobDeliveryNoteItemUnitPrice.Add(recData.unit_price);
+                lstOtherJobJobDeliveryNoteItemUnitPriceAmount.Add(NumberFrom(recData.unit_price_number));
                 lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.Add(recData.unit_price_currency);
             }
 
@@ -387,6 +393,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                         lstOtherJobJobDeliveryNoteItemUnit.GetAt(l) !== lstJobDeliveryNoteItemUnit.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) !== lstJobDeliveryNoteItemGrossWeight.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemUnitPrice.GetAt(l) !== lstJobDeliveryNoteItemUnitPrice.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnitPriceAmount.GetAt(l) !== lstJobDeliveryNoteItemUnitPriceAmount.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.GetAt(l) !== lstJobDeliveryNoteItemUnitPriceCurrency.GetAt(l))
                     {
                         bMofifiedAnywhere = true;
@@ -481,6 +488,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                     unit: lstJobDeliveryNoteItemUnit.GetAt(i),
                     grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i),
                     unitPrice: lstJobDeliveryNoteItemUnitPrice.GetAt(i),
+                    numUnitPrice: NumberFrom(lstJobDeliveryNoteItemUnitPrice.GetAt(i)),
                     unitPriceCurrency: lstJobDeliveryNoteItemUnitPriceCurrency.GetAt(i)
                     };
                     doneDacs.dnResponse.items.Add(item);
@@ -616,7 +624,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
             let stDeliveryNoteItemUnit = item.unit;
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
-            let stDeliveryNoteItemUnitPrice = NumberFrom(item.unitPrice);
+            let stDeliveryNoteItemUnitPrice = item.unitPrice;
+            let stDeliveryNoteItemUnitPriceAmount = NumberFrom(item.unitPrice);
             let stDeliveryNoteItemUnitPriceCurrency = item.unitPriceCurrency;
 
             // Update delivery_note job
@@ -633,6 +642,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 unit: stDeliveryNoteItemUnit,
                 gross_weight: stDeliveryNoteItemGrossWeight,
                 unit_price: stDeliveryNoteItemUnitPrice,
+                unit_price_number: stDeliveryNoteItemUnitPriceAmount,
                 unit_price_currency: stDeliveryNoteItemUnitPriceCurrency
             });
 

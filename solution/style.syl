@@ -1124,6 +1124,33 @@ styles{
 		}
 	}
 
+	style sylTpEdit{
+		timepicker{
+			control{
+				margin {
+					top = 14px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				padding {
+					top = 0px
+					bottom = 0px
+					left = 0px
+					right = 0px
+				}
+				backgroundColor = FFF1CC
+			}
+			padding {
+				top = 0px
+				bottom = 0px
+				left = 0px
+				right = 0px
+			}
+			textAlign = left
+		}
+	}
+
 	style sylTvNormalStrikethrough{
 		textview{
 			control{
@@ -1290,7 +1317,7 @@ styles{
 	style sylAgentItemTableHeaderHbox{
 		hbox {
             height = 50px
-            sizes = 220px, 220px, 220px, 220px, 220px, 220px, 100px
+            sizes = 220px, 220px, 220px, 220px, 220px, 220px, 220px, 220px, 100px
 			margin{
 				top = 0px
 				bottom = 0px
@@ -1303,7 +1330,7 @@ styles{
 	style sylAgentItemTableHbox{
 		hbox {
             height = 50px
-            sizes = 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 100px
+            sizes = 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 25px, 25px, 170px, 100px
 			margin{
 				top = 0px
 				bottom = 0px
@@ -1316,7 +1343,7 @@ styles{
 	style sylAgentItemTableHboxNewRow{
 		hbox {
             height = 100%
-            sizes = 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 100px
+            sizes = 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 25px, 195px, 100px
 			margin{
 				top = 10px
 				bottom = 0px
