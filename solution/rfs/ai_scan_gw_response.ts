@@ -49,7 +49,7 @@ import { NumberFrom, DateFrom } from "conversion";
             delivery_address: stDeliveryNoteDeliveryAddress,
             delivery_recipient_name: stDeliveryNoteDeliveryRecipientName,
             issue_date: stDeliveryNoteIssueDate,
-            dtl_issue_date: dtlDeliveryNoteIssueDate.DtlToDtdb(),
+            dtl_issue_date: dtlDeliveryNoteIssueDate?.DtlToDtdb() || null, 
             order_number: stDeliveryNoteOrderNumber,
             supplier_address: stDeliveryNoteSupplierAddress,
             supplier_name: stDeliveryNoteSupplierName,
