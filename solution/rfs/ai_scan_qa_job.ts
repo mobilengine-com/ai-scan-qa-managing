@@ -585,7 +585,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 delivery_address: stSendAgentDeliveryAddress,
                 delivery_recipient_name: stSendAgentDeliveryRecipientName,
                 issue_date: stSendAgentIssueDate,
-                dtl_issue_date: dtlIssueDate,
+                dtl_issue_date: dtlIssueDate?.DtlToDtdb(),
                 order_number: stSendAgentOrderNumber,
                 supplier_address: stSendAgentSupplierAddress,
                 supplier_name: stSendAgentSupplierName,
