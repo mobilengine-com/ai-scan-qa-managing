@@ -169,7 +169,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
             let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
             let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
-            let stSendAgentTotalPrice = NumberFrom(form.stSendAgentTotalPrice);
+            let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
             let stSendAgentTotalPriceCurrency = form.stSendAgentTotalPriceCurrency;
 
             let lstAgentAItemTableItemNameRowIdEdit = list.New();
@@ -621,6 +621,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
             dacs.dnResponse.concreteJobtime = stSendAgentConcreteJobtime;
             dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
+            dacs.dnResponse.numTotalPrice = NumberFrom(stSendAgentTotalPrice);
             dacs.dnResponse.totalPriceCurrency = stSendAgentTotalPriceCurrency;
 
             if(iCount !== 0)
@@ -711,6 +712,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 concrete_pumplength: stSendAgentConcretePumplength,
                 concrete_jobtime: stSendAgentConcreteJobtime,
                 total_price: stSendAgentTotalPrice,
+                total_price_number: NumberFrom(stSendAgentTotalPrice),
                 total_price_currency: stSendAgentTotalPriceCurrency
             });
             
@@ -814,7 +816,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
             let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
             let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
-            let stSendAgentTotalPrice = NumberFrom(form.stSendAgentTotalPrice);
+            let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
             let stSendAgentTotalPriceCurrency = form.stSendAgentTotalPriceCurrency;
 
             let lstAgentAItemTableItemNameRowIdEdit = list.New();
@@ -1266,6 +1268,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
             dacs.dnResponse.concreteJobtime = stSendAgentConcreteJobtime;
             dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
+            dacs.dnResponse.numTotalPrice = NumberFrom(stSendAgentTotalPrice);
             dacs.dnResponse.totalPriceCurrency = stSendAgentTotalPriceCurrency;
 
             if(iCount !== 0)
@@ -1355,6 +1358,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 concrete_pumplength: stSendAgentConcretePumplength,
                 concrete_jobtime: stSendAgentConcreteJobtime,
                 total_price: stSendAgentTotalPrice,
+                total_price_number: NumberFrom(stSendAgentTotalPrice),
                 total_price_currency: stSendAgentTotalPriceCurrency
             });
             

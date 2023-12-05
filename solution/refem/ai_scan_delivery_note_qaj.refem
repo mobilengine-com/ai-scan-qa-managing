@@ -24,7 +24,8 @@
         <Column Name="concrete_departure" Type="Text"/>
         <Column Name="concrete_pumplength" Type="Text"/>
         <Column Name="concrete_jobtime" Type="Text"/>
-        <Column Name="total_price" Type="Float"/>
+        <Column Name="total_price" Type="Text"/>
+        <Column Name="total_price_number" Type="Float"/>
         <Column Name="total_price_currency" Type="Text"/>
     </Columns>
 </Reftab>

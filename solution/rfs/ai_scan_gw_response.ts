@@ -44,7 +44,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
         let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
         let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
-        let stDeliveryNoteTotalPrice = NumberFrom(dacs.dnResponse.totalPrice);
+        let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
+        let stDeliveryNoteTotalPriceAmount = NumberFrom(dacs.dnResponse.totalPrice);
         let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
 
         // Update delivery_note job
@@ -72,6 +73,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             concrete_pumplength: stDeliveryNoteConcretePumplength,
             concrete_jobtime: stDeliveryNoteConcreteJobtime,
             total_price: stDeliveryNoteTotalPrice,
+            total_price_number: stDeliveryNoteTotalPriceAmount,
             total_price_currency: stDeliveryNoteTotalPriceCurrency
         });
 
@@ -297,7 +299,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stOtherJobDeliveryNoteConcreteDeparture = "";
             let stOtherJobDeliveryNoteConcretePumplength = "";
             let stOtherJobDeliveryNoteConcreteJobtime = "";
-            let stOtherJobDeliveryNoteTotalPrice = null;
+            let stOtherJobDeliveryNoteTotalPrice = "";
+            let stOtherJobDeliveryNoteTotalPriceAmount = null;
             let stOtherJobDeliveryNoteTotalPriceCurrency = "";
 
             let lstOtherJobDeliveryNote = db.ai_scan_delivery_note_job.Read({job_id : stDeliveryNoteOtherJob});
@@ -324,6 +327,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 stOtherJobDeliveryNoteConcretePumplength = recData.concrete_pumplength;
                 stOtherJobDeliveryNoteConcreteJobtime = recData.concrete_jobtime;
                 stOtherJobDeliveryNoteTotalPrice = recData.total_price;
+                stOtherJobDeliveryNoteTotalPriceAmount = NumberFrom(recData.total_price_number);
                 stOtherJobDeliveryNoteTotalPriceCurrency =recData.total_price_currency;
             }
 
@@ -346,6 +350,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 stOtherJobDeliveryNoteConcretePumplength === stDeliveryNoteConcretePumplength &&
                 stOtherJobDeliveryNoteConcreteJobtime === stDeliveryNoteConcreteJobtime &&
                 stOtherJobDeliveryNoteTotalPrice === stDeliveryNoteTotalPrice &&
+                stOtherJobDeliveryNoteTotalPriceAmount === stDeliveryNoteTotalPriceAmount &&
                 stOtherJobDeliveryNoteTotalPriceCurrency === stDeliveryNoteTotalPriceCurrency)
             {
                 bSameANNOTDatas = true;
@@ -477,6 +482,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                    doneDacs.dnResponse.concretePumplength = stDeliveryNoteConcretePumplength;
                    doneDacs.dnResponse.concreteJobtime = stDeliveryNoteConcreteJobtime;
                    doneDacs.dnResponse.totalPrice = stDeliveryNoteTotalPrice;
+                   doneDacs.dnResponse.numTotalPrice = NumberFrom(stDeliveryNoteTotalPrice);
                    doneDacs.dnResponse.totalPriceCurrency = stDeliveryNoteTotalPriceCurrency;
                    for (let i = 0; i < lstJobDeliveryNoteItemItemName.Count(); i=i+1) {
                     let item = {
@@ -582,7 +588,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
         let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
         let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
-        let stDeliveryNoteTotalPrice = NumberFrom(dacs.dnResponse.totalPrice);
+        let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
+        let stDeliveryNoteTotalPriceAmount = NumberFrom(dacs.dnResponse.totalPrice);
         let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
 
         // Update delivery_note job
@@ -610,6 +617,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             concrete_pumplength: stDeliveryNoteConcretePumplength,
             concrete_jobtime: stDeliveryNoteConcreteJobtime,
             total_price: stDeliveryNoteTotalPrice,
+            total_price_number: stDeliveryNoteTotalPriceAmount,
             total_price_currency: stDeliveryNoteTotalPriceCurrency
         });
 
