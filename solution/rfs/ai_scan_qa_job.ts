@@ -76,6 +76,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.avgscoreOverall = 0.0;
             dacs.dnResponse.rejected = 1;
 
+            Log(["dacs1: ", dacs]);
             dacs.Send();
 
             //QA job status update to handwritten
@@ -649,7 +650,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 }
             }
             
-            Log(dacs);
+            Log(["dacs2: ", dacs]);
             dacs.Send();
 
             //QA job status update to handwritten
@@ -1301,7 +1302,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                     dacs.dnResponse.items.Add(item);
                 }
             }
-            Log(dacs);
+            Log(["dacs3: ", dacs]);
             dacs.Send();
 
             //QA job status update to approved

@@ -32,6 +32,8 @@ dnResponse: element {
 	concreteCement: optional attribute of type string;
 	concretePumplength: optional attribute of type string;
 	concreteJobtime: optional attribute of type string;
+	concreteWaittime: optional attribute of type string;
+	concreteCement: optional attribute of type string;
 	
 	totalPrice: optional attribute of type string;
 	numTotalPrice: optional attribute of type float;
