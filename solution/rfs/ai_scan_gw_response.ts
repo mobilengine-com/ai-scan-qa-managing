@@ -42,6 +42,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
         let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
         let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
+        let stDeliveryNoteConcreteWaittime = dacs.dnResponse.concreteWaittime;
+        let stDeliveryNoteConcreteCement = dacs.dnResponse.concreteCement;
         let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
         let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
         let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
@@ -70,6 +72,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             concrete_startpour: stDeliveryNoteConcreteStartpour,
             concrete_endpour: stDeliveryNoteConcreteEndpour,
             concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_waittime: stDeliveryNoteConcreteWaittime,
+            concrete_cement: stDeliveryNoteConcreteCement,
             concrete_pumplength: stDeliveryNoteConcretePumplength,
             concrete_jobtime: stDeliveryNoteConcreteJobtime,
             total_price: stDeliveryNoteTotalPrice,
@@ -297,6 +301,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stOtherJobDeliveryNoteConcreteStartpour = "";
             let stOtherJobDeliveryNoteConcreteEndpour = "";
             let stOtherJobDeliveryNoteConcreteDeparture = "";
+            let stOtherJobDeliveryNoteConcreteWaittime = "";
+            let stOtherJobDeliveryNoteConcreteCement = "";
             let stOtherJobDeliveryNoteConcretePumplength = "";
             let stOtherJobDeliveryNoteConcreteJobtime = "";
             let stOtherJobDeliveryNoteTotalPrice = "";
@@ -324,10 +330,12 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 stOtherJobDeliveryNoteConcreteStartpour = recData.concrete_startpour;
                 stOtherJobDeliveryNoteConcreteEndpour = recData.concrete_endpour;
                 stOtherJobDeliveryNoteConcreteDeparture = recData.concrete_departure;
+                stOtherJobDeliveryNoteConcreteWaittime = recData.concrete_waittime;
+                stOtherJobDeliveryNoteConcreteCement = recData.concrete_cement;
                 stOtherJobDeliveryNoteConcretePumplength = recData.concrete_pumplength;
                 stOtherJobDeliveryNoteConcreteJobtime = recData.concrete_jobtime;
                 stOtherJobDeliveryNoteTotalPrice = recData.total_price;
-                stOtherJobDeliveryNoteTotalPriceAmount = NumberFrom(recData.total_price_number);
+                stOtherJobDeliveryNoteTotalPriceAmount = NumberFrom(recData.total_price);
                 stOtherJobDeliveryNoteTotalPriceCurrency =recData.total_price_currency;
             }
 
@@ -347,6 +355,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 stOtherJobDeliveryNoteConcreteStartpour === stDeliveryNoteConcreteStartpour &&
                 stOtherJobDeliveryNoteConcreteEndpour === stDeliveryNoteConcreteEndpour &&
                 stOtherJobDeliveryNoteConcreteDeparture === stDeliveryNoteConcreteDeparture &&
+                stOtherJobDeliveryNoteConcreteWaittime === stDeliveryNoteConcreteWaittime &&
+                stOtherJobDeliveryNoteConcreteCement === stDeliveryNoteConcreteCement &&
                 stOtherJobDeliveryNoteConcretePumplength === stDeliveryNoteConcretePumplength &&
                 stOtherJobDeliveryNoteConcreteJobtime === stDeliveryNoteConcreteJobtime &&
                 stOtherJobDeliveryNoteTotalPrice === stDeliveryNoteTotalPrice &&
@@ -380,7 +390,7 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 lstOtherJobJobDeliveryNoteItemUnit.Add(recData.unit);
                 lstOtherJobJobDeliveryNoteItemGrossWeight.Add(recData.gross_weight);
                 lstOtherJobJobDeliveryNoteItemUnitPrice.Add(recData.unit_price);
-                lstOtherJobJobDeliveryNoteItemUnitPriceAmount.Add(NumberFrom(recData.unit_price_number));
+                lstOtherJobJobDeliveryNoteItemUnitPriceAmount.Add(NumberFrom(recData.unit_price));
                 lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.Add(recData.unit_price_currency);
             }
 
@@ -479,6 +489,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                    doneDacs.dnResponse.concreteStartpour = stDeliveryNoteConcreteStartpour;
                    doneDacs.dnResponse.concreteEndpour = stDeliveryNoteConcreteEndpour;
                    doneDacs.dnResponse.concreteDeparture = stDeliveryNoteConcreteDeparture;
+                   doneDacs.dnResponse.concreteWaittime = stDeliveryNoteConcreteWaittime;
+                   doneDacs.dnResponse.concreteCement = stDeliveryNoteConcreteCement;
                    doneDacs.dnResponse.concretePumplength = stDeliveryNoteConcretePumplength;
                    doneDacs.dnResponse.concreteJobtime = stDeliveryNoteConcreteJobtime;
                    doneDacs.dnResponse.totalPrice = stDeliveryNoteTotalPrice;
@@ -586,6 +598,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
         let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
         let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
+        let stDeliveryNoteConcreteWaittime = dacs.dnResponse.concreteWaittime;
+        let stDeliveryNoteConcreteCement = dacs.dnResponse.concreteCement;
         let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
         let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
         let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
@@ -614,6 +628,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             concrete_startpour: stDeliveryNoteConcreteStartpour,
             concrete_endpour: stDeliveryNoteConcreteEndpour,
             concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_waittime: stDeliveryNoteConcreteWaittime,
+            concrete_cement: stDeliveryNoteConcreteCement,
             concrete_pumplength: stDeliveryNoteConcretePumplength,
             concrete_jobtime: stDeliveryNoteConcreteJobtime,
             total_price: stDeliveryNoteTotalPrice,

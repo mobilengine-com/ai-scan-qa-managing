@@ -55,6 +55,8 @@
                         DNJ.concrete_startpour,
                         DNJ.concrete_endpour,
                         DNJ.concrete_departure,
+                        DNJ.concrete_waittime,
+                        DNJ.concrete_cement,
                         DNJ.concrete_pumplength,
                         DNJ.concrete_jobtime,
                         DNJ.total_price,
@@ -89,6 +91,8 @@
         <let id='stSelectedQAJobAnotJobsAgentAConcreteStartpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_startpour," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentAConcreteEndpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_endpour," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentAConcreteDeparture' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_departure," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteWaittime' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_waittime," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentAConcreteCement' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_cement," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentAConcretePumplength' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_pumplength," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentAConcreteJobtime' shape='scalar' access='private' value='{SELECT COALESCE(SQAJAAR.concrete_jobtime," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
         <let id='stSelectedQAJobAnotJobsAgentATotalPrice' shape='scalar' access='private' value='{SELECT COALESCE(TOSTRING(SQAJAAR.total_price)," ") FROM ltblSelectedQAJobAgentAResult SQAJAAR}'/>
@@ -138,6 +142,8 @@
                         DNJ.concrete_startpour,
                         DNJ.concrete_endpour,
                         DNJ.concrete_departure,
+                        DNJ.concrete_waittime,
+                        DNJ.concrete_cement,
                         DNJ.concrete_pumplength,
                         DNJ.concrete_jobtime,
                         DNJ.total_price,
@@ -170,6 +176,8 @@
         <let id='stSelectedQAJobAnotJobsAgentBConcreteStartpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_startpour," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBConcreteEndpour' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_endpour," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBConcreteDeparture' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_departure," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteWaittime' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_waittime," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
+        <let id='stSelectedQAJobAnotJobsAgentBConcreteCement' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_cement," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBConcretePumplength' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_pumplength," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBConcreteJobtime' shape='scalar' access='private' value='{SELECT COALESCE(SQAJABR.concrete_jobtime," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
         <let id='stSelectedQAJobAnotJobsAgentBTotalPrice' shape='scalar' access='private' value='{SELECT COALESCE(TOSTRING(SQAJABR.total_price)," ") FROM ltblSelectedQAJobAgentBResult SQAJABR}'/>
@@ -215,6 +223,8 @@
                             iConcreteStartpourErrorCount +
                             iConcreteEndpourErrorCount +
                             iConcreteDepartureErrorCount +
+                            iConcreteWaittimeErrorCount +
+                            iConcreteCementErrorCount +
                             iConcretePumplengthErrorCount +
                             iConcreteJobtimeErrorCount +
                             iTotalPriceErrorCount +
@@ -385,6 +395,26 @@
                     END}'
         />
 
+        <let id='stSavedAgentConcreteWaittime' shape='scalar' access='private' 
+            value='{CASE 
+                        WHEN bSignForEditAgentAConcreteWaittime = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteWaittimeA.seconds),(dtf HH":"mm)) 
+                        WHEN bSignForEditAgentBConcreteWaittime = true THEN FORMATDTL(ADDSECOND(STARTOFDAY(sysp.dtlFormOpen),tpEditConcreteWaittimeB.seconds),(dtf HH":"mm))
+                        WHEN bSignForAcceptAgentAConcreteWaittime = true THEN stSelectedQAJobAnotJobsAgentAConcreteWaittime
+                        WHEN bSignForAcceptAgentBConcreteWaittime = true THEN stSelectedQAJobAnotJobsAgentBConcreteWaittime
+                        ELSE "" 
+                    END}'
+        />
+
+        <let id='stSavedAgentConcreteCement' shape='scalar' access='private' 
+            value='{CASE 
+                        WHEN bSignForEditAgentAConcreteCement = true THEN tbEditConcreteCementA.text
+                        WHEN bSignForEditAgentBConcreteCement = true THEN tbEditConcreteCementA.text
+                        WHEN bSignForAcceptAgentAConcreteCement = true THEN stSelectedQAJobAnotJobsAgentAConcreteCement
+                        WHEN bSignForAcceptAgentBConcreteCement = true THEN stSelectedQAJobAnotJobsAgentBConcreteCement
+                        ELSE "" 
+                    END}'
+        />
+
         <let id='stSavedAgentConcretePumplength' shape='scalar' access='private' 
             value='{CASE 
                         WHEN bSignForEditAgentAConcretePumplength = true THEN tbEditConcretePumplengthA.text 
@@ -445,6 +475,8 @@
                                 bSignForEditAgentAConcreteStartpour = true OR bSignForEditAgentBConcreteStartpour = true OR
                                 bSignForEditAgentAConcreteEndpour = true OR bSignForEditAgentBConcreteEndpour = true OR
                                 bSignForEditAgentAConcreteDeparture = true OR bSignForEditAgentBConcreteDeparture = true OR
+                                bSignForEditAgentAConcreteWaittime = true OR bSignForEditAgentBConcreteWaittime = true OR
+                                bSignForEditAgentAConcreteCement = true OR bSignForEditAgentBConcreteCement = true OR
                                 bSignForEditAgentAConcretePumplength = true OR bSignForEditAgentBConcretePumplength = true OR
                                 bSignForEditAgentAConcreteJobtime = true OR bSignForEditAgentBConcreteJobtime = true OR
                                 bSignForEditAgentATotalPrice = true OR bSignForEditAgentBTotalPrice = true OR
@@ -474,6 +506,8 @@
                                 bSignForAcceptAgentAConcreteStartpour = true OR
                                 bSignForAcceptAgentAConcreteEndpour = true OR
                                 bSignForAcceptAgentAConcreteDeparture = true OR
+                                bSignForAcceptAgentAConcreteWaittime = true OR
+                                bSignForAcceptAgentAConcreteCement = true OR
                                 bSignForAcceptAgentAConcretePumplength = true OR
                                 bSignForAcceptAgentAConcreteJobtime = true OR
                                 bSignForAcceptAgentATotalPrice = true OR
@@ -503,6 +537,8 @@
                                 bSignForAcceptAgentBConcreteStartpour = true OR
                                 bSignForAcceptAgentBConcreteEndpour = true OR
                                 bSignForAcceptAgentBConcreteDeparture = true OR
+                                bSignForAcceptAgentBConcreteWaittime = true OR
+                                bSignForAcceptAgentBConcreteCement = true OR
                                 bSignForAcceptAgentBConcretePumplength = true OR
                                 bSignForAcceptAgentBConcreteJobtime = true OR
                                 bSignForAcceptAgentBTotalPrice = true OR
@@ -529,6 +565,8 @@
         <let id='stSendAgentConcreteStartpour' shape='scalar' value='{CASE WHEN stSavedAgentConcreteStartpour = "" OR stSavedAgentConcreteStartpour = " " THEN stSelectedQAJobAnotJobsAgentAConcreteStartpour ELSE stSavedAgentConcreteStartpour END}'/>
         <let id='stSendAgentConcreteEndpour' shape='scalar' value='{CASE WHEN stSavedAgentConcreteEndpour = "" OR stSavedAgentConcreteEndpour = " " THEN stSelectedQAJobAnotJobsAgentAConcreteEndpour ELSE stSavedAgentConcreteEndpour END}'/>
         <let id='stSendAgentConcreteDeparture' shape='scalar' value='{CASE WHEN stSavedAgentConcreteDeparture = "" OR stSavedAgentConcreteDeparture = " " THEN stSelectedQAJobAnotJobsAgentAConcreteDeparture ELSE stSavedAgentConcreteDeparture END}'/>
+        <let id='stSendAgentConcreteWaittime' shape='scalar' value='{CASE WHEN stSavedAgentConcreteWaittime = "" OR stSavedAgentConcreteWaittime = " " THEN stSelectedQAJobAnotJobsAgentAConcreteWaittime ELSE stSavedAgentConcreteWaittime END}'/>
+        <let id='stSendAgentConcreteCement' shape='scalar' value='{CASE WHEN stSavedAgentConcreteCement = "" OR stSavedAgentConcreteCement = " " THEN stSelectedQAJobAnotJobsAgentAConcreteCement ELSE stSavedAgentConcreteCement END}'/>
         <let id='stSendAgentConcretePumplength' shape='scalar' value='{CASE WHEN stSavedAgentConcretePumplength = "" OR stSavedAgentConcretePumplength = " " THEN stSelectedQAJobAnotJobsAgentAConcretePumplength ELSE stSavedAgentConcretePumplength END}'/>
         <let id='stSendAgentConcreteJobtime' shape='scalar' value='{CASE WHEN stSavedAgentConcreteJobtime = "" OR stSavedAgentConcreteJobtime = " " THEN stSelectedQAJobAnotJobsAgentAConcreteJobtime ELSE stSavedAgentConcreteJobtime END}'/>
         <let id='stSendAgentTotalPrice' shape='scalar' value='{CASE WHEN stSavedAgentTotalPrice = "" OR stSavedAgentTotalPrice = " " THEN stSelectedQAJobAnotJobsAgentATotalPrice ELSE stSavedAgentTotalPrice END}'/>
@@ -629,6 +667,18 @@
         <let id='bSignForAcceptAgentAConcreteDeparture' shape='scalar' value='{false}'/>
         <let id='bSignForEditAgentBConcreteDeparture' shape='scalar' value='{false}'/>
         <let id='bSignForAcceptAgentBConcreteDeparture' shape='scalar' value='{false}'/>
+
+        <let id='iConcreteWaittimeErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentAConcreteWaittime = true OR bSignForEditAgentBConcreteWaittime = true THEN 2 WHEN bSignForAcceptAgentAConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentAConcreteWaittime' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentAConcreteWaittime' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBConcreteWaittime' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBConcreteWaittime' shape='scalar' value='{false}'/>
+
+        <let id='iConcreteCementErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentAConcreteCement = true OR bSignForEditAgentBConcreteCement = true THEN 2 WHEN bSignForAcceptAgentAConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true THEN 1 ELSE 0 END}'/>
+        <let id='bSignForEditAgentAConcreteCement' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentAConcreteCement' shape='scalar' value='{false}'/>
+        <let id='bSignForEditAgentBConcreteCement' shape='scalar' value='{false}'/>
+        <let id='bSignForAcceptAgentBConcreteCement' shape='scalar' value='{false}'/>
 
         <let id='iConcretePumplengthErrorCount' shape='scalar' value='{CASE WHEN bSignForEditAgentAConcretePumplength = true OR bSignForEditAgentBConcretePumplength = true THEN 2 WHEN bSignForAcceptAgentAConcretePumplength = true OR bSignForAcceptAgentBConcretePumplength = true THEN 1 ELSE 0 END}'/>
         <let id='bSignForEditAgentAConcretePumplength' shape='scalar' value='{false}'/>
@@ -791,7 +841,11 @@
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAConcreteEndpour = stSelectedQAJobAnotJobsAgentBConcreteEndpour OR (stSelectedQAJobAnotJobsAgentAConcreteEndpour != stSelectedQAJobAnotJobsAgentBConcreteEndpour AND (bSignForEditAgentAConcreteEndpour != false OR bSignForEditAgentBConcreteEndpour != false OR bSignForAcceptAgentAConcreteEndpour != false OR bSignForAcceptAgentBConcreteEndpour != false)))
                                 AND
-                                (stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture OR (stSelectedQAJobAnotJobsAgentAConcreteDeparture != stSelectedQAJobAnotJobsAgentBConcreteDeparture AND (bSignForEditAgentAConcreteDeparture != false OR bSignForEditAgentBConcreteDeparture != false OR bSignForAcceptAgentAConcreteDeparture != false OR bSignForAcceptAgentBConcreteDeparture != false)))
+                                (stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture OR (stSelectedQAJobAnotJobsAgentAConcreteDeparture != stSelectedQAJobAnotJobsAgentBConcreteDeparture AND (bSignForEditAgentAConcreteDeparture != false OR bSignForEditAgentBConcreteDeparture != false OR bSignForAcceptAgentAConcreteDeparture != false OR bSignForAcceptAgentBConcreteDeparture != false)))                                
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteWaittime = stSelectedQAJobAnotJobsAgentBConcreteWaittime OR (stSelectedQAJobAnotJobsAgentAConcreteWaittime != stSelectedQAJobAnotJobsAgentBConcreteWaittime AND (bSignForEditAgentAConcreteWaittime != false OR bSignForEditAgentBConcreteWaittime != false OR bSignForAcceptAgentAConcreteWaittime != false OR bSignForAcceptAgentBConcreteWaittime != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement OR (stSelectedQAJobAnotJobsAgentAConcreteCement != stSelectedQAJobAnotJobsAgentBConcreteCement AND (bSignForEditAgentAConcreteCement != false OR bSignForEditAgentBConcreteCement != false OR bSignForAcceptAgentAConcreteCement != false OR bSignForAcceptAgentBConcreteCement != false)))
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAConcretePumplength = stSelectedQAJobAnotJobsAgentBConcretePumplength OR (stSelectedQAJobAnotJobsAgentAConcretePumplength != stSelectedQAJobAnotJobsAgentBConcretePumplength AND (bSignForEditAgentAConcretePumplength != false OR bSignForEditAgentBConcretePumplength != false OR bSignForAcceptAgentAConcretePumplength != false OR bSignForAcceptAgentBConcretePumplength != false)))
                                 AND
@@ -849,6 +903,10 @@
                                 (stSelectedQAJobAnotJobsAgentAConcreteEndpour = stSelectedQAJobAnotJobsAgentBConcreteEndpour OR (stSelectedQAJobAnotJobsAgentAConcreteEndpour != stSelectedQAJobAnotJobsAgentBConcreteEndpour AND (bSignForEditAgentAConcreteEndpour != false OR bSignForEditAgentBConcreteEndpour != false OR bSignForAcceptAgentAConcreteEndpour != false OR bSignForAcceptAgentBConcreteEndpour != false)))
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAConcreteDeparture = stSelectedQAJobAnotJobsAgentBConcreteDeparture OR (stSelectedQAJobAnotJobsAgentAConcreteDeparture != stSelectedQAJobAnotJobsAgentBConcreteDeparture AND (bSignForEditAgentAConcreteDeparture != false OR bSignForEditAgentBConcreteDeparture != false OR bSignForAcceptAgentAConcreteDeparture != false OR bSignForAcceptAgentBConcreteDeparture != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteWaittime = stSelectedQAJobAnotJobsAgentBConcreteWaittime OR (stSelectedQAJobAnotJobsAgentAConcreteWaittime != stSelectedQAJobAnotJobsAgentBConcreteWaittime AND (bSignForEditAgentAConcreteWaittime != false OR bSignForEditAgentBConcreteWaittime != false OR bSignForAcceptAgentAConcreteWaittime != false OR bSignForAcceptAgentBConcreteWaittime != false)))
+                                AND
+                                (stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement OR (stSelectedQAJobAnotJobsAgentAConcreteCement != stSelectedQAJobAnotJobsAgentBConcreteCement AND (bSignForEditAgentAConcreteCement != false OR bSignForEditAgentBConcreteCement != false OR bSignForAcceptAgentAConcreteCement != false OR bSignForAcceptAgentBConcreteCement != false)))                                
                                 AND
                                 (stSelectedQAJobAnotJobsAgentAConcretePumplength = stSelectedQAJobAnotJobsAgentBConcretePumplength OR (stSelectedQAJobAnotJobsAgentAConcretePumplength != stSelectedQAJobAnotJobsAgentBConcretePumplength AND (bSignForEditAgentAConcretePumplength != false OR bSignForEditAgentBConcretePumplength != false OR bSignForAcceptAgentAConcretePumplength != false OR bSignForAcceptAgentBConcretePumplength != false)))
                                 AND
@@ -1792,6 +1850,120 @@
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteDeparture != stSelectedQAJobAnotJobsAgentBConcreteDeparture) AND bSignForEditAgentBConcreteDeparture = false}'>
                         <textview id='tvConcreteDepartureBError' text='{stSelectedQAJobAnotJobsAgentBConcreteDeparture}' style='{CASE WHEN (bSignForEditAgentAConcreteDeparture = true OR bSignForAcceptAgentAConcreteDeparture = true) AND stSelectedQAJobAnotJobsAgentBConcreteDeparture != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBConcreteDeparture = true OR bSignForAcceptAgentAConcreteDeparture = true OR bSignForEditAgentAConcreteDeparture = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvConcreteDepartureBError'/>
+                    </if>
+                </hbox>
+                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
+                    <textview id='tvConcreteWaittime' text='{"concrete_waittime:"}' style='{styles.sylTvNormalBold}' testId='tvConcreteWaittime'/>
+                                        
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime != stSelectedQAJobAnotJobsAgentBConcreteWaittime) AND bSignForEditAgentBConcreteWaittime != true AND bSignForAcceptAgentBConcreteWaittime != true AND bSignForEditAgentAConcreteWaittime = false}'>
+                        <actionbutton id='abtnAcceptAgentAConcreteWaittime' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentAConcreteWaittime = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAConcreteWaittime"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentAConcreteWaittime = false THEN true ELSE false END}' target='bSignForAcceptAgentAConcreteWaittime'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime = stSelectedQAJobAnotJobsAgentBConcreteWaittime) OR (bSignForEditAgentBConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true OR bSignForEditAgentAConcreteWaittime = true)}'>
+                        <textview id='tvAcceptAgentAConcreteWaittimeButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentAConcreteWaittimeButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBConcreteWaittime != true AND bSignForAcceptAgentBConcreteWaittime != true AND bSignForAcceptAgentAConcreteWaittime = false}'>
+                        <actionbutton id='abtnEditAgentAConcreteWaittime' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentAConcreteWaittime = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAConcreteWaittime"}'>
+                            <set value='{CASE WHEN bSignForEditAgentAConcreteWaittime = false THEN true ELSE false END}' target='bSignForEditAgentAConcreteWaittime'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true OR bSignForAcceptAgentAConcreteWaittime = true}'>
+                        <textview id='tvEditAgentAConcreteWaittimeButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteWaittimeButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentAConcreteWaittime = true}'>
+                        <timepicker id='tpEditConcreteWaittimeA' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteWaittimeA"}'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime = stSelectedQAJobAnotJobsAgentBConcreteWaittime) AND bSignForEditAgentAConcreteWaittime = false}'>
+                        <textview id='tvConcreteWaittimeA' text='{stSelectedQAJobAnotJobsAgentAConcreteWaittime}' style='{CASE WHEN (bSignForEditAgentBConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true) AND stSelectedQAJobAnotJobsAgentAConcreteWaittime != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteWaittimeA'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime != stSelectedQAJobAnotJobsAgentBConcreteWaittime) AND bSignForEditAgentAConcreteWaittime = false}'>
+                        <textview id='tvConcreteWaittimeAError' text='{stSelectedQAJobAnotJobsAgentAConcreteWaittime}' style='{CASE WHEN (bSignForEditAgentBConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true) AND stSelectedQAJobAnotJobsAgentAConcreteWaittime != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true OR bSignForEditAgentBConcreteWaittime = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvConcreteWaittimeAError'/>
+                    </if>
+                    
+                    <textview id='tvConcreteWaittimeEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvConcreteWaittimeEmpty'/>
+                                        
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime != stSelectedQAJobAnotJobsAgentBConcreteWaittime) AND bSignForEditAgentAConcreteWaittime != true AND bSignForAcceptAgentAConcreteWaittime != true AND bSignForEditAgentBConcreteWaittime = false}'>
+                        <actionbutton id='abtnAcceptAgentBConcreteWaittime' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBConcreteWaittime = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBConcreteWaittime"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBConcreteWaittime = false THEN true ELSE false END}' target='bSignForAcceptAgentBConcreteWaittime'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime = stSelectedQAJobAnotJobsAgentBConcreteWaittime) OR (bSignForEditAgentAConcreteWaittime = true OR bSignForAcceptAgentAConcreteWaittime = true OR bSignForEditAgentBConcreteWaittime = true)}'>
+                        <textview id='tvAcceptAgentBConcreteWaittimeButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBConcreteWaittimeButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentAConcreteWaittime != true AND bSignForAcceptAgentAConcreteWaittime != true AND bSignForAcceptAgentBConcreteWaittime = false}'>
+                        <actionbutton id='abtnEditAgentBConcreteWaittime' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBConcreteWaittime = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBConcreteWaittime"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBConcreteWaittime = false THEN true ELSE false END}' target='bSignForEditAgentBConcreteWaittime'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentAConcreteWaittime = true OR bSignForAcceptAgentAConcreteWaittime = true OR bSignForAcceptAgentBConcreteWaittime = true}'>
+                        <textview id='tvEditAgentBConcreteWaittimeButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteWaittimeButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBConcreteWaittime = true}'>
+                        <timepicker id='tpEditConcreteWaittimeB' invalidTimeMessage='{"Invalid!"}' timeFormat='(dtf HH":"mm)' step="1" style='{styles.sylTpEdit}' testId='{"tpEditConcreteWaittimeB"}'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime = stSelectedQAJobAnotJobsAgentBConcreteWaittime) AND bSignForEditAgentBConcreteWaittime = false}'>
+                        <textview id='tvConcreteWaittimeB' text='{stSelectedQAJobAnotJobsAgentBConcreteWaittime}' style='{CASE WHEN (bSignForEditAgentAConcreteWaittime = true OR bSignForAcceptAgentAConcreteWaittime = true) AND stSelectedQAJobAnotJobsAgentBConcreteWaittime != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteWaittimeB'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteWaittime != stSelectedQAJobAnotJobsAgentBConcreteWaittime) AND bSignForEditAgentBConcreteWaittime = false}'>
+                        <textview id='tvConcreteWaittimeBError' text='{stSelectedQAJobAnotJobsAgentBConcreteWaittime}' style='{CASE WHEN (bSignForEditAgentAConcreteWaittime = true OR bSignForAcceptAgentAConcreteWaittime = true) AND stSelectedQAJobAnotJobsAgentBConcreteWaittime != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBConcreteWaittime = true OR bSignForAcceptAgentAConcreteWaittime = true OR bSignForEditAgentAConcreteWaittime = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvConcreteWaittimeBError'/>
+                    </if>
+                </hbox>
+                <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>
+                    <textview id='tvConcreteCement' text='{"concrete_cement:"}' style='{styles.sylTvNormalBold}' testId='tvConcreteCement'/>
+                                        
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement != stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentBConcreteCement != true AND bSignForAcceptAgentBConcreteCement != true AND bSignForEditAgentAConcreteCement = false}'>
+                        <actionbutton id='abtnAcceptAgentAConcreteCement' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentAConcreteCement = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentAConcreteCement"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentAConcreteCement = false THEN true ELSE false END}' target='bSignForAcceptAgentAConcreteCement'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement) OR (bSignForEditAgentBConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true OR bSignForEditAgentAConcreteCement = true)}'>
+                        <textview id='tvAcceptAgentAConcreteCementButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentAConcreteCementButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBConcreteCement != true AND bSignForAcceptAgentBConcreteCement != true AND bSignForAcceptAgentAConcreteCement = false}'>
+                        <actionbutton id='abtnEditAgentAConcreteCement' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentAConcreteCement = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentAConcreteCement"}'>
+                            <set value='{CASE WHEN bSignForEditAgentAConcreteCement = false THEN true ELSE false END}' target='bSignForEditAgentAConcreteCement'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentBConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true}'>
+                        <textview id='tvEditAgentAConcreteCementButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteCementButtonEmpty'/>
+                    </if>                    
+                    <if cond='{bSignForEditAgentAConcreteCement = true}'>
+                        <textbox id='tbEditConcreteCementA' text='{stSelectedQAJobAnotJobsAgentAConcreteCement}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteCementA"}'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentAConcreteCement = false}'>
+                        <textview id='tvConcreteCementA' text='{stSelectedQAJobAnotJobsAgentAConcreteCement}' style='{CASE WHEN (bSignForEditAgentBConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true) AND stSelectedQAJobAnotJobsAgentAConcreteCement != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteCementA'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement != stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentAConcreteCement = false}'>
+                        <textview id='tvConcreteCementAError' text='{stSelectedQAJobAnotJobsAgentAConcreteCement}' style='{CASE WHEN (bSignForEditAgentBConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true) AND stSelectedQAJobAnotJobsAgentAConcreteCement != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentAConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true OR bSignForEditAgentBConcreteCement = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvConcreteCementAError'/>
+                    </if>
+                    
+                    <textview id='tvConcreteCementEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvConcreteCementEmpty'/>
+                                        
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement != stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentAConcreteCement != true AND bSignForAcceptAgentAConcreteCement != true AND bSignForEditAgentBConcreteCement = false}'>
+                        <actionbutton id='abtnAcceptAgentBConcreteCement' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtonsDifferent}' linkIcon='{CASE WHEN bSignForAcceptAgentBConcreteCement = true THEN icons.qa_accept_x ELSE icons.qa_accept END}' testId='{"abtnAcceptAgentBConcreteCement"}'>
+                            <set value='{CASE WHEN bSignForAcceptAgentBConcreteCement = false THEN true ELSE false END}' target='bSignForAcceptAgentBConcreteCement'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement) OR (bSignForEditAgentAConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true OR bSignForEditAgentBConcreteCement = true)}'>
+                        <textview id='tvAcceptAgentBConcreteCementButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvAcceptAgentBConcreteCementButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentAConcreteCement != true AND bSignForAcceptAgentAConcreteCement != true AND bSignForAcceptAgentBConcreteCement = false}'>
+                        <actionbutton id='abtnEditAgentBConcreteCement' text='{NULL}' style='{styles.sylAbtnQAMainDeliveryNoteActionButtons}' linkIcon='{CASE WHEN bSignForEditAgentBConcreteCement = true THEN icons.qa_edit_x ELSE icons.qa_edit END}' testId='{"abtnEditAgentBConcreteCement"}'>
+                            <set value='{CASE WHEN bSignForEditAgentBConcreteCement = false THEN true ELSE false END}' target='bSignForEditAgentBConcreteCement'/>
+                        </actionbutton>
+                    </if>
+                    <if cond='{bSignForEditAgentAConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true}'>
+                        <textview id='tvEditAgentBConcreteCementButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteCementButtonEmpty'/>
+                    </if>
+                    <if cond='{bSignForEditAgentBConcreteCement = true}'>
+                        <textbox id='tbEditConcreteCementB' text='{stSelectedQAJobAnotJobsAgentBConcreteCement}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteCementB"}'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentBConcreteCement = false}'>
+                        <textview id='tvConcreteCementB' text='{stSelectedQAJobAnotJobsAgentBConcreteCement}' style='{CASE WHEN (bSignForEditAgentAConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true) AND stSelectedQAJobAnotJobsAgentBConcreteCement != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteCementB'/>
+                    </if>
+                    <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement != stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentBConcreteCement = false}'>
+                        <textview id='tvConcreteCementBError' text='{stSelectedQAJobAnotJobsAgentBConcreteCement}' style='{CASE WHEN (bSignForEditAgentAConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true) AND stSelectedQAJobAnotJobsAgentBConcreteCement != " " THEN styles.sylTvNormalStrikethrough WHEN bSignForAcceptAgentBConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true OR bSignForEditAgentAConcreteCement = true THEN styles.sylTvNormal ELSE styles.sylTvDifferent END}' testId='tvConcreteCementBError'/>
                     </if>
                 </hbox>
                 <hbox style='{styles.sylQAMainDeliveryNoteQAHbox}'>

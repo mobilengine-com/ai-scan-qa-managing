@@ -167,6 +167,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stSendAgentConcreteStartpour = TimeFrom(form.stSendAgentConcreteStartpour);
             let stSendAgentConcreteEndpour = TimeFrom(form.stSendAgentConcreteEndpour);
             let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
+            let stSendAgentConcreteWaittime = TimeFrom(form.stSendAgentConcreteWaittime);
+            let stSendAgentConcreteCement = form.stSendAgentConcreteCement;
             let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
             let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
             let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
@@ -618,6 +620,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.concreteStartpour = stSendAgentConcreteStartpour;
             dacs.dnResponse.concreteEndpour = stSendAgentConcreteEndpour;
             dacs.dnResponse.concreteDeparture = stSendAgentConcreteDeparture;
+            dacs.dnResponse.concreteWaittime = stSendAgentConcreteWaittime;
+            dacs.dnResponse.concreteCement = stSendAgentConcreteCement;
             dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
             dacs.dnResponse.concreteJobtime = stSendAgentConcreteJobtime;
             dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
@@ -709,6 +713,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 concrete_startpour: stSendAgentConcreteStartpour,
                 concrete_endpour: stSendAgentConcreteEndpour,
                 concrete_departure: stSendAgentConcreteDeparture,
+                concrete_waittime: stSendAgentConcreteWaittime,
+                concrete_cement: stSendAgentConcreteCement,
                 concrete_pumplength: stSendAgentConcretePumplength,
                 concrete_jobtime: stSendAgentConcreteJobtime,
                 total_price: stSendAgentTotalPrice,
@@ -814,6 +820,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stSendAgentConcreteStartpour = TimeFrom(form.stSendAgentConcreteStartpour);
             let stSendAgentConcreteEndpour = TimeFrom(form.stSendAgentConcreteEndpour);
             let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
+            let stSendAgentConcreteWaittime = TimeFrom(form.stSendAgentConcreteWaittime);
+            let stSendAgentConcreteCement = form.stSendAgentConcreteCement;
             let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
             let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
             let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
@@ -1265,6 +1273,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.concreteStartpour = stSendAgentConcreteStartpour;
             dacs.dnResponse.concreteEndpour = stSendAgentConcreteEndpour;
             dacs.dnResponse.concreteDeparture = stSendAgentConcreteDeparture;
+            dacs.dnResponse.concreteWaittime = stSendAgentConcreteWaittime;
+            dacs.dnResponse.concreteCement = stSendAgentConcreteCement;
             dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
             dacs.dnResponse.concreteJobtime = stSendAgentConcreteJobtime;
             dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
@@ -1355,6 +1365,8 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 concrete_startpour: stSendAgentConcreteStartpour,
                 concrete_endpour: stSendAgentConcreteEndpour,
                 concrete_departure: stSendAgentConcreteDeparture,
+                concrete_waittime: stSendAgentConcreteWaittime,
+                concrete_cement: stSendAgentConcreteCement,
                 concrete_pumplength: stSendAgentConcretePumplength,
                 concrete_jobtime: stSendAgentConcreteJobtime,
                 total_price: stSendAgentTotalPrice,

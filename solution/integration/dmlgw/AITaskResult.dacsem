@@ -28,6 +28,8 @@ dnResponse: element {
 	concreteStartpour: optional attribute of type string;
 	concreteEndpour: optional attribute of type string;
 	concreteDeparture: optional attribute of type string;
+	concreteWaittime: optional attribute of type string;
+	concreteCement: optional attribute of type string;
 	concretePumplength: optional attribute of type string;
 	concreteJobtime: optional attribute of type string;
 	
