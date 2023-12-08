@@ -76,6 +76,7 @@ import { NumberFrom, DateFrom } from "conversion";
             dacs.dnResponse.avgscoreOverall = 0.0;
             dacs.dnResponse.rejected = 1;
 
+            Log(["dacs1: ", dacs]);
             dacs.Send();
 
             //QA job status update to handwritten
@@ -533,7 +534,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 }
             }
             
-            Log(dacs);
+            Log(["dacs2: ", dacs]);
             dacs.Send();
 
             //QA job status update to handwritten
@@ -1048,13 +1049,14 @@ import { NumberFrom, DateFrom } from "conversion";
                         manufacturerItemNumber: lstFinalItemTable.GetAt(2+i),
                         taxNumber: lstFinalItemTable.GetAt(3+i),
                         amount: lstFinalItemTable.GetAt(4+i),
+                        numAmount: NumberFrom(lstFinalItemTable.GetAt(4+i)),
                         unit: lstFinalItemTable.GetAt(5+i),
                         grossWeight: lstFinalItemTable.GetAt(6+i)
                     };
                     dacs.dnResponse.items.Add(item);
                 }
             }
-            Log(dacs);
+            Log(["dacs3: ", dacs]);
             dacs.Send();
 
             //QA job status update to approved
