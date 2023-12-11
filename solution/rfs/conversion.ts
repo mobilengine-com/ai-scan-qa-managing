@@ -6,7 +6,7 @@ class nuf {
   groupSeparator: string;
 }
 
-const rgstdtf: string[] = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy", "yyyy\".\"MM\".\"dd", "dd\".\"MM\".\"yyyy"];
+const rgstdtf: string[] = ["yyyy\".\"MM\".\"dd\".\"", "yyyy\". \"MM\". \"dd\".\"", "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"];
 const rgnf: nuf[] = [
   {decimalSeparator: ",",  groupSize: 3, groupSeparator: "."},
   {decimalSeparator: ",",  groupSize: 3, groupSeparator: " "},
