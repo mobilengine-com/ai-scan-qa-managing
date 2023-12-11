@@ -1,0 +1,7 @@
+schema 'DeliveryNoteOperationResult' meta 'DeliveryNoteOperationResult'
+
+OperationTaskResult: element {
+	scanId: attribute of type string;
+	operation: attribute of type string;
+	result: attribute of type string;
+}

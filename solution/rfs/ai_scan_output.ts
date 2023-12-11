@@ -35,12 +35,12 @@
                 Log(lstDeliveryNotesId.GetAt(i));
                 
                 ////delete previous result
-                db.ai_scan_delivery_note.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_jobs.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_delivery_note.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_qa_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_job_result.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_jobs.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
 
                 //Send redo operation to BAUAPP and DM for redo delivery note in BAUAPP    
                 let dacs = messages.DeliveryNoteOperation.New();
@@ -63,13 +63,13 @@
             {
                 Log(lstDeliveryNotesId.GetAt(i));
                 //Delete delivery note everywhere in DM
-                db.ai_scan_delivery_note.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_qa_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_jobs_history.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
-                db.ai_scan_jobs.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_delivery_note.DeleteMany({delivery_note_id : lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_qa_job_result.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_jobs_history.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
+                //db.ai_scan_jobs.DeleteMany({delivery_note_id: lstDeliveryNotesId.GetAt(i)});
 
                 //Send delete operation to BAUAPP for delete delivery note in BAUAPP    
                 let dacs = messages.DeliveryNoteOperation.New();
