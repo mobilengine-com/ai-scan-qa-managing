@@ -1929,7 +1929,7 @@
                         <textview id='tvEditAgentAConcreteCementButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcreteCementButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcreteCement = true}'>
-                        <textbox id='tbEditConcreteCementA' text='{stSelectedQAJobAnotJobsAgentAConcreteCement}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteCementA"}'/>
+                        <textbox id='tbEditConcreteCementA' text='{LTRIM(stSelectedQAJobAnotJobsAgentAConcreteCement)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteCementA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentAConcreteCement = false}'>
                         <textview id='tvConcreteCementA' text='{stSelectedQAJobAnotJobsAgentAConcreteCement}' style='{CASE WHEN (bSignForEditAgentBConcreteCement = true OR bSignForAcceptAgentBConcreteCement = true) AND stSelectedQAJobAnotJobsAgentAConcreteCement != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteCementA'/>
@@ -1957,7 +1957,7 @@
                         <textview id='tvEditAgentBConcreteCementButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcreteCementButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcreteCement = true}'>
-                        <textbox id='tbEditConcreteCementB' text='{stSelectedQAJobAnotJobsAgentBConcreteCement}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteCementB"}'/>
+                        <textbox id='tbEditConcreteCementB' text='{LTRIM(stSelectedQAJobAnotJobsAgentBConcreteCement)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcreteCementB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcreteCement = stSelectedQAJobAnotJobsAgentBConcreteCement) AND bSignForEditAgentBConcreteCement = false}'>
                         <textview id='tvConcreteCementB' text='{stSelectedQAJobAnotJobsAgentBConcreteCement}' style='{CASE WHEN (bSignForEditAgentAConcreteCement = true OR bSignForAcceptAgentAConcreteCement = true) AND stSelectedQAJobAnotJobsAgentBConcreteCement != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcreteCementB'/>
@@ -1986,7 +1986,7 @@
                         <textview id='tvEditAgentAConcretePumplengthButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentAConcretePumplengthButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentAConcretePumplength = true}'>
-                        <textbox id='tbEditConcretePumplengthA' text='{stSelectedQAJobAnotJobsAgentAConcretePumplength}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcretePumplengthA"}'/>
+                        <textbox id='tbEditConcretePumplengthA' text='{LTRIM(stSelectedQAJobAnotJobsAgentAConcretePumplength)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcretePumplengthA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcretePumplength = stSelectedQAJobAnotJobsAgentBConcretePumplength) AND bSignForEditAgentAConcretePumplength = false}'>
                         <textview id='tvConcretePumplengthA' text='{stSelectedQAJobAnotJobsAgentAConcretePumplength}' style='{CASE WHEN (bSignForEditAgentBConcretePumplength = true OR bSignForAcceptAgentBConcretePumplength = true) AND stSelectedQAJobAnotJobsAgentAConcretePumplength != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcretePumplengthA'/>
@@ -2014,7 +2014,7 @@
                         <textview id='tvEditAgentBConcretePumplengthButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBConcretePumplengthButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBConcretePumplength = true}'>
-                        <textbox id='tbEditConcretePumplengthB' text='{stSelectedQAJobAnotJobsAgentBConcretePumplength}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcretePumplengthB"}'/>
+                        <textbox id='tbEditConcretePumplengthB' text='{LTRIM(stSelectedQAJobAnotJobsAgentBConcretePumplength)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditConcretePumplengthB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentAConcretePumplength = stSelectedQAJobAnotJobsAgentBConcretePumplength) AND bSignForEditAgentBConcretePumplength = false}'>
                         <textview id='tvConcretePumplengthB' text='{stSelectedQAJobAnotJobsAgentBConcretePumplength}' style='{CASE WHEN (bSignForEditAgentAConcretePumplength = true OR bSignForAcceptAgentAConcretePumplength = true) AND stSelectedQAJobAnotJobsAgentBConcretePumplength != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvConcretePumplengthB'/>
@@ -2100,7 +2100,7 @@
                         <textview id='tvEditAgentATotalPriceButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentATotalPriceButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentATotalPrice = true}'>
-                        <textbox id='tbEditTotalPriceA' text='{stSelectedQAJobAnotJobsAgentATotalPrice}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceA"}'/>
+                        <textbox id='tbEditTotalPriceA' text='{LTRIM(stSelectedQAJobAnotJobsAgentATotalPrice)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentATotalPrice = stSelectedQAJobAnotJobsAgentBTotalPrice) AND bSignForEditAgentATotalPrice = false}'>
                         <textview id='tvTotalPriceA' text='{stSelectedQAJobAnotJobsAgentATotalPrice}' style='{CASE WHEN (bSignForEditAgentBTotalPrice = true OR bSignForAcceptAgentBTotalPrice = true) AND stSelectedQAJobAnotJobsAgentATotalPrice != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvTotalPriceA'/>
@@ -2128,7 +2128,7 @@
                         <textview id='tvEditAgentBTotalPriceButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBTotalPriceButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBTotalPrice = true}'>
-                        <textbox id='tbEditTotalPriceB' text='{stSelectedQAJobAnotJobsAgentBTotalPrice}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceB"}'/>
+                        <textbox id='tbEditTotalPriceB' text='{LTRIM(stSelectedQAJobAnotJobsAgentBTotalPrice)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentATotalPrice = stSelectedQAJobAnotJobsAgentBTotalPrice) AND bSignForEditAgentBTotalPrice = false}'>
                         <textview id='tvTotalPriceB' text='{stSelectedQAJobAnotJobsAgentBTotalPrice}' style='{CASE WHEN (bSignForEditAgentATotalPrice = true OR bSignForAcceptAgentATotalPrice = true) AND stSelectedQAJobAnotJobsAgentBTotalPrice != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvTotalPriceB'/>
@@ -2157,7 +2157,7 @@
                         <textview id='tvEditAgentATotalPriceCurrencyButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentATotalPriceCurrencyButtonEmpty'/>
                     </if>                    
                     <if cond='{bSignForEditAgentATotalPriceCurrency = true}'>
-                        <textbox id='tbEditTotalPriceCurrencyA' text='{stSelectedQAJobAnotJobsAgentATotalPriceCurrency}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceCurrencyA"}'/>
+                        <textbox id='tbEditTotalPriceCurrencyA' text='{LTRIM(stSelectedQAJobAnotJobsAgentATotalPriceCurrency)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceCurrencyA"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentATotalPriceCurrency = stSelectedQAJobAnotJobsAgentBTotalPriceCurrency) AND bSignForEditAgentATotalPriceCurrency = false}'>
                         <textview id='tvTotalPriceCurrencyA' text='{stSelectedQAJobAnotJobsAgentATotalPriceCurrency}' style='{CASE WHEN (bSignForEditAgentBTotalPriceCurrency = true OR bSignForAcceptAgentBTotalPriceCurrency = true) AND stSelectedQAJobAnotJobsAgentATotalPriceCurrency != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvTotalPriceCurrencyA'/>
@@ -2185,7 +2185,7 @@
                         <textview id='tvEditAgentBTotalPriceCurrencyButtonEmpty' text='{""}' style='{styles.sylTvEmptyText}' testId='tvEditAgentBTotalPriceCurrencyButtonEmpty'/>
                     </if>
                     <if cond='{bSignForEditAgentBTotalPriceCurrency = true}'>
-                        <textbox id='tbEditTotalPriceCurrencyB' text='{stSelectedQAJobAnotJobsAgentBTotalPriceCurrency}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceCurrencyB"}'/>
+                        <textbox id='tbEditTotalPriceCurrencyB' text='{LTRIM(stSelectedQAJobAnotJobsAgentBTotalPriceCurrency)}' hint='' style='{styles.sylTbEdit}' testId='{"tbEditTotalPriceCurrencyB"}'/>
                     </if>
                     <if cond='{(stSelectedQAJobAnotJobsAgentATotalPriceCurrency = stSelectedQAJobAnotJobsAgentBTotalPriceCurrency) AND bSignForEditAgentBTotalPriceCurrency = false}'>
                         <textview id='tvTotalPriceCurrencyB' text='{stSelectedQAJobAnotJobsAgentBTotalPriceCurrency}' style='{CASE WHEN (bSignForEditAgentATotalPriceCurrency = true OR bSignForAcceptAgentATotalPriceCurrency = true) AND stSelectedQAJobAnotJobsAgentBTotalPriceCurrency != " " THEN styles.sylTvNormalStrikethrough ELSE styles.sylTvNormal END}' testId='tvTotalPriceCurrencyB'/>
