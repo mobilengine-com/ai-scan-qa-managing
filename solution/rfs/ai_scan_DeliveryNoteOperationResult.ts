@@ -1,4 +1,4 @@
-//# server typescript program ai_scan_DeliveryNoteOperationResult for dacs DeliveryNoteOperationResult
+//# server typescript program ai_scan_DeliveryNoteOperationResult for dacs DeliveryNoteOperationResultResponse
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_delivery_note_item_job;
@@ -22,7 +22,7 @@
 		db.ai_scan_jobs.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
-		Log("Redo operation run successfully in BA company");
+		Log("Delivery note : " + stDeliveryNoteId + " redo operation run successfully in BA company");
 	}
 
 	if(stOperation === "delete" && stResult === "success")
@@ -35,16 +35,11 @@
 		db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_jobs_history.DeleteMany({delivery_note_id: stDeliveryNoteId});
-		Log("Delete operation run successfully in BA company");
+		Log("Delivery note : " + stDeliveryNoteId + " delete operation run successfully in BA company");
 	}
 
-	if(stResult === "retake")
+	if(stResult === "retakeorerror")
 	{
-		Log("No operation because delivery note retaked in BA company");
-	}
-
-	if(stResult === "error")
-	{
-		Log("No operation because error in BA company");
+		Log("No operation because delivery note : " + stDeliveryNoteId + " retaked in BA company or error in BA company");
 	}
 }
