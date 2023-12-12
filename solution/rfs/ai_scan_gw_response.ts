@@ -11,7 +11,7 @@
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
-import { NumberFrom, DateFrom, TimeFrom } from "conversion";
+import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
 
 {
     Log(dacs);
@@ -39,13 +39,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
         let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
         let stDeliveryNoteConcreteArrival = TimeFrom(dacs.dnResponse.concreteArrival);
+        let iDeliveryNoteConcreteArrivalMinutes = MinutesFrom(dacs.dnResponse.concreteArrival);
         let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
+        let iDeliveryNoteConcreteStartpourMinutes = MinutesFrom(dacs.dnResponse.concreteStartpour);
         let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
+        let iDeliveryNoteConcreteEndpourMinutes = MinutesFrom(dacs.dnResponse.concreteEndpour);
         let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
-        let stDeliveryNoteConcreteWaittime = dacs.dnResponse.concreteWaittime;
+        let iDeliveryNoteConcreteDepartureMinutes = MinutesFrom(dacs.dnResponse.concreteDeparture);
+        let stDeliveryNoteConcreteWaittime = TimeFrom(dacs.dnResponse.concreteWaittime);
+        let iDeliveryNoteConcreteWaittimeMinutes = MinutesFrom(dacs.dnResponse.concreteWaittime);
         let stDeliveryNoteConcreteCement = dacs.dnResponse.concreteCement;
         let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
         let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
+        let iDeliveryNoteConcreteJobtimeMinutes = MinutesFrom(dacs.dnResponse.concreteJobtime);
         let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
         let stDeliveryNoteTotalPriceAmount = NumberFrom(dacs.dnResponse.totalPrice);
         let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
@@ -69,13 +75,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             supplier_id: stDeliveryNoteSupplierId,
             weight_gross: stDeliveryNoteWeightGross,
             concrete_arrival: stDeliveryNoteConcreteArrival,
+            concrete_arrival_number: iDeliveryNoteConcreteArrivalMinutes,
             concrete_startpour: stDeliveryNoteConcreteStartpour,
+            concrete_startpour_number: iDeliveryNoteConcreteStartpourMinutes,
             concrete_endpour: stDeliveryNoteConcreteEndpour,
+            concrete_endpour_number: iDeliveryNoteConcreteEndpourMinutes,
             concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_departure_number: iDeliveryNoteConcreteDepartureMinutes,
             concrete_waittime: stDeliveryNoteConcreteWaittime,
+            concrete_waittime_number: iDeliveryNoteConcreteWaittimeMinutes,
             concrete_cement: stDeliveryNoteConcreteCement,
             concrete_pumplength: stDeliveryNoteConcretePumplength,
             concrete_jobtime: stDeliveryNoteConcreteJobtime,
+            concrete_jobtime_number: iDeliveryNoteConcreteJobtimeMinutes,
             total_price: stDeliveryNoteTotalPrice,
             total_price_number: stDeliveryNoteTotalPriceAmount,
             total_price_currency: stDeliveryNoteTotalPriceCurrency
@@ -485,14 +497,14 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                    doneDacs.dnResponse.supplierWarehouse = stDeliveryNoteSupplierWarehouse;
                    doneDacs.dnResponse.supplierId = stDeliveryNoteSupplierId;
                    doneDacs.dnResponse.weightGross = stDeliveryNoteWeightGross;
-                   doneDacs.dnResponse.concreteArrival = stDeliveryNoteConcreteArrival;
-                   doneDacs.dnResponse.concreteStartpour = stDeliveryNoteConcreteStartpour;
-                   doneDacs.dnResponse.concreteEndpour = stDeliveryNoteConcreteEndpour;
-                   doneDacs.dnResponse.concreteDeparture = stDeliveryNoteConcreteDeparture;
-                   doneDacs.dnResponse.concreteWaittime = stDeliveryNoteConcreteWaittime;
+                   doneDacs.dnResponse.concreteArrival = iDeliveryNoteConcreteArrivalMinutes.toString();
+                   doneDacs.dnResponse.concreteStartpour = iDeliveryNoteConcreteStartpourMinutes.toString();
+                   doneDacs.dnResponse.concreteEndpour = iDeliveryNoteConcreteEndpourMinutes.toString();
+                   doneDacs.dnResponse.concreteDeparture = iDeliveryNoteConcreteDepartureMinutes.toString();
+                   doneDacs.dnResponse.concreteWaittime = iDeliveryNoteConcreteWaittimeMinutes.toString();
                    doneDacs.dnResponse.concreteCement = stDeliveryNoteConcreteCement;
                    doneDacs.dnResponse.concretePumplength = stDeliveryNoteConcretePumplength;
-                   doneDacs.dnResponse.concreteJobtime = stDeliveryNoteConcreteJobtime;
+                   doneDacs.dnResponse.concreteJobtime = iDeliveryNoteConcreteJobtimeMinutes.toString();
                    doneDacs.dnResponse.totalPrice = stDeliveryNoteTotalPrice;
                    doneDacs.dnResponse.numTotalPrice = NumberFrom(stDeliveryNoteTotalPrice);
                    doneDacs.dnResponse.totalPriceCurrency = stDeliveryNoteTotalPriceCurrency;
@@ -595,13 +607,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
         let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
         let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
         let stDeliveryNoteConcreteArrival = TimeFrom(dacs.dnResponse.concreteArrival);
+        let iDeliveryNoteConcreteArrivalMinutes = MinutesFrom(dacs.dnResponse.concreteArrival);
         let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
+        let iDeliveryNoteConcreteStartpourMinutes = MinutesFrom(dacs.dnResponse.concreteStartpour);
         let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
+        let iDeliveryNoteConcreteEndpourMinutes = MinutesFrom(dacs.dnResponse.concreteEndpour);
         let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
-        let stDeliveryNoteConcreteWaittime = dacs.dnResponse.concreteWaittime;
+        let iDeliveryNoteConcreteDepartureMinutes = MinutesFrom(dacs.dnResponse.concreteDeparture);
+        let stDeliveryNoteConcreteWaittime = TimeFrom(dacs.dnResponse.concreteWaittime);
+        let iDeliveryNoteConcreteWaittimeMinutes = MinutesFrom(dacs.dnResponse.concreteWaittime);
         let stDeliveryNoteConcreteCement = dacs.dnResponse.concreteCement;
         let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
         let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
+        let iDeliveryNoteConcreteJobtimeMinutes = MinutesFrom(dacs.dnResponse.concreteJobtime);
         let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
         let stDeliveryNoteTotalPriceAmount = NumberFrom(dacs.dnResponse.totalPrice);
         let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
@@ -625,13 +643,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             supplier_id: stDeliveryNoteSupplierId,
             weight_gross: stDeliveryNoteWeightGross,
             concrete_arrival: stDeliveryNoteConcreteArrival,
+            concrete_arrival_number: iDeliveryNoteConcreteArrivalMinutes,
             concrete_startpour: stDeliveryNoteConcreteStartpour,
+            concrete_startpour_number: iDeliveryNoteConcreteStartpourMinutes,
             concrete_endpour: stDeliveryNoteConcreteEndpour,
+            concrete_endpour_number: iDeliveryNoteConcreteEndpourMinutes,
             concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_departure_number: iDeliveryNoteConcreteDepartureMinutes,
             concrete_waittime: stDeliveryNoteConcreteWaittime,
+            concrete_waittime_number: iDeliveryNoteConcreteWaittimeMinutes,
             concrete_cement: stDeliveryNoteConcreteCement,
             concrete_pumplength: stDeliveryNoteConcretePumplength,
             concrete_jobtime: stDeliveryNoteConcreteJobtime,
+            concrete_jobtime_number: iDeliveryNoteConcreteJobtimeMinutes,
             total_price: stDeliveryNoteTotalPrice,
             total_price_number: stDeliveryNoteTotalPriceAmount,
             total_price_currency: stDeliveryNoteTotalPriceCurrency

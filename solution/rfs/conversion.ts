@@ -112,6 +112,99 @@ export function TimeFrom(st: string): string {
   return st;
 };
 
+export function MinutesFrom(st: string): number {
+  Log([st]);
+  if (st === null || st === undefined || st === "") 
+      return null;
+
+  let regex = null;
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let arraySt = st.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^([0-9]):[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let arraySt = st.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3])[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let stFormatingSt = st.match(/.{1,2}/g);
+    let stFinalFormatingSt = stFormatingSt.join(':');
+    let arraySt = stFinalFormatingSt.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^([0-9])[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let stFormatingSt = st.match(/.{1,2}/g);
+    let stFinalFormatingSt = stFormatingSt.join(':');
+    let arraySt = stFinalFormatingSt.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3]) [0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let stFormatingSt = st.replace(" ", ":")
+    let arraySt = stFormatingSt.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^([0-9]) [0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let stFormatingSt = st.replace(" ", ":")
+    let arraySt = stFormatingSt.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^(0[0-9]|1[0-9]|2[0-3]).[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    let stFormatingSt = st.replace(".", ":")
+    let arraySt = stFormatingSt.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  regex = RegExp('^([0-9]).[0-5][0-9]$');
+  if(regex.test(st) === true)
+  {
+    st = "0" + st;
+    let stFormatingSt = st.replace(".", ":")
+    let arraySt = stFormatingSt.split(":")
+    let iHour = parseInt(arraySt[0]);
+    let iMinutes = parseInt(arraySt[1]);
+    let iSumMinutes = ((iHour * 60) + iMinutes);
+    return iSumMinutes;
+  }
+  return null;
+};
+
 function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }

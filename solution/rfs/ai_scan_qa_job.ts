@@ -8,7 +8,7 @@
 //# using reftab ai_scan_delivery_note_item_qaj;
 //# using dacs QATaskDone;
 
-import { NumberFrom, DateFrom, TimeFrom } from "conversion";
+import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
 
 {
     let stDelayTime = form.stDelayTime;
@@ -165,13 +165,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stSendAgentSupplierId = form.stSendAgentSupplierId;
             let stSendAgentWeightGross = form.stSendAgentWeightGross;
             let stSendAgentConcreteArrival = TimeFrom(form.stSendAgentConcreteArrival);
+            let iSendAgentConcreteArrivalMinutes = MinutesFrom(form.stSendAgentConcreteArrival);
             let stSendAgentConcreteStartpour = TimeFrom(form.stSendAgentConcreteStartpour);
+            let iSendAgentConcreteStartpourMinutes = MinutesFrom(form.stSendAgentConcreteStartpour);
             let stSendAgentConcreteEndpour = TimeFrom(form.stSendAgentConcreteEndpour);
+            let iSendAgentConcreteEndpourMinutes = MinutesFrom(form.stSendAgentConcreteEndpour);
             let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
+            let iSendAgentConcreteDepartureMinutes = MinutesFrom(form.stSendAgentConcreteDeparture);
             let stSendAgentConcreteWaittime = TimeFrom(form.stSendAgentConcreteWaittime);
+            let iSendAgentConcreteWaittimeMinutes = MinutesFrom(form.stSendAgentConcreteWaittime);
             let stSendAgentConcreteCement = form.stSendAgentConcreteCement;
             let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
             let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
+            let iSendAgentConcreteJobtimeMinutes = MinutesFrom(form.stSendAgentConcreteJobtime);
             let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
             let stSendAgentTotalPriceCurrency = form.stSendAgentTotalPriceCurrency;
 
@@ -617,14 +623,14 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.supplierWarehouse = stSendAgentSupplierWarehouse;
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
-            dacs.dnResponse.concreteArrival = stSendAgentConcreteArrival;
-            dacs.dnResponse.concreteStartpour = stSendAgentConcreteStartpour;
-            dacs.dnResponse.concreteEndpour = stSendAgentConcreteEndpour;
-            dacs.dnResponse.concreteDeparture = stSendAgentConcreteDeparture;
-            dacs.dnResponse.concreteWaittime = stSendAgentConcreteWaittime;
+            dacs.dnResponse.concreteArrival = iSendAgentConcreteArrivalMinutes.toString();
+            dacs.dnResponse.concreteStartpour = iSendAgentConcreteStartpourMinutes.toString();
+            dacs.dnResponse.concreteEndpour = iSendAgentConcreteEndpourMinutes.toString();
+            dacs.dnResponse.concreteDeparture = iSendAgentConcreteDepartureMinutes.toString();
+            dacs.dnResponse.concreteWaittime = iSendAgentConcreteWaittimeMinutes.toString();
             dacs.dnResponse.concreteCement = stSendAgentConcreteCement;
             dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
-            dacs.dnResponse.concreteJobtime = stSendAgentConcreteJobtime;
+            dacs.dnResponse.concreteJobtime = iSendAgentConcreteJobtimeMinutes.toString();
             dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
             dacs.dnResponse.numTotalPrice = NumberFrom(stSendAgentTotalPrice);
             dacs.dnResponse.totalPriceCurrency = stSendAgentTotalPriceCurrency;
@@ -711,13 +717,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 supplier_id: stSendAgentSupplierId,
                 weight_gross: stSendAgentWeightGross,
                 concrete_arrival: stSendAgentConcreteArrival,
+                concrete_arrival_number: iSendAgentConcreteArrivalMinutes,
                 concrete_startpour: stSendAgentConcreteStartpour,
+                concrete_startpour_number: iSendAgentConcreteStartpourMinutes,
                 concrete_endpour: stSendAgentConcreteEndpour,
+                concrete_endpour_number: iSendAgentConcreteEndpourMinutes,
                 concrete_departure: stSendAgentConcreteDeparture,
+                concrete_departure_number: iSendAgentConcreteDepartureMinutes,
                 concrete_waittime: stSendAgentConcreteWaittime,
+                concrete_waittime_number: iSendAgentConcreteWaittimeMinutes,
                 concrete_cement: stSendAgentConcreteCement,
                 concrete_pumplength: stSendAgentConcretePumplength,
                 concrete_jobtime: stSendAgentConcreteJobtime,
+                concrete_jobtime_number: iSendAgentConcreteJobtimeMinutes,
                 total_price: stSendAgentTotalPrice,
                 total_price_number: NumberFrom(stSendAgentTotalPrice),
                 total_price_currency: stSendAgentTotalPriceCurrency
@@ -818,13 +830,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             let stSendAgentSupplierId = form.stSendAgentSupplierId;
             let stSendAgentWeightGross = form.stSendAgentWeightGross;
             let stSendAgentConcreteArrival = TimeFrom(form.stSendAgentConcreteArrival);
+            let iSendAgentConcreteArrivalMinutes = MinutesFrom(form.stSendAgentConcreteArrival);
             let stSendAgentConcreteStartpour = TimeFrom(form.stSendAgentConcreteStartpour);
+            let iSendAgentConcreteStartpourMinutes = MinutesFrom(form.stSendAgentConcreteStartpour);
             let stSendAgentConcreteEndpour = TimeFrom(form.stSendAgentConcreteEndpour);
+            let iSendAgentConcreteEndpourMinutes = MinutesFrom(form.stSendAgentConcreteEndpour);
             let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
+            let iSendAgentConcreteDepartureMinutes = MinutesFrom(form.stSendAgentConcreteDeparture);
             let stSendAgentConcreteWaittime = TimeFrom(form.stSendAgentConcreteWaittime);
+            let iSendAgentConcreteWaittimeMinutes = MinutesFrom(form.stSendAgentConcreteWaittime);
             let stSendAgentConcreteCement = form.stSendAgentConcreteCement;
             let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
             let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
+            let iSendAgentConcreteJobtimeMinutes = MinutesFrom(form.stSendAgentConcreteJobtime);
             let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
             let stSendAgentTotalPriceCurrency = form.stSendAgentTotalPriceCurrency;
 
@@ -1270,14 +1288,14 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
             dacs.dnResponse.supplierWarehouse = stSendAgentSupplierWarehouse;
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
-            dacs.dnResponse.concreteArrival = stSendAgentConcreteArrival;
-            dacs.dnResponse.concreteStartpour = stSendAgentConcreteStartpour;
-            dacs.dnResponse.concreteEndpour = stSendAgentConcreteEndpour;
-            dacs.dnResponse.concreteDeparture = stSendAgentConcreteDeparture;
-            dacs.dnResponse.concreteWaittime = stSendAgentConcreteWaittime;
+            dacs.dnResponse.concreteArrival = iSendAgentConcreteArrivalMinutes.toString();
+            dacs.dnResponse.concreteStartpour = iSendAgentConcreteStartpourMinutes.toString();
+            dacs.dnResponse.concreteEndpour = iSendAgentConcreteEndpourMinutes.toString();
+            dacs.dnResponse.concreteDeparture = iSendAgentConcreteDepartureMinutes.toString();
+            dacs.dnResponse.concreteWaittime = iSendAgentConcreteWaittimeMinutes.toString();
             dacs.dnResponse.concreteCement = stSendAgentConcreteCement;
             dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
-            dacs.dnResponse.concreteJobtime = stSendAgentConcreteJobtime;
+            dacs.dnResponse.concreteJobtime = iSendAgentConcreteJobtimeMinutes.toString();
             dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
             dacs.dnResponse.numTotalPrice = NumberFrom(stSendAgentTotalPrice);
             dacs.dnResponse.totalPriceCurrency = stSendAgentTotalPriceCurrency;
@@ -1363,13 +1381,19 @@ import { NumberFrom, DateFrom, TimeFrom } from "conversion";
                 supplier_id: stSendAgentSupplierId,
                 weight_gross: stSendAgentWeightGross,
                 concrete_arrival: stSendAgentConcreteArrival,
+                concrete_arrival_number: iSendAgentConcreteArrivalMinutes,
                 concrete_startpour: stSendAgentConcreteStartpour,
+                concrete_startpour_number: iSendAgentConcreteStartpourMinutes,
                 concrete_endpour: stSendAgentConcreteEndpour,
+                concrete_endpour_number: iSendAgentConcreteEndpourMinutes,
                 concrete_departure: stSendAgentConcreteDeparture,
+                concrete_departure_number: iSendAgentConcreteDepartureMinutes,
                 concrete_waittime: stSendAgentConcreteWaittime,
+                concrete_waittime_number: iSendAgentConcreteWaittimeMinutes,
                 concrete_cement: stSendAgentConcreteCement,
                 concrete_pumplength: stSendAgentConcretePumplength,
                 concrete_jobtime: stSendAgentConcreteJobtime,
+                concrete_jobtime_number: iSendAgentConcreteJobtimeMinutes,
                 total_price: stSendAgentTotalPrice,
                 total_price_number: NumberFrom(stSendAgentTotalPrice),
                 total_price_currency: stSendAgentTotalPriceCurrency
