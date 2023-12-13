@@ -38,7 +38,7 @@
 		Log("Delivery note : " + stDeliveryNoteId + " delete operation run successfully in BA company");
 	}
 
-	if(stResult === "retakeorerror")
+	if(stResult === "failed")
 	{
 		Log("No operation because delivery note : " + stDeliveryNoteId + " retaked in BA company or error in BA company");
 	}
