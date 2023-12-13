@@ -46,6 +46,8 @@
                         ai_scan_user U ON U.id = J.current_user
                     LEFT JOIN
                         ai_scan_delivery_note DN ON DN.delivery_note_id = J.delivery_note_id
+					LEFT JOIN
+						ai_scan_project ASP ON ASP.id = DN.guidLproj
                     WHERE
                         J.status = "DONE"
                         AND
@@ -94,7 +96,6 @@
                             OR DNJ.customer_name LIKE "%" || stSearch || "%"
                             OR DNJ.delivery_address LIKE "%" || stSearch || "%"
                             OR DNJ.delivery_recipient_name LIKE "%" || stSearch || "%"
-                            OR DNJ.issue_date LIKE "%" || stSearch || "%"
                             OR DNJ.order_number LIKE "%" || stSearch || "%"
                             OR DNJ.supplier_address LIKE "%" || stSearch || "%"
                             OR DNJ.supplier_name LIKE "%" || stSearch || "%"
@@ -102,12 +103,11 @@
                             OR DNJ.supplier_warehouse LIKE "%" || stSearch || "%"
                             OR DNJ.supplier_id LIKE "%" || stSearch || "%"
                             OR DNJ.weight_gross LIKE "%" || stSearch || "%"
+							OR ASP.name LIKE "%" || stSearch || "%"
                             OR DNIJ.item_name LIKE "%" || stSearch || "%"
                             OR DNIJ.manufacturer_item_number LIKE "%" || stSearch || "%"
-                            OR DNIJ.tax_number LIKE "%" || stSearch || "%"
                             OR DNIJ.amount LIKE "%" || stSearch || "%"
                             OR DNIJ.unit LIKE "%" || stSearch || "%"
-                            OR DNIJ.gross_weight LIKE "%" || stSearch || "%" 
                         )
                         ELSE
                         (
