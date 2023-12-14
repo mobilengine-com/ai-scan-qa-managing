@@ -12,6 +12,7 @@
 //# using dacs AssignAITask;
 
 import { NumberFrom, DateFrom } from "conversion";
+import { getItemUnitFrom } from "library";
 
 {
     Log(dacs);
@@ -69,15 +70,18 @@ import { NumberFrom, DateFrom } from "conversion";
         let lstJobDeliveryNoteItemUnit = list.New();
         let lstJobDeliveryNoteItemGrossWeight = list.New();
 
-        let i = 0;
+		let stFirstItemItemUnit = "";
+		let i = 0;
         for (let item of dacs.dnResponse.items) {
+			let bFirstItem = i === 0;
+			if(bFirstItem){stFirstItemItemUnit = item.unit;}
             let iDeliveryNoteItemRowCounter = i;
             let stDeliveryNoteItemItemName = item.itemName;
             let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
             let stDeliveryNoteItemTaxNumber = item.taxNumber;
             let stDeliveryNoteItemAmount = item.amount;
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
-            let stDeliveryNoteItemUnit = item.unit;
+            let stDeliveryNoteItemUnit = getItemUnitFrom(stFirstItemItemUnit, item.unit, bFirstItem);
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
 
             lstJobDeliveryNoteItemItemName.Add(stDeliveryNoteItemItemName);
@@ -103,7 +107,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 gross_weight: stDeliveryNoteItemGrossWeight
             });
 
-            i=i+1;
+            i++;
         }
 
         let iJobJobDeliveryNoteItems = i;
@@ -525,15 +529,18 @@ import { NumberFrom, DateFrom } from "conversion";
         });
 
         // delivery_note's items
+		let stFirstItemItemUnit = "";
         let i = 0;
         for (let item of dacs.dnResponse.items) {
+			let bFirstItem = i === 0;
+			if(bFirstItem){stFirstItemItemUnit = item.unit;}
             let iDeliveryNoteItemRowCounter = i;
             let stDeliveryNoteItemItemName = item.itemName;
             let stDeliveryNoteItemManufacturerItemNumber = item.manufacturerItemNumber;
             let stDeliveryNoteItemTaxNumber = item.taxNumber;
             let stDeliveryNoteItemAmount = item.amount;
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
-            let stDeliveryNoteItemUnit = item.unit;
+            let stDeliveryNoteItemUnit = getItemUnitFrom(stFirstItemItemUnit, item.unit, bFirstItem);
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
 
             // Update delivery_note job
@@ -551,7 +558,7 @@ import { NumberFrom, DateFrom } from "conversion";
                 gross_weight: stDeliveryNoteItemGrossWeight
             });
 
-            i=i+1;
+            i++;
         }
 
         let stJobResultStatus = "REJECTED";
