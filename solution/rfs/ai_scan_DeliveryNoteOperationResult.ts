@@ -1,4 +1,4 @@
-//# server typescript program ai_scan_DeliveryNoteOperationResult for dacs DeliveryNoteOperationResultResponse
+//# server typescript program ai_scan_DeliveryNoteOperationResult for dacs DeliveryNoteOperationResult
 //# using reftab ai_scan_jobs;
 //# using reftab ai_scan_delivery_note_job;
 //# using reftab ai_scan_delivery_note_item_job;
