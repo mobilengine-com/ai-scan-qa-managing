@@ -8,7 +8,7 @@
 //# using reftab ai_scan_delivery_note_item_qaj;
 //# using dacs QATaskDone;
 
-import { NumberFrom, DateFrom } from "conversion";
+import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
 
 {
     let stDelayTime = form.stDelayTime;
@@ -164,6 +164,22 @@ import { NumberFrom, DateFrom } from "conversion";
             let stSendAgentSupplierWarehouse = form.stSendAgentSupplierWarehouse;
             let stSendAgentSupplierId = form.stSendAgentSupplierId;
             let stSendAgentWeightGross = form.stSendAgentWeightGross;
+            let stSendAgentConcreteArrival = TimeFrom(form.stSendAgentConcreteArrival);
+            let iSendAgentConcreteArrivalMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteArrival)) ? MinutesFrom(form.stSendAgentConcreteArrival) : null;
+            let stSendAgentConcreteStartpour = TimeFrom(form.stSendAgentConcreteStartpour);
+            let iSendAgentConcreteStartpourMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteStartpour)) ? MinutesFrom(form.stSendAgentConcreteStartpour) : null;
+            let stSendAgentConcreteEndpour = TimeFrom(form.stSendAgentConcreteEndpour);
+            let iSendAgentConcreteEndpourMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteEndpour)) ? MinutesFrom(form.stSendAgentConcreteEndpour) : null;
+            let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
+            let iSendAgentConcreteDepartureMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteDeparture)) ? MinutesFrom(form.stSendAgentConcreteDeparture) : null;
+            let stSendAgentConcreteWaittime = TimeFrom(form.stSendAgentConcreteWaittime);
+            let iSendAgentConcreteWaittimeMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteWaittime)) ? MinutesFrom(form.stSendAgentConcreteWaittime) : null;
+            let stSendAgentConcreteCement = form.stSendAgentConcreteCement;
+            let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
+            let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
+            let iSendAgentConcreteJobtimeMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteJobtime)) ? MinutesFrom(form.stSendAgentConcreteJobtime) : null;
+            let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
+            let stSendAgentTotalPriceCurrency = form.stSendAgentTotalPriceCurrency;
 
             let lstAgentAItemTableItemNameRowIdEdit = list.New();
             let lstAgentBItemTableItemNameRowIdEdit = list.New();
@@ -189,6 +205,14 @@ import { NumberFrom, DateFrom } from "conversion";
             let lstAgentBItemTableGrossWeightRowIdEdit = list.New();
             let lstAgentAItemTableGrossWeightRowIdAccept = list.New();
             let lstAgentBItemTableGrossWeightRowIdAccept = list.New();
+            let lstAgentAItemTableUnitPriceRowIdEdit = list.New();
+            let lstAgentBItemTableUnitPriceRowIdEdit = list.New();
+            let lstAgentAItemTableUnitPriceRowIdAccept = list.New();
+            let lstAgentBItemTableUnitPriceRowIdAccept = list.New();
+            let lstAgentAItemTableUnitPriceCurrencyRowIdEdit = list.New();
+            let lstAgentBItemTableUnitPriceCurrencyRowIdEdit = list.New();
+            let lstAgentAItemTableUnitPriceCurrencyRowIdAccept = list.New();
+            let lstAgentBItemTableUnitPriceCurrencyRowIdAccept = list.New();
 
             let lstAgentAItemTableItemName = list.New();
             let lstAgentBItemTableItemName = list.New();
@@ -202,6 +226,10 @@ import { NumberFrom, DateFrom } from "conversion";
             let lstAgentBItemTableUnit = list.New();
             let lstAgentAItemTableGrossWeight = list.New();
             let lstAgentBItemTableGrossWeight = list.New();
+            let lstAgentAItemTableUnitPrice = list.New();
+            let lstAgentBItemTableUnitPrice = list.New();
+            let lstAgentAItemTableUnitPriceCurrency = list.New();
+            let lstAgentBItemTableUnitPriceCurrency = list.New();
             
             let iCount = 0;
 
@@ -261,6 +289,14 @@ import { NumberFrom, DateFrom } from "conversion";
                     lstAgentBItemTableGrossWeightRowIdEdit = recData.stEditItemAgentBGrossWeightRowId.SplitOnMany(["|"],false);
                     lstAgentAItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentAGrossWeightRowId.SplitOnMany(["|"],false);
                     lstAgentBItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentBGrossWeightRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceRowIdEdit = recData.stEditItemAgentAUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceRowIdEdit = recData.stEditItemAgentBUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceRowIdAccept = recData.stAcceptItemAgentAUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceRowIdAccept = recData.stAcceptItemAgentBUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceCurrencyRowIdEdit = recData.stEditItemAgentAUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceCurrencyRowIdEdit = recData.stEditItemAgentBUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceCurrencyRowIdAccept = recData.stAcceptItemAgentAUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceCurrencyRowIdAccept = recData.stAcceptItemAgentBUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
 
                     lstAgentAItemTableItemName = recData.stItemTableAItemName.SplitOnMany(["|"],false);
                     lstAgentBItemTableItemName = recData.stItemTableBItemName.SplitOnMany(["|"],false);
@@ -274,6 +310,10 @@ import { NumberFrom, DateFrom } from "conversion";
                     lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany(["|"],false);
                     lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany(["|"],false);
                     lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPrice = recData.stItemTableAUnitPrice.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPrice = recData.stItemTableBUnitPrice.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceCurrency = recData.stItemTableAUnitPriceCurrency.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceCurrency = recData.stItemTableBUnitPriceCurrency.SplitOnMany(["|"],false);
                 }
             }
 
@@ -493,6 +533,74 @@ import { NumberFrom, DateFrom } from "conversion";
                 {
                     bItemTableBOnlyAccepted = true;
                 }
+
+                //unit price
+                if(lstAgentAItemTableUnitPriceRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableUnitPrice.GetAt(i));
+                }
+                if(lstAgentBItemTableUnitPriceRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableUnitPrice.GetAt(i));
+                }
+                if(lstAgentAItemTableUnitPriceRowIdEdit.GetAt(i) === "" && lstAgentAItemTableUnitPriceRowIdAccept.GetAt(i) === "" && lstAgentBItemTableUnitPriceRowIdEdit.GetAt(i) === "" && lstAgentBItemTableUnitPriceRowIdAccept.GetAt(i) === "")
+                {
+                    if(lstAgentAItemTableUnitPrice.GetAt(i) !== null && lstAgentAItemTableUnitPrice.GetAt(i) !== " ")
+                    {
+                        lstFinalItemTable.Add(lstAgentAItemTableUnitPrice.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableUnitPrice.GetAt(i));
+                    }
+                }
+
+                if(lstAgentAItemTableUnitPriceRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceRowIdEdit.GetAt(i) !== "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
+                //unit price currency
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableUnitPriceCurrency.GetAt(i));
+                }
+                if(lstAgentBItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableUnitPriceCurrency.GetAt(i));
+                }
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) === "" && lstAgentAItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) === "" && lstAgentBItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) === "" && lstAgentBItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) === "")
+                {
+                    if(lstAgentAItemTableUnitPriceCurrency.GetAt(i) !== null && lstAgentAItemTableUnitPriceCurrency.GetAt(i) !== " ")
+                    {
+                        lstFinalItemTable.Add(lstAgentAItemTableUnitPriceCurrency.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableUnitPriceCurrency.GetAt(i));
+                    }
+                }
+
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
             }
 
             //Send DACS
@@ -515,10 +623,21 @@ import { NumberFrom, DateFrom } from "conversion";
             dacs.dnResponse.supplierWarehouse = stSendAgentSupplierWarehouse;
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
+            dacs.dnResponse.concreteArrival = iSendAgentConcreteArrivalMinutes !== null ? iSendAgentConcreteArrivalMinutes.toString() : stSendAgentConcreteArrival;
+            dacs.dnResponse.concreteStartpour = iSendAgentConcreteStartpourMinutes !== null ? iSendAgentConcreteStartpourMinutes.toString() : stSendAgentConcreteStartpour;
+            dacs.dnResponse.concreteEndpour = iSendAgentConcreteEndpourMinutes !== null ? iSendAgentConcreteEndpourMinutes.toString() : stSendAgentConcreteEndpour;
+            dacs.dnResponse.concreteDeparture = iSendAgentConcreteDepartureMinutes !== null ? iSendAgentConcreteDepartureMinutes.toString() : stSendAgentConcreteDeparture;
+            dacs.dnResponse.concreteWaittime = iSendAgentConcreteWaittimeMinutes !== null ? iSendAgentConcreteWaittimeMinutes.toString() : stSendAgentConcreteWaittime;
+            dacs.dnResponse.concreteCement = stSendAgentConcreteCement;
+            dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
+            dacs.dnResponse.concreteJobtime = iSendAgentConcreteJobtimeMinutes !== null ? iSendAgentConcreteJobtimeMinutes.toString() : stSendAgentConcreteJobtime;
+            dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
+            dacs.dnResponse.numTotalPrice = NumberFrom(stSendAgentTotalPrice);
+            dacs.dnResponse.totalPriceCurrency = stSendAgentTotalPriceCurrency;
 
             if(iCount !== 0)
             {
-                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+9) 
                 {
                     let item = {
 
@@ -528,7 +647,10 @@ import { NumberFrom, DateFrom } from "conversion";
                         amount: lstFinalItemTable.GetAt(4+i),
                         numAmount: NumberFrom(lstFinalItemTable.GetAt(4+i)),
                         unit: lstFinalItemTable.GetAt(5+i),
-                        grossWeight: lstFinalItemTable.GetAt(6+i)
+                        grossWeight: lstFinalItemTable.GetAt(6+i),
+                        unitPrice: lstFinalItemTable.GetAt(7+i),
+                        numUnitPrice: NumberFrom(lstFinalItemTable.GetAt(7+i)),
+                        unitPriceCurrency: lstFinalItemTable.GetAt(8+i)
                     };
                     dacs.dnResponse.items.Add(item);
                 }
@@ -593,7 +715,24 @@ import { NumberFrom, DateFrom } from "conversion";
                 supplier_tax_number: stSendAgentSupplierTaxNumber,
                 supplier_warehouse: stSendAgentSupplierWarehouse,
                 supplier_id: stSendAgentSupplierId,
-                weight_gross: stSendAgentWeightGross
+                weight_gross: stSendAgentWeightGross,
+                concrete_arrival: stSendAgentConcreteArrival,
+                concrete_arrival_number: iSendAgentConcreteArrivalMinutes,
+                concrete_startpour: stSendAgentConcreteStartpour,
+                concrete_startpour_number: iSendAgentConcreteStartpourMinutes,
+                concrete_endpour: stSendAgentConcreteEndpour,
+                concrete_endpour_number: iSendAgentConcreteEndpourMinutes,
+                concrete_departure: stSendAgentConcreteDeparture,
+                concrete_departure_number: iSendAgentConcreteDepartureMinutes,
+                concrete_waittime: stSendAgentConcreteWaittime,
+                concrete_waittime_number: iSendAgentConcreteWaittimeMinutes,
+                concrete_cement: stSendAgentConcreteCement,
+                concrete_pumplength: stSendAgentConcretePumplength,
+                concrete_jobtime: stSendAgentConcreteJobtime,
+                concrete_jobtime_number: iSendAgentConcreteJobtimeMinutes,
+                total_price: stSendAgentTotalPrice,
+                total_price_number: NumberFrom(stSendAgentTotalPrice),
+                total_price_currency: stSendAgentTotalPriceCurrency
             });
             
             // delivery_note's QA items
@@ -601,7 +740,7 @@ import { NumberFrom, DateFrom } from "conversion";
             if(iCount !== 0)
             {
                 let ii = 0;
-                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+9) 
                 {
 
                     // Update delivery_note QA job
@@ -616,7 +755,10 @@ import { NumberFrom, DateFrom } from "conversion";
                         amount: lstFinalItemTable.GetAt(4+i),
                         amount_number: NumberFrom(lstFinalItemTable.GetAt(4+i)),
                         unit: lstFinalItemTable.GetAt(5+i),
-                        gross_weight: lstFinalItemTable.GetAt(6+i)
+                        gross_weight: lstFinalItemTable.GetAt(6+i),
+                        unit_price: lstFinalItemTable.GetAt(7+i),
+                        unit_price_number: NumberFrom(lstFinalItemTable.GetAt(7+i)),
+                        unit_price_currency: lstFinalItemTable.GetAt(8+i),
                     });
 
                     ii=ii+1;
@@ -687,6 +829,22 @@ import { NumberFrom, DateFrom } from "conversion";
             let stSendAgentSupplierWarehouse = form.stSendAgentSupplierWarehouse;
             let stSendAgentSupplierId = form.stSendAgentSupplierId;
             let stSendAgentWeightGross = form.stSendAgentWeightGross;
+            let stSendAgentConcreteArrival = TimeFrom(form.stSendAgentConcreteArrival);
+            let iSendAgentConcreteArrivalMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteArrival)) ? MinutesFrom(form.stSendAgentConcreteArrival) : null;
+            let stSendAgentConcreteStartpour = TimeFrom(form.stSendAgentConcreteStartpour);
+            let iSendAgentConcreteStartpourMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteStartpour)) ? MinutesFrom(form.stSendAgentConcreteStartpour) : null;
+            let stSendAgentConcreteEndpour = TimeFrom(form.stSendAgentConcreteEndpour);
+            let iSendAgentConcreteEndpourMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteEndpour)) ? MinutesFrom(form.stSendAgentConcreteEndpour) : null;
+            let stSendAgentConcreteDeparture = TimeFrom(form.stSendAgentConcreteDeparture);
+            let iSendAgentConcreteDepartureMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteDeparture)) ? MinutesFrom(form.stSendAgentConcreteDeparture) : null;
+            let stSendAgentConcreteWaittime = TimeFrom(form.stSendAgentConcreteWaittime);
+            let iSendAgentConcreteWaittimeMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteWaittime)) ? MinutesFrom(form.stSendAgentConcreteWaittime) : null;
+            let stSendAgentConcreteCement = form.stSendAgentConcreteCement;
+            let stSendAgentConcretePumplength = form.stSendAgentConcretePumplength;
+            let stSendAgentConcreteJobtime = TimeFrom(form.stSendAgentConcreteJobtime);
+            let iSendAgentConcreteJobtimeMinutes = !Number.isNaN(MinutesFrom(form.stSendAgentConcreteJobtime)) ? MinutesFrom(form.stSendAgentConcreteJobtime) : null;
+            let stSendAgentTotalPrice = form.stSendAgentTotalPrice;
+            let stSendAgentTotalPriceCurrency = form.stSendAgentTotalPriceCurrency;
 
             let lstAgentAItemTableItemNameRowIdEdit = list.New();
             let lstAgentBItemTableItemNameRowIdEdit = list.New();
@@ -712,6 +870,14 @@ import { NumberFrom, DateFrom } from "conversion";
             let lstAgentBItemTableGrossWeightRowIdEdit = list.New();
             let lstAgentAItemTableGrossWeightRowIdAccept = list.New();
             let lstAgentBItemTableGrossWeightRowIdAccept = list.New();
+            let lstAgentAItemTableUnitPriceRowIdEdit = list.New();
+            let lstAgentBItemTableUnitPriceRowIdEdit = list.New();
+            let lstAgentAItemTableUnitPriceRowIdAccept = list.New();
+            let lstAgentBItemTableUnitPriceRowIdAccept = list.New();
+            let lstAgentAItemTableUnitPriceCurrencyRowIdEdit = list.New();
+            let lstAgentBItemTableUnitPriceCurrencyRowIdEdit = list.New();
+            let lstAgentAItemTableUnitPriceCurrencyRowIdAccept = list.New();
+            let lstAgentBItemTableUnitPriceCurrencyRowIdAccept = list.New();
 
             let lstAgentAItemTableItemName = list.New();
             let lstAgentBItemTableItemName = list.New();
@@ -725,6 +891,10 @@ import { NumberFrom, DateFrom } from "conversion";
             let lstAgentBItemTableUnit = list.New();
             let lstAgentAItemTableGrossWeight = list.New();
             let lstAgentBItemTableGrossWeight = list.New();
+            let lstAgentAItemTableUnitPrice = list.New();
+            let lstAgentBItemTableUnitPrice = list.New();
+            let lstAgentAItemTableUnitPriceCurrency = list.New();
+            let lstAgentBItemTableUnitPriceCurrency = list.New();
             
             let iCount = 0;
 
@@ -784,6 +954,14 @@ import { NumberFrom, DateFrom } from "conversion";
                     lstAgentBItemTableGrossWeightRowIdEdit = recData.stEditItemAgentBGrossWeightRowId.SplitOnMany(["|"],false);
                     lstAgentAItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentAGrossWeightRowId.SplitOnMany(["|"],false);
                     lstAgentBItemTableGrossWeightRowIdAccept = recData.stAcceptItemAgentBGrossWeightRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceRowIdEdit = recData.stEditItemAgentAUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceRowIdEdit = recData.stEditItemAgentBUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceRowIdAccept = recData.stAcceptItemAgentAUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceRowIdAccept = recData.stAcceptItemAgentBUnitPriceRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceCurrencyRowIdEdit = recData.stEditItemAgentAUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceCurrencyRowIdEdit = recData.stEditItemAgentBUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceCurrencyRowIdAccept = recData.stAcceptItemAgentAUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceCurrencyRowIdAccept = recData.stAcceptItemAgentBUnitPriceCurrencyRowId.SplitOnMany(["|"],false);
 
                     lstAgentAItemTableItemName = recData.stItemTableAItemName.SplitOnMany(["|"],false);
                     lstAgentBItemTableItemName = recData.stItemTableBItemName.SplitOnMany(["|"],false);
@@ -797,6 +975,10 @@ import { NumberFrom, DateFrom } from "conversion";
                     lstAgentBItemTableUnit = recData.stItemTableBUnit.SplitOnMany(["|"],false);
                     lstAgentAItemTableGrossWeight = recData.stItemTableAGrossWeight.SplitOnMany(["|"],false);
                     lstAgentBItemTableGrossWeight = recData.stItemTableBGrossWeight.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPrice = recData.stItemTableAUnitPrice.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPrice = recData.stItemTableBUnitPrice.SplitOnMany(["|"],false);
+                    lstAgentAItemTableUnitPriceCurrency = recData.stItemTableAUnitPriceCurrency.SplitOnMany(["|"],false);
+                    lstAgentBItemTableUnitPriceCurrency = recData.stItemTableBUnitPriceCurrency.SplitOnMany(["|"],false);
                 }
             }
 
@@ -1015,7 +1197,75 @@ import { NumberFrom, DateFrom } from "conversion";
                 if(lstAgentBItemTableGrossWeightRowIdAccept.GetAt(i) !== "")
                 {
                     bItemTableBOnlyAccepted = true;
-                }            
+                }
+                
+                //unit price
+                if(lstAgentAItemTableUnitPriceRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableUnitPrice.GetAt(i));
+                }
+                if(lstAgentBItemTableUnitPriceRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableUnitPrice.GetAt(i));
+                }
+                if(lstAgentAItemTableUnitPriceRowIdEdit.GetAt(i) === "" && lstAgentAItemTableUnitPriceRowIdAccept.GetAt(i) === "" && lstAgentBItemTableUnitPriceRowIdEdit.GetAt(i) === "" && lstAgentBItemTableUnitPriceRowIdAccept.GetAt(i) === "")
+                {
+                    if(lstAgentAItemTableUnitPrice.GetAt(i) !== null && lstAgentAItemTableUnitPrice.GetAt(i) !== " ")
+                    {
+                        lstFinalItemTable.Add(lstAgentAItemTableUnitPrice.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableUnitPrice.GetAt(i));
+                    }
+                }
+
+                if(lstAgentAItemTableUnitPriceRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceRowIdEdit.GetAt(i) !== "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableUnitPriceRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
+
+                //unit price currency
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "" || lstAgentAItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentAItemTableUnitPriceCurrency.GetAt(i));
+                }
+                if(lstAgentBItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {                
+                    lstFinalItemTable.Add(lstAgentBItemTableUnitPriceCurrency.GetAt(i));
+                }
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) === "" && lstAgentAItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) === "" && lstAgentBItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) === "" && lstAgentBItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) === "")
+                {
+                    if(lstAgentAItemTableUnitPriceCurrency.GetAt(i) !== null && lstAgentAItemTableUnitPriceCurrency.GetAt(i) !== " ")
+                    {
+                        lstFinalItemTable.Add(lstAgentAItemTableUnitPriceCurrency.GetAt(i));
+                    }
+                    else
+                    {
+                        lstFinalItemTable.Add(lstAgentBItemTableUnitPriceCurrency.GetAt(i));
+                    }
+                }
+
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "" || lstAgentBItemTableUnitPriceCurrencyRowIdEdit.GetAt(i) !== "")
+                {
+                    bItemTableEdittedVariable = true;
+                }
+                if(lstAgentAItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableAOnlyAccepted = true;
+                }
+                if(lstAgentBItemTableUnitPriceCurrencyRowIdAccept.GetAt(i) !== "")
+                {
+                    bItemTableBOnlyAccepted = true;
+                }
             }
 
             //Send DACS
@@ -1038,10 +1288,21 @@ import { NumberFrom, DateFrom } from "conversion";
             dacs.dnResponse.supplierWarehouse = stSendAgentSupplierWarehouse;
             dacs.dnResponse.supplierId = stSendAgentSupplierId;
             dacs.dnResponse.weightGross = stSendAgentWeightGross;
+            dacs.dnResponse.concreteArrival = iSendAgentConcreteArrivalMinutes !== null ? iSendAgentConcreteArrivalMinutes.toString() : stSendAgentConcreteArrival;
+            dacs.dnResponse.concreteStartpour = iSendAgentConcreteStartpourMinutes !== null ? iSendAgentConcreteStartpourMinutes.toString() : stSendAgentConcreteStartpour;
+            dacs.dnResponse.concreteEndpour = iSendAgentConcreteEndpourMinutes !== null ? iSendAgentConcreteEndpourMinutes.toString() : stSendAgentConcreteEndpour;
+            dacs.dnResponse.concreteDeparture = iSendAgentConcreteDepartureMinutes !== null ? iSendAgentConcreteDepartureMinutes.toString() : stSendAgentConcreteDeparture;
+            dacs.dnResponse.concreteWaittime = iSendAgentConcreteWaittimeMinutes !== null ? iSendAgentConcreteWaittimeMinutes.toString() : stSendAgentConcreteWaittime;
+            dacs.dnResponse.concreteCement = stSendAgentConcreteCement;
+            dacs.dnResponse.concretePumplength = stSendAgentConcretePumplength;
+            dacs.dnResponse.concreteJobtime = iSendAgentConcreteJobtimeMinutes !== null ? iSendAgentConcreteJobtimeMinutes.toString() : stSendAgentConcreteJobtime;
+            dacs.dnResponse.totalPrice = stSendAgentTotalPrice;
+            dacs.dnResponse.numTotalPrice = NumberFrom(stSendAgentTotalPrice);
+            dacs.dnResponse.totalPriceCurrency = stSendAgentTotalPriceCurrency;
 
             if(iCount !== 0)
             {
-                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+9) 
                 {
                     let item = {
 
@@ -1051,7 +1312,10 @@ import { NumberFrom, DateFrom } from "conversion";
                         amount: lstFinalItemTable.GetAt(4+i),
                         numAmount: NumberFrom(lstFinalItemTable.GetAt(4+i)),
                         unit: lstFinalItemTable.GetAt(5+i),
-                        grossWeight: lstFinalItemTable.GetAt(6+i)
+                        grossWeight: lstFinalItemTable.GetAt(6+i),
+                        unitPrice: lstFinalItemTable.GetAt(7+i),
+                        numUnitPrice: NumberFrom(lstFinalItemTable.GetAt(7+i)),
+                        unitPriceCurrency: lstFinalItemTable.GetAt(8+i)
                     };
                     dacs.dnResponse.items.Add(item);
                 }
@@ -1115,7 +1379,24 @@ import { NumberFrom, DateFrom } from "conversion";
                 supplier_tax_number: stSendAgentSupplierTaxNumber,
                 supplier_warehouse: stSendAgentSupplierWarehouse,
                 supplier_id: stSendAgentSupplierId,
-                weight_gross: stSendAgentWeightGross
+                weight_gross: stSendAgentWeightGross,
+                concrete_arrival: stSendAgentConcreteArrival,
+                concrete_arrival_number: iSendAgentConcreteArrivalMinutes,
+                concrete_startpour: stSendAgentConcreteStartpour,
+                concrete_startpour_number: iSendAgentConcreteStartpourMinutes,
+                concrete_endpour: stSendAgentConcreteEndpour,
+                concrete_endpour_number: iSendAgentConcreteEndpourMinutes,
+                concrete_departure: stSendAgentConcreteDeparture,
+                concrete_departure_number: iSendAgentConcreteDepartureMinutes,
+                concrete_waittime: stSendAgentConcreteWaittime,
+                concrete_waittime_number: iSendAgentConcreteWaittimeMinutes,
+                concrete_cement: stSendAgentConcreteCement,
+                concrete_pumplength: stSendAgentConcretePumplength,
+                concrete_jobtime: stSendAgentConcreteJobtime,
+                concrete_jobtime_number: iSendAgentConcreteJobtimeMinutes,
+                total_price: stSendAgentTotalPrice,
+                total_price_number: NumberFrom(stSendAgentTotalPrice),
+                total_price_currency: stSendAgentTotalPriceCurrency
             });
             
             // delivery_note's QA items
@@ -1123,7 +1404,7 @@ import { NumberFrom, DateFrom } from "conversion";
             if(iCount !== 0)
             {
                 let ii = 0;
-                for (let i = 0; i < lstFinalItemTable.Count(); i=i+7) 
+                for (let i = 0; i < lstFinalItemTable.Count(); i=i+9) 
                 {
 
                     // Update delivery_note QA job
@@ -1138,7 +1419,10 @@ import { NumberFrom, DateFrom } from "conversion";
                         amount: lstFinalItemTable.GetAt(4+i),
                         amount_number: NumberFrom(lstFinalItemTable.GetAt(4+i)),
                         unit: lstFinalItemTable.GetAt(5+i),
-                        gross_weight: lstFinalItemTable.GetAt(6+i)
+                        gross_weight: lstFinalItemTable.GetAt(6+i),
+                        unit_price: lstFinalItemTable.GetAt(7+i),
+                        unit_price_number: NumberFrom(lstFinalItemTable.GetAt(7+i)),
+                        unit_price_currency: lstFinalItemTable.GetAt(8+i),
                     });
 
                     ii=ii+1;

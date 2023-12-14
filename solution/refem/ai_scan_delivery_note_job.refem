@@ -18,6 +18,23 @@
         <Column Name="supplier_warehouse" Type="Text"/>
         <Column Name="supplier_id" Type="Text"/>
         <Column Name="weight_gross" Type="Text"/>
+        <Column Name="concrete_arrival" Type="Text"/>
+        <Column Name='concrete_arrival_number' Type='Integer'/>
+        <Column Name="concrete_startpour" Type="Text"/>
+        <Column Name='concrete_startpour_number' Type='Integer'/>
+        <Column Name="concrete_endpour" Type="Text"/>
+        <Column Name='concrete_endpour_number' Type='Integer'/>
+        <Column Name="concrete_departure" Type="Text"/>
+        <Column Name='concrete_departure_number' Type='Integer'/>
+        <Column Name="concrete_waittime" Type="Text"/>
+        <Column Name='concrete_waittime_number' Type='Integer'/>
+        <Column Name="concrete_cement" Type="Text"/>
+        <Column Name="concrete_pumplength" Type="Text"/>
+        <Column Name="concrete_jobtime" Type="Text"/>
+        <Column Name='concrete_jobtime_number' Type='Integer'/>
+        <Column Name="total_price" Type="Text"/>
+        <Column Name="total_price_number" Type="Float"/>
+        <Column Name="total_price_currency" Type="Text"/>
         <Column Name="fileref_pdf" Type="Fileref"/>
     </Columns>
 </Reftab>

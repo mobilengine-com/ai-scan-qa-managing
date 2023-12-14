@@ -11,8 +11,7 @@
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
-import { NumberFrom, DateFrom } from "conversion";
-import { getItemUnitFrom } from "library";
+import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
 
 {
     Log(dacs);
@@ -39,6 +38,23 @@ import { getItemUnitFrom } from "library";
         let stDeliveryNoteSupplierWarehouse = dacs.dnResponse.supplierWarehouse;
         let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
         let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
+        let stDeliveryNoteConcreteArrival = TimeFrom(dacs.dnResponse.concreteArrival);
+        let iDeliveryNoteConcreteArrivalMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteArrival)) ? MinutesFrom(dacs.dnResponse.concreteArrival) : null;
+        let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
+        let iDeliveryNoteConcreteStartpourMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteStartpour)) ? MinutesFrom(dacs.dnResponse.concreteStartpour) : null;
+        let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
+        let iDeliveryNoteConcreteEndpourMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteEndpour)) ? MinutesFrom(dacs.dnResponse.concreteEndpour) : null;
+        let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
+        let iDeliveryNoteConcreteDepartureMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteDeparture)) ? MinutesFrom(dacs.dnResponse.concreteDeparture) : null;
+        let stDeliveryNoteConcreteWaittime = TimeFrom(dacs.dnResponse.concreteWaittime);
+        let iDeliveryNoteConcreteWaittimeMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteWaittime)) ? MinutesFrom(dacs.dnResponse.concreteWaittime) : null;
+        let stDeliveryNoteConcreteCement = dacs.dnResponse.concreteCement;
+        let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
+        let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
+        let iDeliveryNoteConcreteJobtimeMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteJobtime)) ? MinutesFrom(dacs.dnResponse.concreteJobtime) : null;
+        let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
+        let stDeliveryNoteTotalPriceAmount = NumberFrom(dacs.dnResponse.totalPrice);
+        let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
 
         // Update delivery_note job
         db.ai_scan_delivery_note_job.UpdateMany({
@@ -57,7 +73,24 @@ import { getItemUnitFrom } from "library";
             supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
             supplier_warehouse: stDeliveryNoteSupplierWarehouse,
             supplier_id: stDeliveryNoteSupplierId,
-            weight_gross: stDeliveryNoteWeightGross
+            weight_gross: stDeliveryNoteWeightGross,
+            concrete_arrival: stDeliveryNoteConcreteArrival,
+            concrete_arrival_number: iDeliveryNoteConcreteArrivalMinutes,
+            concrete_startpour: stDeliveryNoteConcreteStartpour,
+            concrete_startpour_number: iDeliveryNoteConcreteStartpourMinutes,
+            concrete_endpour: stDeliveryNoteConcreteEndpour,
+            concrete_endpour_number: iDeliveryNoteConcreteEndpourMinutes,
+            concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_departure_number: iDeliveryNoteConcreteDepartureMinutes,
+            concrete_waittime: stDeliveryNoteConcreteWaittime,
+            concrete_waittime_number: iDeliveryNoteConcreteWaittimeMinutes,
+            concrete_cement: stDeliveryNoteConcreteCement,
+            concrete_pumplength: stDeliveryNoteConcretePumplength,
+            concrete_jobtime: stDeliveryNoteConcreteJobtime,
+            concrete_jobtime_number: iDeliveryNoteConcreteJobtimeMinutes,
+            total_price: stDeliveryNoteTotalPrice,
+            total_price_number: stDeliveryNoteTotalPriceAmount,
+            total_price_currency: stDeliveryNoteTotalPriceCurrency
         });
 
         // delivery_note's items
@@ -69,6 +102,9 @@ import { getItemUnitFrom } from "library";
         let lstJobDeliveryNoteItemNumberAmount = list.New();
         let lstJobDeliveryNoteItemUnit = list.New();
         let lstJobDeliveryNoteItemGrossWeight = list.New();
+        let lstJobDeliveryNoteItemUnitPrice = list.New();
+        let lstJobDeliveryNoteItemUnitPriceAmount = list.New();
+        let lstJobDeliveryNoteItemUnitPriceCurrency = list.New();
 
 		let stFirstItemItemUnit = "";
 		let i = 0;
@@ -83,6 +119,9 @@ import { getItemUnitFrom } from "library";
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
             let stDeliveryNoteItemUnit = getItemUnitFrom(stFirstItemItemUnit, item.unit, bFirstItem);
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
+            let stDeliveryNoteItemUnitPrice = item.unitPrice;
+            let stDeliveryNoteItemUnitPriceAmount = NumberFrom(item.unitPrice);
+            let stDeliveryNoteItemUnitPriceCurrency = item.unitPriceCurrency;
 
             lstJobDeliveryNoteItemItemName.Add(stDeliveryNoteItemItemName);
             lstJobDeliveryNoteItemManufacturerItemNumber.Add(stDeliveryNoteItemManufacturerItemNumber);
@@ -91,6 +130,9 @@ import { getItemUnitFrom } from "library";
             lstJobDeliveryNoteItemNumberAmount.Add(iDeliveryNoteItemAmount);
             lstJobDeliveryNoteItemUnit.Add(stDeliveryNoteItemUnit);
             lstJobDeliveryNoteItemGrossWeight.Add(stDeliveryNoteItemGrossWeight);
+            lstJobDeliveryNoteItemUnitPrice.Add(stDeliveryNoteItemUnitPrice);
+            lstJobDeliveryNoteItemUnitPriceAmount.Add(stDeliveryNoteItemUnitPriceAmount);
+            lstJobDeliveryNoteItemUnitPriceCurrency.Add(stDeliveryNoteItemUnitPriceCurrency);
 
             // Update delivery_note job
             db.ai_scan_delivery_note_item_job.InsertOrUpdate({
@@ -104,7 +146,10 @@ import { getItemUnitFrom } from "library";
                 amount: stDeliveryNoteItemAmount,
                 amount_number: iDeliveryNoteItemAmount,
                 unit: stDeliveryNoteItemUnit,
-                gross_weight: stDeliveryNoteItemGrossWeight
+                gross_weight: stDeliveryNoteItemGrossWeight,
+                unit_price: stDeliveryNoteItemUnitPrice,
+                unit_price_number: stDeliveryNoteItemUnitPriceAmount,
+                unit_price_currency: stDeliveryNoteItemUnitPriceCurrency
             });
 
             i++;
@@ -267,6 +312,18 @@ import { getItemUnitFrom } from "library";
             let stOtherJobDeliveryNoteSupplierId = "";
             let stOtherJobDeliveryNoteWeightGross = "";
 
+            let stOtherJobDeliveryNoteConcreteArrival = "";
+            let stOtherJobDeliveryNoteConcreteStartpour = "";
+            let stOtherJobDeliveryNoteConcreteEndpour = "";
+            let stOtherJobDeliveryNoteConcreteDeparture = "";
+            let stOtherJobDeliveryNoteConcreteWaittime = "";
+            let stOtherJobDeliveryNoteConcreteCement = "";
+            let stOtherJobDeliveryNoteConcretePumplength = "";
+            let stOtherJobDeliveryNoteConcreteJobtime = "";
+            let stOtherJobDeliveryNoteTotalPrice = "";
+            let stOtherJobDeliveryNoteTotalPriceAmount = null;
+            let stOtherJobDeliveryNoteTotalPriceCurrency = "";
+
             let lstOtherJobDeliveryNote = db.ai_scan_delivery_note_job.Read({job_id : stDeliveryNoteOtherJob});
 
             for(let recData of lstOtherJobDeliveryNote)
@@ -284,6 +341,17 @@ import { getItemUnitFrom } from "library";
                 stOtherJobDeliveryNoteSupplierWarehouse = recData.supplier_warehouse;
                 stOtherJobDeliveryNoteSupplierId = recData.supplier_id;
                 stOtherJobDeliveryNoteWeightGross = recData.weight_gross;
+                stOtherJobDeliveryNoteConcreteArrival = recData.concrete_arrival;
+                stOtherJobDeliveryNoteConcreteStartpour = recData.concrete_startpour;
+                stOtherJobDeliveryNoteConcreteEndpour = recData.concrete_endpour;
+                stOtherJobDeliveryNoteConcreteDeparture = recData.concrete_departure;
+                stOtherJobDeliveryNoteConcreteWaittime = recData.concrete_waittime;
+                stOtherJobDeliveryNoteConcreteCement = recData.concrete_cement;
+                stOtherJobDeliveryNoteConcretePumplength = recData.concrete_pumplength;
+                stOtherJobDeliveryNoteConcreteJobtime = recData.concrete_jobtime;
+                stOtherJobDeliveryNoteTotalPrice = recData.total_price;
+                stOtherJobDeliveryNoteTotalPriceAmount = NumberFrom(recData.total_price);
+                stOtherJobDeliveryNoteTotalPriceCurrency =recData.total_price_currency;
             }
 
             if(stOtherJobDeliveryNoteCustomerAddress === stDeliveryNoteCustomerAddress && 
@@ -297,7 +365,18 @@ import { getItemUnitFrom } from "library";
                 stOtherJobDeliveryNoteSupplierTaxNumber === stDeliveryNoteSupplierTaxNumber &&
                 stOtherJobDeliveryNoteSupplierWarehouse === stDeliveryNoteSupplierWarehouse &&
                 stOtherJobDeliveryNoteSupplierId === stDeliveryNoteSupplierId &&
-                stOtherJobDeliveryNoteWeightGross === stDeliveryNoteWeightGross)
+                stOtherJobDeliveryNoteWeightGross === stDeliveryNoteWeightGross &&
+                stOtherJobDeliveryNoteConcreteArrival === stDeliveryNoteConcreteArrival &&
+                stOtherJobDeliveryNoteConcreteStartpour === stDeliveryNoteConcreteStartpour &&
+                stOtherJobDeliveryNoteConcreteEndpour === stDeliveryNoteConcreteEndpour &&
+                stOtherJobDeliveryNoteConcreteDeparture === stDeliveryNoteConcreteDeparture &&
+                stOtherJobDeliveryNoteConcreteWaittime === stDeliveryNoteConcreteWaittime &&
+                stOtherJobDeliveryNoteConcreteCement === stDeliveryNoteConcreteCement &&
+                stOtherJobDeliveryNoteConcretePumplength === stDeliveryNoteConcretePumplength &&
+                stOtherJobDeliveryNoteConcreteJobtime === stDeliveryNoteConcreteJobtime &&
+                stOtherJobDeliveryNoteTotalPrice === stDeliveryNoteTotalPrice &&
+                stOtherJobDeliveryNoteTotalPriceAmount === stDeliveryNoteTotalPriceAmount &&
+                stOtherJobDeliveryNoteTotalPriceCurrency === stDeliveryNoteTotalPriceCurrency)
             {
                 bSameANNOTDatas = true;
             }
@@ -310,6 +389,9 @@ import { getItemUnitFrom } from "library";
             let lstOtherJobJobDeliveryNoteItemNumberAmount = list.New();
             let lstOtherJobJobDeliveryNoteItemUnit = list.New();
             let lstOtherJobJobDeliveryNoteItemGrossWeight = list.New();
+            let lstOtherJobJobDeliveryNoteItemUnitPrice = list.New();
+            let lstOtherJobJobDeliveryNoteItemUnitPriceAmount = list.New();
+            let lstOtherJobJobDeliveryNoteItemUnitPriceCurrency = list.New();
     
             let lstOtherJobJobDeliveryNoteItems = db.ai_scan_delivery_note_item_job.Read({job_id : stDeliveryNoteOtherJob});
     
@@ -322,6 +404,9 @@ import { getItemUnitFrom } from "library";
                 lstOtherJobJobDeliveryNoteItemNumberAmount.Add(NumberFrom(recData.amount));
                 lstOtherJobJobDeliveryNoteItemUnit.Add(recData.unit);
                 lstOtherJobJobDeliveryNoteItemGrossWeight.Add(recData.gross_weight);
+                lstOtherJobJobDeliveryNoteItemUnitPrice.Add(recData.unit_price);
+                lstOtherJobJobDeliveryNoteItemUnitPriceAmount.Add(NumberFrom(recData.unit_price));
+                lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.Add(recData.unit_price_currency);
             }
 
             let bMofifiedAnywhere = false;
@@ -336,7 +421,10 @@ import { getItemUnitFrom } from "library";
                         lstOtherJobJobDeliveryNoteItemAmount.GetAt(l) !== lstJobDeliveryNoteItemAmount.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemNumberAmount.GetAt(l) !== lstJobDeliveryNoteItemNumberAmount.GetAt(l) ||
                         lstOtherJobJobDeliveryNoteItemUnit.GetAt(l) !== lstJobDeliveryNoteItemUnit.GetAt(l) ||
-                        lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) !== lstJobDeliveryNoteItemGrossWeight.GetAt(l))
+                        lstOtherJobJobDeliveryNoteItemGrossWeight.GetAt(l) !== lstJobDeliveryNoteItemGrossWeight.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnitPrice.GetAt(l) !== lstJobDeliveryNoteItemUnitPrice.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnitPriceAmount.GetAt(l) !== lstJobDeliveryNoteItemUnitPriceAmount.GetAt(l) ||
+                        lstOtherJobJobDeliveryNoteItemUnitPriceCurrency.GetAt(l) !== lstJobDeliveryNoteItemUnitPriceCurrency.GetAt(l))
                     {
                         bMofifiedAnywhere = true;
                     }
@@ -412,6 +500,17 @@ import { getItemUnitFrom } from "library";
                    doneDacs.dnResponse.supplierWarehouse = stDeliveryNoteSupplierWarehouse;
                    doneDacs.dnResponse.supplierId = stDeliveryNoteSupplierId;
                    doneDacs.dnResponse.weightGross = stDeliveryNoteWeightGross;
+                   doneDacs.dnResponse.concreteArrival = iDeliveryNoteConcreteArrivalMinutes !== null ? iDeliveryNoteConcreteArrivalMinutes.toString() : stDeliveryNoteConcreteArrival;
+                   doneDacs.dnResponse.concreteStartpour = iDeliveryNoteConcreteStartpourMinutes !== null ? iDeliveryNoteConcreteStartpourMinutes.toString() : stDeliveryNoteConcreteStartpour;
+                   doneDacs.dnResponse.concreteEndpour = iDeliveryNoteConcreteEndpourMinutes !== null ? iDeliveryNoteConcreteEndpourMinutes.toString() : stDeliveryNoteConcreteEndpour;
+                   doneDacs.dnResponse.concreteDeparture = iDeliveryNoteConcreteDepartureMinutes !== null ? iDeliveryNoteConcreteDepartureMinutes.toString() : stDeliveryNoteConcreteDeparture;
+                   doneDacs.dnResponse.concreteWaittime = iDeliveryNoteConcreteWaittimeMinutes !== null ? iDeliveryNoteConcreteWaittimeMinutes.toString() : stDeliveryNoteConcreteWaittime;
+                   doneDacs.dnResponse.concreteCement = stDeliveryNoteConcreteCement;
+                   doneDacs.dnResponse.concretePumplength = stDeliveryNoteConcretePumplength;
+                   doneDacs.dnResponse.concreteJobtime = iDeliveryNoteConcreteJobtimeMinutes !== null ? iDeliveryNoteConcreteJobtimeMinutes.toString() : stDeliveryNoteConcreteJobtime;
+                   doneDacs.dnResponse.totalPrice = stDeliveryNoteTotalPrice;
+                   doneDacs.dnResponse.numTotalPrice = NumberFrom(stDeliveryNoteTotalPrice);
+                   doneDacs.dnResponse.totalPriceCurrency = stDeliveryNoteTotalPriceCurrency;
                    for (let i = 0; i < lstJobDeliveryNoteItemItemName.Count(); i=i+1) {
                     let item = {
                     itemName: lstJobDeliveryNoteItemItemName.GetAt(i),
@@ -420,7 +519,10 @@ import { getItemUnitFrom } from "library";
                     amount: lstJobDeliveryNoteItemAmount.GetAt(i),
                     numAmount: NumberFrom(lstJobDeliveryNoteItemAmount.GetAt(i)),
                     unit: lstJobDeliveryNoteItemUnit.GetAt(i),
-                    grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i)
+                    grossWeight: lstJobDeliveryNoteItemGrossWeight.GetAt(i),
+                    unitPrice: lstJobDeliveryNoteItemUnitPrice.GetAt(i),
+                    numUnitPrice: NumberFrom(lstJobDeliveryNoteItemUnitPrice.GetAt(i)),
+                    unitPriceCurrency: lstJobDeliveryNoteItemUnitPriceCurrency.GetAt(i)
                     };
                     doneDacs.dnResponse.items.Add(item);
                    }
@@ -507,6 +609,23 @@ import { getItemUnitFrom } from "library";
         let stDeliveryNoteSupplierWarehouse = dacs.dnResponse.supplierWarehouse;
         let stDeliveryNoteSupplierId = dacs.dnResponse.supplierId;
         let stDeliveryNoteWeightGross = dacs.dnResponse.weightGross;
+        let stDeliveryNoteConcreteArrival = TimeFrom(dacs.dnResponse.concreteArrival);
+        let iDeliveryNoteConcreteArrivalMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteArrival)) ? MinutesFrom(dacs.dnResponse.concreteArrival) : null;
+        let stDeliveryNoteConcreteStartpour = TimeFrom(dacs.dnResponse.concreteStartpour);
+        let iDeliveryNoteConcreteStartpourMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteStartpour)) ? MinutesFrom(dacs.dnResponse.concreteStartpour) : null;
+        let stDeliveryNoteConcreteEndpour = TimeFrom(dacs.dnResponse.concreteEndpour);
+        let iDeliveryNoteConcreteEndpourMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteEndpour)) ? MinutesFrom(dacs.dnResponse.concreteEndpour) : null;
+        let stDeliveryNoteConcreteDeparture = TimeFrom(dacs.dnResponse.concreteDeparture);
+        let iDeliveryNoteConcreteDepartureMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteDeparture)) ? MinutesFrom(dacs.dnResponse.concreteDeparture) : null;
+        let stDeliveryNoteConcreteWaittime = TimeFrom(dacs.dnResponse.concreteWaittime);
+        let iDeliveryNoteConcreteWaittimeMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteWaittime)) ? MinutesFrom(dacs.dnResponse.concreteWaittime) : null;
+        let stDeliveryNoteConcreteCement = dacs.dnResponse.concreteCement;
+        let stDeliveryNoteConcretePumplength = dacs.dnResponse.concretePumplength;
+        let stDeliveryNoteConcreteJobtime = TimeFrom(dacs.dnResponse.concreteJobtime);
+        let iDeliveryNoteConcreteJobtimeMinutes = !Number.isNaN(MinutesFrom(dacs.dnResponse.concreteJobtime)) ? MinutesFrom(dacs.dnResponse.concreteJobtime) : null;
+        let stDeliveryNoteTotalPrice = dacs.dnResponse.totalPrice;
+        let stDeliveryNoteTotalPriceAmount = NumberFrom(dacs.dnResponse.totalPrice);
+        let stDeliveryNoteTotalPriceCurrency = dacs.dnResponse.totalPriceCurrency;
 
         // Update delivery_note job
         db.ai_scan_delivery_note_job.UpdateMany({
@@ -525,7 +644,24 @@ import { getItemUnitFrom } from "library";
             supplier_tax_number: stDeliveryNoteSupplierTaxNumber,
             supplier_warehouse: stDeliveryNoteSupplierWarehouse,
             supplier_id: stDeliveryNoteSupplierId,
-            weight_gross: stDeliveryNoteWeightGross
+            weight_gross: stDeliveryNoteWeightGross,
+            concrete_arrival: stDeliveryNoteConcreteArrival,
+            concrete_arrival_number: iDeliveryNoteConcreteArrivalMinutes,
+            concrete_startpour: stDeliveryNoteConcreteStartpour,
+            concrete_startpour_number: iDeliveryNoteConcreteStartpourMinutes,
+            concrete_endpour: stDeliveryNoteConcreteEndpour,
+            concrete_endpour_number: iDeliveryNoteConcreteEndpourMinutes,
+            concrete_departure: stDeliveryNoteConcreteDeparture,
+            concrete_departure_number: iDeliveryNoteConcreteDepartureMinutes,
+            concrete_waittime: stDeliveryNoteConcreteWaittime,
+            concrete_waittime_number: iDeliveryNoteConcreteWaittimeMinutes,
+            concrete_cement: stDeliveryNoteConcreteCement,
+            concrete_pumplength: stDeliveryNoteConcretePumplength,
+            concrete_jobtime: stDeliveryNoteConcreteJobtime,
+            concrete_jobtime_number: iDeliveryNoteConcreteJobtimeMinutes,
+            total_price: stDeliveryNoteTotalPrice,
+            total_price_number: stDeliveryNoteTotalPriceAmount,
+            total_price_currency: stDeliveryNoteTotalPriceCurrency
         });
 
         // delivery_note's items
@@ -542,6 +678,9 @@ import { getItemUnitFrom } from "library";
             let iDeliveryNoteItemAmount = NumberFrom(item.amount);
             let stDeliveryNoteItemUnit = getItemUnitFrom(stFirstItemItemUnit, item.unit, bFirstItem);
             let stDeliveryNoteItemGrossWeight = item.grossWeight;
+            let stDeliveryNoteItemUnitPrice = item.unitPrice;
+            let stDeliveryNoteItemUnitPriceAmount = NumberFrom(item.unitPrice);
+            let stDeliveryNoteItemUnitPriceCurrency = item.unitPriceCurrency;
 
             // Update delivery_note job
             db.ai_scan_delivery_note_item_job.InsertOrUpdate({
@@ -555,7 +694,10 @@ import { getItemUnitFrom } from "library";
                 amount: stDeliveryNoteItemAmount,
                 amount_number: iDeliveryNoteItemAmount,
                 unit: stDeliveryNoteItemUnit,
-                gross_weight: stDeliveryNoteItemGrossWeight
+                gross_weight: stDeliveryNoteItemGrossWeight,
+                unit_price: stDeliveryNoteItemUnitPrice,
+                unit_price_number: stDeliveryNoteItemUnitPriceAmount,
+                unit_price_currency: stDeliveryNoteItemUnitPriceCurrency
             });
 
             i++;
