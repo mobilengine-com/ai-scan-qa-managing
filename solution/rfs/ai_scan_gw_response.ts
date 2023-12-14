@@ -890,7 +890,7 @@ import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
                     users: null
                 });
 
-                // Create QA job status
+                // Create QA job status 
                 db.ai_scan_delivery_note_qaj.Insert({
                     delivery_note_id: stDeliveryNoteId,
                     job_id: stQAJobId,
