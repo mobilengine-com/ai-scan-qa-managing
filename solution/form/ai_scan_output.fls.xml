@@ -175,21 +175,63 @@
     </if>
 
     <hbox style='{styles.sylOutputFiltersHbox}'>
-        <dropdown id='ddANOTAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: Annotation' testId='{"ddANOTAgentFilter"}' 
-            choices='{clientOrderBy: SELECT DISTINCT JR.user_id, JR.user_name FROM ai_scan_job_result JR WHERE COALESCE(JR.user_id,"") != NULL OR COALESCE(JR.user_id,"") != "" ORDER BY user_name}' selectedKey='{NULL}' 
+        <dropdown id='ddANOTAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: Annotation' testId='{"ddANOTAgentFilter"}' selectedKey='{NULL}' 
+            choices='{SELECT DISTINCT 
+						JR.user_id, 
+						JR.user_name 
+					FROM 
+						ai_scan_job_result JR 
+					WHERE 
+						COALESCE(JR.user_id,"") != "" 
+					ORDER BY
+						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(user_name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+			}' 
         />
-        <dropdown id='ddQAAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: QA' testId='{"ddQAAgentFilter"}' 
-            choices='{clientOrderBy: SELECT DISTINCT QAJR.user_id, QAJR.user_name FROM ai_scan_qa_job_result QAJR WHERE COALESCE(QAJR.user_id,"") != NULL OR COALESCE(QAJR.user_id,"") != "" ORDER BY user_name}' selectedKey='{NULL}' 
+        <dropdown id='ddQAAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: QA' testId='{"ddQAAgentFilter"}' selectedKey='{NULL}'
+            choices='{SELECT DISTINCT 
+						QAJR.user_id, 
+						QAJR.user_name 
+					FROM 
+						ai_scan_qa_job_result QAJR 
+					WHERE 
+						COALESCE(QAJR.user_id,"") != "" 
+					ORDER BY
+						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(user_name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+			}' 
         />
         <textview id='tvFromText' text='From:' style='{styles.sylOutputTvFromAndTo}' access='private' testId='{"tvFromText"}'/>
         <datepicker id='dpFromFilter' date='{ADDDAY(sysp.dtlFormOpen, -1)}' dateFormat='(dtf yyyy"."MM"."dd".")' access='private' style='{styles.sylOutputDPDatePicker}' testId='{"dpFromFilter"}'/>
         <textview id='tvToText' text='To:' style='{styles.sylOutputTvFromAndTo}' access='private' testId='{"tvToText"}'/>
 		<datepicker id='dpToFilter' date='{ADDDAY(sysp.dtlFormOpen, -1)}' dateFormat='(dtf yyyy"."MM"."dd".")' access='private' style='{styles.sylOutputDPDatePicker}' testId='{"dpToFilter"}'/>
-        <dropdown id='ddClientFilter' keyMap='{guidLcomp}' textMap='{name}' noneText='Client' testId='{"ddClientFilter"}' 
-            choices='{clientOrderBy: SELECT DISTINCT DN.guidLcomp, C.name FROM ai_scan_delivery_note DN LEFT JOIN ai_scan_company C ON C.id = DN.guidLcomp WHERE COALESCE(DN.guidLcomp,"") != NULL OR COALESCE(DN.guidLcomp,"") != "" ORDER BY name}' selectedKey='{NULL}' 
+        <dropdown id='ddClientFilter' keyMap='{guidLcomp}' textMap='{name}' noneText='Client' testId='{"ddClientFilter"}' selectedKey='{NULL}' 
+            choices='{SELECT DISTINCT
+						DN.guidLcomp,
+						C.name 
+					FROM 
+						ai_scan_delivery_note DN 
+					LEFT JOIN 
+						ai_scan_company C ON C.id = DN.guidLcomp 
+					WHERE 
+						COALESCE(DN.guidLcomp,"") != "" 
+					ORDER BY
+						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+			}'
         />
-        <dropdown id='ddProjectFilter' keyMap='{guidLproj}' textMap='{name}' noneText='Project' testId='{"ddProjectFilter"}' 
-            choices='{clientOrderBy: SELECT DISTINCT DN.guidLproj, P.name FROM ai_scan_delivery_note DN LEFT JOIN ai_scan_project P ON P.id = DN.guidLproj WHERE (COALESCE(DN.guidLproj,"") != NULL OR COALESCE(DN.guidLproj,"") != "") AND DN.guidLcomp LIKE "%" || stClientFilter || "%" ORDER BY name}' selectedKey='{NULL}' 
+        <dropdown id='ddProjectFilter' keyMap='{guidLproj}' textMap='{name}' noneText='Project' testId='{"ddProjectFilter"}' selectedKey='{NULL}' 
+            choices='{SELECT DISTINCT 
+						DN.guidLproj, 
+						P.name 
+					FROM 
+						ai_scan_delivery_note DN 
+					LEFT JOIN 
+						ai_scan_project P ON P.id = DN.guidLproj 
+					WHERE 
+						COALESCE(DN.guidLproj,"") != ""
+						AND COALESCE(ddClientFilter.selectedKey,DN.guidLcomp) = DN.guidLcomp
+					ORDER BY
+						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+						
+			}'
         />
         <dropdown id='ddStatusFilter' keyMap='{key}' textMap='{value}' noneText='Status' testId='{"ddStatusFilter"}' 
             choices='{TABLE key, value 
