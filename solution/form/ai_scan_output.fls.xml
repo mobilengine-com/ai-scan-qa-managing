@@ -184,7 +184,8 @@
 					WHERE 
 						COALESCE(JR.user_id,"") != "" 
 					ORDER BY
-						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(user_name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+						user_name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
 			}' 
         />
         <dropdown id='ddQAAgentFilter' keyMap='{user_id}' textMap='{user_name}' noneText='Agent: QA' testId='{"ddQAAgentFilter"}' selectedKey='{NULL}'
@@ -196,7 +197,8 @@
 					WHERE 
 						COALESCE(QAJR.user_id,"") != "" 
 					ORDER BY
-						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(user_name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+						user_name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
 			}' 
         />
         <textview id='tvFromText' text='From:' style='{styles.sylOutputTvFromAndTo}' access='private' testId='{"tvFromText"}'/>
@@ -214,7 +216,8 @@
 					WHERE 
 						COALESCE(DN.guidLcomp,"") != "" 
 					ORDER BY
-						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+						name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
 			}'
         />
         <dropdown id='ddProjectFilter' keyMap='{guidLproj}' textMap='{name}' noneText='Project' testId='{"ddProjectFilter"}' selectedKey='{NULL}' 
@@ -229,7 +232,8 @@
 						COALESCE(DN.guidLproj,"") != ""
 						AND COALESCE(ddClientFilter.selectedKey,DN.guidLcomp) = DN.guidLcomp
 					ORDER BY
-						REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ü","u"),"ű","u")
+						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+						name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
 						
 			}'
         />
