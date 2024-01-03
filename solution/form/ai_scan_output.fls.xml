@@ -31,7 +31,7 @@
             value='{loadNewerFromServer: SELECT
                         J.delivery_note_id delivery_note_id,
                         CASE WHEN COALESCE(QAJR.result,"") = "" THEN 0 ELSE 1 END delivery_note_qa_job,
-                        CASE WHEN COALESCE(QAJR.result,"") = "" THEN "Approved" ELSE QAJR.result END delivery_note_status
+                        COALESCE(QAJR.result,"Approved") delivery_note_status
                     FROM
                         ai_scan_jobs J
                     LEFT JOIN
@@ -42,8 +42,6 @@
                         ai_scan_delivery_note_job DNJ ON DNJ.delivery_note_id = J.delivery_note_id
                     LEFT JOIN
                         ai_scan_delivery_note_item_job DNIJ ON DNIJ.delivery_note_id = J.delivery_note_id
-                    LEFT JOIN
-                        ai_scan_user U ON U.id = J.current_user
                     LEFT JOIN
                         ai_scan_delivery_note DN ON DN.delivery_note_id = J.delivery_note_id
 					LEFT JOIN
@@ -59,40 +57,20 @@
                         (
                             J.job_id_2 IN (SELECT J2.id FROM ai_scan_jobs J2 WHERE J2.type = "ANOT" AND J2.status = "DONE")
                         )
-                        AND CASE WHEN stANOTAgentFilter != "" THEN
-                            JR.user_id = stANOTAgentFilter
-                        ELSE
-                            DNJ.delivery_note_id != ""
-                        END
-                        AND CASE WHEN stQAAgentFilter != "" THEN
-                            (J.current_user  = stQAAgentFilter AND COALESCE(QAJR.result,"") != "")
-                        ELSE
-                            DNJ.delivery_note_id != ""
-                        END
-                        AND
-                            STARTOFDAY(J.delivery_note_work_end_date) BETWEEN COALESCE(dtlFromFilter, TODATE(1900,1,1,0,0,0)) AND COALESCE(dtlToFilter, TODATE(2100,1,1,0,0,0))
-                        AND CASE WHEN stClientFilter != "" THEN
-                            DN.guidLcomp  = stClientFilter 
-                        ELSE
-                            DNJ.delivery_note_id != ""
-                        END
-                        AND CASE WHEN stProjectFilter != "" THEN
-                            DN.guidLproj  = stProjectFilter 
-                        ELSE
-                            DNJ.delivery_note_id != ""
-                        END
-                        AND CASE WHEN stStatusFilter IN ("Handwritten") THEN
-                            QAJR.result IN ("Handwritten")
-                        WHEN stStatusFilter IN ("Bad photo") THEN
-                            QAJR.result IN ("Bad photo")
-                        WHEN stStatusFilter IN ("Reviewed") THEN
-                            J.type = "ANOT" OR QAJR.result NOT IN ("Handwritten", "Bad photo")
-                        ELSE
-                            DNJ.delivery_note_id != ""
-                        END
-                        AND CASE WHEN LENGTH(stSearch) &gt;= 1 THEN
-                        (
-                            DNJ.customer_address LIKE "%" || stSearch || "%"
+                        AND COALESCE(stANOTAgentFilter,JR.user_id) = JR.user_id
+                        AND COALESCE(stQAAgentFilter,QAJR.user_id) = QAJR.user_id
+                        AND STARTOFDAY(J.delivery_note_work_end_date) BETWEEN COALESCE(dtlFromFilter, TODATE(1900,1,1,0,0,0)) AND COALESCE(dtlToFilter, TODATE(2100,1,1,0,0,0))
+                        AND COALESCE(stClientFilter,DN.guidLcomp) = DN.guidLcomp
+                        AND COALESCE(stProjectFilter,DN.guidLproj) = DN.guidLproj
+                        AND (
+							stStatusFilter = ""
+							OR (stStatusFilter IN ("Handwritten") AND QAJR.result IN ("Handwritten"))
+							OR (stStatusFilter IN ("Bad photo") AND QAJR.result IN ("Bad photo"))
+							OR (stStatusFilter IN ("Reviewed") AND (J.type = "ANOT" OR QAJR.result NOT IN ("Handwritten", "Bad photo")))
+						)
+                        AND 
+						(
+							DNJ.customer_address LIKE "%" || stSearch || "%"
                             OR DNJ.customer_name LIKE "%" || stSearch || "%"
                             OR DNJ.delivery_address LIKE "%" || stSearch || "%"
                             OR DNJ.delivery_recipient_name LIKE "%" || stSearch || "%"
@@ -109,11 +87,6 @@
                             OR DNIJ.amount LIKE "%" || stSearch || "%"
                             OR DNIJ.unit LIKE "%" || stSearch || "%"
                         )
-                        ELSE
-                        (
-                            DNJ.delivery_note_id != ""
-                        )
-                        END
                     GROUP BY J.delivery_note_id
             }'
         />
@@ -127,11 +100,11 @@
         <let id='iDeliveryNotesOnlyApproved' shape='scalar' value='{SELECT COUNT(ODN.delivery_note_status) FROM ltblOutputDeliveryNotes ODN WHERE ODN.delivery_note_status = "Approved"}'/>
 
         <let id='stANOTAgentFilter' shape='scalar' access='public'
-			value='{SELECT COALESCE(ddANOTAgentFilter.selectedKey,"")}'
+			value='{SELECT ddANOTAgentFilter.selectedKey}'
 		/>
 
         <let id='stQAAgentFilter' shape='scalar' access='public'
-			value='{SELECT COALESCE(ddQAAgentFilter.selectedKey,"")}'
+			value='{SELECT ddQAAgentFilter.selectedKey}'
 		/>
 
         <let id='dtlFromFilter' shape='scalar' access='public'
@@ -143,11 +116,11 @@
         />
 
         <let id='stClientFilter' shape='scalar' access='public'
-			value='{SELECT COALESCE(ddClientFilter.selectedKey,"")}'
+			value='{SELECT ddClientFilter.selectedKey}'
 		/>
 
         <let id='stProjectFilter' shape='scalar' access='public'
-			value='{SELECT COALESCE(ddProjectFilter.selectedKey,"")}'
+			value='{SELECT ddProjectFilter.selectedKey}'
 		/>
 
         <let id='stStatusFilter' shape='scalar' access='public'
@@ -155,7 +128,7 @@
         />
 
         <let id='stSearch' shape='scalar' access='public'
-			value='{SELECT COALESCE(tbSearch.tbSearchValue,"")}'
+			value='{SELECT tbSearch.tbSearchValue}'
 		/>
 
         <let id='bRedoClicked' shape='scalar' value='{false}'/>
@@ -182,7 +155,7 @@
 					FROM 
 						ai_scan_job_result JR 
 					WHERE 
-						COALESCE(JR.user_id,"") != "" 
+						COALESCE(JR.user_id,"") != ""
 					ORDER BY
 						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 						user_name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
@@ -195,7 +168,7 @@
 					FROM 
 						ai_scan_qa_job_result QAJR 
 					WHERE 
-						COALESCE(QAJR.user_id,"") != "" 
+						COALESCE(QAJR.user_id,"") != ""
 					ORDER BY
 						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 						user_name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
@@ -230,7 +203,7 @@
 						ai_scan_project P ON P.id = DN.guidLproj 
 					WHERE 
 						COALESCE(DN.guidLproj,"") != ""
-						AND COALESCE(ddClientFilter.selectedKey,DN.guidLcomp) = DN.guidLcomp
+						AND COALESCE(stClientFilter,DN.guidLcomp) = DN.guidLcomp
 					ORDER BY
 						LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
 						name,"Á","A"),"É","E"),"Í","I"),"Ó","O"),"Ö","O"),"Ő","O"),"Ú","U"),"Ű","U"),"Ü","U"),"á","a"),"é","e"),"í","i"),"ó","o"),"ö","o"),"ő","o"),"ú","u"),"ű","u"),"ü","u"))
@@ -246,14 +219,7 @@
         />
         <textbox id='tbSearch' hint='Search…' text='' access='private'  testId='{"tbSearch"}'>
             <declarations>
-                <let id='tbSearchValue' shape='scalar' 
-                    value='{SELECT 
-                                CASE 
-                                    WHEN LENGTH(TRIM(COALESCE(text,""), " ")) &lt; 1 
-                                        THEN "" 
-                                    ELSE TRIM(LOWER(COALESCE(text,"")), " ")
-                                END}' 
-                />
+                <let id='tbSearchValue' shape='scalar' value='{TRIM(LOWER(COALESCE(text,"")), " ")}'/>
             </declarations>
 		</textbox>
         <textview text=''/>

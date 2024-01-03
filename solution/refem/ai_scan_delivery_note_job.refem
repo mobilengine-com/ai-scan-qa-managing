@@ -2,6 +2,7 @@
     <Columns>
         <Column Name="delivery_note_id" Type="Text" PrimaryKey="true" NotNull="true"/>
         <Column Name="job_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+		<Column Name="job_type" Type="Text" NotNull="true" InitialValue="ANOT"/>
         <Column Name="status" Type="Text" NotNull="true"/>
         <Column Name="avg_score_must_have" Type="Float" NotNull="true"/>
         <Column Name="avg_score_overall" Type="Float" NotNull="true"/>

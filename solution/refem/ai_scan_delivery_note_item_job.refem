@@ -2,6 +2,7 @@
     <Columns>
         <Column Name="delivery_note_id" Type="Text" PrimaryKey="true" NotNull="true"/>
         <Column Name="job_id" Type="Text" PrimaryKey="true" NotNull="true"/>
+		<Column Name="job_type" Type="Text" NotNull="true" InitialValue="ANOT"/>
         <Column Name="row_counter" Type="Integer" PrimaryKey="true" NotNull="true"/>
         <Column Name="item_name" Type="Text"/>
         <Column Name="manufacturer_item_number" Type="Text"/>

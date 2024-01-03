@@ -4,8 +4,8 @@
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_user;
 //# using reftab ai_scan_job_result;
-//# using reftab ai_scan_delivery_note_qaj;
-//# using reftab ai_scan_delivery_note_item_qaj;
+//# using reftab ai_scan_delivery_note_job;
+//# using reftab ai_scan_delivery_note_item_job;
 //# using dacs QATaskDone;
 
 import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
@@ -117,7 +117,7 @@ import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
             });
 
             // Update delivery_note QA job
-            db.ai_scan_delivery_note_qaj.UpdateMany({
+            db.ai_scan_delivery_note_job.UpdateMany({
                 delivery_note_id: stSelectedQAJobDeliveryNoteId,
                 job_id: stSelectedQAJobId
             },{
@@ -697,7 +697,7 @@ import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
             });
 
             // Update delivery_note QA job
-            db.ai_scan_delivery_note_qaj.UpdateMany({
+            db.ai_scan_delivery_note_job.UpdateMany({
                 job_id: stSelectedQAJobId
             },{
                 status: "done_handwritten",
@@ -744,11 +744,12 @@ import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
                 {
 
                     // Update delivery_note QA job
-                    db.ai_scan_delivery_note_item_qaj.InsertOrUpdate({
+                    db.ai_scan_delivery_note_item_job.InsertOrUpdate({
                         delivery_note_id: stSelectedQAJobDeliveryNoteId,
                         job_id: stSelectedQAJobId,
                         row_counter: ii
                     },{
+						job_type: "QA",
                         item_name: lstFinalItemTable.GetAt(1+i),
                         manufacturer_item_number: lstFinalItemTable.GetAt(2+i),
                         tax_number: lstFinalItemTable.GetAt(3+i),
@@ -1361,7 +1362,7 @@ import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
             });
 
             // Update delivery_note QA job
-            db.ai_scan_delivery_note_qaj.UpdateMany({
+            db.ai_scan_delivery_note_job.UpdateMany({
                 job_id: stSelectedQAJobId
             },{
                 status: "done_approved",
@@ -1408,11 +1409,12 @@ import { NumberFrom, DateFrom, TimeFrom, MinutesFrom } from "conversion";
                 {
 
                     // Update delivery_note QA job
-                    db.ai_scan_delivery_note_item_qaj.InsertOrUpdate({
+                    db.ai_scan_delivery_note_item_job.InsertOrUpdate({
                         delivery_note_id: stSelectedQAJobDeliveryNoteId,
                         job_id: stSelectedQAJobId,
                         row_counter: ii
                     },{
+						job_type: "QA",
                         item_name: lstFinalItemTable.GetAt(1+i),
                         manufacturer_item_number: lstFinalItemTable.GetAt(2+i),
                         tax_number: lstFinalItemTable.GetAt(3+i),

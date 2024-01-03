@@ -145,6 +145,7 @@
         db.ai_scan_delivery_note_job.Insert({
             delivery_note_id: dacs.qaTask.scanId,
             job_id: stJobId,
+			job_type: "ANOT",
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
@@ -193,6 +194,7 @@
         db.ai_scan_delivery_note_job.Insert({
             delivery_note_id: dacs.qaTask.scanId,
             job_id: stJobId2,
+			job_type: "ANOT",
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
@@ -337,6 +339,7 @@
         db.ai_scan_delivery_note_job.Insert({
             delivery_note_id: dacs.qaTask.scanId,
             job_id: stJobId,
+			job_type: "ANOT",
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,
@@ -385,6 +388,7 @@
         db.ai_scan_delivery_note_job.Insert({
             delivery_note_id: dacs.qaTask.scanId,
             job_id: stJobId2,
+			job_type: "ANOT",
             status: "waiting",
             avg_score_must_have: 0.0,
             avg_score_overall: 0.0,

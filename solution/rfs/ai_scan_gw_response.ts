@@ -7,7 +7,6 @@
 //# using reftab ai_scan_job_inprogress;
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_settings;
-//# using reftab ai_scan_delivery_note_qaj;
 //# using dacs QATaskDone;
 //# using dacs AssignAITask;
 
@@ -141,6 +140,7 @@ import { getItemUnitFrom } from "library";
                 job_id: stDeliveryNoteJobId,
                 row_counter: iDeliveryNoteItemRowCounter
             },{
+				job_type: "ANOT",
                 item_name: stDeliveryNoteItemItemName,
                 manufacturer_item_number: stDeliveryNoteItemManufacturerItemNumber,
                 tax_number: stDeliveryNoteItemTaxNumber,
@@ -576,9 +576,10 @@ import { getItemUnitFrom } from "library";
                     });
 
                     // Create QA job status
-                    db.ai_scan_delivery_note_qaj.Insert({
+                    db.ai_scan_delivery_note_job.Insert({
                         delivery_note_id: stDeliveryNoteId,
                         job_id: stQAJobId,
+						job_type: "QA",
                         status: "waiting",
                         avg_score_must_have: 0.0,
                         avg_score_overall: 0.0
@@ -689,6 +690,7 @@ import { getItemUnitFrom } from "library";
                 job_id: stDeliveryNoteJobId,
                 row_counter: iDeliveryNoteItemRowCounter
             },{
+				job_type: "ANOT",
                 item_name: stDeliveryNoteItemItemName,
                 manufacturer_item_number: stDeliveryNoteItemManufacturerItemNumber,
                 tax_number: stDeliveryNoteItemTaxNumber,
@@ -898,9 +900,10 @@ import { getItemUnitFrom } from "library";
                 });
 
                 // Create QA job status 
-                db.ai_scan_delivery_note_qaj.Insert({
+                db.ai_scan_delivery_note_job.Insert({
                     delivery_note_id: stDeliveryNoteId,
                     job_id: stQAJobId,
+					job_type: "QA",
                     status: "waiting",
                     avg_score_must_have: 0.0,
                     avg_score_overall: 0.0

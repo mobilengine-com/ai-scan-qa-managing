@@ -6,8 +6,6 @@
 //# using reftab ai_scan_qa_job_result;
 //# using reftab ai_scan_job_result;
 //# using reftab ai_scan_delivery_note;
-//# using reftab ai_scan_delivery_note_qaj;
-//# using reftab ai_scan_delivery_note_item_qaj;
 
 {
 	Log(dacs);
@@ -24,8 +22,6 @@
 		db.ai_scan_jobs.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
-		db.ai_scan_delivery_note_qaj.DeleteMany({delivery_note_id : stDeliveryNoteId});
-		db.ai_scan_delivery_note_item_qaj.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		Log("Delivery note : " + stDeliveryNoteId + " redo operation run successfully in BA company");
 	}
 
@@ -39,8 +35,6 @@
 		db.ai_scan_delivery_note_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_delivery_note_item_job.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		db.ai_scan_jobs_history.DeleteMany({delivery_note_id: stDeliveryNoteId});
-		db.ai_scan_delivery_note_qaj.DeleteMany({delivery_note_id : stDeliveryNoteId});
-		db.ai_scan_delivery_note_item_qaj.DeleteMany({delivery_note_id : stDeliveryNoteId});
 		Log("Delivery note : " + stDeliveryNoteId + " delete operation run successfully in BA company");
 	}
 
