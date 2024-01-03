@@ -44,8 +44,8 @@
                         ai_scan_delivery_note_item_job DNIJ ON DNIJ.delivery_note_id = J.delivery_note_id
                     LEFT JOIN
                         ai_scan_delivery_note DN ON DN.delivery_note_id = J.delivery_note_id
-					LEFT JOIN
-						ai_scan_project ASP ON ASP.id = DN.guidLproj
+                    LEFT JOIN
+                        ai_scan_project ASP ON ASP.id = DN.guidLproj
                     WHERE
                         J.status = "DONE"
                         AND
@@ -63,14 +63,14 @@
                         AND COALESCE(stClientFilter,DN.guidLcomp) = DN.guidLcomp
                         AND COALESCE(stProjectFilter,DN.guidLproj) = DN.guidLproj
                         AND (
-							stStatusFilter = ""
-							OR (stStatusFilter IN ("Handwritten") AND QAJR.result IN ("Handwritten"))
-							OR (stStatusFilter IN ("Bad photo") AND QAJR.result IN ("Bad photo"))
-							OR (stStatusFilter IN ("Reviewed") AND (J.type = "ANOT" OR QAJR.result NOT IN ("Handwritten", "Bad photo")))
-						)
+                            stStatusFilter = ""
+                            OR (stStatusFilter IN ("Handwritten") AND QAJR.result IN ("Handwritten"))
+                            OR (stStatusFilter IN ("Bad photo") AND QAJR.result IN ("Bad photo"))
+                            OR (stStatusFilter IN ("Reviewed") AND (J.type = "ANOT" OR QAJR.result NOT IN ("Handwritten", "Bad photo")))
+                        )
                         AND 
-						(
-							DNJ.customer_address LIKE "%" || stSearch || "%"
+                        (
+                            DNJ.customer_address LIKE "%" || stSearch || "%"
                             OR DNJ.customer_name LIKE "%" || stSearch || "%"
                             OR DNJ.delivery_address LIKE "%" || stSearch || "%"
                             OR DNJ.delivery_recipient_name LIKE "%" || stSearch || "%"
@@ -81,12 +81,20 @@
                             OR DNJ.supplier_warehouse LIKE "%" || stSearch || "%"
                             OR DNJ.supplier_id LIKE "%" || stSearch || "%"
                             OR DNJ.weight_gross LIKE "%" || stSearch || "%"
-							OR ASP.name LIKE "%" || stSearch || "%"
+                            OR ASP.name LIKE "%" || stSearch || "%"
                             OR DNIJ.item_name LIKE "%" || stSearch || "%"
                             OR DNIJ.manufacturer_item_number LIKE "%" || stSearch || "%"
                             OR DNIJ.amount LIKE "%" || stSearch || "%"
                             OR DNIJ.unit LIKE "%" || stSearch || "%"
                         )
+                        AND 
+                        (
+                            (COALESCE(QAJR.result,"") != "" AND QAJR.result IN ("Approved","Handwritten") AND DNJ.job_type = "QA")
+                            OR
+                            (COALESCE(QAJR.result,"") != "" AND QAJR.result IN ("Bad photo") AND DNJ.job_type = "ANOT") 
+                            OR 
+                            (COALESCE(QAJR.result,"") = "" AND DNJ.job_type = "ANOT") 
+                        )                       
                     GROUP BY J.delivery_note_id
             }'
         />
