@@ -57,8 +57,8 @@
                         (
                             J.job_id_2 IN (SELECT J2.id FROM ai_scan_jobs J2 WHERE J2.type = "ANOT" AND J2.status = "DONE")
                         )
-                        AND COALESCE(stANOTAgentFilter,JR.user_id) = JR.user_id
-                        AND COALESCE(stQAAgentFilter,QAJR.user_id) = QAJR.user_id
+                        AND COALESCE(stANOTAgentFilter,JR.user_id,"") = COALESCE(JR.user_id,"")
+                        AND COALESCE(stQAAgentFilter,QAJR.user_id,"") = COALESCE(QAJR.user_id,"")
                         AND STARTOFDAY(J.delivery_note_work_end_date) BETWEEN COALESCE(dtlFromFilter, TODATE(1900,1,1,0,0,0)) AND COALESCE(dtlToFilter, TODATE(2100,1,1,0,0,0))
                         AND COALESCE(stClientFilter,DN.guidLcomp) = DN.guidLcomp
                         AND COALESCE(stProjectFilter,DN.guidLproj) = DN.guidLproj
