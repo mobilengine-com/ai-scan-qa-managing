@@ -27,7 +27,7 @@ describe('testing TimeFrom and MinutesFrom conversion', () => {
   });
   test('MinutesFrom random string', () => {
     expect(MinutesFrom('12,23')).toBe(NaN);
-	expect(MinutesFrom('alma')).toBe(NaN);
+	expect(MinutesFrom('alma')).toBe(null);
   });
   test('MinutesFrom timeformat string', () => {
     expect(MinutesFrom('08:23')).toBe(503);
