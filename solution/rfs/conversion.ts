@@ -11,6 +11,7 @@ const rgstdtf: string[] = [
     "yyyy\".\"MM\".\"dd", "yyyy\". \"MM\". \"dd", 
     "yyyy\"-\"MM\"-\"dd", "yyyy\":\"MM\":\"dd", 
     "dd\".\"MM\".\"yyyy\".\"", "dd\". \"MM\". \"yyyy\".\"", 
+    "dd\".\"MM\".\"yyyy", "dd\". \"MM\". \"yyyy", 
     "dd\"-\"MM\"-\"yyyy", "dd\":\"MM\":\"yyyy"
   ];
   
